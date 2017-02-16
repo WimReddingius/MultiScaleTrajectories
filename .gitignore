@@ -1,0 +1,8 @@
+# ===================================== #
+# Visual Studio / MonoDevelop generated #
+# ===================================== #
+/MultiScaleTrajectories/obj/
+/MultiScaleTrajectories/bin/
+/MultiScaleTrajectories/Properties/
+/packages/
+*.config
