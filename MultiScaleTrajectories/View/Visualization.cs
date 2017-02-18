@@ -1,5 +1,5 @@
 ﻿using MultiScaleTrajectories.algorithm;
-using MultiScaleTrajectories.algorithm.ST;
+using MultiScaleTrajectories.algorithm.SingleTrajectory;
 using MultiScaleTrajectories.view;
 using MultiScaleTrajectories.View.Util;
 using OpenTK;
@@ -31,14 +31,13 @@ namespace MultiScaleTrajectories
 
         public Visualizer() : base(new OpenTK.Graphics.GraphicsMode(32, 24, 0, 8))
         {
-
             CreateControl();
 
             Paint += new PaintEventHandler(this.Render);
             MouseDown += new MouseEventHandler(this.HandleMouseDown);
             MouseUp += new MouseEventHandler(this.HandleMouseUp);
             MouseMove += new MouseEventHandler(this.HandleMouseMove);
-            MouseWheel += new MouseEventHandler(this.HandleScroll);
+            MouseWheel += new MouseEventHandler(this.HandleMouseWheel);
 
             InputEpsilons = new List<double>();
             InputTrajectory = new Trajectory2D();
@@ -65,8 +64,8 @@ namespace MultiScaleTrajectories
 
             SetGLPerspective();
 
-            TextRendererGL.GenerateFontImage();
-            TextRendererGL.LoadTexture();
+            GLTextRenderer.GenerateFontImage();
+            GLTextRenderer.LoadTexture();
         }
 
         protected override void OnResize(EventArgs e)
@@ -114,7 +113,7 @@ namespace MultiScaleTrajectories
                     GL.Color3(Color.Red);
 
                 GL.Translate(p.X, p.Y, 1f);
-                drawCircle(5.0f);
+                GLU.drawCircle(5.0f);
                 GL.PopMatrix();
             }
         }
@@ -156,23 +155,11 @@ namespace MultiScaleTrajectories
             GL.Enable(EnableCap.Blend);
             GL.BlendFunc(BlendingFactorSrc.SrcAlpha, BlendingFactorDest.OneMinusSrcAlpha);
             GL.Color3(Color.Black);
-            TextRendererGL.DrawText((-ClientRectangle.Width / 2) + padding, (-ClientRectangle.Height / 2) + padding, str1);
-            TextRendererGL.DrawText((-ClientRectangle.Width / 2) + padding, (-ClientRectangle.Height / 2) + padding + TextRendererGL.FontSize + 5, str2);
+            GLTextRenderer.DrawText((-ClientRectangle.Width / 2) + padding, (-ClientRectangle.Height / 2) + padding, str1);
+            GLTextRenderer.DrawText((-ClientRectangle.Width / 2) + padding, (-ClientRectangle.Height / 2) + padding + GLTextRenderer.FontSize + 5, str2);
             GL.Disable(EnableCap.Blend);
             GL.Disable(EnableCap.Texture2D);
 
-        }
-
-        void drawCircle(float radius)
-        {
-            GL.Begin(PrimitiveType.TriangleFan);
-
-            for (int i = 0; i < 360; i++)
-            {
-                double degInRad = i * Math.PI / 180;
-                GL.Vertex2(Math.Cos(degInRad) * radius, Math.Sin(degInRad) * radius);
-            }
-            GL.End();
         }
 
         private void Clear()
@@ -186,13 +173,16 @@ namespace MultiScaleTrajectories
 
             // The selection buffer
             int[] buffer = new int[256];
-            
-            // The number of "hits" (objects within the pick area).
-            int hits;
-            
+
             // Get the viewport info
             int[] viewport = new int[4];
             GL.GetInteger(GetPName.Viewport, viewport);
+
+            float pickRegionWidth = 1f;
+            float pickRegionHeight = 1f;
+
+            // The number of "hits" (objects within the pick area).
+            int hits;
 
             // Set the buffer that OpenGL uses for selection to our buffer
             GL.SelectBuffer(256, buffer);
@@ -207,9 +197,10 @@ namespace MultiScaleTrajectories
             GL.MatrixMode(MatrixMode.Projection);
             GL.PushMatrix();
 
-            /*  create 5x5 pixel picking region near cursor location */
+            /*  create pickRegionWidth x pickRegionHeight pixel picking region near cursor location */
             SetGLPerspective();
-            GluPickMatrix((float)x, (float)y, 1f, 1f, viewport);
+            GL.Scale(viewport[2] / pickRegionWidth, viewport[3] / pickRegionHeight, 1.0f);
+            GL.Translate((viewport[2] / 2) - x, (viewport[3] / 2) - y, 0f);
 
             Render(null, null);
 
@@ -309,7 +300,7 @@ namespace MultiScaleTrajectories
             Refresh();
         }
 
-        private void HandleScroll(object sender, System.Windows.Forms.MouseEventArgs e)
+        private void HandleMouseWheel(object sender, System.Windows.Forms.MouseEventArgs e)
         {
             if (Mode == VisualizationMode.SOLUTION)
             {
@@ -328,24 +319,6 @@ namespace MultiScaleTrajectories
                 }
             }
             Refresh();
-        }
-
-        private void GluPickMatrix(float x, float y, float deltax, float deltay, int[] viewport)
-        {
-            if (deltax <= 0 || deltay <= 0)
-            {
-                return;
-            }
-
-            GL.Scale(viewport[2] / deltax, viewport[3] / deltay, 1.0f);
-            
-            //GL.Translate(
-            //    (viewport[2] - 2 * (x - viewport[0])) / deltax,
-            //    (viewport[3] - 2 * (y - viewport[1])) / deltay,
-            //    0);
-
-            GL.Translate((viewport[2] / 2) - x, (viewport[3] / 2) - y, 0f);
-
         }
 
         private Vector2 getWorldCoordinates(int viewPortX, int viewPortY)

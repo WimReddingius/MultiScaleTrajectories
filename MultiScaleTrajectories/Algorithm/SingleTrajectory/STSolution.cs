@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace MultiScaleTrajectories.algorithm.ST
+namespace MultiScaleTrajectories.algorithm.SingleTrajectory
 {
     class STSolution : Dictionary<int, Trajectory2D>
     {

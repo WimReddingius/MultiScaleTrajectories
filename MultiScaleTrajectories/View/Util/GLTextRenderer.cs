@@ -6,7 +6,7 @@ using System.Drawing.Text;
 
 namespace MultiScaleTrajectories.View.Util
 {
-    static class TextRendererGL
+    static class GLTextRenderer
     {
         public static string FontBitmapFilename = "test.png";
         public static bool BitmapFont = false;
