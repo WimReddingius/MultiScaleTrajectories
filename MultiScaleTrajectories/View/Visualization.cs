@@ -308,14 +308,14 @@ namespace MultiScaleTrajectories
                 bool scrollUp = e.Delta > 0;
                 bool scrollDown = e.Delta < 0;
 
-                if (scrollUp && CurrentLevel < InputEpsilons.Count)
+                if (scrollUp && CurrentLevel > 0)
                 {  // here up
-                    CurrentLevel++;
+                    CurrentLevel--;
                 }
 
-                if (scrollDown && CurrentLevel > 0)
+                if (scrollDown && CurrentLevel < InputEpsilons.Count)
                 {  // here down
-                    CurrentLevel--;
+                    CurrentLevel++;
                 }
             }
             Refresh();
