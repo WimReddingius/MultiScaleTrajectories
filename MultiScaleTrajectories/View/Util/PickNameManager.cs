@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace MultiScaleTrajectories.view
+namespace MultiScaleTrajectories.View
 {
     class PickNameManager
     {
@@ -22,19 +22,19 @@ namespace MultiScaleTrajectories.view
         public Object getPickedObject(int pickId)
         {
             if (pickingHit(pickId))
-                return map.getValueFromKey(pickId);
+                return map.GetValueFromKey(pickId);
             else
                 throw new InvalidOperationException();
         }
 
         public int getPickingId(Object obj)
         {
-            return map.getKeyFromValue(obj);
+            return map.GetKeyFromValue(obj);
         }
 
         public void AssignPickId(Object obj)
         {
-            map.add(pickIdGenerator++, obj);
+            map.Put(pickIdGenerator++, obj);
         }
 
         private class OneToOneMap<K, V>
@@ -48,24 +48,21 @@ namespace MultiScaleTrajectories.view
                 this.valToKey = new Dictionary<V, K>();
             }
 
-            public void add(K k, V v)
+            public void Put(K k, V v)
             {
-                if (!keyToVal.ContainsKey(k) && !valToKey.ContainsKey(v))
-                {
+                if (!keyToVal.ContainsKey(k))
                     keyToVal.Add(k, v);
+
+                if (!valToKey.ContainsKey(v))
                     valToKey.Add(v, k);
-                }
-                else {
-                    throw new InvalidOperationException();
-                }
             }
 
-            public V getValueFromKey(K k)
+            public V GetValueFromKey(K k)
             {
                 return keyToVal[k];
             }
 
-            public K getKeyFromValue(V v)
+            public K GetKeyFromValue(V v)
             {
                 return valToKey[v];
             }

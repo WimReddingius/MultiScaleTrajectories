@@ -20,5 +20,10 @@ namespace MultiScaleTrajectories.Algorithm.Util.DataStructures.Graph
             this.Data = attribute;
         }
 
+        public override string ToString()
+        {
+            return Data.ToString();
+        }
+
     }
 }

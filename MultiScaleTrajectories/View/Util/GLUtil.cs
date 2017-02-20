@@ -3,7 +3,7 @@ using System;
 
 namespace MultiScaleTrajectories.View.Util
 {
-    static class GLU
+    static class GLUtil
     {
 
         public static void drawCircle(float radius)

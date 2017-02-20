@@ -3,11 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace MultiScaleTrajectories.algorithm
+namespace MultiScaleTrajectories.Algorithm
 {
-    /**
-     * Created by Wim Reddingius on 9-2-2017.
-     */
     class Trajectory2D : List<Point2D> {
 
         public Point2D AppendPoint(float x, float y)
@@ -17,10 +14,11 @@ namespace MultiScaleTrajectories.algorithm
 
         public Point2D InsertPoint(float x, float y, int index)
         {
-            Point2D p = new Point2D(x, y, this);
+            Point2D p = new Point2D(x, y);
             this.Insert(index, p);
             return p;
-        }
+        }       
+
 
     }
 }

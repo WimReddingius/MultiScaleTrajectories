@@ -3,12 +3,10 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace MultiScaleTrajectories.algorithm.SingleTrajectory
+namespace MultiScaleTrajectories.Algorithm.SingleTrajectory
 {
-    class STSolution : Dictionary<int, Trajectory2D>
+    class STOutput : Dictionary<int, Trajectory2D>
     {
-
-
         public void setTrajectoryAtLevel(int level, Trajectory2D trajectory)
         {
             Add(level, trajectory);

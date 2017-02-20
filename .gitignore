@@ -3,6 +3,5 @@
 # ===================================== #
 /MultiScaleTrajectories/obj/
 /MultiScaleTrajectories/bin/
-/MultiScaleTrajectories/Properties/
 /packages/
 *.config

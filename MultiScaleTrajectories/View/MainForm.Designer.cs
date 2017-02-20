@@ -30,23 +30,24 @@ namespace MultiScaleTrajectories
         /// </summary>
         private void InitializeComponent()
         {
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MainForm));
             this.splitContainer1 = new System.Windows.Forms.SplitContainer();
-            this.levelTable = new System.Windows.Forms.DataGridView();
-            this.Level = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Closeness = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.clearInputButton = new System.Windows.Forms.Button();
+            this.inputPanelContainer = new System.Windows.Forms.Panel();
+            this.algorithmTypeComboBox = new System.Windows.Forms.ComboBox();
+            this.algorithmTypeLabel = new System.Windows.Forms.Label();
             this.editButton = new System.Windows.Forms.Button();
-            this.solveButton = new System.Windows.Forms.Button();
-            this.removeLevelButton = new System.Windows.Forms.Button();
-            this.addLevelButton = new System.Windows.Forms.Button();
+            this.computeButton = new System.Windows.Forms.Button();
             this.algorithmLabel = new System.Windows.Forms.Label();
             this.algorithmComboBox = new System.Windows.Forms.ComboBox();
             this.label1 = new System.Windows.Forms.Label();
-            this.button2 = new System.Windows.Forms.Button();
-            this.saveButton = new System.Windows.Forms.Button();
+            this.openInputButton = new System.Windows.Forms.Button();
+            this.saveInputButton = new System.Windows.Forms.Button();
+            this.saveInputDialog = new System.Windows.Forms.SaveFileDialog();
+            this.openInputDialog = new System.Windows.Forms.OpenFileDialog();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
             this.splitContainer1.Panel2.SuspendLayout();
             this.splitContainer1.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.levelTable)).BeginInit();
             this.SuspendLayout();
             // 
             // splitContainer1
@@ -59,58 +60,61 @@ namespace MultiScaleTrajectories
             // 
             // splitContainer1.Panel2
             // 
-            this.splitContainer1.Panel2.Controls.Add(this.levelTable);
+            this.splitContainer1.Panel2.Controls.Add(this.clearInputButton);
+            this.splitContainer1.Panel2.Controls.Add(this.inputPanelContainer);
+            this.splitContainer1.Panel2.Controls.Add(this.algorithmTypeComboBox);
+            this.splitContainer1.Panel2.Controls.Add(this.algorithmTypeLabel);
             this.splitContainer1.Panel2.Controls.Add(this.editButton);
-            this.splitContainer1.Panel2.Controls.Add(this.solveButton);
-            this.splitContainer1.Panel2.Controls.Add(this.removeLevelButton);
-            this.splitContainer1.Panel2.Controls.Add(this.addLevelButton);
+            this.splitContainer1.Panel2.Controls.Add(this.computeButton);
             this.splitContainer1.Panel2.Controls.Add(this.algorithmLabel);
             this.splitContainer1.Panel2.Controls.Add(this.algorithmComboBox);
             this.splitContainer1.Panel2.Controls.Add(this.label1);
-            this.splitContainer1.Panel2.Controls.Add(this.button2);
-            this.splitContainer1.Panel2.Controls.Add(this.saveButton);
+            this.splitContainer1.Panel2.Controls.Add(this.openInputButton);
+            this.splitContainer1.Panel2.Controls.Add(this.saveInputButton);
             this.splitContainer1.Size = new System.Drawing.Size(1016, 573);
             this.splitContainer1.SplitterDistance = 787;
             this.splitContainer1.TabIndex = 0;
             // 
-            // levelTable
+            // clearInputButton
             // 
-            this.levelTable.AllowUserToAddRows = false;
-            this.levelTable.AllowUserToResizeColumns = false;
-            this.levelTable.AllowUserToResizeRows = false;
-            this.levelTable.BackgroundColor = System.Drawing.SystemColors.Control;
-            this.levelTable.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.levelTable.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
-            this.Level,
-            this.Closeness});
-            this.levelTable.Location = new System.Drawing.Point(13, 148);
-            this.levelTable.MultiSelect = false;
-            this.levelTable.Name = "levelTable";
-            this.levelTable.RowHeadersVisible = false;
-            this.levelTable.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
-            this.levelTable.Size = new System.Drawing.Size(199, 159);
-            this.levelTable.TabIndex = 9;
-            this.levelTable.CellEndEdit += new System.Windows.Forms.DataGridViewCellEventHandler(this.levelTable_CellEndEdit);
-            this.levelTable.UserDeletedRow += new System.Windows.Forms.DataGridViewRowEventHandler(this.levelTable_UserDeletedRow);
+            this.clearInputButton.Location = new System.Drawing.Point(83, 21);
+            this.clearInputButton.Name = "clearInputButton";
+            this.clearInputButton.Size = new System.Drawing.Size(62, 23);
+            this.clearInputButton.TabIndex = 13;
+            this.clearInputButton.Text = "Clear";
+            this.clearInputButton.UseVisualStyleBackColor = true;
+            this.clearInputButton.Click += new System.EventHandler(this.clearInputButton_Click);
             // 
-            // Level
+            // inputPanelContainer
             // 
-            this.Level.HeaderText = "Level";
-            this.Level.Name = "Level";
-            this.Level.ReadOnly = true;
-            this.Level.Resizable = System.Windows.Forms.DataGridViewTriState.True;
-            this.Level.Width = 50;
+            this.inputPanelContainer.Location = new System.Drawing.Point(13, 185);
+            this.inputPanelContainer.Name = "inputPanelContainer";
+            this.inputPanelContainer.Size = new System.Drawing.Size(198, 336);
+            this.inputPanelContainer.TabIndex = 12;
             // 
-            // Closeness
+            // algorithmTypeComboBox
             // 
-            this.Closeness.HeaderText = "Closeness";
-            this.Closeness.Name = "Closeness";
-            this.Closeness.Resizable = System.Windows.Forms.DataGridViewTriState.True;
-            this.Closeness.Width = 150;
+            this.algorithmTypeComboBox.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.algorithmTypeComboBox.FormattingEnabled = true;
+            this.algorithmTypeComboBox.Location = new System.Drawing.Point(13, 94);
+            this.algorithmTypeComboBox.Name = "algorithmTypeComboBox";
+            this.algorithmTypeComboBox.Size = new System.Drawing.Size(198, 21);
+            this.algorithmTypeComboBox.TabIndex = 11;
+            this.algorithmTypeComboBox.SelectedIndexChanged += new System.EventHandler(this.algorithmTypeComboBox_SelectedIndexChanged);
+            // 
+            // algorithmTypeLabel
+            // 
+            this.algorithmTypeLabel.AutoSize = true;
+            this.algorithmTypeLabel.Location = new System.Drawing.Point(13, 78);
+            this.algorithmTypeLabel.Name = "algorithmTypeLabel";
+            this.algorithmTypeLabel.Size = new System.Drawing.Size(77, 13);
+            this.algorithmTypeLabel.TabIndex = 10;
+            this.algorithmTypeLabel.Text = "Algorithm Type";
             // 
             // editButton
             // 
-            this.editButton.Location = new System.Drawing.Point(123, 538);
+            this.editButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+            this.editButton.Location = new System.Drawing.Point(125, 538);
             this.editButton.Name = "editButton";
             this.editButton.Size = new System.Drawing.Size(88, 23);
             this.editButton.TabIndex = 8;
@@ -118,40 +122,21 @@ namespace MultiScaleTrajectories
             this.editButton.UseVisualStyleBackColor = true;
             this.editButton.Click += new System.EventHandler(this.editButton_Click);
             // 
-            // solveButton
+            // computeButton
             // 
-            this.solveButton.Location = new System.Drawing.Point(14, 538);
-            this.solveButton.Name = "solveButton";
-            this.solveButton.Size = new System.Drawing.Size(90, 23);
-            this.solveButton.TabIndex = 7;
-            this.solveButton.Text = "Solve";
-            this.solveButton.UseVisualStyleBackColor = true;
-            this.solveButton.Click += new System.EventHandler(this.solveButton_Click);
-            // 
-            // removeLevelButton
-            // 
-            this.removeLevelButton.Location = new System.Drawing.Point(123, 325);
-            this.removeLevelButton.Name = "removeLevelButton";
-            this.removeLevelButton.Size = new System.Drawing.Size(88, 23);
-            this.removeLevelButton.TabIndex = 6;
-            this.removeLevelButton.Text = "Remove";
-            this.removeLevelButton.UseVisualStyleBackColor = true;
-            this.removeLevelButton.Click += new System.EventHandler(this.removeLevelButton_Click);
-            // 
-            // addLevelButton
-            // 
-            this.addLevelButton.Location = new System.Drawing.Point(13, 325);
-            this.addLevelButton.Name = "addLevelButton";
-            this.addLevelButton.Size = new System.Drawing.Size(90, 23);
-            this.addLevelButton.TabIndex = 5;
-            this.addLevelButton.Text = "Add";
-            this.addLevelButton.UseVisualStyleBackColor = true;
-            this.addLevelButton.Click += new System.EventHandler(this.addLevelButton_Click);
+            this.computeButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.computeButton.Location = new System.Drawing.Point(13, 538);
+            this.computeButton.Name = "computeButton";
+            this.computeButton.Size = new System.Drawing.Size(90, 23);
+            this.computeButton.TabIndex = 7;
+            this.computeButton.Text = "Compute";
+            this.computeButton.UseVisualStyleBackColor = true;
+            this.computeButton.Click += new System.EventHandler(this.computeButton_Click);
             // 
             // algorithmLabel
             // 
             this.algorithmLabel.AutoSize = true;
-            this.algorithmLabel.Location = new System.Drawing.Point(14, 88);
+            this.algorithmLabel.Location = new System.Drawing.Point(13, 129);
             this.algorithmLabel.Name = "algorithmLabel";
             this.algorithmLabel.Size = new System.Drawing.Size(50, 13);
             this.algorithmLabel.TabIndex = 3;
@@ -161,7 +146,7 @@ namespace MultiScaleTrajectories
             // 
             this.algorithmComboBox.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.algorithmComboBox.FormattingEnabled = true;
-            this.algorithmComboBox.Location = new System.Drawing.Point(14, 107);
+            this.algorithmComboBox.Location = new System.Drawing.Point(13, 148);
             this.algorithmComboBox.Name = "algorithmComboBox";
             this.algorithmComboBox.Size = new System.Drawing.Size(198, 21);
             this.algorithmComboBox.TabIndex = 2;
@@ -175,23 +160,38 @@ namespace MultiScaleTrajectories
             this.label1.Size = new System.Drawing.Size(198, 2);
             this.label1.TabIndex = 0;
             // 
-            // button2
+            // openInputButton
             // 
-            this.button2.Location = new System.Drawing.Point(14, 12);
-            this.button2.Name = "button2";
-            this.button2.Size = new System.Drawing.Size(90, 23);
-            this.button2.TabIndex = 1;
-            this.button2.Text = "Open";
-            this.button2.UseVisualStyleBackColor = true;
+            this.openInputButton.Location = new System.Drawing.Point(13, 21);
+            this.openInputButton.Name = "openInputButton";
+            this.openInputButton.Size = new System.Drawing.Size(63, 23);
+            this.openInputButton.TabIndex = 1;
+            this.openInputButton.Text = "Open";
+            this.openInputButton.UseVisualStyleBackColor = true;
+            this.openInputButton.Click += new System.EventHandler(this.openInputButton_Click);
             // 
-            // saveButton
+            // saveInputButton
             // 
-            this.saveButton.Location = new System.Drawing.Point(121, 12);
-            this.saveButton.Name = "saveButton";
-            this.saveButton.Size = new System.Drawing.Size(90, 23);
-            this.saveButton.TabIndex = 0;
-            this.saveButton.Text = "Save";
-            this.saveButton.UseVisualStyleBackColor = true;
+            this.saveInputButton.Location = new System.Drawing.Point(151, 21);
+            this.saveInputButton.Name = "saveInputButton";
+            this.saveInputButton.Size = new System.Drawing.Size(61, 23);
+            this.saveInputButton.TabIndex = 0;
+            this.saveInputButton.Text = "Save";
+            this.saveInputButton.UseVisualStyleBackColor = true;
+            this.saveInputButton.Click += new System.EventHandler(this.saveInputButton_Click);
+            // 
+            // saveInputDialog
+            // 
+            this.saveInputDialog.DefaultExt = "json";
+            this.saveInputDialog.Filter = "JSON(*.json)|*json";
+            this.saveInputDialog.Title = "Save Configuration";
+            // 
+            // openInputDialog
+            // 
+            this.openInputDialog.DefaultExt = "json";
+            this.openInputDialog.FileName = "openFileDialog1";
+            this.openInputDialog.Filter = "JSON(*.json)|*json";
+            this.openInputDialog.Title = "Open Configuration";
             // 
             // MainForm
             // 
@@ -199,13 +199,14 @@ namespace MultiScaleTrajectories
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1016, 573);
             this.Controls.Add(this.splitContainer1);
+            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Name = "MainForm";
             this.Text = "Multi-Scale Trajectory Simplification Algorithms Framework";
+            this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.MainForm_FormClosed);
             this.splitContainer1.Panel2.ResumeLayout(false);
             this.splitContainer1.Panel2.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).EndInit();
             this.splitContainer1.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.levelTable)).EndInit();
             this.ResumeLayout(false);
 
         }
@@ -213,18 +214,19 @@ namespace MultiScaleTrajectories
         #endregion
 
         private System.Windows.Forms.SplitContainer splitContainer1;
-        private System.Windows.Forms.Button removeLevelButton;
-        private System.Windows.Forms.Button addLevelButton;
         private System.Windows.Forms.Label algorithmLabel;
         private System.Windows.Forms.ComboBox algorithmComboBox;
         private System.Windows.Forms.Button editButton;
-        private System.Windows.Forms.Button solveButton;
-        private System.Windows.Forms.DataGridView levelTable;
-        private System.Windows.Forms.DataGridViewTextBoxColumn Level;
-        private System.Windows.Forms.DataGridViewTextBoxColumn Closeness;
+        private System.Windows.Forms.Button computeButton;
         private System.Windows.Forms.Label label1;
-        private System.Windows.Forms.Button button2;
-        private System.Windows.Forms.Button saveButton;
+        private System.Windows.Forms.Button openInputButton;
+        private System.Windows.Forms.Button saveInputButton;
+        private System.Windows.Forms.ComboBox algorithmTypeComboBox;
+        private System.Windows.Forms.Label algorithmTypeLabel;
+        private System.Windows.Forms.Panel inputPanelContainer;
+        private System.Windows.Forms.SaveFileDialog saveInputDialog;
+        private System.Windows.Forms.OpenFileDialog openInputDialog;
+        private System.Windows.Forms.Button clearInputButton;
     }
 }
 

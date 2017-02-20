@@ -1,90 +1,198 @@
-﻿using MultiScaleTrajectories.algorithm.SingleTrajectory;
-using MultiScaleTrajectories.algorithm.SingleTrajectory.ShortcutShortestPath;
-using MultiScaleTrajectories.view;
+﻿using MultiScaleTrajectories.Algorithm;
+using MultiScaleTrajectories.Algorithm.SingleTrajectory;
+using MultiScaleTrajectories.Algorithm.SingleTrajectory.ShortcutShortestPath;
+using MultiScaleTrajectories.Controller;
+using MultiScaleTrajectories.View;
+using MultiScaleTrajectories.View.SingleTrajectory;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
+using OpenTK;
 using System;
+using System.Collections.Generic;
+using System.IO;
 using System.Windows.Forms;
 
 namespace MultiScaleTrajectories
 {
-    public partial class MainForm : Form
+    partial class MainForm : Form
     {
 
-        Visualizer visualizer;
+        IAlgorithmType AlgorithmType;
 
         public MainForm()
         {
             InitializeComponent();
 
             OpenTK.Toolkit.Init();
-            visualizer = new Visualizer();
-            splitContainer1.Panel1.Controls.Add(visualizer);
-            visualizer.Dock = System.Windows.Forms.DockStyle.Fill;            
-            visualizer.Location = new System.Drawing.Point(0, 0);
-            visualizer.Size = new System.Drawing.Size(410, 407);
-            splitContainer1.Panel1.ResumeLayout(false);
 
-            registerAlgorithms();
+            RegisterAlgorithmTypes();
+            OpenSettings();
         }
 
-        private void registerAlgorithms()
+        private void OpenSettings()
         {
-            algorithmComboBox.Items.Add(new STShortcutShortestPath());
-            algorithmComboBox.SelectedItem = algorithmComboBox.Items[0];
-        }
-
-        private void addLevelButton_Click(object sender, EventArgs e)
-        {
-            int rowCount = levelTable.RowCount;
-            int closeness = 10;
-
-            if (rowCount > 0)
-                closeness = (int) levelTable.Rows[levelTable.RowCount - 1].Cells["Closeness"].Value;
-
-            levelTable.Rows.Add(rowCount + 1, closeness);
-            visualizer.InputEpsilons.Add(closeness);
-        }
-
-        private void removeLevelButton_Click(object sender, EventArgs e)
-        {
-            int rowCount = levelTable.RowCount;
-
-            if (rowCount > 0) {
-                levelTable.Rows.RemoveAt(rowCount - 1);
-                visualizer.InputEpsilons.RemoveAt(rowCount - 1);
+            string inputFile = (string)Properties.Settings.Default["InputFile"];
+            if (!string.IsNullOrEmpty(inputFile))
+            {
+                OpenInputFile(inputFile);
             }
-            
         }
 
-        private void solveButton_Click(object sender, EventArgs e)
+        private void RegisterAlgorithmTypes()
         {
-            visualizer.visualizeSolution();
+            algorithmTypeComboBox.Items.Clear();
+            algorithmTypeComboBox.Items.Add(new SingleTrajectory());
+            algorithmTypeComboBox.SelectedItem = algorithmTypeComboBox.Items[0];
+            AlgorithmType = (IAlgorithmType) algorithmTypeComboBox.SelectedItem;
+        }
+
+        private void computeButton_Click(object sender, EventArgs e)
+        {
+            AlgorithmType.VisualizeOutput();
         }
 
         private void editButton_Click(object sender, EventArgs e)
         {
-            visualizer.SwitchMode(VisualizationMode.EDIT);
+            AlgorithmType.VisualizeInput();
         }
 
         private void algorithmComboBox_SelectedIndexChanged(object sender, EventArgs e)
         {
-            if (algorithmComboBox.SelectedItem is STAlgorithm)
+            object algo = algorithmComboBox.SelectedItem;
+            AlgorithmType.SetAlgorithm(algo);
+            algorithmComboBox.SelectedItem = algo;
+            algorithmComboBox.Text = algo.ToString();
+        }
+
+        private void algorithmTypeComboBox_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            AlgorithmType = (IAlgorithmType) algorithmTypeComboBox.SelectedItem;
+            SetAlgorithmType(AlgorithmType);
+
+            algorithmTypeComboBox.SelectedItem = AlgorithmType;
+            algorithmTypeComboBox.Text = AlgorithmType.ToString();
+        }
+
+        private void SetAlgorithmType(IAlgorithmType algoType)
+        {
+            //register algorithms
+            algorithmComboBox.Items.Clear();
+            List<object> algorithms = AlgorithmType.GetAlgorithms();
+
+            foreach (object algorithm in algorithms)
             {
-                STAlgorithm algo = (STAlgorithm)algorithmComboBox.SelectedItem;
-                visualizer.CurrentAlgorithm = algo;
-                algorithmComboBox.Text = algo.ToString();
+                algorithmComboBox.Items.Add(algorithm);
+            }
+
+            //by default simply select first algorithm
+            algorithmComboBox.SelectedItem = algorithmComboBox.Items[0];
+
+            //set controls corresponding to algorithm type
+            SetInputControl(AlgorithmType.GetInputControl());
+            SetGLControl(AlgorithmType.GetVisualizationControl());
+        }
+
+        private void SetInputControl(UserControl userControl)
+        {
+            inputPanelContainer.Controls.Clear();
+            inputPanelContainer.Controls.Add(userControl);
+            userControl.Dock = System.Windows.Forms.DockStyle.Fill;
+            userControl.Location = new System.Drawing.Point(0, 0);
+        }
+
+        private void SetGLControl(GLControl control)
+        {
+            control.MakeCurrent();
+            splitContainer1.Panel1.Controls.Clear();
+            splitContainer1.Panel1.Controls.Add(control);
+            control.Dock = System.Windows.Forms.DockStyle.Fill;
+            control.Location = new System.Drawing.Point(0, 0);
+        }
+
+        private void openInputButton_Click(object sender, EventArgs e)
+        {
+            DialogResult result = openInputDialog.ShowDialog();
+            if (result == DialogResult.OK)
+            {
+                string fileName = openInputDialog.FileName;
+                OpenInputFile(fileName);
+                Properties.Settings.Default["InputFile"] = fileName;
             }
         }
 
-        private void levelTable_CellEndEdit(object sender, DataGridViewCellEventArgs e)
+        private void OpenInputFile(string fileName)
         {
-            int row = e.RowIndex;
-            visualizer.InputEpsilons[row] = (double) levelTable.Rows[row].Cells["Closeness"].Value;
+            try
+            {
+                string input = File.ReadAllText(fileName);
+
+                JObject jObject = JObject.Parse(input);
+                string algoName = (string)jObject["Algorithm"];
+                string algoTypeName = (string)jObject["AlgorithmType"];
+
+                Type algoTypeType = Type.GetType(algoTypeName, true);
+                foreach (object algorithmType in algorithmTypeComboBox.Items)
+                {
+                    if (algorithmType.GetType() == algoTypeType)
+                    {
+                        algorithmTypeComboBox.SelectedItem = algorithmType;
+                    }
+                }
+
+                Type algoType = Type.GetType(algoName, true);
+                foreach (object algorithm in algorithmComboBox.Items)
+                {
+                    if (algorithm.GetType() == algoType)
+                    {
+                        algorithmComboBox.SelectedItem = algorithm;
+                    }
+                }
+
+                jObject.Remove("Algorithm");
+                jObject.Remove("AlgorithmType");
+
+                AlgorithmType.DeSerializeInput(jObject.ToString());
+            }
+            catch (IOException)
+            {
+            }
         }
 
-        private void levelTable_UserDeletedRow(object sender, DataGridViewRowEventArgs e)
+        private void saveInputButton_Click(object sender, EventArgs e)
         {
-            int index = (int)e.Row.Cells["Level"].Value;
-            visualizer.InputEpsilons.RemoveAt(index);
+            DialogResult result = saveInputDialog.ShowDialog();
+            if (result == DialogResult.OK)
+            {
+                string fileName = saveInputDialog.FileName;
+                try
+                {
+                    string input = AlgorithmType.SerializeInput();
+
+                    JObject jObject = JObject.Parse(input);
+                    jObject.Add("Algorithm", algorithmComboBox.SelectedItem.GetType().AssemblyQualifiedName);
+                    jObject.Add("AlgorithmType", algorithmTypeComboBox.SelectedItem.GetType().AssemblyQualifiedName);
+
+                    File.WriteAllText(fileName, jObject.ToString());
+
+                    Properties.Settings.Default["InputFile"] = fileName;
+                }
+                catch (IOException)
+                {
+                }
+            }
         }
+
+        private void clearInputButton_Click(object sender, EventArgs e)
+        {
+            AlgorithmType.ClearInput();
+            AlgorithmType.VisualizeInput();
+            Properties.Settings.Default["InputFile"] = "";
+        }
+
+        private void MainForm_FormClosed(object sender, FormClosedEventArgs e)
+        {
+            Properties.Settings.Default.Save();
+        }
+
     }
 }

@@ -1,11 +1,9 @@
-﻿using MultiScaleTrajectories.algorithm;
-using MultiScaleTrajectories.Algorithm.Util.Algorithm;
-using MultiScaleTrajectories.Algorithm.Util.DataStructures.Graph;
+﻿using MultiScaleTrajectories.Algorithm.Util.DataStructures.Graph;
 using System.Collections.Generic;
 
 namespace MultiScaleTrajectories.Algorithm.ST.ShortcutShortestPath
 {
-    class ShortcutGraph : Graph<DataNode<Point2D>, DataEdge<int>>
+    class ShortcutGraph : Graph<DataNode<Point2D>, WeightedEdge>
     {
         private Dictionary<Point2D, DataNode<Point2D>> PointNodeMapping;
 
@@ -26,7 +24,7 @@ namespace MultiScaleTrajectories.Algorithm.ST.ShortcutShortestPath
             return PointNodeMapping[point];
         }
 
-        public void incrementAllEdges()
+        public void incrementAllEdgeWeights()
         {
             foreach (DataEdge<int> edge in Edges)
             {

@@ -37,7 +37,17 @@
     <WarningLevel>4</WarningLevel>
     <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
+  <PropertyGroup>
+    <StartupObject>MultiScaleTrajectories.Program</StartupObject>
+  </PropertyGroup>
+  <PropertyGroup>
+    <ApplicationIcon>favicon.ico</ApplicationIcon>
+  </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Newtonsoft.Json, Version=9.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\packages\Newtonsoft.Json.9.0.2-beta2\lib\net45\Newtonsoft.Json.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="OpenTK, Version=2.0.0.0, Culture=neutral, PublicKeyToken=bad199fe84eb3df4, processorArchitecture=MSIL">
       <HintPath>..\packages\OpenTK.2.0.0\lib\net20\OpenTK.dll</HintPath>
       <Private>True</Private>
@@ -47,6 +57,10 @@
       <Private>True</Private>
     </Reference>
     <Reference Include="System" />
+    <Reference Include="System.Collections.Immutable, Version=1.2.1.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Collections.Immutable.1.3.1\lib\portable-net45+win8+wp8+wpa81\System.Collections.Immutable.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
@@ -59,19 +73,23 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Algorithm\Util\DataStructures\Graph\WeightedEdge.cs" />
+    <Compile Include="Controller\IAlgorithmType.cs" />
+    <Compile Include="Algorithm\IAlgorithm.cs" />
+    <Compile Include="Algorithm\Geometry2D.cs" />
     <Compile Include="Algorithm\Point2D.cs" />
-    <Compile Include="Algorithm\SingleTrajectory\STAlgorithm.cs" />
-    <Compile Include="Algorithm\SingleTrajectory\ShortcutShortestPath\STShortcutShortestPath.cs" />
-    <Compile Include="Algorithm\SingleTrajectory\STSolution.cs" />
+    <Compile Include="Algorithm\SingleTrajectory\ShortcutShortestPath\ShortcutShortestPath.cs" />
+    <Compile Include="Algorithm\SingleTrajectory\STInput.cs" />
+    <Compile Include="Algorithm\SingleTrajectory\STOutput.cs" />
     <Compile Include="Algorithm\Trajectory2D.cs" />
     <Compile Include="Algorithm\SingleTrajectory\ShortcutShortestPath\ShortcutGraph.cs" />
-    <Compile Include="Algorithm\Util\Algorithm\BFS.cs" />
     <Compile Include="Algorithm\Util\DataStructures\Graph\DataEdge.cs" />
     <Compile Include="Algorithm\Util\DataStructures\Graph\DataNode.cs" />
     <Compile Include="Algorithm\Util\DataStructures\Graph\Edge.cs" />
     <Compile Include="Algorithm\Util\DataStructures\Graph\Graph.cs" />
     <Compile Include="Algorithm\Util\DataStructures\Graph\Node.cs" />
     <Compile Include="Algorithm\Util\Algorithm\ImaiIri.cs" />
+    <Compile Include="Controller\SingleTrajectory.cs" />
     <Compile Include="View\MainForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -80,13 +98,22 @@
     </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="View\Util\GLU.cs" />
+    <Compile Include="View\SingleTrajectory\STInputControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="View\SingleTrajectory\STInputControl.Designer.cs">
+      <DependentUpon>STInputControl.cs</DependentUpon>
+    </Compile>
+    <Compile Include="View\Util\GLUtil.cs" />
     <Compile Include="View\Util\PickNameManager.cs" />
     <Compile Include="View\Util\GLTextRenderer.cs" />
-    <Compile Include="View\Visualization.cs">
+    <Compile Include="View\Visualization2D.cs">
       <SubType>UserControl</SubType>
     </Compile>
     <Compile Include="View\VisualizationMode.cs" />
+    <Compile Include="View\SingleTrajectory\STVisualization.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
     <EmbeddedResource Include="View\MainForm.resx">
       <DependentUpon>MainForm.cs</DependentUpon>
     </EmbeddedResource>
@@ -100,6 +127,9 @@
       <DependentUpon>Resources.resx</DependentUpon>
       <DesignTime>True</DesignTime>
     </Compile>
+    <EmbeddedResource Include="View\SingleTrajectory\STInputControl.resx">
+      <DependentUpon>STInputControl.cs</DependentUpon>
+    </EmbeddedResource>
     <None Include="OpenTK.dll.config" />
     <None Include="packages.config" />
     <None Include="Properties\Settings.settings">
@@ -115,7 +145,9 @@
   <ItemGroup>
     <None Include="App.config" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Content Include="favicon.ico" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
