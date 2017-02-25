@@ -6,9 +6,9 @@ using System.Threading.Tasks;
 
 namespace MultiScaleTrajectories.Algorithm
 {
-    interface IAlgorithm<Input, Output>
+    interface Algorithm<IN, OUT>
     {
-        Output Compute(Input input);
+        OUT Compute(IN input);
 
         string ToString();
 

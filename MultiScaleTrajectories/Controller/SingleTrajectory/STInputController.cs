@@ -1,34 +1,30 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Drawing;
-using System.Data;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 using MultiScaleTrajectories.Algorithm.SingleTrajectory;
+using Newtonsoft.Json;
+using MultiScaleTrajectories.Algorithm;
+using MultiScaleTrajectories.Controller;
 
-namespace MultiScaleTrajectories.View.SingleTrajectory
+namespace MultiScaleTrajectories.Controller.SingleTrajectory
 {
-    partial class STInputControl : UserControl
+    partial class STInputController : UserControl, InputController
     {
 
-        STInput Input;
+        AlgorithmRunner<STInput, STOutput> AlgorithmRunner;
 
-        public STInputControl(STInput input)
+        public STInputController(AlgorithmRunner<STInput, STOutput> runner)
         {
             InitializeComponent();
 
             levelTable.Columns["Closeness"].ValueType = typeof(double);
 
-            this.Input = input;
+            AlgorithmRunner = runner;
         }
 
         private void levelTable_UserDeletedRow(object sender, DataGridViewRowEventArgs e)
         {
             int level = (int)e.Row.Cells["Level"].Value;
-            Input.RemoveLevel(level);
+            AlgorithmRunner.Input.RemoveLevel(level);
         }
 
         private void addLevelButton_Click(object sender, EventArgs e)
@@ -50,7 +46,7 @@ namespace MultiScaleTrajectories.View.SingleTrajectory
         private void levelTable_CellEndEdit(object sender, DataGridViewCellEventArgs e)
         {
             int level = e.RowIndex + 1;
-            Input.SetEpsilon(level, (double)levelTable.Rows[e.RowIndex].Cells["Closeness"].Value);
+            AlgorithmRunner.Input.SetEpsilon(level, (double)levelTable.Rows[e.RowIndex].Cells["Closeness"].Value);
         }
 
         private void RemoveLastLevel()
@@ -63,7 +59,7 @@ namespace MultiScaleTrajectories.View.SingleTrajectory
             if (level > 0)
             {
                 levelTable.Rows.RemoveAt(level - 1);
-                Input.RemoveLevel(level);
+                AlgorithmRunner.Input.RemoveLevel(level);
             }
         }
 
@@ -75,12 +71,12 @@ namespace MultiScaleTrajectories.View.SingleTrajectory
         private void InsertLevel(int level, double epsilon)
         {
             levelTable.Rows.Insert(level - 1, level, epsilon);
-            Input.InsertLevel(level, epsilon);
+            AlgorithmRunner.Input.InsertLevel(level, epsilon);
         }
 
         public void LoadInput(STInput Input)
         {
-            this.Input = Input;
+            AlgorithmRunner.Input.Load(Input.Trajectory, Input.Epsilons);
 
             levelTable.Rows.Clear();
 
@@ -88,6 +84,27 @@ namespace MultiScaleTrajectories.View.SingleTrajectory
             {
                 levelTable.Rows.Add(level, Input.GetEpsilon(level));
             }
+        }
+
+        public void ClearInput()
+        {
+            AlgorithmRunner.Input.Clear();
+            levelTable.Rows.Clear();
+        }
+
+        public void LoadSerializedInput(string inputString)
+        {
+            LoadInput(JsonConvert.DeserializeObject<STInput>(inputString));
+        }
+
+        public string SerializeInput()
+        {
+            return JsonConvert.SerializeObject(AlgorithmRunner.Input);
+        }
+
+        public Control GetOptionsControl()
+        {
+            return this;
         }
 
     }

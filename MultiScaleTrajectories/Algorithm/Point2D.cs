@@ -5,6 +5,7 @@ using System.Text;
 
 namespace MultiScaleTrajectories.Algorithm
 {
+
     class Point2D
     {
         public float X;

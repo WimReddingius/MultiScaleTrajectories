@@ -6,17 +6,21 @@ using System.Threading.Tasks;
 
 namespace MultiScaleTrajectories.Algorithm.SingleTrajectory
 {
+
+    public delegate void InputLoadedEventHandler();
+
     class STInput
     {
         public Trajectory2D Trajectory;
         public List<double> Epsilons;
 
+        public event InputLoadedEventHandler Loaded;
+
         public int NumLevels { get { return Epsilons.Count;  } }
 
         public STInput()
         {
-            Trajectory = new Trajectory2D();
-            Epsilons = new List<double>();
+            Clear();
         }
 
         public void AppendLevel(double epsilon)
@@ -34,14 +38,26 @@ namespace MultiScaleTrajectories.Algorithm.SingleTrajectory
             return Epsilons[level - 1];
         }
 
-        internal void SetEpsilon(int level, double epsilon)
+        public void SetEpsilon(int level, double epsilon)
         {
             Epsilons[level - 1] = epsilon;
         }
 
-        internal void InsertLevel(int level, double epsilon)
+        public void InsertLevel(int level, double epsilon)
         {
             Epsilons.Insert(level - 1, epsilon);
+        }
+
+        public void Load(Trajectory2D trajectory, List<double> epsilons)
+        {
+            Trajectory = trajectory;
+            Epsilons = epsilons;
+            Loaded?.Invoke();
+        }
+
+        public void Clear()
+        {
+            Load(new Trajectory2D(), new List<double>());
         }
     }
 }

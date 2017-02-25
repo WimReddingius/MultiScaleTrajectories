@@ -74,8 +74,9 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Algorithm\Util\DataStructures\Graph\WeightedEdge.cs" />
-    <Compile Include="Controller\IAlgorithmType.cs" />
-    <Compile Include="Algorithm\IAlgorithm.cs" />
+    <Compile Include="Algorithm\AlgorithmRunner.cs" />
+    <Compile Include="Controller\AlgoTypeController.cs" />
+    <Compile Include="Algorithm\Algorithm.cs" />
     <Compile Include="Algorithm\Geometry2D.cs" />
     <Compile Include="Algorithm\Point2D.cs" />
     <Compile Include="Algorithm\SingleTrajectory\ShortcutShortestPath\ShortcutShortestPath.cs" />
@@ -89,7 +90,9 @@
     <Compile Include="Algorithm\Util\DataStructures\Graph\Graph.cs" />
     <Compile Include="Algorithm\Util\DataStructures\Graph\Node.cs" />
     <Compile Include="Algorithm\Util\Algorithm\ImaiIri.cs" />
-    <Compile Include="Controller\SingleTrajectory.cs" />
+    <Compile Include="Controller\InputController.cs" />
+    <Compile Include="Controller\ViewTypeController.cs" />
+    <Compile Include="Controller\SingleTrajectory\STController.cs" />
     <Compile Include="View\MainForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -98,20 +101,28 @@
     </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="View\SingleTrajectory\STInputControl.cs">
+    <Compile Include="Controller\SingleTrajectory\STVisualizationController.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="View\SingleTrajectory\STInputControl.Designer.cs">
-      <DependentUpon>STInputControl.cs</DependentUpon>
+    <Compile Include="Controller\SingleTrajectory\STVisualizationController.Designer.cs">
+      <DependentUpon>STVisualizationController.cs</DependentUpon>
     </Compile>
-    <Compile Include="View\Util\GLUtil.cs" />
-    <Compile Include="View\Util\PickNameManager.cs" />
-    <Compile Include="View\Util\GLTextRenderer.cs" />
-    <Compile Include="View\Visualization2D.cs">
+    <Compile Include="Controller\SingleTrajectory\STInputController.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="View\VisualizationMode.cs" />
-    <Compile Include="View\SingleTrajectory\STVisualization.cs">
+    <Compile Include="Controller\SingleTrajectory\STInputController.Designer.cs">
+      <DependentUpon>STInputController.cs</DependentUpon>
+    </Compile>
+    <Compile Include="View\Type\Visualization\GL\Util.cs" />
+    <Compile Include="View\Type\Visualization\GL\PickNameManager.cs" />
+    <Compile Include="View\Type\Visualization\GL\TextRenderer.cs" />
+    <Compile Include="View\Type\Visualization\GLVisualization.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="View\Type\Visualization\GLVisualization2D.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="View\Type\Visualization\SingleTrajectory\STVisualization.cs">
       <SubType>UserControl</SubType>
     </Compile>
     <EmbeddedResource Include="View\MainForm.resx">
@@ -127,8 +138,11 @@
       <DependentUpon>Resources.resx</DependentUpon>
       <DesignTime>True</DesignTime>
     </Compile>
-    <EmbeddedResource Include="View\SingleTrajectory\STInputControl.resx">
-      <DependentUpon>STInputControl.cs</DependentUpon>
+    <EmbeddedResource Include="Controller\SingleTrajectory\STVisualizationController.resx">
+      <DependentUpon>STVisualizationController.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Controller\SingleTrajectory\STInputController.resx">
+      <DependentUpon>STInputController.cs</DependentUpon>
     </EmbeddedResource>
     <None Include="OpenTK.dll.config" />
     <None Include="packages.config" />
@@ -146,9 +160,9 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="favicon.ico" />
     <Content Include="Icon.ico" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

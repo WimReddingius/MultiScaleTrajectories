@@ -5,6 +5,7 @@ using System.Text;
 
 namespace MultiScaleTrajectories.Algorithm
 {
+
     class Trajectory2D : List<Point2D> {
 
         public Point2D AppendPoint(float x, float y)
@@ -15,9 +16,14 @@ namespace MultiScaleTrajectories.Algorithm
         public Point2D InsertPoint(float x, float y, int index)
         {
             Point2D p = new Point2D(x, y);
-            this.Insert(index, p);
+            Insert(index, p);
             return p;
-        }       
+        }
+
+        public void RemovePoint(int index)
+        {
+            RemoveAt(index);
+        }
 
 
     }

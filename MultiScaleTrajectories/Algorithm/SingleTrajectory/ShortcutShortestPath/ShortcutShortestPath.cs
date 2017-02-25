@@ -7,7 +7,7 @@ using System.Linq;
 
 namespace MultiScaleTrajectories.Algorithm.SingleTrajectory.ShortcutShortestPath
 {
-    class ShortcutShortestPath : IAlgorithm<STInput, STOutput>
+    class ShortcutShortestPath : Algorithm<STInput, STOutput>
     {
         public STOutput Compute(STInput input)
         {
@@ -56,7 +56,7 @@ namespace MultiScaleTrajectories.Algorithm.SingleTrajectory.ShortcutShortestPath
                     if (!sourceNode.OutEdges.ContainsKey(targetNode))
                     {
                         //BFS to get edge weight
-                        List<DataNode<Point2D>> shortestPathShortcut = shortcutGraph.ShortestPathDijkstra(sourceNode, targetNode);
+                        List<DataNode<Point2D>> shortestPathShortcut = shortcutGraph.GetShortestPath(sourceNode, targetNode);
 
                         System.Diagnostics.Debug.WriteLine("Shortcut: " + shortcut);
                         System.Diagnostics.Debug.WriteLine("Shortcut Shortest Path: " + string.Join<DataNode<Point2D>>(", ", shortestPathShortcut.ToArray()));
@@ -71,7 +71,7 @@ namespace MultiScaleTrajectories.Algorithm.SingleTrajectory.ShortcutShortestPath
                 shortcutGraph.incrementAllEdgeWeights();
 
                 //BFS on level graph
-                List<DataNode<Point2D>> shortestPathLevel = shortcutGraph.ShortestPathDijkstra(firstNode, lastNode);
+                List<DataNode<Point2D>> shortestPathLevel = shortcutGraph.GetShortestPath(firstNode, lastNode);
 
                 System.Diagnostics.Debug.WriteLine("Shortcut Graph: " + shortcutGraph.ToString());
                 System.Diagnostics.Debug.WriteLine("Level Shortest Path: " + string.Join<DataNode<Point2D>>(", ", shortestPathLevel.ToArray()));

@@ -7,6 +7,9 @@ namespace MultiScaleTrajectories.Algorithm.SingleTrajectory
 {
     class STOutput : Dictionary<int, Trajectory2D>
     {
+
+        public int NumLevels { get { return Count; } }
+
         public void setTrajectoryAtLevel(int level, Trajectory2D trajectory)
         {
             Add(level, trajectory);

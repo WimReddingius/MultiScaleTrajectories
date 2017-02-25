@@ -45,9 +45,9 @@ namespace MultiScaleTrajectories.Algorithm.Util.DataStructures.Graph
             Edges.Remove(edge);
         }
 
-        public List<N> ShortestPathDijkstra(N source, N target)
+        //Uses Dijkstra
+        public List<N> GetShortestPath(N source, N target)
         {
-
             List<N> shortestPath = null;
             List<N> nodeList = new List<N>();
             Dictionary<N, N> prevNode = new Dictionary<N, N>();

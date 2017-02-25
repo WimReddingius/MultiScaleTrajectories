@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace MultiScaleTrajectories.View
+namespace MultiScaleTrajectories.View.Type.Visualization.GL
 {
     class PickNameManager
     {
