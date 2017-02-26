@@ -6,7 +6,7 @@ namespace MultiScaleTrajectories.View.Type.Visualization.GL
     static class Util
     {
 
-        public static void drawCircle(float radius)
+        public static void DrawCircle(float radius)
         {
             OpenTK.Graphics.OpenGL.GL.Begin(PrimitiveType.TriangleFan);
 

@@ -1,6 +1,4 @@
-﻿using OpenTK;
-
-namespace MultiScaleTrajectories
+﻿namespace MultiScaleTrajectories.View
 {
     partial class MainForm
     {
@@ -193,7 +191,6 @@ namespace MultiScaleTrajectories
             this.algorithmLabel.Size = new System.Drawing.Size(50, 13);
             this.algorithmLabel.TabIndex = 3;
             this.algorithmLabel.Text = "Algorithm";
-            this.algorithmLabel.Click += new System.EventHandler(this.algorithmLabel_Click);
             // 
             // algorithmComboBox
             // 

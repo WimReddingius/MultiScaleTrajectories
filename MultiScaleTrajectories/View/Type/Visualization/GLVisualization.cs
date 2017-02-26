@@ -4,13 +4,13 @@ using System.Windows.Forms;
 
 namespace MultiScaleTrajectories.View.Type.Visualization
 {
-    abstract class GLVisualization<IN, OUT> : GLControl
+    abstract class GLVisualization<TIn, TOut> : GLControl
     {
         protected VisualizationMode Mode;
 
-        protected AlgorithmRunner<IN, OUT> AlgorithmRunner;
+        protected AlgorithmRunner<TIn, TOut> AlgorithmRunner;
 
-        public GLVisualization(AlgorithmRunner<IN, OUT> runner) : base(new OpenTK.Graphics.GraphicsMode(32, 24, 0, 8))
+        public GLVisualization(AlgorithmRunner<TIn, TOut> runner) : base(new OpenTK.Graphics.GraphicsMode(32, 24, 0, 8))
         {
             CreateControl();
 

@@ -1,26 +1,20 @@
-﻿using OpenTK;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Forms;
+﻿using System.Collections.Generic;
 
 namespace MultiScaleTrajectories.Controller
 {
     abstract class AlgoTypeController
     {
-        public InputController InputController;
-        public List<ViewTypeController> ViewControllers;
+        public IInputController InputController;
+        public List<IViewTypeController> ViewControllers;
         public List<object> Algorithms;
 
-        public ViewTypeController CurrentViewType;
+        public IViewTypeController CurrentViewType;
         public object CurrentAlgorithm;
 
 
-        public AlgoTypeController()
+        protected AlgoTypeController()
         {
-            ViewControllers = new List<ViewTypeController>();
+            ViewControllers = new List<IViewTypeController>();
             Algorithms = new List<object>();
         }
 
@@ -29,7 +23,7 @@ namespace MultiScaleTrajectories.Controller
             CurrentAlgorithm = algorithm;
         }
 
-        public virtual void SetViewType(ViewTypeController viewType)
+        public virtual void SetViewType(IViewTypeController viewType)
         {
             CurrentViewType = viewType;
         }

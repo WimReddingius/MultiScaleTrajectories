@@ -7,7 +7,7 @@ using MultiScaleTrajectories.Controller;
 
 namespace MultiScaleTrajectories.Controller.SingleTrajectory
 {
-    partial class STInputController : UserControl, InputController
+    partial class STInputController : UserControl, IInputController
     {
 
         AlgorithmRunner<STInput, STOutput> AlgorithmRunner;

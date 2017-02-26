@@ -5,47 +5,47 @@ namespace MultiScaleTrajectories.View.Type.Visualization.GL
 {
     class PickNameManager
     {
-        private OneToOneMap<int, Object> map;
-        private int pickIdGenerator;
+        private OneToOneMap<int, object> Map;
+        private int PickIdGenerator;
 
         public PickNameManager()
         {
-            this.pickIdGenerator = 1;
-            this.map = new OneToOneMap<int, Object>();
+            PickIdGenerator = 1;
+            Map = new OneToOneMap<int, Object>();
         }
 
-        public bool pickingHit(int pickId)
+        public bool PickingHit(int pickId)
         {
             return pickId >= 1;
         }
 
-        public Object getPickedObject(int pickId)
+        public object GetPickedObject(int pickId)
         {
-            if (pickingHit(pickId))
-                return map.GetValueFromKey(pickId);
+            if (PickingHit(pickId))
+                return Map.GetValueFromKey(pickId);
             else
                 throw new InvalidOperationException();
         }
 
-        public int getPickingId(Object obj)
+        public int GetPickingId(object obj)
         {
-            return map.GetKeyFromValue(obj);
+            return Map.GetKeyFromValue(obj);
         }
 
-        public void AssignPickId(Object obj)
+        public void AssignPickId(object obj)
         {
-            map.Put(pickIdGenerator++, obj);
+            Map.Put(PickIdGenerator++, obj);
         }
 
         private class OneToOneMap<K, V>
         {
-            private Dictionary<K, V> keyToVal;
-            private Dictionary<V, K> valToKey;
+            private readonly Dictionary<K, V> keyToVal;
+            private readonly Dictionary<V, K> valToKey;
 
             public OneToOneMap()
             {
-                this.keyToVal = new Dictionary<K, V>();
-                this.valToKey = new Dictionary<V, K>();
+                keyToVal = new Dictionary<K, V>();
+                valToKey = new Dictionary<V, K>();
             }
 
             public void Put(K k, V v)

@@ -13,14 +13,14 @@ namespace MultiScaleTrajectories.Algorithm
 
         public Point2D(float x, float y)
         {
-            this.X = x;
-            this.Y = y;
+            X = x;
+            Y = y;
         }
 
-        public void setPosition(float x, float y)
+        public void SetPosition(float x, float y)
         {
-            this.X = x;
-            this.Y = y;
+            X = x;
+            Y = y;
         }
 
         public override string ToString()

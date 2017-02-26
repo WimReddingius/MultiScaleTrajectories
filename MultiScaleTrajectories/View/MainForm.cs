@@ -1,11 +1,11 @@
-﻿using MultiScaleTrajectories.Controller;
-using MultiScaleTrajectories.Controller.SingleTrajectory;
-using Newtonsoft.Json.Linq;
-using System;
+﻿using System;
 using System.IO;
 using System.Windows.Forms;
+using MultiScaleTrajectories.Controller;
+using MultiScaleTrajectories.Controller.SingleTrajectory;
+using Newtonsoft.Json.Linq;
 
-namespace MultiScaleTrajectories
+namespace MultiScaleTrajectories.View
 {
     partial class MainForm : Form
     {
@@ -65,7 +65,7 @@ namespace MultiScaleTrajectories
 
         private void viewTypeComboBox_SelectedIndexChanged(object sender, EventArgs e)
         {
-            AlgorithmType.CurrentViewType = (ViewTypeController)viewTypeComboBox.SelectedItem;
+            AlgorithmType.CurrentViewType = (IViewTypeController)viewTypeComboBox.SelectedItem;
 
             //set controls: options and view
             FillContainer(viewTabPage, AlgorithmType.CurrentViewType.GetOptionsControl());
@@ -76,7 +76,7 @@ namespace MultiScaleTrajectories
         {
             container.Controls.Clear();
             container.Controls.Add(control);
-            control.Dock = System.Windows.Forms.DockStyle.Fill;
+            control.Dock = DockStyle.Fill;
             control.Location = new System.Drawing.Point(0, 0);
         }
 
@@ -99,7 +99,7 @@ namespace MultiScaleTrajectories
 
                 JObject jObject = JObject.Parse(input);
                 string algoTypeName = (string)jObject["AlgorithmType"];
-                Type algoTypeType = Type.GetType(algoTypeName, true);
+                System.Type algoTypeType = System.Type.GetType(algoTypeName, true);
 
                 foreach (object algorithmType in algorithmTypeComboBox.Items)
                 {
@@ -144,18 +144,12 @@ namespace MultiScaleTrajectories
         private void clearInputButton_Click(object sender, EventArgs e)
         {
             AlgorithmType.InputController.ClearInput();
-            //TODO: update visualization via events
             Properties.Settings.Default["InputFile"] = "";
         }
 
         private void MainForm_FormClosed(object sender, FormClosedEventArgs e)
         {
             Properties.Settings.Default.Save();
-        }
-
-        private void algorithmLabel_Click(object sender, EventArgs e)
-        {
-
         }
 
     }

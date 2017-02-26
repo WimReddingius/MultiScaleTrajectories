@@ -7,12 +7,12 @@ using System.Windows.Forms;
 
 namespace MultiScaleTrajectories.View.Type.Visualization
 {
-    abstract class GLVisualization2D<IN, OUT> : GLVisualization<IN, OUT>
+    abstract class GLVisualization2D<TIn, TOut> : GLVisualization<TIn, TOut>
     {
 
         protected PickNameManager PickManager;
 
-        public GLVisualization2D(AlgorithmRunner<IN, OUT> runner) : base(runner)
+        public GLVisualization2D(AlgorithmRunner<TIn, TOut> runner) : base(runner)
         {
             PickManager = new PickNameManager();
         }
@@ -131,7 +131,7 @@ namespace MultiScaleTrajectories.View.Type.Visualization
             return picked;
         }
 
-        protected Vector2 getWorldCoordinates(int viewPortX, int viewPortY)
+        protected Vector2 GetWorldCoordinates(int viewPortX, int viewPortY)
         {
             float worldX = viewPortX - (ClientRectangle.Width / 2);
             float worldY = viewPortY - (ClientRectangle.Height / 2);

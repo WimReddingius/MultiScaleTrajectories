@@ -6,7 +6,7 @@ using MultiScaleTrajectories.View.Type.Visualization.SingleTrajectory;
 
 namespace MultiScaleTrajectories.Controller.SingleTrajectory
 {
-    partial class STVisualizationController : UserControl, ViewTypeController
+    partial class STVisualizationController : UserControl, IViewTypeController
     {
         protected AlgorithmRunner<STInput, STOutput> AlgorithmRunner;
         protected STVisualization STVisualization;

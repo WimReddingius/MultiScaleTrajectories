@@ -1,26 +1,19 @@
-﻿using MultiScaleTrajectories.Algorithm;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace MultiScaleTrajectories.Algorithm
+﻿namespace MultiScaleTrajectories.Algorithm
 {
-    class AlgorithmRunner<IN, OUT>
+    class AlgorithmRunner<TIn, TOut>
     {
 
-        public OUT Output;
-        public IN Input;
-        public Algorithm<IN, OUT> Algorithm;
+        public TOut Output;
+        public TIn Input;
+        public IAlgorithm<TIn, TOut> Algorithm;
 
-        public AlgorithmRunner(IN input, OUT output)
+        public AlgorithmRunner(TIn input, TOut output)
         {
             Input = input;
             Output = output;
         }
 
-        void Run()
+        public void Run()
         {
             Output = Algorithm.Compute(Input);
         }

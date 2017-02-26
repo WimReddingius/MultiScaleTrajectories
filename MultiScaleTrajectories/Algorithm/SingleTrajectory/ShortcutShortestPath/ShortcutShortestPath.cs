@@ -1,5 +1,4 @@
-﻿using MultiScaleTrajectories.Algorithm.ST.ShortcutShortestPath;
-using MultiScaleTrajectories.Algorithm.Util.Algorithm;
+﻿using MultiScaleTrajectories.Algorithm.Util.Algorithm;
 using MultiScaleTrajectories.Algorithm.Util.DataStructures.Graph;
 using System;
 using System.Collections.Generic;
@@ -7,7 +6,7 @@ using System.Linq;
 
 namespace MultiScaleTrajectories.Algorithm.SingleTrajectory.ShortcutShortestPath
 {
-    class ShortcutShortestPath : Algorithm<STInput, STOutput>
+    class ShortcutShortestPath : IAlgorithm<STInput, STOutput>
     {
         public STOutput Compute(STInput input)
         {
@@ -35,7 +34,7 @@ namespace MultiScaleTrajectories.Algorithm.SingleTrajectory.ShortcutShortestPath
             DataNode<Point2D> firstNode = shortcutGraph.GetNode(trajectory.First());
             DataNode<Point2D> lastNode = shortcutGraph.GetNode(trajectory.Last());
 
-            System.Diagnostics.Debug.WriteLine("Shortcut Graph: " + shortcutGraph.ToString());
+            System.Diagnostics.Debug.WriteLine("Shortcut Graph: " + shortcutGraph);
 
             for (int level = 1 ; level <= input.NumLevels; level++) {
 
@@ -68,12 +67,12 @@ namespace MultiScaleTrajectories.Algorithm.SingleTrajectory.ShortcutShortestPath
                 }
 
                 //increment weights of all edges by 1
-                shortcutGraph.incrementAllEdgeWeights();
+                shortcutGraph.IncrementAllEdgeWeights();
 
                 //BFS on level graph
                 List<DataNode<Point2D>> shortestPathLevel = shortcutGraph.GetShortestPath(firstNode, lastNode);
 
-                System.Diagnostics.Debug.WriteLine("Shortcut Graph: " + shortcutGraph.ToString());
+                System.Diagnostics.Debug.WriteLine("Shortcut Graph: " + shortcutGraph);
                 System.Diagnostics.Debug.WriteLine("Level Shortest Path: " + string.Join<DataNode<Point2D>>(", ", shortestPathLevel.ToArray()));
 
                 //computing trajectory from found shortest path
@@ -86,7 +85,7 @@ namespace MultiScaleTrajectories.Algorithm.SingleTrajectory.ShortcutShortestPath
                 }
 
                 //reporting level solution
-                solution.setTrajectoryAtLevel(level, levelTrajectory);
+                solution.SetTrajectoryAtLevel(level, levelTrajectory);
 
                 System.Diagnostics.Debug.WriteLine("");
             }

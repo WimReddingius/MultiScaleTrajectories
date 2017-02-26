@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+﻿using System.Collections.Generic;
 
 namespace MultiScaleTrajectories.Algorithm.SingleTrajectory
 {
@@ -10,12 +7,12 @@ namespace MultiScaleTrajectories.Algorithm.SingleTrajectory
 
         public int NumLevels { get { return Count; } }
 
-        public void setTrajectoryAtLevel(int level, Trajectory2D trajectory)
+        public void SetTrajectoryAtLevel(int level, Trajectory2D trajectory)
         {
             Add(level, trajectory);
         }
 
-        public Trajectory2D getTrajectoryAtLevel(int i)
+        public Trajectory2D GetTrajectoryAtLevel(int i)
         {
             return this[i];
         }

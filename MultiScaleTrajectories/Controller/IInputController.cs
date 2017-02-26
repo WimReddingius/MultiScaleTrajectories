@@ -1,9 +1,8 @@
-﻿using System.ComponentModel;
-using System.Windows.Forms;
+﻿using System.Windows.Forms;
 
 namespace MultiScaleTrajectories.Controller
 {
-    interface InputController
+    interface IInputController
     {
 
         Control GetOptionsControl();

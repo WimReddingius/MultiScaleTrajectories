@@ -6,7 +6,7 @@ namespace MultiScaleTrajectories.Controller.SingleTrajectory
 {
     class STController : AlgoTypeController
     {
-        AlgorithmRunner<STInput, STOutput> AlgorithmRunner;
+        readonly AlgorithmRunner<STInput, STOutput> AlgorithmRunner;
 
         public STController()
         {
@@ -19,13 +19,8 @@ namespace MultiScaleTrajectories.Controller.SingleTrajectory
 
         public override void SetAlgorithm(object algorithm)
         {
-            AlgorithmRunner.Algorithm = (Algorithm<STInput, STOutput>)algorithm;
+            AlgorithmRunner.Algorithm = (IAlgorithm<STInput, STOutput>)algorithm;
             base.SetAlgorithm(algorithm);
-        }
-
-        public override void SetViewType(ViewTypeController viewType)
-        {
-            base.SetViewType(viewType);
         }
 
         public override string ToString()

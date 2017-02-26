@@ -76,7 +76,7 @@
     <Compile Include="Algorithm\Util\DataStructures\Graph\WeightedEdge.cs" />
     <Compile Include="Algorithm\AlgorithmRunner.cs" />
     <Compile Include="Controller\AlgoTypeController.cs" />
-    <Compile Include="Algorithm\Algorithm.cs" />
+    <Compile Include="Algorithm\IAlgorithm.cs" />
     <Compile Include="Algorithm\Geometry2D.cs" />
     <Compile Include="Algorithm\Point2D.cs" />
     <Compile Include="Algorithm\SingleTrajectory\ShortcutShortestPath\ShortcutShortestPath.cs" />
@@ -90,8 +90,8 @@
     <Compile Include="Algorithm\Util\DataStructures\Graph\Graph.cs" />
     <Compile Include="Algorithm\Util\DataStructures\Graph\Node.cs" />
     <Compile Include="Algorithm\Util\Algorithm\ImaiIri.cs" />
-    <Compile Include="Controller\InputController.cs" />
-    <Compile Include="Controller\ViewTypeController.cs" />
+    <Compile Include="Controller\IInputController.cs" />
+    <Compile Include="Controller\IViewTypeController.cs" />
     <Compile Include="Controller\SingleTrajectory\STController.cs" />
     <Compile Include="View\MainForm.cs">
       <SubType>Form</SubType>

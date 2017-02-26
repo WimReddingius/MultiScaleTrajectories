@@ -20,10 +20,10 @@ namespace MultiScaleTrajectories.View.Type.Visualization.SingleTrajectory
 
         public STVisualization(AlgorithmRunner<STInput, STOutput> runner) : base(runner)
         {
-            MouseDown += new MouseEventHandler(this.HandleMouseDown);
-            MouseUp += new MouseEventHandler(this.HandleMouseUp);
-            MouseMove += new MouseEventHandler(this.HandleMouseMove);
-            KeyDown += new KeyEventHandler(this.HandleArrowKeys);
+            MouseDown += HandleMouseDown;
+            MouseUp += HandleMouseUp;
+            MouseMove += HandleMouseMove;
+            KeyDown += HandleArrowKeys;
 
             AlgorithmRunner.Input.Loaded += () => { InitializeNewInput(); Refresh(); };
 
@@ -32,21 +32,21 @@ namespace MultiScaleTrajectories.View.Type.Visualization.SingleTrajectory
 
         protected override void RenderWorld()
         {
-            renderEdges();
+            RenderEdges();
             RenderPoints();
-            RenderHUD();
+            RenderHud();
         }
 
         private void RenderPoints()
         {
-            Trajectory2D trajectory = getRenderedTrajectory();
+            Trajectory2D trajectory = GetRenderedTrajectory();
 
             for (int i = 0; i < trajectory.Count; i++)
             {
                 Point2D p = trajectory[i];
 
                 if (Mode == VisualizationMode.INPUT)
-                    OpenTK.Graphics.OpenGL.GL.LoadName(PickManager.getPickingId(p));
+                    OpenTK.Graphics.OpenGL.GL.LoadName(PickManager.GetPickingId(p));
 
                 OpenTK.Graphics.OpenGL.GL.PushMatrix();
 
@@ -56,14 +56,14 @@ namespace MultiScaleTrajectories.View.Type.Visualization.SingleTrajectory
                     OpenTK.Graphics.OpenGL.GL.Color3(Color.Red);
 
                 OpenTK.Graphics.OpenGL.GL.Translate(p.X, p.Y, 1f);
-                Util.drawCircle(3.5f);
+                Util.DrawCircle(3.5f);
                 OpenTK.Graphics.OpenGL.GL.PopMatrix();
             }
         }
 
-        private void renderEdges()
+        private void RenderEdges()
         {
-            Trajectory2D trajectory = getRenderedTrajectory();
+            Trajectory2D trajectory = GetRenderedTrajectory();
 
             OpenTK.Graphics.OpenGL.GL.LineWidth(2.5f);
             OpenTK.Graphics.OpenGL.GL.Color3(Color.Red);
@@ -75,10 +75,10 @@ namespace MultiScaleTrajectories.View.Type.Visualization.SingleTrajectory
             OpenTK.Graphics.OpenGL.GL.End();
         }
 
-        private void RenderHUD()
+        private void RenderHud()
         {
-            String str1 = "";
-            String str2 = "";
+            string str1;
+            string str2 = "";
             switch (Mode)
             {
                 case VisualizationMode.INPUT:
@@ -109,8 +109,8 @@ namespace MultiScaleTrajectories.View.Type.Visualization.SingleTrajectory
         {
             if (Mouse.GetState().IsButtonDown(MouseButton.Left) && DraggingPoint)
             {
-                Vector2 worldCoord = getWorldCoordinates(e.X, e.Y);
-                LastSelectedPoint.setPosition(worldCoord.X, worldCoord.Y);
+                Vector2 worldCoord = GetWorldCoordinates(e.X, e.Y);
+                LastSelectedPoint.SetPosition(worldCoord.X, worldCoord.Y);
             }
             Refresh();
         }
@@ -124,9 +124,9 @@ namespace MultiScaleTrajectories.View.Type.Visualization.SingleTrajectory
 
                 if (e.Button == MouseButtons.Left)
                 {
-                    if (PickManager.pickingHit(pickId))
+                    if (PickManager.PickingHit(pickId))
                     { //clicked on point
-                        LastSelectedPoint = (Point2D)PickManager.getPickedObject(pickId);
+                        LastSelectedPoint = (Point2D)PickManager.GetPickedObject(pickId);
                     }
                     else
                     {  //clicked on empty space for new point
@@ -138,7 +138,7 @@ namespace MultiScaleTrajectories.View.Type.Visualization.SingleTrajectory
                         else if (index == -1)           //last selected point was removed
                             index = AlgorithmRunner.Input.Trajectory.Count() - 1;
 
-                        Vector2 worldCoord = getWorldCoordinates(e.X, e.Y);
+                        Vector2 worldCoord = GetWorldCoordinates(e.X, e.Y);
                         Point2D p = InsertPoint(worldCoord.X, worldCoord.Y, index + 1);
                         LastSelectedPoint = p;
                     }
@@ -147,9 +147,9 @@ namespace MultiScaleTrajectories.View.Type.Visualization.SingleTrajectory
                 }
                 else if (e.Button == MouseButtons.Right)
                 {
-                    if (PickManager.pickingHit(pickId))
+                    if (PickManager.PickingHit(pickId))
                     { //clicked on point
-                        Point2D pointToBeRemoved = (Point2D)PickManager.getPickedObject(pickId);
+                        Point2D pointToBeRemoved = (Point2D)PickManager.GetPickedObject(pickId);
                         AlgorithmRunner.Input.Trajectory.Remove(pointToBeRemoved);
                     }
                 }
@@ -169,7 +169,7 @@ namespace MultiScaleTrajectories.View.Type.Visualization.SingleTrajectory
             Refresh();
         }
 
-        private void HandleArrowKeys(object sender, System.Windows.Forms.KeyEventArgs e)
+        private void HandleArrowKeys(object sender, KeyEventArgs e)
         {
             if (Mode == VisualizationMode.OUTPUT)
             {
@@ -203,7 +203,7 @@ namespace MultiScaleTrajectories.View.Type.Visualization.SingleTrajectory
             return base.IsInputKey(keyData);
         }
 
-        private Trajectory2D getRenderedTrajectory()
+        private Trajectory2D GetRenderedTrajectory()
         {
             Trajectory2D trajectory;
             if (CurrentLevel == 0 || Mode == VisualizationMode.INPUT)
@@ -212,7 +212,7 @@ namespace MultiScaleTrajectories.View.Type.Visualization.SingleTrajectory
             }
             else
             {
-                trajectory = AlgorithmRunner.Output.getTrajectoryAtLevel(CurrentLevel);
+                trajectory = AlgorithmRunner.Output.GetTrajectoryAtLevel(CurrentLevel);
             }
 
             return trajectory;

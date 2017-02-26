@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
 
 namespace MultiScaleTrajectories.Algorithm.SingleTrajectory
 {
@@ -16,7 +12,7 @@ namespace MultiScaleTrajectories.Algorithm.SingleTrajectory
 
         public event InputLoadedEventHandler Loaded;
 
-        public int NumLevels { get { return Epsilons.Count;  } }
+        public int NumLevels => Epsilons.Count;
 
         public STInput()
         {
