@@ -3,18 +3,17 @@ using System.IO;
 using System.Windows.Forms;
 using MultiScaleTrajectories.Algorithm;
 using MultiScaleTrajectories.Controller;
-using MultiScaleTrajectories.Controller.Util;
 using Newtonsoft.Json.Linq;
 
 namespace MultiScaleTrajectories.View
 {
-    partial class AlgoConfigTabControl<TIn, TOut> : UserControl where TIn : Input, new() where TOut : Output, new()
+    partial class AlgoTabControl<TIn, TOut> : UserControl where TIn : Input, new() where TOut : Output, new()
     {
 
-        private readonly IAlgoTypeController<TIn, TOut> Controller;
+        private readonly IAlgoController<TIn, TOut> Controller;
         private readonly Control ViewContainer;
 
-        public AlgoConfigTabControl(Control viewContainer, IAlgoTypeController<TIn, TOut> controller)
+        public AlgoTabControl(Control viewContainer, IAlgoController<TIn, TOut> controller)
         {
             InitializeComponent();
 

@@ -73,17 +73,17 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Algorithm\IInput.cs" />
+    <Compile Include="Algorithm\Input.cs" />
     <Compile Include="Algorithm\Output.cs" />
     <Compile Include="Algorithm\Util\DataStructures\Graph\WeightedEdge.cs" />
     <Compile Include="Algorithm\AlgorithmRunnable.cs" />
-    <Compile Include="Controller\IAlgoTypeController.cs" />
-    <Compile Include="Controller\IAlgoTypeView.cs" />
-    <Compile Include="View\AlgoConfigTabControl.cs">
+    <Compile Include="Controller\IAlgoController.cs" />
+    <Compile Include="Controller\IAlgoView.cs" />
+    <Compile Include="View\AlgoTabControl.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="View\AlgoConfigTabControl.Designer.cs">
-      <DependentUpon>AlgoConfigTabControl.cs</DependentUpon>
+    <Compile Include="View\AlgoTabControl.Designer.cs">
+      <DependentUpon>AlgoTabControl.cs</DependentUpon>
     </Compile>
     <Compile Include="Algorithm\IAlgorithm.cs" />
     <Compile Include="Algorithm\Geometry\Geometry2D.cs" />
@@ -99,7 +99,7 @@
     <Compile Include="Algorithm\Util\DataStructures\Graph\Graph.cs" />
     <Compile Include="Algorithm\Util\DataStructures\Graph\Node.cs" />
     <Compile Include="Algorithm\Util\Algorithm\ImaiIri.cs" />
-    <Compile Include="Controller\Util\DataViewController.cs" />
+    <Compile Include="Controller\DataViewController.cs" />
     <Compile Include="Controller\Util\CompoundDataLoader.cs" />
     <Compile Include="Controller\SingleTrajectory\STController.cs" />
     <Compile Include="Controller\SingleTrajectory\STInputController.cs" />
@@ -135,8 +135,8 @@
     <Compile Include="View\SingleTrajectory\Output\STOutputVisualization.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <EmbeddedResource Include="View\AlgoConfigTabControl.resx">
-      <DependentUpon>AlgoConfigTabControl.cs</DependentUpon>
+    <EmbeddedResource Include="View\AlgoTabControl.resx">
+      <DependentUpon>AlgoTabControl.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="View\MainForm.resx">
       <DependentUpon>MainForm.cs</DependentUpon>

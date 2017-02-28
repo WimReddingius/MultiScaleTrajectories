@@ -33,7 +33,7 @@ namespace MultiScaleTrajectories.View
 
         private void algorithmTypeComboBox_SelectedIndexChanged(object sender, EventArgs e)
         {
-            var controller = (IAlgoTypeView) algorithmTypeComboBox.SelectedItem;
+            var controller = (IAlgoView) algorithmTypeComboBox.SelectedItem;
 
             //set controls corresponding to algorithm type
             FormsUtil.FillContainer(configurationSplitContainer.Panel2, controller.ConfigurationControl);

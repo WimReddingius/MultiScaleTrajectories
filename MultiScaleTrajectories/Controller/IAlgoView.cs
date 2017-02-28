@@ -2,7 +2,7 @@
 
 namespace MultiScaleTrajectories.Controller
 {
-    interface IAlgoTypeView
+    interface IAlgoView
     {
 
         Control ConfigurationControl { get; }

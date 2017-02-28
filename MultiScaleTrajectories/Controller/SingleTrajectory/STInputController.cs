@@ -20,8 +20,8 @@ namespace MultiScaleTrajectories.Controller.SingleTrajectory
             Options = new STInputOptions();
             View = new STInputVisualization();
 
-            Loaders.Add(Options);
-            Loaders.Add(View);
+            DataLoaders.Add(Options);
+            DataLoaders.Add(View);
         }
 
     }

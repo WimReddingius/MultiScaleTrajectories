@@ -3,7 +3,7 @@ using MultiScaleTrajectories.Algorithm;
 
 namespace MultiScaleTrajectories.Controller
 {
-    interface IAlgoTypeController<TIn, TOut> : IAlgoTypeView where TOut : Output, new() where TIn : Input, new()
+    interface IAlgoController<TIn, TOut> : IAlgoView where TOut : Output, new() where TIn : Input, new()
     {
 
         List<IAlgorithm<TIn, TOut>> Algorithms { get; }

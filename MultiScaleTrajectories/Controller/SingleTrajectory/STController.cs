@@ -9,7 +9,7 @@ using MultiScaleTrajectories.View;
 
 namespace MultiScaleTrajectories.Controller.SingleTrajectory
 {
-    class STController : IAlgoTypeController<STInput, STOutput>
+    class STController : IAlgoController<STInput, STOutput>
     {
 
         public Control ConfigurationControl { get; }
@@ -28,7 +28,7 @@ namespace MultiScaleTrajectories.Controller.SingleTrajectory
             InputController = new STInputController();
 
             ViewControl = new Control();
-            ConfigurationControl = new AlgoConfigTabControl<STInput, STOutput>(ViewControl, this);
+            ConfigurationControl = new AlgoTabControl<STInput, STOutput>(ViewControl, this);
         }
 
         public override string ToString()

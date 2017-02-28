@@ -2,7 +2,7 @@
 
 namespace MultiScaleTrajectories.Algorithm
 {
-    class AlgorithmRunnable<TIn, TOut> where TIn : IInput, new() where TOut : Output, new()
+    class AlgorithmRunnable<TIn, TOut> where TIn : Input, new() where TOut : Output, new()
     {
 
         public TIn Input;
