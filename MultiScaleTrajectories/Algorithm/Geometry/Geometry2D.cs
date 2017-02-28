@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace MultiScaleTrajectories.Algorithm
+namespace MultiScaleTrajectories.Algorithm.Geometry
 {
     class Geometry2D
     {

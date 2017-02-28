@@ -10,16 +10,18 @@ namespace MultiScaleTrajectories.View
     partial class MainForm : Form
     {
 
-        AlgoTypeController AlgorithmType;
+        AlgoTypeController AlgoController;
+        private ViewMode CurrentViewMode;
 
         public MainForm()
         {
             InitializeComponent();
 
-            OpenTK.Toolkit.Init();
-
             RegisterAlgorithmTypes();
             OpenSettings();
+
+            CurrentViewMode = ViewMode.Idle;
+            SwitchViewMode(ViewMode.Input);
         }
 
         private void OpenSettings()
@@ -41,43 +43,49 @@ namespace MultiScaleTrajectories.View
         private void algorithmComboBox_SelectedIndexChanged(object sender, EventArgs e)
         {
             object algo = algorithmComboBox.SelectedItem;
-            AlgorithmType.SetAlgorithm(algo);
+            AlgoController.CurrentAlgorithm = algo;
             algorithmComboBox.SelectedItem = algo;
         }
 
         private void algorithmTypeComboBox_SelectedIndexChanged(object sender, EventArgs e)
         {
-            AlgorithmType = (AlgoTypeController) algorithmTypeComboBox.SelectedItem;
+            AlgoController = (AlgoTypeController) algorithmTypeComboBox.SelectedItem;
 
             //register algorithms
             algorithmComboBox.Items.Clear();
-            algorithmComboBox.Items.AddRange(AlgorithmType.Algorithms.ToArray());
+            algorithmComboBox.Items.AddRange(AlgoController.Algorithms.ToArray());
             algorithmComboBox.SelectedItem = algorithmComboBox.Items[0];
 
             //register view modes
-            viewTypeComboBox.Items.Clear();
-            viewTypeComboBox.Items.AddRange(AlgorithmType.ViewControllers.ToArray());
-            viewTypeComboBox.SelectedItem = viewTypeComboBox.Items[0];
+            outputControllerComboBox.Items.Clear();
+            outputControllerComboBox.Items.AddRange(AlgoController.OutputControllers.ToArray());
+            outputControllerComboBox.SelectedItem = outputControllerComboBox.Items[0];
                 
             //set controls corresponding to algorithm type
-            FillContainer(inputPanel, AlgorithmType.InputController.GetOptionsControl());
+            FillContainer(inputOptionsPanel, AlgoController.InputController.OptionsControl);
         }
 
-        private void viewTypeComboBox_SelectedIndexChanged(object sender, EventArgs e)
+        private void outputControllerComboBox_SelectedIndexChanged(object sender, EventArgs e)
         {
-            AlgorithmType.CurrentViewType = (IViewTypeController)viewTypeComboBox.SelectedItem;
+            AlgoController.CurrentOutputController = (IOutputController)outputControllerComboBox.SelectedItem;
 
             //set controls: options and view
-            FillContainer(viewTabPage, AlgorithmType.CurrentViewType.GetOptionsControl());
-            FillContainer(splitContainer1.Panel1, AlgorithmType.CurrentViewType.GetViewControl());
+            FillContainer(outputViewOptionsPanel, AlgoController.CurrentOutputController.OptionsControl);
+            UpdateViewPanel();
         }
 
-        private void FillContainer(Control container, Control control)
+        private void tabControl_SelectedIndexChanged(object sender, EventArgs e)
         {
-            container.Controls.Clear();
-            container.Controls.Add(control);
-            control.Dock = DockStyle.Fill;
-            control.Location = new System.Drawing.Point(0, 0);
+            switch (tabControl.SelectedIndex)
+            {
+                case 0: //Input
+                    SwitchViewMode(ViewMode.Input);
+                    break;
+                case 1: //Output
+                    AlgoController.StartRun();
+                    SwitchViewMode(ViewMode.Output);
+                    break;
+            }
         }
 
         private void openInputButton_Click(object sender, EventArgs e)
@@ -111,7 +119,7 @@ namespace MultiScaleTrajectories.View
 
                 jObject.Remove("AlgorithmType");
 
-                AlgorithmType.InputController.LoadSerializedInput(jObject.ToString());
+                AlgoController.InputController.LoadSerializedInput(jObject.ToString());
             }
             catch (IOException)
             {
@@ -126,7 +134,7 @@ namespace MultiScaleTrajectories.View
                 string fileName = saveInputDialog.FileName;
                 try
                 {
-                    string input = AlgorithmType.InputController.SerializeInput();
+                    string input = AlgoController.InputController.SerializeInput();
 
                     JObject jObject = JObject.Parse(input);
                     jObject.Add("AlgorithmType", algorithmTypeComboBox.SelectedItem.GetType().AssemblyQualifiedName);
@@ -143,13 +151,60 @@ namespace MultiScaleTrajectories.View
 
         private void clearInputButton_Click(object sender, EventArgs e)
         {
-            AlgorithmType.InputController.ClearInput();
+            AlgoController.InputController.LoadFreshInput();
             Properties.Settings.Default["InputFile"] = "";
         }
 
         private void MainForm_FormClosed(object sender, FormClosedEventArgs e)
         {
             Properties.Settings.Default.Save();
+        }
+
+        private void SwitchViewMode(ViewMode newMode)
+        {
+            if (newMode != CurrentViewMode)
+            {
+                CurrentViewMode = newMode;
+                UpdateViewPanel();
+            }
+        }
+
+        private void UpdateViewPanel()
+        {
+            Control newControl = null;
+            switch (CurrentViewMode)
+            {
+                case ViewMode.Input:
+                    newControl = AlgoController.InputController.ViewControl;
+                    break;
+                case ViewMode.Output:
+                    newControl = AlgoController.CurrentOutputController.ViewControl;
+                    break;
+            }
+
+            FillContainer(splitContainer.Panel1, newControl);
+            newControl?.Focus();
+        }
+
+        private void FillContainer(Control container, Control control)
+        {
+            if (control != null)
+            {
+                container.Controls.Clear();
+
+                control.CreateControl();
+                container.Controls.Add(control);
+
+                control.Dock = DockStyle.Fill;
+                control.Location = new System.Drawing.Point(0, 0);
+            }
+        }
+
+        private enum ViewMode
+        {
+            Idle,
+            Input,
+            Output
         }
 
     }

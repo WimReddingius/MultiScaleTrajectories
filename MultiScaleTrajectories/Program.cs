@@ -15,6 +15,7 @@ namespace MultiScaleTrajectories
         [STAThread]
         static void Main()
         {
+            OpenTK.Toolkit.Init();
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
             Application.Run(new MainForm());

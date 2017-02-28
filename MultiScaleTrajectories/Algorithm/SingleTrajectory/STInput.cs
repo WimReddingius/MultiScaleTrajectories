@@ -1,22 +1,20 @@
 ﻿using System.Collections.Generic;
+using MultiScaleTrajectories.Algorithm.Geometry;
+using Newtonsoft.Json;
 
 namespace MultiScaleTrajectories.Algorithm.SingleTrajectory
 {
 
-    public delegate void InputLoadedEventHandler();
-
-    class STInput
+    class STInput : Input
     {
         public Trajectory2D Trajectory;
         public List<double> Epsilons;
-
-        public event InputLoadedEventHandler Loaded;
 
         public int NumLevels => Epsilons.Count;
 
         public STInput()
         {
-            Clear();
+            LoadFresh();
         }
 
         public void AppendLevel(double epsilon)
@@ -48,12 +46,24 @@ namespace MultiScaleTrajectories.Algorithm.SingleTrajectory
         {
             Trajectory = trajectory;
             Epsilons = epsilons;
-            Loaded?.Invoke();
         }
 
-        public void Clear()
+        public void LoadFresh()
         {
-            Load(new Trajectory2D(), new List<double>());
+            List<double> epsilons = new List<double>();
+            epsilons.Add(double.PositiveInfinity);
+            Load(new Trajectory2D(), epsilons);
         }
+
+        public string Serialize()
+        {
+            return JsonConvert.SerializeObject(this);
+        }
+
+        public static STInput DeSerialize(string serializedInput)
+        {
+            return JsonConvert.DeserializeObject<STInput>(serializedInput);
+        }
+
     }
 }

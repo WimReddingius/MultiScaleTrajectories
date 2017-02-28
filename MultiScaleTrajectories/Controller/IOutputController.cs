@@ -2,14 +2,12 @@
 
 namespace MultiScaleTrajectories.Controller
 {
-   interface IViewTypeController
+   interface IOutputController
     {
+        Control OptionsControl { get; }
 
-        Control GetOptionsControl();
-
-        Control GetViewControl();
+        Control ViewControl { get; }
 
         string ToString();
-
     }
 }

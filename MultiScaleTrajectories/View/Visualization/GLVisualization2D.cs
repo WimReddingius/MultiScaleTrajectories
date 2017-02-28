@@ -1,18 +1,17 @@
-﻿using MultiScaleTrajectories.Algorithm;
-using MultiScaleTrajectories.View.Type.Visualization.GL;
+﻿using System;
+using System.Windows.Forms;
+using MultiScaleTrajectories.View.Visualization.GL;
 using OpenTK;
 using OpenTK.Graphics.OpenGL;
-using System;
-using System.Windows.Forms;
 
-namespace MultiScaleTrajectories.View.Type.Visualization
+namespace MultiScaleTrajectories.View.Visualization
 {
-    abstract class GLVisualization2D<TIn, TOut> : GLVisualization<TIn, TOut>
+    abstract class GLVisualization2D : GLVisualization
     {
 
         protected PickNameManager PickManager;
 
-        public GLVisualization2D(AlgorithmRunner<TIn, TOut> runner) : base(runner)
+        protected GLVisualization2D()
         {
             PickManager = new PickNameManager();
         }
@@ -27,8 +26,8 @@ namespace MultiScaleTrajectories.View.Type.Visualization
 
             SetGLPerspective();
 
-            GL.TextRenderer.GenerateFontImage();
-            GL.TextRenderer.LoadTexture();
+            GL.TextRenderer2D.GenerateFontImage();
+            GL.TextRenderer2D.LoadTexture();
         }
 
         protected override void OnResize(EventArgs e)

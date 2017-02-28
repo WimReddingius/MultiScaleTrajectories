@@ -1,32 +1,24 @@
 ﻿using System.Collections.Generic;
+using MultiScaleTrajectories.Algorithm;
 
 namespace MultiScaleTrajectories.Controller
 {
     abstract class AlgoTypeController
     {
         public IInputController InputController;
-        public List<IViewTypeController> ViewControllers;
+        public List<IOutputController> OutputControllers;
         public List<object> Algorithms;
 
-        public IViewTypeController CurrentViewType;
+        public IOutputController CurrentOutputController;
         public object CurrentAlgorithm;
-
 
         protected AlgoTypeController()
         {
-            ViewControllers = new List<IViewTypeController>();
+            OutputControllers = new List<IOutputController>();
             Algorithms = new List<object>();
         }
 
-        public virtual void SetAlgorithm(object algorithm)
-        {
-            CurrentAlgorithm = algorithm;
-        }
-
-        public virtual void SetViewType(IViewTypeController viewType)
-        {
-            CurrentViewType = viewType;
-        }
+        public abstract void StartRun();
 
         public abstract override string ToString();
 

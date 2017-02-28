@@ -3,16 +3,15 @@ using MultiScaleTrajectories.Algorithm.Util.DataStructures.Graph;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using MultiScaleTrajectories.Algorithm.Geometry;
 
 namespace MultiScaleTrajectories.Algorithm.SingleTrajectory.ShortcutShortestPath
 {
     class ShortcutShortestPath : IAlgorithm<STInput, STOutput>
     {
-        public STOutput Compute(STInput input)
+        public void Compute(STInput input, STOutput output)
         {
             Trajectory2D trajectory = input.Trajectory;
-
-            STOutput solution = new STOutput();
 
             ShortcutGraph shortcutGraph = new ShortcutGraph();
 
@@ -85,12 +84,10 @@ namespace MultiScaleTrajectories.Algorithm.SingleTrajectory.ShortcutShortestPath
                 }
 
                 //reporting level solution
-                solution.SetTrajectoryAtLevel(level, levelTrajectory);
+                output.SetTrajectoryAtLevel(level, levelTrajectory);
 
                 System.Diagnostics.Debug.WriteLine("");
             }
-
-            return solution;
         }
 
         private int getPathWeight(List<DataNode<Point2D>> path, DataNode<Point2D> sourceNode)

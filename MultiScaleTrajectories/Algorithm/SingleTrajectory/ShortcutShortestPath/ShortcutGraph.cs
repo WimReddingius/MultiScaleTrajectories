@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using MultiScaleTrajectories.Algorithm.Geometry;
 using MultiScaleTrajectories.Algorithm.Util.DataStructures.Graph;
 
 namespace MultiScaleTrajectories.Algorithm.SingleTrajectory.ShortcutShortestPath

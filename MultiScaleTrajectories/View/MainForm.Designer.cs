@@ -29,15 +29,16 @@
         private void InitializeComponent()
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MainForm));
-            this.splitContainer1 = new System.Windows.Forms.SplitContainer();
-            this.viewTypeComboBox = new System.Windows.Forms.ComboBox();
-            this.tabControl1 = new System.Windows.Forms.TabControl();
+            this.splitContainer = new System.Windows.Forms.SplitContainer();
+            this.tabControl = new System.Windows.Forms.TabControl();
             this.inputTabPage = new System.Windows.Forms.TabPage();
-            this.inputPanel = new System.Windows.Forms.Panel();
+            this.inputOptionsPanel = new System.Windows.Forms.Panel();
             this.openInputButton = new System.Windows.Forms.Button();
             this.clearInputButton = new System.Windows.Forms.Button();
             this.saveInputButton = new System.Windows.Forms.Button();
             this.viewTabPage = new System.Windows.Forms.TabPage();
+            this.outputViewOptionsPanel = new System.Windows.Forms.Panel();
+            this.outputControllerComboBox = new System.Windows.Forms.ComboBox();
             this.label2 = new System.Windows.Forms.Label();
             this.algorithmTypeComboBox = new System.Windows.Forms.ComboBox();
             this.algorithmTypeLabel = new System.Windows.Forms.Label();
@@ -45,76 +46,69 @@
             this.algorithmComboBox = new System.Windows.Forms.ComboBox();
             this.saveInputDialog = new System.Windows.Forms.SaveFileDialog();
             this.openInputDialog = new System.Windows.Forms.OpenFileDialog();
-            ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
-            this.splitContainer1.Panel2.SuspendLayout();
-            this.splitContainer1.SuspendLayout();
-            this.tabControl1.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.splitContainer)).BeginInit();
+            this.splitContainer.Panel2.SuspendLayout();
+            this.splitContainer.SuspendLayout();
+            this.tabControl.SuspendLayout();
             this.inputTabPage.SuspendLayout();
+            this.viewTabPage.SuspendLayout();
             this.SuspendLayout();
             // 
-            // splitContainer1
+            // splitContainer
             // 
-            this.splitContainer1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.splitContainer1.FixedPanel = System.Windows.Forms.FixedPanel.Panel2;
-            this.splitContainer1.IsSplitterFixed = true;
-            this.splitContainer1.Location = new System.Drawing.Point(0, 0);
-            this.splitContainer1.Name = "splitContainer1";
+            this.splitContainer.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.splitContainer.FixedPanel = System.Windows.Forms.FixedPanel.Panel2;
+            this.splitContainer.IsSplitterFixed = true;
+            this.splitContainer.Location = new System.Drawing.Point(0, 0);
+            this.splitContainer.Name = "splitContainer";
             // 
-            // splitContainer1.Panel2
+            // splitContainer.Panel2
             // 
-            this.splitContainer1.Panel2.Controls.Add(this.viewTypeComboBox);
-            this.splitContainer1.Panel2.Controls.Add(this.tabControl1);
-            this.splitContainer1.Panel2.Controls.Add(this.label2);
-            this.splitContainer1.Panel2.Controls.Add(this.algorithmTypeComboBox);
-            this.splitContainer1.Panel2.Controls.Add(this.algorithmTypeLabel);
-            this.splitContainer1.Panel2.Controls.Add(this.algorithmLabel);
-            this.splitContainer1.Panel2.Controls.Add(this.algorithmComboBox);
-            this.splitContainer1.Size = new System.Drawing.Size(988, 573);
-            this.splitContainer1.SplitterDistance = 729;
-            this.splitContainer1.TabIndex = 0;
+            this.splitContainer.Panel2.Controls.Add(this.tabControl);
+            this.splitContainer.Panel2.Controls.Add(this.algorithmTypeComboBox);
+            this.splitContainer.Panel2.Controls.Add(this.algorithmTypeLabel);
+            this.splitContainer.Panel2.Controls.Add(this.algorithmLabel);
+            this.splitContainer.Panel2.Controls.Add(this.algorithmComboBox);
+            this.splitContainer.Size = new System.Drawing.Size(988, 573);
+            this.splitContainer.SplitterDistance = 729;
+            this.splitContainer.TabIndex = 0;
             // 
-            // viewTypeComboBox
+            // tabControl
             // 
-            this.viewTypeComboBox.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.viewTypeComboBox.Location = new System.Drawing.Point(10, 137);
-            this.viewTypeComboBox.Name = "viewTypeComboBox";
-            this.viewTypeComboBox.Size = new System.Drawing.Size(233, 21);
-            this.viewTypeComboBox.TabIndex = 3;
-            this.viewTypeComboBox.SelectedIndexChanged += new System.EventHandler(this.viewTypeComboBox_SelectedIndexChanged);
-            // 
-            // tabControl1
-            // 
-            this.tabControl1.Controls.Add(this.inputTabPage);
-            this.tabControl1.Controls.Add(this.viewTabPage);
-            this.tabControl1.Location = new System.Drawing.Point(10, 175);
-            this.tabControl1.Multiline = true;
-            this.tabControl1.Name = "tabControl1";
-            this.tabControl1.SelectedIndex = 0;
-            this.tabControl1.Size = new System.Drawing.Size(233, 386);
-            this.tabControl1.SizeMode = System.Windows.Forms.TabSizeMode.Fixed;
-            this.tabControl1.TabIndex = 4;
+            this.tabControl.Controls.Add(this.inputTabPage);
+            this.tabControl.Controls.Add(this.viewTabPage);
+            this.tabControl.Location = new System.Drawing.Point(10, 123);
+            this.tabControl.Multiline = true;
+            this.tabControl.Name = "tabControl";
+            this.tabControl.SelectedIndex = 0;
+            this.tabControl.Size = new System.Drawing.Size(233, 438);
+            this.tabControl.SizeMode = System.Windows.Forms.TabSizeMode.Fixed;
+            this.tabControl.TabIndex = 4;
+            this.tabControl.SelectedIndexChanged += new System.EventHandler(this.tabControl_SelectedIndexChanged);
             // 
             // inputTabPage
             // 
-            this.inputTabPage.Controls.Add(this.inputPanel);
+            this.inputTabPage.Controls.Add(this.inputOptionsPanel);
             this.inputTabPage.Controls.Add(this.openInputButton);
             this.inputTabPage.Controls.Add(this.clearInputButton);
             this.inputTabPage.Controls.Add(this.saveInputButton);
             this.inputTabPage.Location = new System.Drawing.Point(4, 22);
             this.inputTabPage.Name = "inputTabPage";
             this.inputTabPage.Padding = new System.Windows.Forms.Padding(3);
-            this.inputTabPage.Size = new System.Drawing.Size(225, 360);
+            this.inputTabPage.Size = new System.Drawing.Size(225, 412);
             this.inputTabPage.TabIndex = 0;
             this.inputTabPage.Text = "Input";
             this.inputTabPage.UseVisualStyleBackColor = true;
             // 
-            // inputPanel
+            // inputOptionsPanel
             // 
-            this.inputPanel.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.inputPanel.Location = new System.Drawing.Point(3, 35);
-            this.inputPanel.Name = "inputPanel";
-            this.inputPanel.Size = new System.Drawing.Size(219, 322);
-            this.inputPanel.TabIndex = 14;
+            this.inputOptionsPanel.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.inputOptionsPanel.Location = new System.Drawing.Point(3, 35);
+            this.inputOptionsPanel.Name = "inputOptionsPanel";
+            this.inputOptionsPanel.Size = new System.Drawing.Size(219, 377);
+            this.inputOptionsPanel.TabIndex = 14;
             // 
             // openInputButton
             // 
@@ -148,22 +142,44 @@
             // 
             // viewTabPage
             // 
+            this.viewTabPage.Controls.Add(this.outputViewOptionsPanel);
+            this.viewTabPage.Controls.Add(this.outputControllerComboBox);
+            this.viewTabPage.Controls.Add(this.label2);
             this.viewTabPage.Location = new System.Drawing.Point(4, 22);
             this.viewTabPage.Name = "viewTabPage";
             this.viewTabPage.Padding = new System.Windows.Forms.Padding(3);
-            this.viewTabPage.Size = new System.Drawing.Size(225, 360);
+            this.viewTabPage.Size = new System.Drawing.Size(225, 387);
             this.viewTabPage.TabIndex = 1;
-            this.viewTabPage.Text = "View";
+            this.viewTabPage.Text = "Output";
             this.viewTabPage.UseVisualStyleBackColor = true;
+            // 
+            // outputViewOptionsPanel
+            // 
+            this.outputViewOptionsPanel.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.outputViewOptionsPanel.Location = new System.Drawing.Point(6, 51);
+            this.outputViewOptionsPanel.Name = "outputViewOptionsPanel";
+            this.outputViewOptionsPanel.Size = new System.Drawing.Size(213, 340);
+            this.outputViewOptionsPanel.TabIndex = 16;
+            // 
+            // outputControllerComboBox
+            // 
+            this.outputControllerComboBox.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.outputControllerComboBox.Location = new System.Drawing.Point(6, 24);
+            this.outputControllerComboBox.Name = "outputControllerComboBox";
+            this.outputControllerComboBox.Size = new System.Drawing.Size(213, 21);
+            this.outputControllerComboBox.TabIndex = 3;
+            this.outputControllerComboBox.SelectedIndexChanged += new System.EventHandler(this.outputControllerComboBox_SelectedIndexChanged);
             // 
             // label2
             // 
             this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(10, 120);
+            this.label2.Location = new System.Drawing.Point(9, 8);
             this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(57, 13);
+            this.label2.Size = new System.Drawing.Size(30, 13);
             this.label2.TabIndex = 15;
-            this.label2.Text = "View Type";
+            this.label2.Text = "View";
             // 
             // algorithmTypeComboBox
             // 
@@ -220,24 +236,26 @@
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(988, 573);
-            this.Controls.Add(this.splitContainer1);
+            this.Controls.Add(this.splitContainer);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Name = "MainForm";
             this.Text = "Multi-Scale Trajectory Simplification Algorithms Framework";
             this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.MainForm_FormClosed);
-            this.splitContainer1.Panel2.ResumeLayout(false);
-            this.splitContainer1.Panel2.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).EndInit();
-            this.splitContainer1.ResumeLayout(false);
-            this.tabControl1.ResumeLayout(false);
+            this.splitContainer.Panel2.ResumeLayout(false);
+            this.splitContainer.Panel2.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.splitContainer)).EndInit();
+            this.splitContainer.ResumeLayout(false);
+            this.tabControl.ResumeLayout(false);
             this.inputTabPage.ResumeLayout(false);
+            this.viewTabPage.ResumeLayout(false);
+            this.viewTabPage.PerformLayout();
             this.ResumeLayout(false);
 
         }
 
         #endregion
 
-        private System.Windows.Forms.SplitContainer splitContainer1;
+        private System.Windows.Forms.SplitContainer splitContainer;
         private System.Windows.Forms.Label algorithmLabel;
         private System.Windows.Forms.ComboBox algorithmComboBox;
         private System.Windows.Forms.Button openInputButton;
@@ -248,11 +266,12 @@
         private System.Windows.Forms.OpenFileDialog openInputDialog;
         private System.Windows.Forms.Button clearInputButton;
         private System.Windows.Forms.Label label2;
-        private System.Windows.Forms.TabControl tabControl1;
+        private System.Windows.Forms.TabControl tabControl;
         private System.Windows.Forms.TabPage inputTabPage;
         private System.Windows.Forms.TabPage viewTabPage;
-        private System.Windows.Forms.Panel inputPanel;
-        private System.Windows.Forms.ComboBox viewTypeComboBox;
+        private System.Windows.Forms.Panel inputOptionsPanel;
+        private System.Windows.Forms.ComboBox outputControllerComboBox;
+        private System.Windows.Forms.Panel outputViewOptionsPanel;
     }
 }
 

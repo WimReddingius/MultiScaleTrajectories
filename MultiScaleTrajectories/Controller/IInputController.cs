@@ -4,14 +4,14 @@ namespace MultiScaleTrajectories.Controller
 {
     interface IInputController
     {
+        Control OptionsControl { get; }
 
-        Control GetOptionsControl();
+        Control ViewControl { get; }
 
-        void ClearInput();
+        void LoadFreshInput();
 
         string SerializeInput();
 
         void LoadSerializedInput(string inputString);
-
     }
 }

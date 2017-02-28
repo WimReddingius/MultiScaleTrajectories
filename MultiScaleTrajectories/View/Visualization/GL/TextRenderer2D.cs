@@ -1,12 +1,12 @@
-﻿using OpenTK.Graphics.OpenGL;
-using System.Drawing;
+﻿using System.Drawing;
 using System.Drawing.Drawing2D;
 using System.Drawing.Imaging;
 using System.Drawing.Text;
+using OpenTK.Graphics.OpenGL;
 
-namespace MultiScaleTrajectories.View.Type.Visualization.GL
+namespace MultiScaleTrajectories.View.Visualization.GL
 {
-    static class TextRenderer
+    static class TextRenderer2D
     {
         public static string FontBitmapFilename = "test.png";
         public static bool BitmapFont = false;

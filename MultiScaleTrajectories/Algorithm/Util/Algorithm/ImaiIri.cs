@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using MultiScaleTrajectories.Algorithm.Geometry;
 
 namespace MultiScaleTrajectories.Algorithm.Util.Algorithm
 {

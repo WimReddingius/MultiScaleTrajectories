@@ -73,16 +73,18 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Algorithm\Input.cs" />
+    <Compile Include="Algorithm\Output.cs" />
     <Compile Include="Algorithm\Util\DataStructures\Graph\WeightedEdge.cs" />
-    <Compile Include="Algorithm\AlgorithmRunner.cs" />
+    <Compile Include="Algorithm\AlgorithmRunnable.cs" />
     <Compile Include="Controller\AlgoTypeController.cs" />
     <Compile Include="Algorithm\IAlgorithm.cs" />
-    <Compile Include="Algorithm\Geometry2D.cs" />
-    <Compile Include="Algorithm\Point2D.cs" />
+    <Compile Include="Algorithm\Geometry\Geometry2D.cs" />
+    <Compile Include="Algorithm\Geometry\Point2D.cs" />
     <Compile Include="Algorithm\SingleTrajectory\ShortcutShortestPath\ShortcutShortestPath.cs" />
     <Compile Include="Algorithm\SingleTrajectory\STInput.cs" />
     <Compile Include="Algorithm\SingleTrajectory\STOutput.cs" />
-    <Compile Include="Algorithm\Trajectory2D.cs" />
+    <Compile Include="Algorithm\Geometry\Trajectory2D.cs" />
     <Compile Include="Algorithm\SingleTrajectory\ShortcutShortestPath\ShortcutGraph.cs" />
     <Compile Include="Algorithm\Util\DataStructures\Graph\DataEdge.cs" />
     <Compile Include="Algorithm\Util\DataStructures\Graph\DataNode.cs" />
@@ -91,8 +93,11 @@
     <Compile Include="Algorithm\Util\DataStructures\Graph\Node.cs" />
     <Compile Include="Algorithm\Util\Algorithm\ImaiIri.cs" />
     <Compile Include="Controller\IInputController.cs" />
-    <Compile Include="Controller\IViewTypeController.cs" />
+    <Compile Include="Controller\IOutputController.cs" />
+    <Compile Include="Controller\Util\CompoundDataLoader.cs" />
     <Compile Include="Controller\SingleTrajectory\STController.cs" />
+    <Compile Include="Controller\SingleTrajectory\Input\STInputController.cs" />
+    <Compile Include="Controller\SingleTrajectory\Output\STOutputVisualizationController.cs" />
     <Compile Include="View\MainForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -101,28 +106,26 @@
     </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Controller\SingleTrajectory\STVisualizationController.cs">
+    <Compile Include="Controller\Util\IDataLoader.cs" />
+    <Compile Include="View\SingleTrajectory\Input\STInputOptions.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="Controller\SingleTrajectory\STVisualizationController.Designer.cs">
-      <DependentUpon>STVisualizationController.cs</DependentUpon>
+    <Compile Include="View\SingleTrajectory\Input\STInputOptions.Designer.cs">
+      <DependentUpon>STInputOptions.cs</DependentUpon>
     </Compile>
-    <Compile Include="Controller\SingleTrajectory\STInputController.cs">
+    <Compile Include="View\Visualization\GL\Util2D.cs" />
+    <Compile Include="View\Visualization\GL\PickNameManager.cs" />
+    <Compile Include="View\Visualization\GL\TextRenderer2D.cs" />
+    <Compile Include="View\Visualization\GLVisualization.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="Controller\SingleTrajectory\STInputController.Designer.cs">
-      <DependentUpon>STInputController.cs</DependentUpon>
-    </Compile>
-    <Compile Include="View\Type\Visualization\GL\Util.cs" />
-    <Compile Include="View\Type\Visualization\GL\PickNameManager.cs" />
-    <Compile Include="View\Type\Visualization\GL\TextRenderer.cs" />
-    <Compile Include="View\Type\Visualization\GLVisualization.cs">
+    <Compile Include="View\Visualization\GLVisualization2D.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="View\Type\Visualization\GLVisualization2D.cs">
+    <Compile Include="View\SingleTrajectory\Input\STInputVisualization.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="View\Type\Visualization\SingleTrajectory\STVisualization.cs">
+    <Compile Include="View\SingleTrajectory\Output\STOutputVisualization.cs">
       <SubType>UserControl</SubType>
     </Compile>
     <EmbeddedResource Include="View\MainForm.resx">
@@ -138,11 +141,8 @@
       <DependentUpon>Resources.resx</DependentUpon>
       <DesignTime>True</DesignTime>
     </Compile>
-    <EmbeddedResource Include="Controller\SingleTrajectory\STVisualizationController.resx">
-      <DependentUpon>STVisualizationController.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Controller\SingleTrajectory\STInputController.resx">
-      <DependentUpon>STInputController.cs</DependentUpon>
+    <EmbeddedResource Include="View\SingleTrajectory\Input\STInputOptions.resx">
+      <DependentUpon>STInputOptions.cs</DependentUpon>
     </EmbeddedResource>
     <None Include="OpenTK.dll.config" />
     <None Include="packages.config" />

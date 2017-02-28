@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 
-namespace MultiScaleTrajectories.Algorithm
+namespace MultiScaleTrajectories.Algorithm.Geometry
 {
 
     class Trajectory2D : List<Point2D> {

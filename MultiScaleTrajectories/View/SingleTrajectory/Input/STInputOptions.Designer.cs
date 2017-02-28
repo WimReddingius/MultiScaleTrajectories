@@ -1,6 +1,6 @@
-﻿namespace MultiScaleTrajectories.Controller.SingleTrajectory
+﻿namespace MultiScaleTrajectories.View.SingleTrajectory.Input
 {
-    partial class STInputController
+    partial class STInputOptions
     {
         /// <summary> 
         /// Required designer variable.
@@ -28,7 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle9 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
             this.addLevelButton = new System.Windows.Forms.Button();
             this.removeLevelButton = new System.Windows.Forms.Button();
             this.levelTable = new System.Windows.Forms.DataGridView();
@@ -95,23 +95,23 @@
             // 
             // Closeness
             // 
-            dataGridViewCellStyle9.Format = "N3";
-            dataGridViewCellStyle9.NullValue = null;
-            this.Closeness.DefaultCellStyle = dataGridViewCellStyle9;
+            dataGridViewCellStyle1.Format = "N2";
+            dataGridViewCellStyle1.NullValue = null;
+            this.Closeness.DefaultCellStyle = dataGridViewCellStyle1;
             this.Closeness.HeaderText = "Closeness";
             this.Closeness.MinimumWidth = 150;
             this.Closeness.Name = "Closeness";
             this.Closeness.Resizable = System.Windows.Forms.DataGridViewTriState.True;
             this.Closeness.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
             // 
-            // STInputController
+            // STInputOptions
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.Controls.Add(this.levelTable);
             this.Controls.Add(this.removeLevelButton);
             this.Controls.Add(this.addLevelButton);
-            this.Name = "STInputController";
+            this.Name = "STInputOptions";
             this.Size = new System.Drawing.Size(194, 198);
             ((System.ComponentModel.ISupportInitialize)(this.levelTable)).EndInit();
             this.ResumeLayout(false);

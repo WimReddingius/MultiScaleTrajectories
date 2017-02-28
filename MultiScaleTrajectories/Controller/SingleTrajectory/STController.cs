@@ -1,26 +1,34 @@
-﻿using MultiScaleTrajectories.Algorithm;
+﻿using System;
+using System.Collections.Generic;
+using MultiScaleTrajectories.Algorithm;
 using MultiScaleTrajectories.Algorithm.SingleTrajectory;
 using MultiScaleTrajectories.Algorithm.SingleTrajectory.ShortcutShortestPath;
+using MultiScaleTrajectories.Controller.SingleTrajectory.Input;
+using MultiScaleTrajectories.Controller.SingleTrajectory.Output;
+using MultiScaleTrajectories.Controller.Util;
 
 namespace MultiScaleTrajectories.Controller.SingleTrajectory
 {
     class STController : AlgoTypeController
     {
-        readonly AlgorithmRunner<STInput, STOutput> AlgorithmRunner;
+
+        private CompoundDataLoader<STOutput> OutputLoader => (CompoundDataLoader<STOutput>) CurrentOutputController;
+        private CompoundDataLoader<STInput> InputLoader => (CompoundDataLoader<STInput>) InputController;
+        private IAlgorithm<STInput, STOutput> STAlgorithm => (IAlgorithm<STInput, STOutput>) CurrentAlgorithm;
+
 
         public STController()
         {
-            AlgorithmRunner = new AlgorithmRunner<STInput, STOutput>(new STInput(), new STOutput());
-            InputController = new STInputController(AlgorithmRunner);
-
-            ViewControllers.Add(new STVisualizationController(AlgorithmRunner));
             Algorithms.Add(new ShortcutShortestPath());
+            InputController = new STInputController();
+            OutputControllers.Add(new STOutputVisualizationController());
         }
 
-        public override void SetAlgorithm(object algorithm)
+        public override void StartRun()
         {
-            AlgorithmRunner.Algorithm = (IAlgorithm<STInput, STOutput>)algorithm;
-            base.SetAlgorithm(algorithm);
+            var algorithmRunnable = new AlgorithmRunnable<STInput, STOutput>(STAlgorithm, InputLoader.Data);
+            var output = algorithmRunnable.Run();
+            OutputLoader.LoadData(output);
         }
 
         public override string ToString()
@@ -28,5 +36,6 @@ namespace MultiScaleTrajectories.Controller.SingleTrajectory
             return "Single Trajectory";
         }
 
+        
     }
 }

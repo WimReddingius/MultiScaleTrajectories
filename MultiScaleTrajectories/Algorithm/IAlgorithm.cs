@@ -1,8 +1,9 @@
 ﻿namespace MultiScaleTrajectories.Algorithm
 {
-    interface IAlgorithm<TIn, TOut>
+    interface IAlgorithm<TIn, TOut> where TIn : Input where TOut : Output
     {
-        TOut Compute(TIn input);
+
+        void Compute(TIn input, TOut output);
 
         string ToString();
 
