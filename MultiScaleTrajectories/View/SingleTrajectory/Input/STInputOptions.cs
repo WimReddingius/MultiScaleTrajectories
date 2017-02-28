@@ -77,6 +77,12 @@ namespace MultiScaleTrajectories.View.SingleTrajectory.Input
         public void LoadData(STInput input)
         {
             Input = input;
+            input.Replaced += ReloadInput;
+            ReloadInput();
+        }
+
+        private void ReloadInput()
+        {
             levelTable.Rows.Clear();
 
             for (int level = 1; level <= Input.NumLevels; level++)

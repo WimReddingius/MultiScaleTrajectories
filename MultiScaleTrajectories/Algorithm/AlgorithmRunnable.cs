@@ -2,10 +2,11 @@
 
 namespace MultiScaleTrajectories.Algorithm
 {
-    class AlgorithmRunnable<TIn, TOut> where TIn : Input where TOut : Output, new()
+    class AlgorithmRunnable<TIn, TOut> where TIn : IInput, new() where TOut : Output, new()
     {
 
         public TIn Input;
+        public TOut Output;
         public IAlgorithm<TIn, TOut> Algorithm;
 
         public AlgorithmRunnable(IAlgorithm<TIn, TOut> algorithm, TIn input)
@@ -14,18 +15,20 @@ namespace MultiScaleTrajectories.Algorithm
             Input = input;
         }
 
-        public TOut Run()
+        public AlgorithmRunnable()
         {
-            TOut output = new TOut();
+            Input = new TIn();
+            Output = new TOut();
+        }
 
+        public void Run()
+        {
             Thread runThread = new Thread(() =>
             {
-                Algorithm.Compute(Input, output);
-                output.SetComplete();
+                Algorithm.Compute(Input, Output);
+                Output.SetComplete();
             });
             runThread.Start();
-
-            return output;
         }
 
     }

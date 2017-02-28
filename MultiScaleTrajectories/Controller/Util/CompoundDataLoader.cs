@@ -1,20 +1,24 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 
 namespace MultiScaleTrajectories.Controller.Util
 {
-    abstract class CompoundDataLoader<T>
+    class CompoundDataLoader<T> : IDataLoader<T>
     {
         public List<IDataLoader<T>> DataLoaders;
-        public T Data;
 
-        protected CompoundDataLoader()
+        public CompoundDataLoader()
         {
             DataLoaders = new List<IDataLoader<T>>();
         }
 
-        public virtual void LoadData(T data)
+        public CompoundDataLoader(List<IDataLoader<T>> dataLoaders)
         {
-            Data = data;
+            DataLoaders = dataLoaders;
+        }
+
+        public void LoadData(T data)
+        {
             foreach (IDataLoader<T> control in DataLoaders)
             {
                 control.LoadData(data);

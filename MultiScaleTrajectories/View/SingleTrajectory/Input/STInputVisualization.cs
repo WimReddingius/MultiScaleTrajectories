@@ -76,7 +76,6 @@ namespace MultiScaleTrajectories.View.SingleTrajectory.Input
         private void HandleMouseDown(object sender, System.Windows.Forms.MouseEventArgs e)
         {
             int pickId = Pick(e.X, e.Y);
-            System.Diagnostics.Debug.WriteLine(pickId);
 
             if (e.Button == MouseButtons.Left)
             {
@@ -126,6 +125,12 @@ namespace MultiScaleTrajectories.View.SingleTrajectory.Input
         public void LoadData(STInput input)
         {
             Input = input;
+            Input.Replaced += ReloadInput;
+            ReloadInput();
+        }
+
+        private void ReloadInput()
+        {
             foreach (Point2D p in Input.Trajectory)
             {
                 PickManager.AssignPickId(p);

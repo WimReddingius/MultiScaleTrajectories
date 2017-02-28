@@ -2,6 +2,7 @@
 {
     interface IDataLoader<T>
     {
-        void LoadData(T output);
+        void LoadData(T data);
+
     }
 }

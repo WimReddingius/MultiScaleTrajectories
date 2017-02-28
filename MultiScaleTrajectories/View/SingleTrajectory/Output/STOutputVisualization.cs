@@ -85,5 +85,10 @@ namespace MultiScaleTrajectories.View.SingleTrajectory.Output
             };
         }
 
+        public STOutput GetData()
+        {
+            return Output;
+        }
+
     }
 }

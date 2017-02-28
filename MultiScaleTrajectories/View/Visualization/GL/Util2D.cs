@@ -21,11 +21,6 @@ namespace MultiScaleTrajectories.View.Visualization.GL
             OpenTK.Graphics.OpenGL.GL.End();
         }
 
-        public static void RenderTrajectory(Trajectory2D trajectory)
-        {
-            
-        }
-
         public static void DrawPoint(Point2D point, float radius, Color color)
         {
             OpenTK.Graphics.OpenGL.GL.PushMatrix();
@@ -58,7 +53,6 @@ namespace MultiScaleTrajectories.View.Visualization.GL
             OpenTK.Graphics.OpenGL.GL.Disable(EnableCap.Blend);
             OpenTK.Graphics.OpenGL.GL.Disable(EnableCap.Texture2D);
         }
-
 
         public static void DrawPoints(Trajectory2D trajectory, float radius, Color color)
         {

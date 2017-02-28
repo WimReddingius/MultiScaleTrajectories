@@ -1,15 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace MultiScaleTrajectories.Algorithm
+﻿namespace MultiScaleTrajectories.Algorithm
 {
 
     public delegate void CompletedEventHandler();
 
-    abstract class Output
+    public abstract class Output
     {
 
         public event CompletedEventHandler Completed;

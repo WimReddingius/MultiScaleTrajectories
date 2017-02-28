@@ -1,34 +1,34 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
+using System.Windows.Forms;
 using MultiScaleTrajectories.Algorithm;
 using MultiScaleTrajectories.Algorithm.SingleTrajectory;
 using MultiScaleTrajectories.Algorithm.SingleTrajectory.ShortcutShortestPath;
-using MultiScaleTrajectories.Controller.SingleTrajectory.Input;
 using MultiScaleTrajectories.Controller.SingleTrajectory.Output;
 using MultiScaleTrajectories.Controller.Util;
+using MultiScaleTrajectories.View;
 
 namespace MultiScaleTrajectories.Controller.SingleTrajectory
 {
-    class STController : AlgoTypeController
+    class STController : IAlgoTypeController<STInput, STOutput>
     {
 
-        private CompoundDataLoader<STOutput> OutputLoader => (CompoundDataLoader<STOutput>) CurrentOutputController;
-        private CompoundDataLoader<STInput> InputLoader => (CompoundDataLoader<STInput>) InputController;
-        private IAlgorithm<STInput, STOutput> STAlgorithm => (IAlgorithm<STInput, STOutput>) CurrentAlgorithm;
+        public Control ConfigurationControl { get; }
+        public Control ViewControl { get; }
+
+        public List<IAlgorithm<STInput, STOutput>> Algorithms { get; }
+        public List<DataViewController<STOutput>> OutputControllers { get; }
+        public DataViewController<STInput> InputController { get; }
+        public AlgorithmRunnable<STInput, STOutput> Run { get; set; }
 
 
         public STController()
-        {
-            Algorithms.Add(new ShortcutShortestPath());
+        {            
+            Algorithms = new List<IAlgorithm<STInput, STOutput>>() { new ShortcutShortestPath() };
+            OutputControllers = new List<DataViewController<STOutput>>() { new STOutputVisualizationController() };
             InputController = new STInputController();
-            OutputControllers.Add(new STOutputVisualizationController());
-        }
 
-        public override void StartRun()
-        {
-            var algorithmRunnable = new AlgorithmRunnable<STInput, STOutput>(STAlgorithm, InputLoader.Data);
-            var output = algorithmRunnable.Run();
-            OutputLoader.LoadData(output);
+            ViewControl = new Control();
+            ConfigurationControl = new AlgoConfigTabControl<STInput, STOutput>(ViewControl, this);
         }
 
         public override string ToString()
@@ -36,6 +36,6 @@ namespace MultiScaleTrajectories.Controller.SingleTrajectory
             return "Single Trajectory";
         }
 
-        
+
     }
 }

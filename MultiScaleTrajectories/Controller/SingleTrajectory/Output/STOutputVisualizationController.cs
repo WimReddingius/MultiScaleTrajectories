@@ -5,12 +5,12 @@ using MultiScaleTrajectories.View.SingleTrajectory.Output;
 
 namespace MultiScaleTrajectories.Controller.SingleTrajectory.Output
 {
-    class STOutputVisualizationController : CompoundDataLoader<STOutput>, IOutputController
+    class STOutputVisualizationController : DataViewController<STOutput>
     {
         protected STOutputVisualization OutputVis;
 
-        public Control OptionsControl => null;
-        public Control ViewControl => OutputVis;
+        public override Control OptionsControl => null;
+        public override Control ViewControl => OutputVis;
 
 
         public STOutputVisualizationController()
