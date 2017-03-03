@@ -1,6 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Drawing;
 using System.IO;
 using System.Linq;
 using System.Windows.Forms;
@@ -19,11 +17,11 @@ namespace MultiScaleTrajectories.View
         private TIn CurrentInput  => Controller.InputController.Input;
 
         private OutputController<TIn, TOut> CurrentOutputController 
-            => (OutputController<TIn, TOut>)explorationControllerComboBox.SelectedItem;
+            => (OutputController<TIn, TOut>)outputControllerComboBox.SelectedItem;
 
         private AlgorithmRun<TIn, TOut>[] OutputRuns
-            => outputTable.Rows.Cast<DataGridViewRow>()
-            .Select(row => (AlgorithmRun<TIn, TOut>)row.Cells["outputTableRunColumn"].Value)
+            => workloadTable.SelectedRows.Cast<DataGridViewRow>()
+            .Select(row => (AlgorithmRun<TIn, TOut>)row.Cells["workloadTableRunColumn"].Value)
             .ToArray();
 
 
@@ -53,36 +51,11 @@ namespace MultiScaleTrajectories.View
             workloadTableAlgoColumn.DataSource = Controller.Algorithms;
             workloadTableAlgoColumn.DisplayMember = "Name";
             workloadTableAlgoColumn.ValueMember = "Self";
-
-            outputTableRunColumn.DataSource = Controller.Workload.Runs;
-            outputTableRunColumn.DisplayMember = "Name";
-            outputTableRunColumn.ValueMember = "Self";
-        }
-
-        private void tabControl_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            TabPage page = tabControl.SelectedTab;
-
-            if (page == runTabPage || page == inputTabPage)
-                LoadView(Controller.InputController.ViewControl);
-            else if (page == outputTabPage)
-            {
-                if (Controller.Workload.HasStarted && CurrentOutputController != null)
-                    LoadView(CurrentOutputController.ViewControl);
-            }
         }
 
         private void outputControllerComboBox_SelectedIndexChanged(object sender, EventArgs e)
         {
-            OutputController<TIn, TOut> outputController = CurrentOutputController;
-
-            outputController.LoadRuns(OutputRuns);
-
-            if (Controller.Workload.HasStarted && CurrentOutputController != null)
-            {
-                FormsUtil.FillContainer(outputViewOptionsPanel, outputController.OptionsControl);
-                LoadView(CurrentOutputController.ViewControl);
-            }
+            ViewOutputController();
         }
 
         private void openInputButton_Click(object sender, EventArgs e)
@@ -144,29 +117,30 @@ namespace MultiScaleTrajectories.View
         private void computeWorkloadButton_Click(object sender, EventArgs e)
         {
             SetComputing(true);
-
             Controller.Workload.Run();
+            ViewOutputController();
         }
 
         private void resetWorkloadButton_Click(object sender, EventArgs e)
         {
             SetComputing(false);
 
+            LoadView(Controller.InputController.ViewControl);
             Controller.Workload.Reset();
         }
 
         private void SetComputing(bool computing)
         {
             computeWorkloadButton.Enabled = !computing;
-            resetWorkloadButton.Enabled = computing;
-
             addWorkloadRunButton.Enabled = !computing;
             removeWorkloadRunButton.Enabled = !computing;
-            EnableDataGridView(workloadTable, !computing);
 
-            addOutputButton.Enabled = computing;
-            removeOutputRunButton.Enabled = computing;
-            EnableDataGridView(outputTable, computing);
+            if (!computing)
+                outputControllerComboBox.Enabled = false;
+
+            resetWorkloadButton.Enabled = computing;
+            workloadTableAlgoColumn.ReadOnly = computing;
+            workloadTableInputColumn.ReadOnly = computing;
         }
 
         private void addWorkloadRunButton_Click(object sender, EventArgs e)
@@ -187,8 +161,6 @@ namespace MultiScaleTrajectories.View
 
                 workloadTable.Rows.Remove(row);
                 Controller.Workload.Runs.Remove(run);
-
-                RemoveOutputRun(run);
             }
         }
 
@@ -239,51 +211,10 @@ namespace MultiScaleTrajectories.View
             }
         }
 
-        private void addOutputButton_Click(object sender, EventArgs e)
-        {
-            if (Controller.Workload.Runs.Count > 0 && Controller.Workload.HasStarted)
-            {
-                var run = Controller.Workload.Runs.ToList().Find(r => !OutputRuns.Contains(r));
-                if (run != null)
-                {
-                    outputTable.Rows.Add(run, run.Input, run.Algorithm);
-                    UpdateAvailableOutputControllers();
-                }
-            }
-        }
-
-        private void removeOutputRunButton_Click(object sender, EventArgs e)
-        {
-            foreach (DataGridViewRow row in outputTable.SelectedRows)
-            {
-                outputTable.Rows.Remove(row);
-            }
-            UpdateAvailableOutputControllers();
-        }
-
-        private void UpdateAvailableOutputControllers()
-        {
-            int outputDimension = OutputRuns.Length;
-            var availableOutputControllers = Controller.ExplorationControllers.ToList().FindAll(c => c.SupportsOutputDimension(outputDimension)).ToArray();
-
-            explorationControllerComboBox.DataSource = availableOutputControllers;
-            explorationControllerComboBox.Enabled = (availableOutputControllers.Length > 0);
-        }
-
         private void LoadView(Control control)
         {
             FormsUtil.FillContainer(ViewContainer, control);
             control?.Focus();
-        }
-
-        private void RemoveOutputRun(AlgorithmRun<TIn, TOut> run)
-        {
-            outputTable.Rows
-            .Cast<DataGridViewRow>().ToList()
-            .FindAll(r => (AlgorithmRun<TIn, TOut>)r.Cells["outputTableRunColumn"].Value == run)
-            .ForEach(r => outputTable.Rows.Remove(r));
-
-            UpdateAvailableOutputControllers();
         }
 
         private void RemoveWorkloadRun(AlgorithmRun<TIn, TOut> run)
@@ -294,37 +225,28 @@ namespace MultiScaleTrajectories.View
             .Cast<DataGridViewRow>().ToList()
             .FindAll(r => (AlgorithmRun<TIn, TOut>)r.Cells["workloadTableRunColumn"].Value == run)
             .ForEach(r => workloadTable.Rows.Remove(r));
-
-            RemoveOutputRun(run);
         }
 
-        private void EnableDataGridView(DataGridView dataGridView, bool enabled)
+        private void workloadTable_SelectionChanged(object sender, EventArgs e)
         {
-            dataGridView.Enabled = enabled;
-            foreach (DataGridViewRow row in dataGridView.Rows)
-            {
-                foreach (DataGridViewCell rowCell in row.Cells)
-                {
-                    EnableCell(rowCell, enabled);
-                }
-            }
+            int outputDimension = OutputRuns.Length;
+            var availableOutputControllers = Controller.ExplorationControllers.ToList().FindAll(c => c.SupportsOutputDimension(outputDimension)).ToArray();
+
+            outputControllerComboBox.DataSource = availableOutputControllers;
+            outputControllerComboBox.Enabled = (availableOutputControllers.Length > 0);
+
+            ViewOutputController();
         }
 
-        private void EnableCell(DataGridViewCell dc, bool enabled)
+        private void ViewOutputController()
         {
-            //toggle read-only state
-            dc.ReadOnly = !enabled;
-            if (enabled)
+            OutputController<TIn, TOut> outputController = CurrentOutputController;
+
+            if (Controller.Workload.HasStarted && outputController != null)
             {
-                //restore cell style to the default value
-                dc.Style.BackColor = dc.OwningColumn.DefaultCellStyle.BackColor;
-                dc.Style.ForeColor = dc.OwningColumn.DefaultCellStyle.ForeColor;
-            }
-            else
-            {
-                //gray out the cell
-                dc.Style.BackColor = Color.LightGray;
-                dc.Style.ForeColor = Color.DarkGray;
+                outputController.LoadRuns(OutputRuns);
+                FormsUtil.FillContainer(outputViewOptionsPanel, outputController.OptionsControl);
+                LoadView(CurrentOutputController.ViewControl);
             }
         }
 

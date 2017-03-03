@@ -28,21 +28,23 @@
         /// </summary>
         private void InitializeComponent()
         {
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
             this.addLevelButton = new System.Windows.Forms.Button();
             this.removeLevelButton = new System.Windows.Forms.Button();
             this.levelTable = new System.Windows.Forms.DataGridView();
             this.Level = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.Closeness = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
             ((System.ComponentModel.ISupportInitialize)(this.levelTable)).BeginInit();
+            this.tableLayoutPanel1.SuspendLayout();
             this.SuspendLayout();
             // 
             // addLevelButton
             // 
-            this.addLevelButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.addLevelButton.Location = new System.Drawing.Point(3, 172);
+            this.addLevelButton.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.addLevelButton.Location = new System.Drawing.Point(3, 3);
             this.addLevelButton.Name = "addLevelButton";
-            this.addLevelButton.Size = new System.Drawing.Size(90, 23);
+            this.addLevelButton.Size = new System.Drawing.Size(91, 27);
             this.addLevelButton.TabIndex = 10;
             this.addLevelButton.Text = "Add";
             this.addLevelButton.UseVisualStyleBackColor = true;
@@ -50,10 +52,10 @@
             // 
             // removeLevelButton
             // 
-            this.removeLevelButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.removeLevelButton.Location = new System.Drawing.Point(103, 172);
+            this.removeLevelButton.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.removeLevelButton.Location = new System.Drawing.Point(100, 3);
             this.removeLevelButton.Name = "removeLevelButton";
-            this.removeLevelButton.Size = new System.Drawing.Size(88, 23);
+            this.removeLevelButton.Size = new System.Drawing.Size(91, 27);
             this.removeLevelButton.TabIndex = 11;
             this.removeLevelButton.Text = "Remove";
             this.removeLevelButton.UseVisualStyleBackColor = true;
@@ -80,7 +82,7 @@
             this.levelTable.Name = "levelTable";
             this.levelTable.RowHeadersVisible = false;
             this.levelTable.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
-            this.levelTable.Size = new System.Drawing.Size(194, 162);
+            this.levelTable.Size = new System.Drawing.Size(194, 159);
             this.levelTable.TabIndex = 12;
             this.levelTable.CellEndEdit += new System.Windows.Forms.DataGridViewCellEventHandler(this.levelTable_CellEndEdit);
             // 
@@ -95,25 +97,40 @@
             // 
             // Closeness
             // 
-            dataGridViewCellStyle2.Format = "N2";
-            dataGridViewCellStyle2.NullValue = null;
-            this.Closeness.DefaultCellStyle = dataGridViewCellStyle2;
+            dataGridViewCellStyle1.Format = "N2";
+            dataGridViewCellStyle1.NullValue = null;
+            this.Closeness.DefaultCellStyle = dataGridViewCellStyle1;
             this.Closeness.HeaderText = "Closeness";
             this.Closeness.MinimumWidth = 150;
             this.Closeness.Name = "Closeness";
             this.Closeness.Resizable = System.Windows.Forms.DataGridViewTriState.True;
             this.Closeness.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
             // 
+            // tableLayoutPanel1
+            // 
+            this.tableLayoutPanel1.ColumnCount = 2;
+            this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
+            this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
+            this.tableLayoutPanel1.Controls.Add(this.addLevelButton, 0, 0);
+            this.tableLayoutPanel1.Controls.Add(this.removeLevelButton, 1, 0);
+            this.tableLayoutPanel1.Dock = System.Windows.Forms.DockStyle.Bottom;
+            this.tableLayoutPanel1.Location = new System.Drawing.Point(0, 165);
+            this.tableLayoutPanel1.Name = "tableLayoutPanel1";
+            this.tableLayoutPanel1.RowCount = 1;
+            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
+            this.tableLayoutPanel1.Size = new System.Drawing.Size(194, 33);
+            this.tableLayoutPanel1.TabIndex = 13;
+            // 
             // STInputOptions
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.Controls.Add(this.tableLayoutPanel1);
             this.Controls.Add(this.levelTable);
-            this.Controls.Add(this.removeLevelButton);
-            this.Controls.Add(this.addLevelButton);
             this.Name = "STInputOptions";
             this.Size = new System.Drawing.Size(194, 198);
             ((System.ComponentModel.ISupportInitialize)(this.levelTable)).EndInit();
+            this.tableLayoutPanel1.ResumeLayout(false);
             this.ResumeLayout(false);
 
         }
@@ -125,5 +142,6 @@
         private System.Windows.Forms.DataGridView levelTable;
         private System.Windows.Forms.DataGridViewTextBoxColumn Level;
         private System.Windows.Forms.DataGridViewTextBoxColumn Closeness;
+        private System.Windows.Forms.TableLayoutPanel tableLayoutPanel1;
     }
 }

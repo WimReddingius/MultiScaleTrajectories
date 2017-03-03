@@ -68,6 +68,7 @@ namespace MultiScaleTrajectories.View.SingleTrajectory.Output
 
         public void LoadData(AlgorithmRun<STInput, STOutput>[] runs)
         {
+            HandleOutputIncomplete();
             Output = runs[0].Output;
 
             if (Output.IsComplete)

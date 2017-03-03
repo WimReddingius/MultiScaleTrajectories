@@ -38,6 +38,7 @@ namespace MultiScaleTrajectories.Algorithm
             {
                 run.Reset();
             }
+            HasStarted = false;
         }
 
     }
