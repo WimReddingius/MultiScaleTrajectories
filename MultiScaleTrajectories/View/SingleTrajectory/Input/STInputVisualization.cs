@@ -3,11 +3,11 @@ using System.Linq;
 using System.Windows.Forms;
 using MultiScaleTrajectories.Algorithm.Geometry;
 using MultiScaleTrajectories.Algorithm.SingleTrajectory;
+using MultiScaleTrajectories.Controller;
 using MultiScaleTrajectories.View.Visualization;
 using MultiScaleTrajectories.View.Visualization.GL;
 using OpenTK;
 using OpenTK.Input;
-using MultiScaleTrajectories.Controller.Util;
 
 namespace MultiScaleTrajectories.View.SingleTrajectory.Input
 {
@@ -125,12 +125,6 @@ namespace MultiScaleTrajectories.View.SingleTrajectory.Input
         public void LoadData(STInput input)
         {
             Input = input;
-            Input.Replaced += ReloadInput;
-            ReloadInput();
-        }
-
-        private void ReloadInput()
-        {
             foreach (Point2D p in Input.Trajectory)
             {
                 PickManager.AssignPickId(p);

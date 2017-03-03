@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MainForm));
             this.baseSplitContainer = new System.Windows.Forms.SplitContainer();
             this.configurationSplitContainer = new System.Windows.Forms.SplitContainer();
             this.algorithmTypeLabel = new System.Windows.Forms.Label();
@@ -46,15 +47,14 @@
             // 
             this.baseSplitContainer.Dock = System.Windows.Forms.DockStyle.Fill;
             this.baseSplitContainer.FixedPanel = System.Windows.Forms.FixedPanel.Panel2;
-            this.baseSplitContainer.IsSplitterFixed = true;
             this.baseSplitContainer.Location = new System.Drawing.Point(0, 0);
             this.baseSplitContainer.Name = "baseSplitContainer";
             // 
             // baseSplitContainer.Panel2
             // 
             this.baseSplitContainer.Panel2.Controls.Add(this.configurationSplitContainer);
-            this.baseSplitContainer.Size = new System.Drawing.Size(988, 573);
-            this.baseSplitContainer.SplitterDistance = 729;
+            this.baseSplitContainer.Size = new System.Drawing.Size(1106, 648);
+            this.baseSplitContainer.SplitterDistance = 828;
             this.baseSplitContainer.TabIndex = 0;
             // 
             // configurationSplitContainer
@@ -70,7 +70,7 @@
             // 
             this.configurationSplitContainer.Panel1.Controls.Add(this.algorithmTypeLabel);
             this.configurationSplitContainer.Panel1.Controls.Add(this.algorithmTypeComboBox);
-            this.configurationSplitContainer.Size = new System.Drawing.Size(255, 573);
+            this.configurationSplitContainer.Size = new System.Drawing.Size(274, 648);
             this.configurationSplitContainer.SplitterDistance = 58;
             this.configurationSplitContainer.TabIndex = 11;
             // 
@@ -85,10 +85,12 @@
             // 
             // algorithmTypeComboBox
             // 
+            this.algorithmTypeComboBox.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.algorithmTypeComboBox.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.algorithmTypeComboBox.Location = new System.Drawing.Point(0, 25);
+            this.algorithmTypeComboBox.Location = new System.Drawing.Point(3, 25);
             this.algorithmTypeComboBox.Name = "algorithmTypeComboBox";
-            this.algorithmTypeComboBox.Size = new System.Drawing.Size(252, 21);
+            this.algorithmTypeComboBox.Size = new System.Drawing.Size(268, 21);
             this.algorithmTypeComboBox.TabIndex = 1;
             this.algorithmTypeComboBox.SelectedIndexChanged += new System.EventHandler(this.algorithmTypeComboBox_SelectedIndexChanged);
             // 
@@ -109,8 +111,9 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(988, 573);
+            this.ClientSize = new System.Drawing.Size(1106, 648);
             this.Controls.Add(this.baseSplitContainer);
+            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Name = "MainForm";
             this.Text = "Multi-Scale Trajectory Simplification Algorithms Framework";
             this.baseSplitContainer.Panel2.ResumeLayout(false);

@@ -1,27 +1,16 @@
-﻿using System.Windows.Forms;
-using MultiScaleTrajectories.Algorithm.SingleTrajectory;
-using MultiScaleTrajectories.Controller.Util;
+﻿using MultiScaleTrajectories.Algorithm.SingleTrajectory;
 using MultiScaleTrajectories.View.SingleTrajectory.Input;
+using MultiScaleTrajectories.View.Visualization;
 
 namespace MultiScaleTrajectories.Controller.SingleTrajectory
 {
-    class STInputController : DataViewController<STInput>
+    class STInputController : InputController<STInput>
     {
-
-        private readonly STInputOptions Options;
-        private readonly STInputVisualization View;
-
-        public override Control OptionsControl => Options;
-        public override Control ViewControl => View;
-
 
         public STInputController()
         {
-            Options = new STInputOptions();
-            View = new STInputVisualization();
-
-            DataLoaders.Add(Options);
-            DataLoaders.Add(View);
+            OptionsControl = new STInputOptions();
+            ViewControl = new GLDataVisualization<STInputVisualization, STInput>();
         }
 
     }

@@ -1,18 +1,13 @@
-﻿using System.Collections.Generic;
-using MultiScaleTrajectories.Algorithm;
+﻿using System.Windows.Forms;
 
 namespace MultiScaleTrajectories.Controller
 {
-    interface IAlgoController<TIn, TOut> : IAlgoView where TOut : Output, new() where TIn : Input, new()
+    interface IAlgoController
     {
 
-        List<IAlgorithm<TIn, TOut>> Algorithms { get; }
+        Control ConfigControl { get; }
 
-        List<DataViewController<TOut>> OutputControllers { get; }
-
-        DataViewController<TIn> InputController { get;  }
-
-        AlgorithmRunnable<TIn, TOut> Run { get; set; }
+        string Name { get;  }
 
     }
 }

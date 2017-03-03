@@ -1,11 +1,10 @@
 ﻿using System;
 using System.Windows.Forms;
 using MultiScaleTrajectories.Algorithm.SingleTrajectory;
-using MultiScaleTrajectories.Controller.Util;
 
 namespace MultiScaleTrajectories.View.SingleTrajectory.Input
 {
-    partial class STInputOptions : UserControl, IDataLoader<STInput>
+    partial class STInputOptions : DataControl<STInput>
     {
         private STInput Input;
 
@@ -74,15 +73,9 @@ namespace MultiScaleTrajectories.View.SingleTrajectory.Input
             }
         }
 
-        public void LoadData(STInput input)
+        public override void LoadData(STInput input)
         {
             Input = input;
-            input.Replaced += ReloadInput;
-            ReloadInput();
-        }
-
-        private void ReloadInput()
-        {
             levelTable.Rows.Clear();
 
             for (int level = 1; level <= Input.NumLevels; level++)

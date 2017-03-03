@@ -75,17 +75,21 @@
   <ItemGroup>
     <Compile Include="Algorithm\Input.cs" />
     <Compile Include="Algorithm\Output.cs" />
+    <Compile Include="Algorithm\AlgorithmWorkload.cs" />
     <Compile Include="Algorithm\Util\DataStructures\Graph\WeightedEdge.cs" />
-    <Compile Include="Algorithm\AlgorithmRunnable.cs" />
+    <Compile Include="Algorithm\AlgorithmRun.cs" />
+    <Compile Include="Controller\AlgoController.cs" />
     <Compile Include="Controller\IAlgoController.cs" />
-    <Compile Include="Controller\IAlgoView.cs" />
-    <Compile Include="View\AlgoTabControl.cs">
+    <Compile Include="Controller\InputController.cs" />
+    <Compile Include="Controller\IDataLoader.cs" />
+    <Compile Include="Controller\OutputController.cs" />
+    <Compile Include="View\AlgoConfig.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="View\AlgoTabControl.Designer.cs">
-      <DependentUpon>AlgoTabControl.cs</DependentUpon>
+    <Compile Include="View\AlgoConfig.Designer.cs">
+      <DependentUpon>AlgoConfig.cs</DependentUpon>
     </Compile>
-    <Compile Include="Algorithm\IAlgorithm.cs" />
+    <Compile Include="Algorithm\Algorithm.cs" />
     <Compile Include="Algorithm\Geometry\Geometry2D.cs" />
     <Compile Include="Algorithm\Geometry\Point2D.cs" />
     <Compile Include="Algorithm\SingleTrajectory\ShortcutShortestPath\ShortcutShortestPath.cs" />
@@ -99,11 +103,12 @@
     <Compile Include="Algorithm\Util\DataStructures\Graph\Graph.cs" />
     <Compile Include="Algorithm\Util\DataStructures\Graph\Node.cs" />
     <Compile Include="Algorithm\Util\Algorithm\ImaiIri.cs" />
-    <Compile Include="Controller\DataViewController.cs" />
-    <Compile Include="Controller\Util\CompoundDataLoader.cs" />
     <Compile Include="Controller\SingleTrajectory\STController.cs" />
     <Compile Include="Controller\SingleTrajectory\STInputController.cs" />
-    <Compile Include="Controller\SingleTrajectory\Output\STOutputVisualizationController.cs" />
+    <Compile Include="Controller\SingleTrajectory\Output\STVisualizationController.cs" />
+    <Compile Include="View\DataControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
     <Compile Include="View\MainForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -112,7 +117,6 @@
     </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Controller\Util\IDataLoader.cs" />
     <Compile Include="View\SingleTrajectory\Input\STInputOptions.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -120,6 +124,9 @@
       <DependentUpon>STInputOptions.cs</DependentUpon>
     </Compile>
     <Compile Include="View\Util.cs" />
+    <Compile Include="View\Visualization\GLDataVisualization.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
     <Compile Include="View\Visualization\GL\Util2D.cs" />
     <Compile Include="View\Visualization\GL\PickNameManager.cs" />
     <Compile Include="View\Visualization\GL\TextRenderer2D.cs" />
@@ -135,8 +142,8 @@
     <Compile Include="View\SingleTrajectory\Output\STOutputVisualization.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <EmbeddedResource Include="View\AlgoTabControl.resx">
-      <DependentUpon>AlgoTabControl.cs</DependentUpon>
+    <EmbeddedResource Include="View\AlgoConfig.resx">
+      <DependentUpon>AlgoConfig.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="View\MainForm.resx">
       <DependentUpon>MainForm.cs</DependentUpon>

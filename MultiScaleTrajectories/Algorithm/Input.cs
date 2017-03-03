@@ -6,18 +6,25 @@
     abstract class Input
     {
 
-        public event ReplacedEventHandler Replaced;
+        private static int IdGenerator = 1;
+        public string Name { get;  }
+        public Input Self => this;
+
+
+        protected Input()
+        {
+            Name = "Input " + IdGenerator++;
+        }
 
         public abstract string Serialize();
 
-        public virtual void LoadSerialized(string serialized)
-        {
-            Replaced?.Invoke();
-        }
+        public abstract void LoadSerialized(string serialized);
 
-        public virtual void Clear()
+        public abstract void Clear();
+
+        public override string ToString()
         {
-            Replaced?.Invoke();
+            return Name;
         }
 
     }

@@ -7,9 +7,12 @@ using MultiScaleTrajectories.Algorithm.Geometry;
 
 namespace MultiScaleTrajectories.Algorithm.SingleTrajectory.ShortcutShortestPath
 {
-    class ShortcutShortestPath : IAlgorithm<STInput, STOutput>
+    class ShortcutShortestPath : Algorithm<STInput, STOutput>
     {
-        public void Compute(STInput input, STOutput output)
+
+        public override string Name => "Shortcut Shortest Path";
+
+        public override void Compute(STInput input, STOutput output)
         {
             Trajectory2D trajectory = input.Trajectory;
 
@@ -102,9 +105,5 @@ namespace MultiScaleTrajectories.Algorithm.SingleTrajectory.ShortcutShortestPath
             return weight;
         }
 
-        public override string ToString()
-        {
-            return "Shortcut Shortest Path";
-        }
     }
 }

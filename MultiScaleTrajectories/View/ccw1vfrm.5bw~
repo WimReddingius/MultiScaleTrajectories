@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Windows.Forms;
 using MultiScaleTrajectories.Controller;
 using MultiScaleTrajectories.Controller.SingleTrajectory;
@@ -8,9 +7,6 @@ namespace MultiScaleTrajectories.View
 {
     partial class MainForm : Form
     {
-
-        public Control LargeContainer => baseSplitContainer.Panel1;
-
 
         public MainForm()
         {
@@ -23,19 +19,17 @@ namespace MultiScaleTrajectories.View
         {
             algorithmTypeComboBox.Items.Clear();
 
-            List<IAlgoController> controllers = new List<IAlgoController>
-            {
-                new STController(LargeContainer)
-            };
-
-            algorithmTypeComboBox.DataSource = controllers;
-            algorithmTypeComboBox.DisplayMember = "Name";
+            algorithmTypeComboBox.Items.Add(new STController());
+            algorithmTypeComboBox.SelectedItem = algorithmTypeComboBox.Items[0];
         }
 
         private void algorithmTypeComboBox_SelectedIndexChanged(object sender, EventArgs e)
         {
-            var algoController = (IAlgoController) algorithmTypeComboBox.SelectedItem;
-            FormsUtil.FillContainer(configurationSplitContainer.Panel2, algoController.ConfigControl);
+            var algoView = (IAlgoView) algorithmTypeComboBox.SelectedItem;
+
+            //set controls corresponding to algorithm type
+            FormsUtil.FillContainer(configurationSplitContainer.Panel2, algoView.ConfigurationControl);
+            FormsUtil.FillContainer(baseSplitContainer.Panel1, algoView.ViewControl);
         }
 
     }

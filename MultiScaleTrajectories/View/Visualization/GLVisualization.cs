@@ -8,7 +8,6 @@ namespace MultiScaleTrajectories.View.Visualization
     {
         protected GLVisualization() : base(new OpenTK.Graphics.GraphicsMode(32, 24, 0, 8))
         {
-            ParentChanged += (o, e) => MakeCurrent();
             Paint += Render;
         }
 

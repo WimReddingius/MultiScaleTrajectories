@@ -1,8 +1,7 @@
-﻿namespace MultiScaleTrajectories.Controller.Util
+﻿namespace MultiScaleTrajectories.Controller
 {
     interface IDataLoader<T>
     {
         void LoadData(T data);
-
     }
 }

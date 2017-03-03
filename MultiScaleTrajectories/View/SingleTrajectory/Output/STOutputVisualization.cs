@@ -1,27 +1,30 @@
 ﻿using System;
 using System.Drawing;
 using System.Windows.Forms;
+using MultiScaleTrajectories.Algorithm;
 using MultiScaleTrajectories.Algorithm.Geometry;
 using MultiScaleTrajectories.Algorithm.SingleTrajectory;
-using MultiScaleTrajectories.Controller.Util;
+using MultiScaleTrajectories.Controller;
 using MultiScaleTrajectories.View.Visualization;
 using MultiScaleTrajectories.View.Visualization.GL;
 
 namespace MultiScaleTrajectories.View.SingleTrajectory.Output
 {
-    class STOutputVisualization : GLVisualization2D, IDataLoader<STOutput>
+    class STOutputVisualization : GLVisualization2D, IDataLoader<AlgorithmRun<STInput, STOutput>[]>
     {
         private STOutput Output;
         private int CurrentLevel;
 
+        public STOutputVisualization()
+        {
+            HandleOutputIncomplete();
+        }
+
         protected override void RenderWorld()
         {
-            if (Output.IsComplete)
-            {
-                Util2D.DrawEdges(GetRenderedTrajectory(), 2.5f, Color.Red);
-                Util2D.DrawPoints(GetRenderedTrajectory(), 3.5f, Color.Red);
-            }
-
+            Util2D.DrawEdges(GetRenderedTrajectory(), 2.5f, Color.Red);
+            Util2D.DrawPoints(GetRenderedTrajectory(), 3.5f, Color.Red);
+            
             int padding = 5;
             string text = "Level " + CurrentLevel;
             Color color = Color.Black;
@@ -63,31 +66,34 @@ namespace MultiScaleTrajectories.View.SingleTrajectory.Output
             return base.IsInputKey(keyData);
         }
 
-        public void LoadData(STOutput output)
+        public void LoadData(AlgorithmRun<STInput, STOutput>[] runs)
         {
-            Output = output;
+            Output = runs[0].Output;
 
-            CurrentLevel = -1;
-            KeyDown -= HandleArrowKeys;
-
-            Output.Completed += () =>
-            {
-                if (InvokeRequired)
-                {
-                    Action del = () =>
-                    {
-                        CurrentLevel = Output.NumLevels;
-                        KeyDown += HandleArrowKeys;
-                        Refresh();
-                    };
-                    Invoke(del);
-                }
-            };
+            if (Output.IsComplete)
+                HandleOutputComplete();
+            else
+                Output.Completed += HandleOutputComplete;
         }
 
-        public STOutput GetData()
+        private void HandleOutputIncomplete()
         {
-            return Output;
+            CurrentLevel = -1;
+            KeyDown -= HandleArrowKeys;
+            Paint -= Render;
+        }
+
+        private void HandleOutputComplete()
+        {
+            CurrentLevel = Output.NumLevels;
+            KeyDown += HandleArrowKeys;
+            Paint += Render;
+
+            if (InvokeRequired)
+            {
+                Action del = Refresh;
+                Invoke(del);
+            }
         }
 
     }

@@ -51,7 +51,6 @@ namespace MultiScaleTrajectories.Algorithm.SingleTrajectory
         {
             Trajectory = new Trajectory2D();
             Epsilons = new List<double> { double.PositiveInfinity };
-            base.Clear();
         }
 
         public override void LoadSerialized(string serializedInput)
@@ -59,7 +58,6 @@ namespace MultiScaleTrajectories.Algorithm.SingleTrajectory
             STInput input = JsonConvert.DeserializeObject<STInput>(serializedInput);
             Trajectory = input.Trajectory;
             Epsilons = input.Epsilons;
-            base.LoadSerialized(serializedInput);
         }
 
     }
