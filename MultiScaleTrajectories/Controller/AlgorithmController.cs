@@ -5,14 +5,14 @@ using MultiScaleTrajectories.View;
 
 namespace MultiScaleTrajectories.Controller
 {
-    abstract class AlgoController<TIn, TOut> : IAlgoController where TOut : Output, new() where TIn : Input, new()
+    abstract class AlgorithmController<TIn, TOut> : IAlgorithmController where TOut : Output, new() where TIn : Input, new()
     {
 
         public abstract string Name { get; }
 
-        public Control ConfigControl => Config;
+        public Control Control => View;
 
-        public AlgoConfig<TIn, TOut> Config;
+        public AlgorithmView<TIn, TOut> View;
 
         public AlgorithmWorkload<TIn, TOut> Workload;
 
@@ -22,13 +22,13 @@ namespace MultiScaleTrajectories.Controller
 
         public InputController<TIn> InputController;
 
-        public BindingList<OutputController<TIn, TOut>> ExplorationControllers;
+        public BindingList<OutputController<TIn, TOut>> OutputControllers;
 
         
-        protected AlgoController()
+        protected AlgorithmController()
         {
             Algorithms = new BindingList<Algorithm<TIn, TOut>>();
-            ExplorationControllers = new BindingList<OutputController<TIn, TOut>>();
+            OutputControllers = new BindingList<OutputController<TIn, TOut>>();
             Workload = new AlgorithmWorkload<TIn, TOut>();
             Inputs = new BindingList<TIn>();
         }

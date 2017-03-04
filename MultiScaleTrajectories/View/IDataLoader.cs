@@ -1,4 +1,4 @@
-﻿namespace MultiScaleTrajectories.Controller
+﻿namespace MultiScaleTrajectories.View
 {
     interface IDataLoader<T>
     {

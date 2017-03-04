@@ -78,16 +78,16 @@
     <Compile Include="Algorithm\AlgorithmWorkload.cs" />
     <Compile Include="Algorithm\Util\DataStructures\Graph\WeightedEdge.cs" />
     <Compile Include="Algorithm\AlgorithmRun.cs" />
-    <Compile Include="Controller\AlgoController.cs" />
-    <Compile Include="Controller\IAlgoController.cs" />
+    <Compile Include="Controller\AlgorithmController.cs" />
+    <Compile Include="Controller\IAlgorithmController.cs" />
     <Compile Include="Controller\InputController.cs" />
-    <Compile Include="Controller\IDataLoader.cs" />
+    <Compile Include="View\IDataLoader.cs" />
     <Compile Include="Controller\OutputController.cs" />
-    <Compile Include="View\AlgoConfig.cs">
+    <Compile Include="View\AlgorithmView.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="View\AlgoConfig.Designer.cs">
-      <DependentUpon>AlgoConfig.cs</DependentUpon>
+    <Compile Include="View\AlgorithmView.Designer.cs">
+      <DependentUpon>AlgorithmView.cs</DependentUpon>
     </Compile>
     <Compile Include="Algorithm\Algorithm.cs" />
     <Compile Include="Algorithm\Geometry\Geometry2D.cs" />
@@ -123,7 +123,7 @@
     <Compile Include="View\SingleTrajectory\Input\STInputOptions.Designer.cs">
       <DependentUpon>STInputOptions.cs</DependentUpon>
     </Compile>
-    <Compile Include="View\Util.cs" />
+    <Compile Include="View\FormsUtil.cs" />
     <Compile Include="View\Visualization\GLDataVisualization.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -142,8 +142,8 @@
     <Compile Include="View\SingleTrajectory\Output\STOutputVisualization.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <EmbeddedResource Include="View\AlgoConfig.resx">
-      <DependentUpon>AlgoConfig.cs</DependentUpon>
+    <EmbeddedResource Include="View\AlgorithmView.resx">
+      <DependentUpon>AlgorithmView.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="View\MainForm.resx">
       <DependentUpon>MainForm.cs</DependentUpon>

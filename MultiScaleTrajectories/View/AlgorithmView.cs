@@ -8,10 +8,10 @@ using Newtonsoft.Json.Linq;
 
 namespace MultiScaleTrajectories.View
 {
-    partial class AlgoConfig<TIn, TOut> : UserControl where TIn : Input, new() where TOut : Output, new()
+    partial class AlgorithmView<TIn, TOut> : UserControl where TIn : Input, new() where TOut : Output, new()
     {
 
-        private readonly AlgoController<TIn, TOut> Controller;
+        private readonly AlgorithmController<TIn, TOut> Controller;
         private readonly Control ViewContainer;
 
         private TIn CurrentInput  => Controller.InputController.Input;
@@ -25,7 +25,7 @@ namespace MultiScaleTrajectories.View
             .ToArray();
 
 
-        public AlgoConfig(Control viewContainer, AlgoController<TIn, TOut> controller)
+        public AlgorithmView(Control viewContainer, AlgorithmController<TIn, TOut> controller)
         {
             InitializeComponent();
 
@@ -230,7 +230,7 @@ namespace MultiScaleTrajectories.View
         private void workloadTable_SelectionChanged(object sender, EventArgs e)
         {
             int outputDimension = OutputRuns.Length;
-            var availableOutputControllers = Controller.ExplorationControllers.ToList().FindAll(c => c.SupportsOutputDimension(outputDimension)).ToArray();
+            var availableOutputControllers = Controller.OutputControllers.ToList().FindAll(c => c.SupportsOutputDimension(outputDimension)).ToArray();
 
             outputControllerComboBox.DataSource = availableOutputControllers;
             outputControllerComboBox.Enabled = (availableOutputControllers.Length > 0);

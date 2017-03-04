@@ -23,7 +23,7 @@ namespace MultiScaleTrajectories.View
         {
             algorithmTypeComboBox.Items.Clear();
 
-            List<IAlgoController> controllers = new List<IAlgoController>
+            List<IAlgorithmController> controllers = new List<IAlgorithmController>
             {
                 new STController(LargeContainer)
             };
@@ -34,8 +34,8 @@ namespace MultiScaleTrajectories.View
 
         private void algorithmTypeComboBox_SelectedIndexChanged(object sender, EventArgs e)
         {
-            var algoController = (IAlgoController) algorithmTypeComboBox.SelectedItem;
-            FormsUtil.FillContainer(configurationSplitContainer.Panel2, algoController.ConfigControl);
+            var algoController = (IAlgorithmController) algorithmTypeComboBox.SelectedItem;
+            FormsUtil.FillContainer(configurationSplitContainer.Panel2, algoController.Control);
         }
 
     }

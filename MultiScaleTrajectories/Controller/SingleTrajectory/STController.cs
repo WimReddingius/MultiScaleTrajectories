@@ -6,7 +6,7 @@ using MultiScaleTrajectories.View;
 
 namespace MultiScaleTrajectories.Controller.SingleTrajectory
 {
-    class STController : AlgoController<STInput, STOutput>
+    class STController : AlgorithmController<STInput, STOutput>
     {
 
         public override string Name => "Single Trajectory";
@@ -15,9 +15,9 @@ namespace MultiScaleTrajectories.Controller.SingleTrajectory
         {
             InputController = new STInputController();
             Algorithms.Add(new ShortcutShortestPath());
-            ExplorationControllers.Add(new STVisualizationController());
+            OutputControllers.Add(new STVisualizationController());
 
-            Config = new AlgoConfig<STInput, STOutput>(viewContainer, this);
+            View = new AlgorithmView<STInput, STOutput>(viewContainer, this);
         }
 
     }

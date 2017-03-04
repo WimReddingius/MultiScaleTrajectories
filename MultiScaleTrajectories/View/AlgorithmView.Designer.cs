@@ -2,7 +2,7 @@
 
 namespace MultiScaleTrajectories.View
 {
-    partial class AlgoConfig<TIn, TOut> where TIn : Input, new() where TOut : Algorithm.Output, new()
+    partial class AlgorithmView<TIn, TOut> where TIn : Input, new() where TOut : Algorithm.Output, new()
     {
         /// <summary> 
         /// Required designer variable.
@@ -415,12 +415,12 @@ namespace MultiScaleTrajectories.View
             this.saveInputDialog.Filter = "JSON(*.json)|*json";
             this.saveInputDialog.Title = "Save Configuration";
             // 
-            // AlgoConfig
+            // AlgorithmView
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.Controls.Add(this.tabControl);
-            this.Name = "AlgoConfig";
+            this.Name = "AlgorithmView";
             this.Size = new System.Drawing.Size(270, 523);
             this.tabControl.ResumeLayout(false);
             this.runTabPage.ResumeLayout(false);

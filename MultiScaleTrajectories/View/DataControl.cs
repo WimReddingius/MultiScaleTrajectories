@@ -1,5 +1,4 @@
 ﻿using System.Windows.Forms;
-using MultiScaleTrajectories.Controller;
 
 namespace MultiScaleTrajectories.View
 {

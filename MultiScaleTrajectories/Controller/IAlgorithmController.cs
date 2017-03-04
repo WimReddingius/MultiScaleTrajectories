@@ -2,10 +2,10 @@
 
 namespace MultiScaleTrajectories.Controller
 {
-    interface IAlgoController
+    interface IAlgorithmController
     {
 
-        Control ConfigControl { get; }
+        Control Control { get; }
 
         string Name { get;  }
 
