@@ -1,9 +1,9 @@
 ﻿using System.Drawing;
 using System.Linq;
 using System.Windows.Forms;
-using AlgorithmVisualization.View.Data;
-using AlgorithmVisualization.View.Visualization;
-using AlgorithmVisualization.View.Visualization.GLUtil;
+using AlgorithmVisualization.View.Exploration.Visualization;
+using AlgorithmVisualization.View.Exploration.Visualization.GLUtil;
+using AlgorithmVisualization.View.Util;
 using OpenTK;
 using OpenTK.Input;
 using TrajectorySimplification.Algorithm.Geometry;

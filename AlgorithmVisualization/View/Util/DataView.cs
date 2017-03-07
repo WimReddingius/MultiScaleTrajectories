@@ -1,6 +1,6 @@
 ﻿using System.Windows.Forms;
 
-namespace AlgorithmVisualization.View.Data
+namespace AlgorithmVisualization.View.Util
 {
     #if DEBUG
 

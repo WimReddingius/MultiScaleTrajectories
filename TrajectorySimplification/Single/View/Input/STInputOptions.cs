@@ -1,10 +1,9 @@
 ﻿using System;
 using System.Windows.Forms;
-using AlgorithmVisualization.View;
-using AlgorithmVisualization.View.Data;
+using AlgorithmVisualization.View.Util;
 using TrajectorySimplification.Single.Algorithm;
 
-namespace MultiScaleTrajectories.View.SingleTrajectory.Input
+namespace TrajectorySimplification.Single.View.Input
 {
     partial class STInputOptions : DataView<STInput>
     {

@@ -17,11 +17,8 @@ namespace TrajectorySimplification
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
 
-            var algoForm = new AlgorithmForm()
-            {
-                Text = Resources.Program_Name
-            };
-            algoForm.AddControllers(new STController());
+            var algoForm = new AlgorithmForm() { Text = Resources.Program_Name };
+            algoForm.AlgoControllers.Add(new STController());
 
             Application.Run(algoForm);
 

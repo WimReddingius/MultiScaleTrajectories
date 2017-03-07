@@ -8,6 +8,6 @@ namespace AlgorithmVisualization.Controller
         AlgorithmViewBase AlgorithmView { get; }
 
         string Name { get;  }
-
+        
     }
 }

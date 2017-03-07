@@ -1,4 +1,4 @@
-﻿namespace AlgorithmVisualization.View.Data
+﻿namespace AlgorithmVisualization.View.Util
 {
     public interface IDataLoader<T>
     {

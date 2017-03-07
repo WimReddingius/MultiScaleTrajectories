@@ -2,9 +2,9 @@
 using System.Drawing;
 using System.Windows.Forms;
 using AlgorithmVisualization.Algorithm;
-using AlgorithmVisualization.View.Data;
-using AlgorithmVisualization.View.Visualization;
-using AlgorithmVisualization.View.Visualization.GLUtil;
+using AlgorithmVisualization.View.Exploration.Visualization;
+using AlgorithmVisualization.View.Exploration.Visualization.GLUtil;
+using AlgorithmVisualization.View.Util;
 using TrajectorySimplification.Algorithm.Geometry;
 using TrajectorySimplification.Single.Algorithm;
 using TrajectorySimplification.View;
@@ -72,10 +72,10 @@ namespace TrajectorySimplification.Single.View.Output
             HandleOutputIncomplete();
             Output = runs[0].Output;
 
-            if (Output.IsComplete)
+            if (runs[0].IsFinished)
                 HandleOutputComplete();
             else
-                Output.Completed += HandleOutputComplete;
+                runs[0].Finished += HandleOutputComplete;
         }
 
         private void HandleOutputIncomplete()

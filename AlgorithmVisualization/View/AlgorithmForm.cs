@@ -1,5 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
+using System.ComponentModel;
 using System.Windows.Forms;
 using AlgorithmVisualization.Controller;
 using AlgorithmVisualization.View.Util;
@@ -8,29 +8,28 @@ namespace AlgorithmVisualization.View
 {
     public partial class AlgorithmForm : Form
     {
-    
+
+        public readonly BindingList<IAlgorithmController> AlgoControllers;
+
         public AlgorithmForm()
         {
             InitializeComponent();
 
             OpenTK.Toolkit.Init();
-        }
 
-        public void AddControllers(params IAlgorithmController[] controllers)
-        {
-            foreach (var algorithmController in controllers)
+            AlgoControllers = new BindingList<IAlgorithmController>();
+            AlgoControllers.ListChanged += (o, e) =>
             {
-                algorithmController.AlgorithmView.Initialize(baseSplitContainer.Panel1);
-            }
-
-            algorithmTypeComboBox.DataSource = controllers;
-            algorithmTypeComboBox.DisplayMember = "Name";
+                algorithmTypeComboBox.DataSource = AlgoControllers;
+                algorithmTypeComboBox.DisplayMember = "Name";
+            };
         }
 
         private void algorithmTypeComboBox_SelectedIndexChanged(object sender, EventArgs e)
         {
-            var algoController = (IAlgorithmController) algorithmTypeComboBox.SelectedItem;
-            FormsUtil.FillContainer(configurationSplitContainer.Panel2, algoController.AlgorithmView);
+            var algoView = ((IAlgorithmController) algorithmTypeComboBox.SelectedItem).AlgorithmView;
+            FormsUtil.FillContainer(baseSplitContainer.Panel1, algoView.VisualizationContainer);
+            FormsUtil.FillContainer(configurationSplitContainer.Panel2, algoView);
         }
 
     }

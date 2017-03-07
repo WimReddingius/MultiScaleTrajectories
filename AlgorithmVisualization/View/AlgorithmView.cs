@@ -9,18 +9,17 @@ using Newtonsoft.Json.Linq;
 
 namespace AlgorithmVisualization.View
 {
-    public partial class AlgorithmView<TIn, TOut> : AlgorithmViewBase where TIn : Input, new() where TOut : Output, new()
+    partial class AlgorithmView<TIn, TOut> : AlgorithmViewBase where TIn : Input, new() where TOut : Output, new()
     {
-
-        private Control VisualizationContainer;
         private readonly AlgorithmController<TIn, TOut> Controller;
 
-        private TIn CurrentInput  => Controller.InputController.Input;
+        public sealed override Control VisualizationContainer { get; set; }
 
-        private OutputController<TIn, TOut> CurrentOutputController 
-            => (OutputController<TIn, TOut>)outputControllerComboBox.SelectedItem;
+        private TIn CurrentInput  => Controller.InputEditor.Input;
 
-        private AlgorithmRun<TIn, TOut>[] OutputRuns
+        private RunExplorer<TIn, TOut> CurrentRunExplorer => (RunExplorer<TIn, TOut>)runExplorerComboBox.SelectedItem;
+
+        private AlgorithmRun<TIn, TOut>[] SelectedRuns
             => workloadTable.SelectedRows.Cast<DataGridViewRow>()
             .Select(row => (AlgorithmRun<TIn, TOut>)row.Cells["workloadTableRunColumn"].Value)
             .ToArray();
@@ -29,20 +28,9 @@ namespace AlgorithmVisualization.View
         public AlgorithmView(AlgorithmController<TIn, TOut> controller)
         {
             InitializeComponent();
+
             Controller = controller;
-        }
-
-        public override void Initialize(Control visualizationContainer)
-        {
-
-            VisualizationContainer = visualizationContainer;
-
-            //default input
-            AddAndLoadInput();
-
-            //go to input editor
-            LoadVisualization(Controller.InputController.VisualizationView);
-            FormsUtil.FillContainer(inputOptionsPanel, Controller.InputController.OptionsView);
+            VisualizationContainer = new Control();
 
             //set up datasources
             workloadTableInputColumn.DataSource = Controller.Inputs;
@@ -56,11 +44,16 @@ namespace AlgorithmVisualization.View
             workloadTableAlgoColumn.DataSource = Controller.Algorithms;
             workloadTableAlgoColumn.DisplayMember = "Name";
             workloadTableAlgoColumn.ValueMember = "Self";
+
+            //load default input
+            CreateInput();
+            FormsUtil.FillContainer(inputOptionsPanel, Controller.InputEditor.Options);
+            LoadVisualization(Controller.InputEditor.Visualization);
         }
 
-        private void outputControllerComboBox_SelectedIndexChanged(object sender, EventArgs e)
+        private void runExplorerComboBox_SelectedIndexChanged(object sender, EventArgs e)
         {
-            ViewOutputController();
+            ExploreSelectedRuns();
         }
 
         private void openInputButton_Click(object sender, EventArgs e)
@@ -80,15 +73,13 @@ namespace AlgorithmVisualization.View
             {
                 string input = File.ReadAllText(fileName);
                 CurrentInput.LoadSerialized(input);
-                Controller.InputController.Reload();
+                Controller.InputEditor.Reload();
             }
             catch (IOException)
             {
             }
         }
 
-        //TODO: make more robust when used for wrong algo type
-        //TODO: settings loading
         private void saveInputButton_Click(object sender, EventArgs e)
         {
             DialogResult result = saveInputDialog.ShowDialog();
@@ -115,7 +106,7 @@ namespace AlgorithmVisualization.View
         private void clearInputButton_Click(object sender, EventArgs e)
         {
             CurrentInput.Clear();
-            Controller.InputController.Reload();
+            Controller.InputEditor.Reload();
             //Properties.Settings.Default["InputFile"] = "";
         }
 
@@ -123,14 +114,14 @@ namespace AlgorithmVisualization.View
         {
             SetComputing(true);
             Controller.Workload.Run();
-            ViewOutputController();
+            ExploreSelectedRuns();
         }
 
         private void resetWorkloadButton_Click(object sender, EventArgs e)
         {
             SetComputing(false);
 
-            LoadVisualization(Controller.InputController.VisualizationView);
+            LoadVisualization(Controller.InputEditor.Visualization);
             Controller.Workload.Reset();
         }
 
@@ -141,7 +132,7 @@ namespace AlgorithmVisualization.View
             removeWorkloadRunButton.Enabled = !computing;
 
             if (!computing)
-                outputControllerComboBox.Enabled = false;
+                runExplorerComboBox.Enabled = false;
 
             resetWorkloadButton.Enabled = computing;
             workloadTableAlgoColumn.ReadOnly = computing;
@@ -183,19 +174,19 @@ namespace AlgorithmVisualization.View
         private void inputComboBox_SelectedIndexChanged(object sender, EventArgs e)
         {
             TIn newInput = (TIn)inputComboBox.SelectedItem;
-            Controller.InputController.LoadInput(newInput);
+            Controller.InputEditor.LoadInput(newInput);
         }
 
         private void addInputButton_Click(object sender, EventArgs e)
         {
-            AddAndLoadInput();
+            CreateInput();
         }
 
-        private void AddAndLoadInput()
+        private void CreateInput()
         {
             TIn input = new TIn();
             Controller.Inputs.Add(input);
-            Controller.InputController.LoadInput(input);
+            Controller.InputEditor.LoadInput(input);
             inputComboBox.SelectedItem = input;
         }
 
@@ -234,24 +225,24 @@ namespace AlgorithmVisualization.View
 
         private void workloadTable_SelectionChanged(object sender, EventArgs e)
         {
-            int outputDimension = OutputRuns.Length;
-            var availableOutputControllers = Controller.OutputControllers.ToList().FindAll(c => c.SupportsOutputDimension(outputDimension)).ToArray();
+            var numRuns = SelectedRuns.Length;
+            var availableRunExplorers = Controller.RunExplorers.ToList().FindAll(ex => ex.ConsolidationSupported(numRuns)).ToArray();
 
-            outputControllerComboBox.DataSource = availableOutputControllers;
-            outputControllerComboBox.Enabled = (availableOutputControllers.Length > 0);
+            runExplorerComboBox.DataSource = availableRunExplorers;
+            runExplorerComboBox.Enabled = (availableRunExplorers.Length > 0);
 
-            ViewOutputController();
+            ExploreSelectedRuns();
         }
 
-        private void ViewOutputController()
+        private void ExploreSelectedRuns()
         {
-            OutputController<TIn, TOut> outputController = CurrentOutputController;
+            RunExplorer<TIn, TOut> runExplorer = CurrentRunExplorer;
 
-            if (Controller.Workload.HasStarted && outputController != null)
+            if (Controller.Workload.HasStarted && runExplorer != null)
             {
-                outputController.LoadRuns(OutputRuns);
-                FormsUtil.FillContainer(outputViewOptionsPanel, outputController.OptionsView);
-                LoadVisualization(CurrentOutputController.VisualizationView);
+                runExplorer.LoadRuns(SelectedRuns);
+                FormsUtil.FillContainer(runExplorerOptionsContainer, runExplorer.Options);
+                LoadVisualization(CurrentRunExplorer.Visualization);
             }
         }
 

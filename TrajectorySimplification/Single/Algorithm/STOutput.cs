@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using AlgorithmVisualization.Algorithm;
 using TrajectorySimplification.Algorithm.Geometry;
 
@@ -13,6 +14,11 @@ namespace TrajectorySimplification.Single.Algorithm
         public STOutput()
         {
             Levels = new Dictionary<int, Trajectory2D>();
+            Statistics["Number of points"] = () =>
+            {
+                var bla = Levels.Select(l => l.Value.Count).Aggregate((t1, t2) => t1 + t2);
+                return bla;
+            };
         }
 
         public void SetTrajectoryAtLevel(int level, Trajectory2D trajectory)

@@ -1,7 +1,10 @@
-﻿using AlgorithmVisualization.Controller;
+﻿using AlgorithmVisualization.Algorithm;
+using AlgorithmVisualization.Controller;
+using AlgorithmVisualization.View.Exploration.Visualization;
 using TrajectorySimplification.Single.Algorithm;
 using TrajectorySimplification.Single.Algorithm.ShortcutShortestPath;
-using TrajectorySimplification.Single.Controller.Output;
+using TrajectorySimplification.Single.View.Input;
+using TrajectorySimplification.Single.View.Output;
 
 namespace TrajectorySimplification.Single.Controller
 {
@@ -12,9 +15,20 @@ namespace TrajectorySimplification.Single.Controller
 
         public STController()
         {
-            InputController = new STInputController();
+            InputEditor = new InputEditor<STInput>
+            {
+                Visualization = new GLDataVisualization<STInputNodeLink, STInput>(),
+                Options = new STInputOptions()
+            };
+
             Algorithms.Add(new ShortcutShortestPath());
-            OutputControllers.Add(new STOutputNodeLinkController());
+
+            RunExplorers.Add(new RunExplorer<STInput, STOutput>
+            {
+                Name = "Node-Link Visualization",
+                Visualization = new GLDataVisualization<STOutputNodeLink, AlgorithmRun<STInput, STOutput>[]>(),
+                ConsolidationFunc = i => i == 1
+            });
         }
 
     }

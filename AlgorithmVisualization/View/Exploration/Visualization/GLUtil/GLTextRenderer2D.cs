@@ -4,7 +4,7 @@ using System.Drawing.Imaging;
 using System.Drawing.Text;
 using OpenTK.Graphics.OpenGL;
 
-namespace AlgorithmVisualization.View.Visualization.GLUtil
+namespace AlgorithmVisualization.View.Exploration.Visualization.GLUtil
 {
     static class GLTextRenderer2D
     {

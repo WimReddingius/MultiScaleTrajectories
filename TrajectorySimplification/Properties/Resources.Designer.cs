@@ -61,7 +61,7 @@ namespace TrajectorySimplification.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Multi-Scale Trajectory Algorithms Visualization Framework.
+        ///   Looks up a localized string similar to Multi-Scale Trajectory Simplification Framework.
         /// </summary>
         internal static string Program_Name {
             get {

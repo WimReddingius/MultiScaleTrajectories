@@ -1,5 +1,5 @@
 ﻿using System.Drawing;
-using AlgorithmVisualization.View.Visualization.GLUtil;
+using AlgorithmVisualization.View.Exploration.Visualization.GLUtil;
 using OpenTK.Graphics.OpenGL;
 using TrajectorySimplification.Algorithm.Geometry;
 

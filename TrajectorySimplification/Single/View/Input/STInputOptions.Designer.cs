@@ -1,4 +1,4 @@
-﻿namespace MultiScaleTrajectories.View.SingleTrajectory.Input
+﻿namespace TrajectorySimplification.Single.View.Input
 {
     partial class STInputOptions
     {

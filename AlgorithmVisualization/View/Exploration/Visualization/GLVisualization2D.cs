@@ -1,10 +1,10 @@
 ﻿using System;
 using System.Windows.Forms;
-using AlgorithmVisualization.View.Visualization.GLUtil;
+using AlgorithmVisualization.View.Exploration.Visualization.GLUtil;
 using OpenTK;
 using OpenTK.Graphics.OpenGL;
 
-namespace AlgorithmVisualization.View.Visualization
+namespace AlgorithmVisualization.View.Exploration.Visualization
 {
     public abstract class GLVisualization2D : GLVisualization
     {
@@ -20,9 +20,9 @@ namespace AlgorithmVisualization.View.Visualization
         {
             base.OnLoad(e);
 
-            OpenTK.Graphics.OpenGL.GL.ClearColor(0.7f, 0.7f, 0.7f, 0.0f);  // Background
-            OpenTK.Graphics.OpenGL.GL.Enable(EnableCap.DepthTest);         //Enable correct Z Drawings
-            OpenTK.Graphics.OpenGL.GL.DepthFunc(DepthFunction.Always);     //Enable correct Z Drawings
+            GL.ClearColor(0.7f, 0.7f, 0.7f, 0.0f);  // Background
+            GL.Enable(EnableCap.DepthTest);         //Enable correct Z Drawings
+            GL.DepthFunc(DepthFunction.Always);     //Enable correct Z Drawings
 
             SetGLPerspective();
 
@@ -38,16 +38,16 @@ namespace AlgorithmVisualization.View.Visualization
 
         private void SetGLPerspective()
         {
-            OpenTK.Graphics.OpenGL.GL.Viewport(0, 0, ClientRectangle.Width, ClientRectangle.Height);
-            OpenTK.Graphics.OpenGL.GL.MatrixMode(MatrixMode.Projection);
-            OpenTK.Graphics.OpenGL.GL.LoadIdentity();
-            OpenTK.Graphics.OpenGL.GL.Ortho(0, ClientRectangle.Width, ClientRectangle.Height, 0, 5, -5);
-            OpenTK.Graphics.OpenGL.GL.Translate(ClientRectangle.Width / 2, ClientRectangle.Height / 2, 0.0);
+            GL.Viewport(0, 0, ClientRectangle.Width, ClientRectangle.Height);
+            GL.MatrixMode(MatrixMode.Projection);
+            GL.LoadIdentity();
+            GL.Ortho(0, ClientRectangle.Width, ClientRectangle.Height, 0, 5, -5);
+            GL.Translate(ClientRectangle.Width / 2, ClientRectangle.Height / 2, 0.0);
         }
 
         protected override void Render(object sender, PaintEventArgs e)
         {
-            OpenTK.Graphics.OpenGL.GL.MatrixMode(MatrixMode.Modelview);
+            GL.MatrixMode(MatrixMode.Modelview);
 
             Clear();
             RenderWorld();
@@ -59,7 +59,7 @@ namespace AlgorithmVisualization.View.Visualization
 
         protected void Clear()
         {
-            OpenTK.Graphics.OpenGL.GL.Clear(ClearBufferMask.ColorBufferBit | ClearBufferMask.DepthBufferBit);
+            GL.Clear(ClearBufferMask.ColorBufferBit | ClearBufferMask.DepthBufferBit);
         }
 
         protected int Pick(int x, int y)
@@ -70,7 +70,7 @@ namespace AlgorithmVisualization.View.Visualization
 
             // Get the viewport info
             int[] viewport = new int[4];
-            OpenTK.Graphics.OpenGL.GL.GetInteger(GetPName.Viewport, viewport);
+            GL.GetInteger(GetPName.Viewport, viewport);
 
             float pickRegionWidth = 1f;
             float pickRegionHeight = 1f;
@@ -79,32 +79,32 @@ namespace AlgorithmVisualization.View.Visualization
             int hits;
 
             // Set the buffer that OpenGL uses for selection to our buffer
-            OpenTK.Graphics.OpenGL.GL.SelectBuffer(256, buffer);
+            GL.SelectBuffer(256, buffer);
 
             // Change to selection mode
-            OpenTK.Graphics.OpenGL.GL.RenderMode(RenderingMode.Select);
+            GL.RenderMode(RenderingMode.Select);
 
             // InitializeView the name stack (used for identifying which object was selected)
-            OpenTK.Graphics.OpenGL.GL.InitNames();
-            OpenTK.Graphics.OpenGL.GL.PushName(-1);
+            GL.InitNames();
+            GL.PushName(-1);
 
-            OpenTK.Graphics.OpenGL.GL.MatrixMode(MatrixMode.Projection);
-            OpenTK.Graphics.OpenGL.GL.PushMatrix();
+            GL.MatrixMode(MatrixMode.Projection);
+            GL.PushMatrix();
 
             /*  create pickRegionWidth x pickRegionHeight pixel picking region near cursor location */
             SetGLPerspective();
-            OpenTK.Graphics.OpenGL.GL.Scale(viewport[2] / pickRegionWidth, viewport[3] / pickRegionHeight, 1.0f);
-            OpenTK.Graphics.OpenGL.GL.Translate((viewport[2] / 2) - x, (viewport[3] / 2) - y, 0f);
+            GL.Scale(viewport[2] / pickRegionWidth, viewport[3] / pickRegionHeight, 1.0f);
+            GL.Translate((viewport[2] / 2) - x, (viewport[3] / 2) - y, 0f);
 
             Render(null, null);
 
             // reset OpenGL state
-            OpenTK.Graphics.OpenGL.GL.MatrixMode(MatrixMode.Projection);
-            OpenTK.Graphics.OpenGL.GL.PopMatrix();
-            OpenTK.Graphics.OpenGL.GL.Flush();
+            GL.MatrixMode(MatrixMode.Projection);
+            GL.PopMatrix();
+            GL.Flush();
 
             // Exit selection mode and return to render mode, returns number selected
-            hits = OpenTK.Graphics.OpenGL.GL.RenderMode(RenderingMode.Render);
+            hits = GL.RenderMode(RenderingMode.Render);
 
             int picked = -1;
 

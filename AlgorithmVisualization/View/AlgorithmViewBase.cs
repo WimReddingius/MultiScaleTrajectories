@@ -7,18 +7,15 @@ namespace AlgorithmVisualization.View
         //For showing in Visual Studio Designer
         public class AlgorithmViewBase : UserControl
         {
-            public virtual void Initialize(Control visualizationContainer)
-            {
-
-            }
+            public virtual Control VisualizationContainer { get; set; }
         }
 
-#else
+    #else
 
         abstract class AlgorithmViewBase : UserControl
         {
-            public abstract void Initialize(Control visualizationContainer);
+            public abstract Control VisualizationContainer { get; set; }
         }
 
-#endif
+    #endif
 }

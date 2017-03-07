@@ -1,7 +1,6 @@
-﻿using AlgorithmVisualization.View.Data;
-using AlgorithmVisualization.View.Util;
+﻿using AlgorithmVisualization.View.Util;
 
-namespace AlgorithmVisualization.View.Visualization
+namespace AlgorithmVisualization.View.Exploration.Visualization
 {
     public class GLDataVisualization<TVis, TData> : DataView<TData> where TVis : GLVisualization, IDataLoader<TData>, new()
     {

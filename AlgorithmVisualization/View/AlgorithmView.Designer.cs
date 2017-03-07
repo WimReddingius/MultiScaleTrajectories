@@ -53,9 +53,9 @@ namespace AlgorithmVisualization.View
             this.saveInputButton = new System.Windows.Forms.Button();
             this.clearInputButton = new System.Windows.Forms.Button();
             this.openInputButton = new System.Windows.Forms.Button();
-            this.outputTabPage = new System.Windows.Forms.TabPage();
-            this.outputControllerComboBox = new System.Windows.Forms.ComboBox();
-            this.outputViewOptionsPanel = new System.Windows.Forms.Panel();
+            this.exploreTabPage = new System.Windows.Forms.TabPage();
+            this.runExplorerComboBox = new System.Windows.Forms.ComboBox();
+            this.runExplorerOptionsContainer = new System.Windows.Forms.Panel();
             this.label2 = new System.Windows.Forms.Label();
             this.openInputDialog = new System.Windows.Forms.OpenFileDialog();
             this.saveInputDialog = new System.Windows.Forms.SaveFileDialog();
@@ -70,14 +70,14 @@ namespace AlgorithmVisualization.View
             this.inputSplitContainer.SuspendLayout();
             this.tableLayoutPanel2.SuspendLayout();
             this.tableLayoutPanel4.SuspendLayout();
-            this.outputTabPage.SuspendLayout();
+            this.exploreTabPage.SuspendLayout();
             this.SuspendLayout();
             // 
             // tabControl
             // 
             this.tabControl.Controls.Add(this.runTabPage);
             this.tabControl.Controls.Add(this.inputTabPage);
-            this.tabControl.Controls.Add(this.outputTabPage);
+            this.tabControl.Controls.Add(this.exploreTabPage);
             this.tabControl.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tabControl.Location = new System.Drawing.Point(0, 0);
             this.tabControl.Multiline = true;
@@ -360,38 +360,38 @@ namespace AlgorithmVisualization.View
             this.openInputButton.UseVisualStyleBackColor = true;
             this.openInputButton.Click += new System.EventHandler(this.openInputButton_Click);
             // 
-            // outputTabPage
+            // exploreTabPage
             // 
-            this.outputTabPage.Controls.Add(this.outputControllerComboBox);
-            this.outputTabPage.Controls.Add(this.outputViewOptionsPanel);
-            this.outputTabPage.Controls.Add(this.label2);
-            this.outputTabPage.Location = new System.Drawing.Point(4, 22);
-            this.outputTabPage.Name = "outputTabPage";
-            this.outputTabPage.Padding = new System.Windows.Forms.Padding(3);
-            this.outputTabPage.Size = new System.Drawing.Size(262, 497);
-            this.outputTabPage.TabIndex = 1;
-            this.outputTabPage.Text = "Explore";
-            this.outputTabPage.UseVisualStyleBackColor = true;
+            this.exploreTabPage.Controls.Add(this.runExplorerComboBox);
+            this.exploreTabPage.Controls.Add(this.runExplorerOptionsContainer);
+            this.exploreTabPage.Controls.Add(this.label2);
+            this.exploreTabPage.Location = new System.Drawing.Point(4, 22);
+            this.exploreTabPage.Name = "exploreTabPage";
+            this.exploreTabPage.Padding = new System.Windows.Forms.Padding(3);
+            this.exploreTabPage.Size = new System.Drawing.Size(262, 497);
+            this.exploreTabPage.TabIndex = 1;
+            this.exploreTabPage.Text = "Explore";
+            this.exploreTabPage.UseVisualStyleBackColor = true;
             // 
-            // outputControllerComboBox
+            // runExplorerComboBox
             // 
-            this.outputControllerComboBox.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            this.runExplorerComboBox.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.outputControllerComboBox.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.outputControllerComboBox.Enabled = false;
-            this.outputControllerComboBox.Location = new System.Drawing.Point(3, 24);
-            this.outputControllerComboBox.Name = "outputControllerComboBox";
-            this.outputControllerComboBox.Size = new System.Drawing.Size(256, 21);
-            this.outputControllerComboBox.TabIndex = 17;
-            this.outputControllerComboBox.SelectedIndexChanged += new System.EventHandler(this.outputControllerComboBox_SelectedIndexChanged);
+            this.runExplorerComboBox.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.runExplorerComboBox.Enabled = false;
+            this.runExplorerComboBox.Location = new System.Drawing.Point(3, 24);
+            this.runExplorerComboBox.Name = "runExplorerComboBox";
+            this.runExplorerComboBox.Size = new System.Drawing.Size(256, 21);
+            this.runExplorerComboBox.TabIndex = 17;
+            this.runExplorerComboBox.SelectedIndexChanged += new System.EventHandler(this.runExplorerComboBox_SelectedIndexChanged);
             // 
-            // outputViewOptionsPanel
+            // runExplorerOptionsContainer
             // 
-            this.outputViewOptionsPanel.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.outputViewOptionsPanel.Location = new System.Drawing.Point(3, 51);
-            this.outputViewOptionsPanel.Name = "outputViewOptionsPanel";
-            this.outputViewOptionsPanel.Size = new System.Drawing.Size(256, 443);
-            this.outputViewOptionsPanel.TabIndex = 19;
+            this.runExplorerOptionsContainer.Dock = System.Windows.Forms.DockStyle.Bottom;
+            this.runExplorerOptionsContainer.Location = new System.Drawing.Point(3, 51);
+            this.runExplorerOptionsContainer.Name = "runExplorerOptionsContainer";
+            this.runExplorerOptionsContainer.Size = new System.Drawing.Size(256, 443);
+            this.runExplorerOptionsContainer.TabIndex = 19;
             // 
             // label2
             // 
@@ -433,8 +433,8 @@ namespace AlgorithmVisualization.View
             this.inputSplitContainer.ResumeLayout(false);
             this.tableLayoutPanel2.ResumeLayout(false);
             this.tableLayoutPanel4.ResumeLayout(false);
-            this.outputTabPage.ResumeLayout(false);
-            this.outputTabPage.PerformLayout();
+            this.exploreTabPage.ResumeLayout(false);
+            this.exploreTabPage.PerformLayout();
             this.ResumeLayout(false);
 
         }
@@ -447,7 +447,7 @@ namespace AlgorithmVisualization.View
         private System.Windows.Forms.Button openInputButton;
         private System.Windows.Forms.Button clearInputButton;
         private System.Windows.Forms.Button saveInputButton;
-        private System.Windows.Forms.TabPage outputTabPage;
+        private System.Windows.Forms.TabPage exploreTabPage;
         private System.Windows.Forms.TabPage runTabPage;
         private System.Windows.Forms.Button computeWorkloadButton;
         private System.Windows.Forms.OpenFileDialog openInputDialog;
@@ -466,8 +466,8 @@ namespace AlgorithmVisualization.View
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel1;
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel2;
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel4;
-        private System.Windows.Forms.ComboBox outputControllerComboBox;
-        private System.Windows.Forms.Panel outputViewOptionsPanel;
+        private System.Windows.Forms.ComboBox runExplorerComboBox;
+        private System.Windows.Forms.Panel runExplorerOptionsContainer;
         private System.Windows.Forms.Label label2;
     }
 }

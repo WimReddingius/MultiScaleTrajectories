@@ -77,9 +77,7 @@
     <Compile Include="Algorithm\DataStructures\Graph\Graph.cs" />
     <Compile Include="Algorithm\DataStructures\Graph\Node.cs" />
     <Compile Include="Algorithm\DataStructures\Graph\WeightedEdge.cs" />
-    <Compile Include="Single\Controller\Output\STOutputNodeLinkController.cs" />
     <Compile Include="Single\Controller\STController.cs" />
-    <Compile Include="Single\Controller\STInputController.cs" />
     <Compile Include="Single\View\Input\STInputOptions.cs">
       <SubType>UserControl</SubType>
     </Compile>

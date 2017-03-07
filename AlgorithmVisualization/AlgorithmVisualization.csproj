@@ -59,10 +59,11 @@
     <Compile Include="Algorithm\AlgorithmWorkload.cs" />
     <Compile Include="Algorithm\Input.cs" />
     <Compile Include="Algorithm\Output.cs" />
+    <Compile Include="Algorithm\Statistics.cs" />
     <Compile Include="Controller\AlgorithmController.cs" />
     <Compile Include="Controller\IAlgorithmController.cs" />
-    <Compile Include="Controller\InputController.cs" />
-    <Compile Include="Controller\OutputController.cs" />
+    <Compile Include="Controller\InputEditor.cs" />
+    <Compile Include="Controller\RunExplorer.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="View\AlgorithmView.cs">
       <SubType>UserControl</SubType>
@@ -70,32 +71,41 @@
     <Compile Include="View\AlgorithmView.Designer.cs">
       <DependentUpon>AlgorithmView.cs</DependentUpon>
     </Compile>
-    <Compile Include="View\Data\DataView.cs">
+    <Compile Include="View\Exploration\Stats\StatTable.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="View\Exploration\Stats\GenericStatTable.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="View\Exploration\Stats\GenericStatTable.Designer.cs">
+      <DependentUpon>GenericStatTable.cs</DependentUpon>
+    </Compile>
+    <Compile Include="View\Util\DataView.cs">
       <SubType>UserControl</SubType>
     </Compile>
     <Compile Include="View\Util\FormsUtil.cs" />
     <Compile Include="View\AlgorithmViewBase.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="View\Data\IDataLoader.cs" />
+    <Compile Include="View\Util\IDataLoader.cs" />
     <Compile Include="View\AlgorithmForm.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="View\AlgorithmForm.Designer.cs">
       <DependentUpon>AlgorithmForm.cs</DependentUpon>
     </Compile>
-    <Compile Include="View\Visualization\GLDataVisualization.cs">
+    <Compile Include="View\Exploration\Visualization\GLDataVisualization.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="View\Visualization\GLVisualization.cs">
+    <Compile Include="View\Exploration\Visualization\GLVisualization.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="View\Visualization\GLVisualization2D.cs">
+    <Compile Include="View\Exploration\Visualization\GLVisualization2D.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="View\Visualization\GLUtil\PickNameManager.cs" />
-    <Compile Include="View\Visualization\GLUtil\GLTextRenderer2D.cs" />
-    <Compile Include="View\Visualization\GLUtil\GLUtil2D.cs" />
+    <Compile Include="View\Exploration\Visualization\GLUtil\PickNameManager.cs" />
+    <Compile Include="View\Exploration\Visualization\GLUtil\GLTextRenderer2D.cs" />
+    <Compile Include="View\Exploration\Visualization\GLUtil\GLUtil2D.cs" />
   </ItemGroup>
   <ItemGroup />
   <ItemGroup>
@@ -105,9 +115,12 @@
     <EmbeddedResource Include="View\AlgorithmForm.resx">
       <DependentUpon>AlgorithmForm.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="View\Exploration\Stats\GenericStatTable.resx">
+      <DependentUpon>GenericStatTable.cs</DependentUpon>
+    </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
-    <None Include="App.config" />
+    <None Include="View\App.config" />
     <None Include="OpenTK.dll.config" />
     <None Include="packages.config" />
   </ItemGroup>

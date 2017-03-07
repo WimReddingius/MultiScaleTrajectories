@@ -2,7 +2,7 @@
 
 namespace AlgorithmVisualization.Algorithm
 {
-    public class AlgorithmWorkload<TIn, TOut> where TIn : Input, new() where TOut : Output, new()
+    class AlgorithmWorkload<TIn, TOut> where TIn : Input, new() where TOut : Output, new()
     {
 
         public BindingList<AlgorithmRun<TIn, TOut>> Runs;

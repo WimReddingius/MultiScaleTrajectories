@@ -1,7 +1,8 @@
 ﻿using System.ComponentModel;
-using System.Windows.Forms;
 using AlgorithmVisualization.Algorithm;
 using AlgorithmVisualization.View;
+using AlgorithmVisualization.View.Exploration;
+using AlgorithmVisualization.View.Exploration.Stats;
 
 namespace AlgorithmVisualization.Controller
 {
@@ -10,24 +11,35 @@ namespace AlgorithmVisualization.Controller
 
         public abstract string Name { get; }
 
-        public AlgorithmViewBase AlgorithmView { get; set; }
-        public Control VisualizationContainer { get; set; }
+        private AlgorithmViewBase algorithmView;
+        public AlgorithmViewBase AlgorithmView => algorithmView ?? (algorithmView = new AlgorithmView<TIn, TOut>(this));
 
         internal AlgorithmWorkload<TIn, TOut> Workload;
         internal BindingList<TIn> Inputs;
 
+        public InputEditor<TIn> InputEditor;
         public BindingList<Algorithm<TIn, TOut>> Algorithms;
-        public InputController<TIn> InputController;
-        public BindingList<OutputController<TIn, TOut>> OutputControllers;
+        public BindingList<RunExplorer<TIn, TOut>> RunExplorers;
 
         
         protected AlgorithmController()
         {
+            RunExplorers = new BindingList<RunExplorer<TIn, TOut>>();
             Algorithms = new BindingList<Algorithm<TIn, TOut>>();
-            OutputControllers = new BindingList<OutputController<TIn, TOut>>();
+
+            RunExplorers.Add(new RunExplorer<TIn, TOut>
+            {
+                Name = "Statistics",
+                Visualization = new StatTable<TIn, TOut>()
+            });
+
             Workload = new AlgorithmWorkload<TIn, TOut>();
             Inputs = new BindingList<TIn>();
-            AlgorithmView = new AlgorithmView<TIn, TOut>(this);
+        }
+
+        public AlgorithmViewBase CreateAlgorithmView()
+        {
+            return new AlgorithmView<TIn, TOut>(this);
         }
 
     }
