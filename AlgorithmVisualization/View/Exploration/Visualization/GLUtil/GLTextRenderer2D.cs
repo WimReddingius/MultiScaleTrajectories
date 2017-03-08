@@ -3,6 +3,7 @@ using System.Drawing.Drawing2D;
 using System.Drawing.Imaging;
 using System.Drawing.Text;
 using OpenTK.Graphics.OpenGL;
+using PixelFormat = System.Drawing.Imaging.PixelFormat;
 
 namespace AlgorithmVisualization.View.Exploration.Visualization.GLUtil
 {
@@ -33,7 +34,7 @@ namespace AlgorithmVisualization.View.Exploration.Visualization.GLUtil
             int bitmapWidth = GlyphsPerLine * GlyphWidth;
             int bitmapHeight = GlyphLineCount * GlyphHeight;
 
-            using (Bitmap bitmap = new Bitmap(bitmapWidth, bitmapHeight, System.Drawing.Imaging.PixelFormat.Format32bppArgb))
+            using (Bitmap bitmap = new Bitmap(bitmapWidth, bitmapHeight, PixelFormat.Format32bppArgb))
             {
                 Font font;
                 font = new Font(new FontFamily(FontName), FontSize);
@@ -69,13 +70,13 @@ namespace AlgorithmVisualization.View.Exploration.Visualization.GLUtil
         {
             using (var bitmap = new Bitmap(FontBitmapFilename))
             {
-                var texId = OpenTK.Graphics.OpenGL.GL.GenTexture();
-                OpenTK.Graphics.OpenGL.GL.BindTexture(TextureTarget.Texture2D, FontTextureID);
-                BitmapData data = bitmap.LockBits(new Rectangle(0, 0, bitmap.Width, bitmap.Height), ImageLockMode.ReadOnly, System.Drawing.Imaging.PixelFormat.Format32bppArgb);
-                OpenTK.Graphics.OpenGL.GL.TexImage2D(TextureTarget.Texture2D, 0, PixelInternalFormat.Rgba, bitmap.Width, bitmap.Height, 0, OpenTK.Graphics.OpenGL.PixelFormat.Bgra, PixelType.UnsignedByte, data.Scan0);
+                var texId = GL.GenTexture();
+                GL.BindTexture(TextureTarget.Texture2D, FontTextureID);
+                BitmapData data = bitmap.LockBits(new Rectangle(0, 0, bitmap.Width, bitmap.Height), ImageLockMode.ReadOnly, PixelFormat.Format32bppArgb);
+                GL.TexImage2D(TextureTarget.Texture2D, 0, PixelInternalFormat.Rgba, bitmap.Width, bitmap.Height, 0, OpenTK.Graphics.OpenGL.PixelFormat.Bgra, PixelType.UnsignedByte, data.Scan0);
                 bitmap.UnlockBits(data);
-                OpenTK.Graphics.OpenGL.GL.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureMinFilter, (int)TextureMinFilter.Nearest);
-                OpenTK.Graphics.OpenGL.GL.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureMagFilter, (int)TextureMagFilter.Nearest);
+                GL.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureMinFilter, (int)TextureMinFilter.Nearest);
+                GL.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureMagFilter, (int)TextureMagFilter.Nearest);
                 TextureWidth = bitmap.Width; TextureHeight = bitmap.Height;
                 FontTextureID = texId;
             }
@@ -83,30 +84,30 @@ namespace AlgorithmVisualization.View.Exploration.Visualization.GLUtil
 
         public static void DrawText(int x, int y, string text)
         {
-            OpenTK.Graphics.OpenGL.GL.Begin(PrimitiveType.Quads);
+            GL.Begin(PrimitiveType.Quads);
 
-            float u_step = (float)GlyphWidth / (float)TextureWidth;
-            float v_step = (float)GlyphHeight / (float)TextureHeight;
+            float u_step = GlyphWidth / (float)TextureWidth;
+            float v_step = GlyphHeight / (float)TextureHeight;
 
             for (int n = 0; n < text.Length; n++)
             {
                 char idx = text[n];
-                float u = (float)(idx % GlyphsPerLine) * u_step;
-                float v = (float)(idx / GlyphsPerLine) * v_step;
+                float u = idx % GlyphsPerLine * u_step;
+                float v = idx / GlyphsPerLine * v_step;
 
-                OpenTK.Graphics.OpenGL.GL.TexCoord2(u, v);
-                OpenTK.Graphics.OpenGL.GL.Vertex2(x, y);
-                OpenTK.Graphics.OpenGL.GL.TexCoord2(u + u_step, v);
-                OpenTK.Graphics.OpenGL.GL.Vertex2(x + GlyphWidth, y);
-                OpenTK.Graphics.OpenGL.GL.TexCoord2(u + u_step, v + v_step);
-                OpenTK.Graphics.OpenGL.GL.Vertex2(x + GlyphWidth, y + GlyphHeight);
-                OpenTK.Graphics.OpenGL.GL.TexCoord2(u, v + v_step);
-                OpenTK.Graphics.OpenGL.GL.Vertex2(x, y + GlyphHeight);
+                GL.TexCoord2(u, v);
+                GL.Vertex2(x, y);
+                GL.TexCoord2(u + u_step, v);
+                GL.Vertex2(x + GlyphWidth, y);
+                GL.TexCoord2(u + u_step, v + v_step);
+                GL.Vertex2(x + GlyphWidth, y + GlyphHeight);
+                GL.TexCoord2(u, v + v_step);
+                GL.Vertex2(x, y + GlyphHeight);
 
                 x += CharXSpacing;
             }
 
-            OpenTK.Graphics.OpenGL.GL.End();
+            GL.End();
         }
 
     }

@@ -32,18 +32,7 @@ namespace AlgorithmVisualization.View
             Controller = controller;
             VisualizationContainer = new Control();
 
-            //set up datasources
-            workloadTableInputColumn.DataSource = Controller.Inputs;
-            workloadTableInputColumn.DisplayMember = "Name";
-            workloadTableInputColumn.ValueMember = "Self";
-
-            inputComboBox.DataSource = Controller.Inputs;
-            inputComboBox.DisplayMember = "Name";
-            inputComboBox.ValueMember = "Self";
-
-            workloadTableAlgoColumn.DataSource = Controller.Algorithms;
-            workloadTableAlgoColumn.DisplayMember = "Name";
-            workloadTableAlgoColumn.ValueMember = "Self";
+            LoadDataSources();
 
             //load default input
             CreateInput();
@@ -71,12 +60,16 @@ namespace AlgorithmVisualization.View
         {
             try
             {
-                string input = File.ReadAllText(fileName);
-                CurrentInput.LoadSerialized(input);
+                CurrentInput.LoadSerialized(fileName);
+                CurrentInput.Name = Path.GetFileNameWithoutExtension(fileName);
                 Controller.InputEditor.Reload();
+
+                //force redraw of controls that use input name
+                LoadDataSources();
             }
-            catch (IOException)
+            catch (Exception e)
             {
+                System.Diagnostics.Debug.WriteLine(e);
             }
         }
 
@@ -244,6 +237,27 @@ namespace AlgorithmVisualization.View
                 FormsUtil.FillContainer(runExplorerOptionsContainer, runExplorer.Options);
                 LoadVisualization(CurrentRunExplorer.Visualization);
             }
+        }
+
+        private void LoadDataSources()
+        {
+            //force redraw
+            inputComboBox.DisplayMember = "";
+            workloadTableInputColumn.DisplayMember = "";
+            workloadTableAlgoColumn.DisplayMember = "";
+
+            //actual loading
+            workloadTableInputColumn.DataSource = Controller.Inputs;
+            workloadTableInputColumn.DisplayMember = "Name";
+            workloadTableInputColumn.ValueMember = "Self";
+
+            inputComboBox.DataSource = Controller.Inputs;
+            inputComboBox.DisplayMember = "Name";
+            inputComboBox.ValueMember = "Self";
+
+            workloadTableAlgoColumn.DataSource = Controller.Algorithms;
+            workloadTableAlgoColumn.DisplayMember = "Name";
+            workloadTableAlgoColumn.ValueMember = "Self";
         }
 
     }

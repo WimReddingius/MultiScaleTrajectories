@@ -30,7 +30,7 @@ namespace AlgorithmVisualization.View
         /// </summary>
         private void InitializeComponent()
         {
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
             this.tabControl = new System.Windows.Forms.TabControl();
             this.runTabPage = new System.Windows.Forms.TabPage();
             this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
@@ -203,8 +203,8 @@ namespace AlgorithmVisualization.View
             // workloadTableInputColumn
             // 
             this.workloadTableInputColumn.AutoComplete = false;
-            dataGridViewCellStyle1.NullValue = null;
-            this.workloadTableInputColumn.DefaultCellStyle = dataGridViewCellStyle1;
+            dataGridViewCellStyle2.NullValue = null;
+            this.workloadTableInputColumn.DefaultCellStyle = dataGridViewCellStyle2;
             this.workloadTableInputColumn.FillWeight = 50F;
             this.workloadTableInputColumn.HeaderText = "Input";
             this.workloadTableInputColumn.Name = "workloadTableInputColumn";
@@ -406,7 +406,7 @@ namespace AlgorithmVisualization.View
             // 
             this.openInputDialog.DefaultExt = "json";
             this.openInputDialog.FileName = "openFileDialog1";
-            this.openInputDialog.Filter = "JSON(*.json)|*json";
+            this.openInputDialog.Filter = "Input Files|*.json; *.csv";
             this.openInputDialog.Title = "Open Configuration";
             // 
             // saveInputDialog

@@ -11,9 +11,15 @@ namespace AlgorithmVisualization.View.Exploration.Visualization
 
         protected PickNameManager PickManager;
 
+        protected double ZoomFactor;
+        protected Vector2d WorldOrigin;
+
+
         protected GLVisualization2D()
         {
             PickManager = new PickNameManager();
+            ZoomFactor = 1f;
+            WorldOrigin = new Vector2d(0, 0);
         }
 
         protected override void OnLoad(EventArgs e)
@@ -41,7 +47,8 @@ namespace AlgorithmVisualization.View.Exploration.Visualization
             GL.Viewport(0, 0, ClientRectangle.Width, ClientRectangle.Height);
             GL.MatrixMode(MatrixMode.Projection);
             GL.LoadIdentity();
-            GL.Ortho(0, ClientRectangle.Width, ClientRectangle.Height, 0, 5, -5);
+
+            GL.Ortho(0, ClientRectangle.Width, 0, ClientRectangle.Height, 5, -5);
             GL.Translate(ClientRectangle.Width / 2, ClientRectangle.Height / 2, 0.0);
         }
 
@@ -50,12 +57,27 @@ namespace AlgorithmVisualization.View.Exploration.Visualization
             GL.MatrixMode(MatrixMode.Modelview);
 
             Clear();
+
+            //set center of the screen to worldorigin and apply scaling
+            GL.PushMatrix();
+            GL.Scale(ZoomFactor, ZoomFactor, 1f);
+            GL.Translate(-WorldOrigin.X, -WorldOrigin.Y, 0f);
             RenderWorld();
+            GL.PopMatrix();
+
+            //invert world coordinates for hud rendering
+            GL.PushMatrix();
+            GL.Rotate(180, new Vector3(0f, 0f, 1f));
+            GL.Scale(-1f, 1f, 1f);
+            RenderHud();
+            GL.PopMatrix();
 
             SwapBuffers();
         }
 
-        protected abstract void RenderWorld();
+        protected virtual void RenderWorld() { }
+
+        protected virtual void RenderHud() { }
 
         protected void Clear()
         {
@@ -75,9 +97,6 @@ namespace AlgorithmVisualization.View.Exploration.Visualization
             float pickRegionWidth = 1f;
             float pickRegionHeight = 1f;
 
-            // The number of "hits" (objects within the pick area).
-            int hits;
-
             // Set the buffer that OpenGL uses for selection to our buffer
             GL.SelectBuffer(256, buffer);
 
@@ -93,8 +112,12 @@ namespace AlgorithmVisualization.View.Exploration.Visualization
 
             /*  create pickRegionWidth x pickRegionHeight pixel picking region near cursor location */
             SetGLPerspective();
-            GL.Scale(viewport[2] / pickRegionWidth, viewport[3] / pickRegionHeight, 1.0f);
-            GL.Translate((viewport[2] / 2) - x, (viewport[3] / 2) - y, 0f);
+
+            var width = viewport[2];
+            var height = viewport[3];
+
+            GL.Scale(width / pickRegionWidth, height / pickRegionHeight, 1.0f);
+            GL.Translate((width / 2) - x, y - (height / 2), 0f);
 
             Render(null, null);
 
@@ -104,7 +127,7 @@ namespace AlgorithmVisualization.View.Exploration.Visualization
             GL.Flush();
 
             // Exit selection mode and return to render mode, returns number selected
-            hits = GL.RenderMode(RenderingMode.Render);
+            var hits = GL.RenderMode(RenderingMode.Render);
 
             int picked = -1;
 
@@ -130,11 +153,17 @@ namespace AlgorithmVisualization.View.Exploration.Visualization
             return picked;
         }
 
-        protected Vector2 GetWorldCoordinates(int viewPortX, int viewPortY)
+        protected Vector2d GetWorldCoordinates(int viewPortX, int viewPortY)
         {
-            float worldX = viewPortX - (ClientRectangle.Width / 2);
-            float worldY = viewPortY - (ClientRectangle.Height / 2);
-            return new Vector2(worldX, worldY);
+            double worldX = 1 / ZoomFactor * (viewPortX - ClientRectangle.Width / 2) + WorldOrigin.X;
+            double worldY = 1 / ZoomFactor * (ClientRectangle.Height / 2 - viewPortY) + WorldOrigin.Y;
+            return new Vector2d(worldX, worldY);
+        }
+
+        protected void LookAt(double x, double y, double width, double height)
+        {
+            WorldOrigin = new Vector2d(x, y);
+            ZoomFactor = Math.Min(ClientRectangle.Width / width, ClientRectangle.Height / height);
         }
 
     }

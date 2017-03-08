@@ -7,11 +7,11 @@ namespace AlgorithmVisualization.View.Exploration.Stats
     class StatTable<TIn, TOut> : DataView<AlgorithmRun<TIn, TOut>[]> where TIn : Input, new() where TOut : Output, new()
     {
 
-        private readonly GenericStatTable table;
+        private readonly NonGenericStatTable table;
 
         public StatTable()
         {
-            table = new GenericStatTable();
+            table = new NonGenericStatTable();
             FormsUtil.FillContainer(this, table);
         }
 

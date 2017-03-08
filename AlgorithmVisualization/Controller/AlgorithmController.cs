@@ -37,10 +37,5 @@ namespace AlgorithmVisualization.Controller
             Inputs = new BindingList<TIn>();
         }
 
-        public AlgorithmViewBase CreateAlgorithmView()
-        {
-            return new AlgorithmView<TIn, TOut>(this);
-        }
-
     }
 }

@@ -7,13 +7,13 @@ namespace AlgorithmVisualization.View.Exploration.Visualization.GLUtil
     public static class GLUtil2D
     {
 
-        public static void DrawCircle(float radius)
+        public static void DrawCircle(double radius, int numSegments)
         {
             GL.Begin(PrimitiveType.TriangleFan);
 
-            for (int i = 0; i < 360; i++)
+            for (int i = 0; i < numSegments; i++)
             {
-                double degInRad = i * Math.PI / 180;
+                double degInRad = 2 * i * Math.PI / numSegments;
                 GL.Vertex2(Math.Cos(degInRad) * radius, Math.Sin(degInRad) * radius);
             }
             GL.End();

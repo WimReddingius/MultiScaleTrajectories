@@ -74,11 +74,11 @@
     <Compile Include="View\Exploration\Stats\StatTable.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="View\Exploration\Stats\GenericStatTable.cs">
+    <Compile Include="View\Exploration\Stats\NonGenericStatTable.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="View\Exploration\Stats\GenericStatTable.Designer.cs">
-      <DependentUpon>GenericStatTable.cs</DependentUpon>
+    <Compile Include="View\Exploration\Stats\NonGenericStatTable.Designer.cs">
+      <DependentUpon>NonGenericStatTable.cs</DependentUpon>
     </Compile>
     <Compile Include="View\Util\DataView.cs">
       <SubType>UserControl</SubType>
@@ -115,8 +115,8 @@
     <EmbeddedResource Include="View\AlgorithmForm.resx">
       <DependentUpon>AlgorithmForm.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="View\Exploration\Stats\GenericStatTable.resx">
-      <DependentUpon>GenericStatTable.cs</DependentUpon>
+    <EmbeddedResource Include="View\Exploration\Stats\NonGenericStatTable.resx">
+      <DependentUpon>NonGenericStatTable.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>

@@ -7,7 +7,7 @@
     {
 
         private static int IdGenerator = 1;
-        public string Name { get; }
+        public string Name { get; set; }
         public Input Self => this;
 
         public Statistics Statistics;
@@ -21,7 +21,7 @@
 
         public abstract string Serialize();
 
-        public abstract void LoadSerialized(string serialized);
+        public abstract void LoadSerialized(string fileName);
 
         public abstract void Clear();
 
