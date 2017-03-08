@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel;
 
-namespace AlgorithmVisualization.Algorithm
+namespace AlgorithmVisualization.Algorithm.Experiment
 {
     class AlgorithmWorkload<TIn, TOut> where TIn : Input, new() where TOut : Output, new()
     {

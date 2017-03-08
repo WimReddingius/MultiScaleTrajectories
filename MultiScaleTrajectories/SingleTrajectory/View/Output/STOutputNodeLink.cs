@@ -10,7 +10,7 @@ using MultiScaleTrajectories.View;
 
 namespace MultiScaleTrajectories.SingleTrajectory.View.Output
 {
-    class STOutputNodeLink : GLTrajectoryVisualization, IDataLoader<AlgorithmRun<STInput, STOutput>[]>
+    class STOutputNodeLink : GLTrajectoryVisualization, IRunLoader<STInput, STOutput>
     {
         private STOutput Output;
         private int CurrentLevel;
@@ -69,7 +69,7 @@ namespace MultiScaleTrajectories.SingleTrajectory.View.Output
             return base.IsInputKey(keyData);
         }
 
-        public void LoadData(AlgorithmRun<STInput, STOutput>[] runs)
+        public void LoadRuns(AlgorithmRun<STInput, STOutput>[] runs)
         {
             HandleOutputIncomplete();
             Output = runs[0].Output;

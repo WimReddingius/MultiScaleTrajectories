@@ -5,7 +5,7 @@ using MultiScaleTrajectories.SingleTrajectory.Algorithm;
 
 namespace MultiScaleTrajectories.SingleTrajectory.View.Input
 {
-    partial class STInputOptions : DataView<STInput>
+    partial class STInputOptions : UserControl, IInputLoader<STInput>
     {
         private STInput Input;
 
@@ -74,7 +74,7 @@ namespace MultiScaleTrajectories.SingleTrajectory.View.Input
             }
         }
 
-        public override void LoadData(STInput input)
+        public void LoadInput(STInput input)
         {
             Input = input;
             levelTable.Rows.Clear();

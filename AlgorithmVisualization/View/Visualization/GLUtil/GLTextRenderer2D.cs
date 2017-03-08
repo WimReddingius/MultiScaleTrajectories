@@ -5,7 +5,7 @@ using System.Drawing.Text;
 using OpenTK.Graphics.OpenGL;
 using PixelFormat = System.Drawing.Imaging.PixelFormat;
 
-namespace AlgorithmVisualization.View.Exploration.Visualization.GLUtil
+namespace AlgorithmVisualization.View.Visualization.GLUtil
 {
     static class GLTextRenderer2D
     {

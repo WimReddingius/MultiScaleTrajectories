@@ -34,10 +34,12 @@ namespace AlgorithmVisualization.View
 
             LoadDataSources();
 
-            //load default input
+            //initialize input controller and load default input
             CreateInput();
             FormsUtil.FillContainer(inputOptionsPanel, Controller.InputEditor.Options);
-            LoadVisualization(Controller.InputEditor.Visualization);
+            
+            //initialize input visualization
+            SetVisualizationMode(false);
         }
 
         private void runExplorerComboBox_SelectedIndexChanged(object sender, EventArgs e)
@@ -105,31 +107,50 @@ namespace AlgorithmVisualization.View
 
         private void computeWorkloadButton_Click(object sender, EventArgs e)
         {
-            SetComputing(true);
             Controller.Workload.Run();
-            ExploreSelectedRuns();
+            SetVisualizationMode(true);
         }
 
         private void resetWorkloadButton_Click(object sender, EventArgs e)
         {
-            SetComputing(false);
-
-            LoadVisualization(Controller.InputEditor.Visualization);
+            SetVisualizationMode(false);
             Controller.Workload.Reset();
         }
 
-        private void SetComputing(bool computing)
+        private void SetVisualizationMode(bool exploring)
         {
-            computeWorkloadButton.Enabled = !computing;
-            addWorkloadRunButton.Enabled = !computing;
-            removeWorkloadRunButton.Enabled = !computing;
+            computeWorkloadButton.Enabled = !exploring;
+            addWorkloadRunButton.Enabled = !exploring;
+            removeWorkloadRunButton.Enabled = !exploring;
 
-            if (!computing)
-                runExplorerComboBox.Enabled = false;
+            if (!exploring)
+            {
+                AddTabPage(inputTabPage);
+                RemoveTabPage(exploreTabPage);
+                LoadVisualization(Controller.InputEditor.Visualization);
+            }
+            else
+            {
+                RemoveTabPage(inputTabPage);
+                AddTabPage(exploreTabPage);
+                ExploreSelectedRuns();
+            }
 
-            resetWorkloadButton.Enabled = computing;
-            workloadTableAlgoColumn.ReadOnly = computing;
-            workloadTableInputColumn.ReadOnly = computing;
+            resetWorkloadButton.Enabled = exploring;
+            workloadTableAlgoColumn.ReadOnly = exploring;
+            workloadTableInputColumn.ReadOnly = exploring;
+        }
+
+        private void AddTabPage(TabPage page)
+        {
+            if (!tabControl.TabPages.Contains(page))
+                tabControl.TabPages.Add(page);
+        }
+
+        private void RemoveTabPage(TabPage page)
+        {
+            if (tabControl.TabPages.Contains(page))
+                tabControl.TabPages.Remove(page);
         }
 
         private void addWorkloadRunButton_Click(object sender, EventArgs e)
@@ -197,6 +218,8 @@ namespace AlgorithmVisualization.View
                 {
                     RemoveWorkloadRun(run);
                 }
+
+                Controller.InputEditor.LoadInput((TIn) inputComboBox.SelectedItem);
             }
         }
 
@@ -221,8 +244,12 @@ namespace AlgorithmVisualization.View
             var numRuns = SelectedRuns.Length;
             var availableRunExplorers = Controller.RunExplorers.ToList().FindAll(ex => ex.ConsolidationSupported(numRuns)).ToArray();
 
-            runExplorerComboBox.DataSource = availableRunExplorers;
+            runExplorerComboBox.Items.Clear();
+            runExplorerComboBox.Items.AddRange(availableRunExplorers);
             runExplorerComboBox.Enabled = (availableRunExplorers.Length > 0);
+
+            if (availableRunExplorers.Length > 0)
+                runExplorerComboBox.SelectedItem = availableRunExplorers[0];
 
             ExploreSelectedRuns();
         }

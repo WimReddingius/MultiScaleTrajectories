@@ -37,7 +37,7 @@ namespace MultiScaleTrajectories.SingleTrajectory.Algorithm.ShortcutShortestPath
             DataNode<Point2D> firstNode = shortcutGraph.GetNode(trajectory.First());
             DataNode<Point2D> lastNode = shortcutGraph.GetNode(trajectory.Last());
 
-            System.Diagnostics.Debug.WriteLine("Shortcut Graph: " + shortcutGraph);
+            output.LogLine("Shortcut Graph: " + shortcutGraph);
 
             for (int level = 1 ; level <= input.NumLevels; level++) {
 
@@ -46,7 +46,7 @@ namespace MultiScaleTrajectories.SingleTrajectory.Algorithm.ShortcutShortestPath
                 //find shortcuts (inefficient right now: no range query & we find the same shortcuts in different iterations
                 HashSet<Tuple<Point2D, Point2D>> shortcuts = ImaiIri.FindShortcuts(trajectory, epsilon);
 
-                System.Diagnostics.Debug.WriteLine("Number of shortcuts found: " + shortcuts.Where(s => !shortcutGraph.GetNode(s.Item1).OutEdges.ContainsKey(shortcutGraph.GetNode(s.Item2))).Count());
+                output.LogLine("Number of shortcuts found: " + shortcuts.Where(s => !shortcutGraph.GetNode(s.Item1).OutEdges.ContainsKey(shortcutGraph.GetNode(s.Item2))).Count());
 
                 foreach (Tuple<Point2D, Point2D> shortcut in shortcuts)
                 {
@@ -60,8 +60,8 @@ namespace MultiScaleTrajectories.SingleTrajectory.Algorithm.ShortcutShortestPath
                         //BFS to get edge weight
                         List<DataNode<Point2D>> shortestPathShortcut = shortcutGraph.GetShortestPath(sourceNode, targetNode);
 
-                        System.Diagnostics.Debug.WriteLine("Shortcut: " + shortcut);
-                        System.Diagnostics.Debug.WriteLine("Shortcut Shortest Path: " + string.Join<DataNode<Point2D>>(", ", shortestPathShortcut.ToArray()));
+                        output.LogLine("Shortcut: " + shortcut);
+                        output.LogLine("Shortcut Shortest Path: " + string.Join<DataNode<Point2D>>(", ", shortestPathShortcut.ToArray()));
 
                         //create edge and set edge weight
                         WeightedEdge edge = new WeightedEdge(sourceNode, targetNode, getPathWeight(shortestPathShortcut, sourceNode));
@@ -75,8 +75,8 @@ namespace MultiScaleTrajectories.SingleTrajectory.Algorithm.ShortcutShortestPath
                 //BFS on level graph
                 List<DataNode<Point2D>> shortestPathLevel = shortcutGraph.GetShortestPath(firstNode, lastNode);
 
-                System.Diagnostics.Debug.WriteLine("Shortcut Graph: " + shortcutGraph);
-                System.Diagnostics.Debug.WriteLine("Level Shortest Path: " + string.Join<DataNode<Point2D>>(", ", shortestPathLevel.ToArray()));
+                output.LogLine("Shortcut Graph: " + shortcutGraph);
+                output.LogLine("Level Shortest Path: " + string.Join<DataNode<Point2D>>(", ", shortestPathLevel.ToArray()));
 
                 //computing trajectory from found shortest path
                 Trajectory2D levelTrajectory = new Trajectory2D();
@@ -90,7 +90,7 @@ namespace MultiScaleTrajectories.SingleTrajectory.Algorithm.ShortcutShortestPath
                 //reporting level solution
                 output.SetTrajectoryAtLevel(level, levelTrajectory);
 
-                System.Diagnostics.Debug.WriteLine("");
+                output.LogLine("");
             }
         }
 

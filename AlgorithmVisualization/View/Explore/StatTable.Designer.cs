@@ -1,6 +1,6 @@
-﻿namespace AlgorithmVisualization.View.Exploration.Stats
+﻿namespace AlgorithmVisualization.View.Exploration
 {
-    partial class NonGenericStatTable
+    partial class StatTable<TIn, TOut>
     {
         /// <summary> 
         /// Required designer variable.
@@ -90,8 +90,11 @@
             this.outputStatsTable.ReadOnly = true;
             this.outputStatsTable.RowHeadersVisible = false;
             this.outputStatsTable.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
+            this.outputStatsTable.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.CellSelect;
             this.outputStatsTable.Size = new System.Drawing.Size(415, 124);
             this.outputStatsTable.TabIndex = 13;
+            this.outputStatsTable.DataBindingComplete += new System.Windows.Forms.DataGridViewBindingCompleteEventHandler(this.statsTable_DataBindingComplete);
+            this.outputStatsTable.Leave += new System.EventHandler(this.statsTable_Leave);
             // 
             // label3
             // 
@@ -128,8 +131,11 @@
             this.inputStatsTable.ReadOnly = true;
             this.inputStatsTable.RowHeadersVisible = false;
             this.inputStatsTable.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
+            this.inputStatsTable.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.CellSelect;
             this.inputStatsTable.Size = new System.Drawing.Size(415, 128);
             this.inputStatsTable.TabIndex = 13;
+            this.inputStatsTable.DataBindingComplete += new System.Windows.Forms.DataGridViewBindingCompleteEventHandler(this.statsTable_DataBindingComplete);
+            this.inputStatsTable.Leave += new System.EventHandler(this.statsTable_Leave);
             // 
             // label2
             // 
@@ -166,8 +172,11 @@
             this.runStatsTable.ReadOnly = true;
             this.runStatsTable.RowHeadersVisible = false;
             this.runStatsTable.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
+            this.runStatsTable.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.CellSelect;
             this.runStatsTable.Size = new System.Drawing.Size(415, 128);
             this.runStatsTable.TabIndex = 13;
+            this.runStatsTable.DataBindingComplete += new System.Windows.Forms.DataGridViewBindingCompleteEventHandler(this.statsTable_DataBindingComplete);
+            this.runStatsTable.Leave += new System.EventHandler(this.statsTable_Leave);
             // 
             // label1
             // 
@@ -178,12 +187,12 @@
             this.label1.TabIndex = 1;
             this.label1.Text = "Run Statistics";
             // 
-            // NonGenericStatTable
+            // StatTable
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.Controls.Add(this.tableLayoutPanel1);
-            this.Name = "NonGenericStatTable";
+            this.Name = "StatTable";
             this.Size = new System.Drawing.Size(421, 452);
             this.tableLayoutPanel1.ResumeLayout(false);
             this.panel3.ResumeLayout(false);

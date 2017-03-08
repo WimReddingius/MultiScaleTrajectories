@@ -1,6 +1,6 @@
 ﻿using System.Windows.Forms;
 
-namespace AlgorithmVisualization.View.Util
+namespace AlgorithmVisualization.View
 {
     class FormsUtil
     {

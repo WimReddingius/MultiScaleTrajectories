@@ -18,6 +18,8 @@ namespace MultiScaleTrajectories.SingleTrajectory.Algorithm
         public STInput()
         {
             Clear();
+            Statistics["Levels"] = () => Epsilons.Count;
+            Statistics["Points"] = () => Trajectory.Count;
         }
 
         public void AppendLevel(double epsilon)
@@ -45,7 +47,7 @@ namespace MultiScaleTrajectories.SingleTrajectory.Algorithm
             Epsilons.Insert(level - 1, epsilon);
         }
 
-        public override void Clear()
+        public sealed override void Clear()
         {
             Trajectory = new Trajectory2D();
             Epsilons = new List<double> { double.PositiveInfinity };

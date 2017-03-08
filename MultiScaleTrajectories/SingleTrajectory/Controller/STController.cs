@@ -17,7 +17,7 @@ namespace MultiScaleTrajectories.SingleTrajectory.Controller
         {
             InputEditor = new InputEditor<STInput>
             {
-                Visualization = new GLDataVisualization<STInputNodeLink, STInput>(),
+                Visualization = new STInputNodeLink(),
                 Options = new STInputOptions()
             };
 
@@ -26,8 +26,8 @@ namespace MultiScaleTrajectories.SingleTrajectory.Controller
             RunExplorers.Add(new RunExplorer<STInput, STOutput>
             {
                 Name = "Node-Link Visualization",
-                Visualization = new GLDataVisualization<STOutputNodeLink, AlgorithmRun<STInput, STOutput>[]>(),
-                ConsolidationFunc = i => i == 1
+                Visualization = new STOutputNodeLink(),
+                ConsolidationFunction = i => i == 1
             });
         }
 

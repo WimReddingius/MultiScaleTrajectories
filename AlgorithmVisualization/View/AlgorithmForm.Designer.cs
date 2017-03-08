@@ -53,6 +53,7 @@
             // baseSplitContainer.Panel2
             // 
             this.baseSplitContainer.Panel2.Controls.Add(this.configurationSplitContainer);
+            this.baseSplitContainer.Panel2.Padding = new System.Windows.Forms.Padding(1, 4, 2, 4);
             this.baseSplitContainer.Size = new System.Drawing.Size(1106, 648);
             this.baseSplitContainer.SplitterDistance = 797;
             this.baseSplitContainer.TabIndex = 0;
@@ -62,7 +63,7 @@
             this.configurationSplitContainer.Dock = System.Windows.Forms.DockStyle.Fill;
             this.configurationSplitContainer.FixedPanel = System.Windows.Forms.FixedPanel.Panel1;
             this.configurationSplitContainer.IsSplitterFixed = true;
-            this.configurationSplitContainer.Location = new System.Drawing.Point(0, 0);
+            this.configurationSplitContainer.Location = new System.Drawing.Point(1, 4);
             this.configurationSplitContainer.Name = "configurationSplitContainer";
             this.configurationSplitContainer.Orientation = System.Windows.Forms.Orientation.Horizontal;
             // 
@@ -70,14 +71,14 @@
             // 
             this.configurationSplitContainer.Panel1.Controls.Add(this.algorithmTypeLabel);
             this.configurationSplitContainer.Panel1.Controls.Add(this.algorithmTypeComboBox);
-            this.configurationSplitContainer.Size = new System.Drawing.Size(305, 648);
+            this.configurationSplitContainer.Size = new System.Drawing.Size(302, 640);
             this.configurationSplitContainer.SplitterDistance = 58;
             this.configurationSplitContainer.TabIndex = 11;
             // 
             // algorithmTypeLabel
             // 
             this.algorithmTypeLabel.AutoSize = true;
-            this.algorithmTypeLabel.Location = new System.Drawing.Point(1, 9);
+            this.algorithmTypeLabel.Location = new System.Drawing.Point(-3, 9);
             this.algorithmTypeLabel.Name = "algorithmTypeLabel";
             this.algorithmTypeLabel.Size = new System.Drawing.Size(77, 13);
             this.algorithmTypeLabel.TabIndex = 10;
@@ -88,7 +89,7 @@
             this.algorithmTypeComboBox.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.algorithmTypeComboBox.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.algorithmTypeComboBox.Location = new System.Drawing.Point(3, 25);
+            this.algorithmTypeComboBox.Location = new System.Drawing.Point(0, 25);
             this.algorithmTypeComboBox.Name = "algorithmTypeComboBox";
             this.algorithmTypeComboBox.Size = new System.Drawing.Size(299, 21);
             this.algorithmTypeComboBox.TabIndex = 1;

@@ -13,7 +13,7 @@ using MouseEventArgs = System.Windows.Forms.MouseEventArgs;
 
 namespace MultiScaleTrajectories.SingleTrajectory.View.Input
 {
-    class STInputNodeLink : GLTrajectoryVisualization, IDataLoader<STInput>
+    class STInputNodeLink : GLTrajectoryVisualization, IInputLoader<STInput>
     {
         private Point2D LastSelectedPoint;
         private bool DraggingPoint;
@@ -112,7 +112,7 @@ namespace MultiScaleTrajectories.SingleTrajectory.View.Input
             Refresh();
         }
 
-        public void LoadData(STInput input)
+        public void LoadInput(STInput input)
         {
             Input = input;
 

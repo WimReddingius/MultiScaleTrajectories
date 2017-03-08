@@ -14,16 +14,13 @@ namespace MultiScaleTrajectories.SingleTrajectory.Algorithm
         public STOutput()
         {
             Levels = new Dictionary<int, Trajectory2D>();
-            Statistics["Number of points"] = () =>
-            {
-                var bla = Levels.Select(l => l.Value.Count).Aggregate((t1, t2) => t1 + t2);
-                return bla;
-            };
+            Statistics["Points"] = () => Levels.Select(l => l.Value.Count).Aggregate((t1, t2) => t1 + t2);
         }
 
         public void SetTrajectoryAtLevel(int level, Trajectory2D trajectory)
         {
             Levels.Add(level, trajectory);
+            Statistics["Points @ level " + level] = () => Levels[level].Count;
         }
 
         public Trajectory2D GetTrajectoryAtLevel(int i)

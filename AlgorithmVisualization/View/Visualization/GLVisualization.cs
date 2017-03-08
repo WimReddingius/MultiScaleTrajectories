@@ -1,7 +1,7 @@
 ﻿using System.Windows.Forms;
 using OpenTK;
 
-namespace AlgorithmVisualization.View.Exploration.Visualization
+namespace AlgorithmVisualization.View.Visualization
 {
     public abstract class GLVisualization : GLControl
     {

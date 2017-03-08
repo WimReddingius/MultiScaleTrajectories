@@ -71,31 +71,27 @@
     <Compile Include="View\AlgorithmView.Designer.cs">
       <DependentUpon>AlgorithmView.cs</DependentUpon>
     </Compile>
-    <Compile Include="View\Exploration\Stats\StatTable.cs">
+    <Compile Include="View\Exploration\LogStream.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="View\Exploration\Stats\NonGenericStatTable.cs">
+    <Compile Include="View\Exploration\LogStream.Designer.cs">
+      <DependentUpon>LogStream.cs</DependentUpon>
+    </Compile>
+    <Compile Include="View\Exploration\StatTable.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="View\Exploration\Stats\NonGenericStatTable.Designer.cs">
-      <DependentUpon>NonGenericStatTable.cs</DependentUpon>
-    </Compile>
-    <Compile Include="View\Util\DataView.cs">
-      <SubType>UserControl</SubType>
+    <Compile Include="View\Exploration\StatTable.Designer.cs">
+      <DependentUpon>StatTable.cs</DependentUpon>
     </Compile>
     <Compile Include="View\Util\FormsUtil.cs" />
     <Compile Include="View\AlgorithmViewBase.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="View\Util\IDataLoader.cs" />
     <Compile Include="View\AlgorithmForm.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="View\AlgorithmForm.Designer.cs">
       <DependentUpon>AlgorithmForm.cs</DependentUpon>
-    </Compile>
-    <Compile Include="View\Exploration\Visualization\GLDataVisualization.cs">
-      <SubType>UserControl</SubType>
     </Compile>
     <Compile Include="View\Exploration\Visualization\GLVisualization.cs">
       <SubType>UserControl</SubType>
@@ -106,6 +102,8 @@
     <Compile Include="View\Exploration\Visualization\GLUtil\PickNameManager.cs" />
     <Compile Include="View\Exploration\Visualization\GLUtil\GLTextRenderer2D.cs" />
     <Compile Include="View\Exploration\Visualization\GLUtil\GLUtil2D.cs" />
+    <Compile Include="View\Util\IInputLoader.cs" />
+    <Compile Include="View\Util\IRunLoader.cs" />
   </ItemGroup>
   <ItemGroup />
   <ItemGroup>
@@ -115,8 +113,11 @@
     <EmbeddedResource Include="View\AlgorithmForm.resx">
       <DependentUpon>AlgorithmForm.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="View\Exploration\Stats\NonGenericStatTable.resx">
-      <DependentUpon>NonGenericStatTable.cs</DependentUpon>
+    <EmbeddedResource Include="View\Exploration\LogStream.resx">
+      <DependentUpon>LogStream.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="View\Exploration\StatTable.resx">
+      <DependentUpon>StatTable.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>

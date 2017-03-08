@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace AlgorithmVisualization.View.Exploration.Visualization.GLUtil
+namespace AlgorithmVisualization.View.Visualization.GLUtil
 {
     public class PickNameManager
     {

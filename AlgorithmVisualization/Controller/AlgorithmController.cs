@@ -1,8 +1,10 @@
 ﻿using System.ComponentModel;
 using AlgorithmVisualization.Algorithm;
+using AlgorithmVisualization.Algorithm.Experiment;
+using AlgorithmVisualization.Controller.Edit;
+using AlgorithmVisualization.Controller.Explore;
 using AlgorithmVisualization.View;
-using AlgorithmVisualization.View.Exploration;
-using AlgorithmVisualization.View.Exploration.Stats;
+using AlgorithmVisualization.View.Explore;
 
 namespace AlgorithmVisualization.Controller
 {
@@ -31,6 +33,13 @@ namespace AlgorithmVisualization.Controller
             {
                 Name = "Statistics",
                 Visualization = new StatTable<TIn, TOut>()
+            });
+
+            RunExplorers.Add(new RunExplorer<TIn, TOut>
+            {
+                Name = "Log",
+                Visualization = new LogStream<TIn, TOut>(),
+                ConsolidationFunction = (nr) => nr == 1
             });
 
             Workload = new AlgorithmWorkload<TIn, TOut>();

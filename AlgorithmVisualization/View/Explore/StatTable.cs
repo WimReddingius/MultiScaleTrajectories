@@ -3,19 +3,19 @@ using System.Data;
 using System.Linq;
 using System.Windows.Forms;
 using AlgorithmVisualization.Algorithm;
+using AlgorithmVisualization.Algorithm.Experiment;
+using AlgorithmVisualization.Controller.Explore;
 
-namespace AlgorithmVisualization.View.Exploration.Stats
+namespace AlgorithmVisualization.View.Explore
 {
-    partial class NonGenericStatTable : UserControl
+    partial class StatTable<TIn, TOut> : UserControl, IRunLoader<TIn, TOut> where TIn : Input, new() where TOut : Output, new()
     {
-        public NonGenericStatTable()
+        public StatTable()
         {
             InitializeComponent();
         }
 
-        public void LoadDataInTable<TIn, TOut>(AlgorithmRun<TIn, TOut>[] runs, Func<AlgorithmRun<TIn, TOut>, Statistics> statFunc, DataGridView table) 
-            where TOut : Output, new() 
-            where TIn : Input, new()
+        public void LoadDataInTable(AlgorithmRun<TIn, TOut>[] runs, Func<AlgorithmRun<TIn, TOut>, Statistics> statFunc, DataGridView table)
         {
             var dataTable = new DataTable();
 
@@ -55,16 +55,24 @@ namespace AlgorithmVisualization.View.Exploration.Stats
             }
 
             table.DataSource = dataTable;
+            table.ClearSelection();
         }
 
-        internal void LoadData<TIn, TOut>(AlgorithmRun<TIn, TOut>[] runs)
-            where TIn : Input, new()
-            where TOut : Output, new()
+        public void LoadRuns(AlgorithmRun<TIn, TOut>[] runs)
         {
             LoadDataInTable(runs, run => run.Statistics, runStatsTable);
             LoadDataInTable(runs, run => run.Input.Statistics, inputStatsTable);
             LoadDataInTable(runs, run => run.Output.Statistics, outputStatsTable);
         }
 
+        private void statsTable_DataBindingComplete(object sender, DataGridViewBindingCompleteEventArgs e)
+        {
+            ((DataGridView)sender).ClearSelection();
+        }
+
+        private void statsTable_Leave(object sender, EventArgs e)
+        {
+            ((DataGridView)sender).ClearSelection();
+        }
     }
 }

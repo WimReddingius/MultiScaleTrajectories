@@ -2,7 +2,7 @@
 using System.Drawing;
 using OpenTK.Graphics.OpenGL;
 
-namespace AlgorithmVisualization.View.Exploration.Visualization.GLUtil
+namespace AlgorithmVisualization.View.Visualization.GLUtil
 {
     public static class GLUtil2D
     {
