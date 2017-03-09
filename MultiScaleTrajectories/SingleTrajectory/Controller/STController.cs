@@ -1,6 +1,7 @@
 ﻿using AlgorithmVisualization.Algorithm;
 using AlgorithmVisualization.Controller;
-using AlgorithmVisualization.View.Exploration.Visualization;
+using AlgorithmVisualization.Controller.Explore;
+using AlgorithmVisualization.Controller.Edit;
 using MultiScaleTrajectories.SingleTrajectory.Algorithm;
 using MultiScaleTrajectories.SingleTrajectory.Algorithm.ShortcutShortestPath;
 using MultiScaleTrajectories.SingleTrajectory.View.Input;

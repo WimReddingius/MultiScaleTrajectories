@@ -1,4 +1,5 @@
 ﻿using System;
+using System.ComponentModel;
 using System.Threading;
 
 namespace AlgorithmVisualization.Algorithm.Experiment
@@ -16,6 +17,7 @@ namespace AlgorithmVisualization.Algorithm.Experiment
         public TIn Input;
         public TOut Output;
         public Algorithm<TIn, TOut> Algorithm;
+        public BackgroundWorker AlgorithmWorker;
 
         private static int idGenerator = 1;
         public string Name { get; }
@@ -37,9 +39,9 @@ namespace AlgorithmVisualization.Algorithm.Experiment
 
             Statistics = new Statistics
             {
-                ["Running time (s)"] = () => endTime.Subtract(startTime).TotalSeconds,
                 ["Algorithm name"] = () => Algorithm.Name,
                 ["Input name"] = () => Input.Name,
+                ["Running time (s)"] = () => endTime.Subtract(startTime).TotalSeconds,
             };
         }
 
@@ -64,12 +66,11 @@ namespace AlgorithmVisualization.Algorithm.Experiment
 
         public void Run()
         {
-            Thread runThread = new Thread(() =>
-            {
-                Algorithm.Compute(Input, Output);
-                SetState(RunState.Finished);
-            });
-            runThread.Start();
+            AlgorithmWorker = new BackgroundWorker();
+            AlgorithmWorker.DoWork += (o, e) => { Algorithm.Compute(Input, Output); };
+            AlgorithmWorker.RunWorkerCompleted += (o, e) => { SetState(RunState.Finished); };
+
+            AlgorithmWorker.RunWorkerAsync();
             SetState(RunState.Running);
         }
 
@@ -90,5 +91,12 @@ namespace AlgorithmVisualization.Algorithm.Experiment
             Finished
         }
 
+        public void WaitToFinish(Action finishAction)
+        {
+            if (IsFinished)
+                finishAction();
+            else
+                Finished += () => finishAction();
+        }
     }
 }

@@ -2,7 +2,6 @@
 using System.ComponentModel;
 using System.Windows.Forms;
 using AlgorithmVisualization.Controller;
-using AlgorithmVisualization.View.Util;
 
 namespace AlgorithmVisualization.View
 {

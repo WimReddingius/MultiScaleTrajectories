@@ -110,7 +110,7 @@
     <Compile Include="SingleTrajectory\View\Output\STOutputNodeLink.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="View\GLTrajectoryVisualization.cs">
+    <Compile Include="View\GLTrajectoryVisualization2D.cs">
       <SubType>UserControl</SubType>
     </Compile>
     <Compile Include="View\GLUtilTrajectory2D.cs" />

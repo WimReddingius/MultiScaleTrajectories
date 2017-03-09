@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Drawing;
-using AlgorithmVisualization.View.Exploration.Visualization.GLUtil;
+using AlgorithmVisualization.View.Visualization.GLUtil;
 using MultiScaleTrajectories.Algorithm.Geometry;
 using OpenTK.Graphics.OpenGL;
 

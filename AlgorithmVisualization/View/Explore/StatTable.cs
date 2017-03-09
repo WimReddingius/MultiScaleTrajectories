@@ -38,7 +38,7 @@ namespace AlgorithmVisualization.View.Explore
                 var runIndex = Array.IndexOf(runs, run);
                 dataTable.Columns.Add(new DataColumn(run.Name));
 
-                Action fillColumn = () =>
+                run.WaitToFinish(() =>
                 {
                     var stats = statFunc(run);
                     foreach (var stat in stats)
@@ -46,12 +46,7 @@ namespace AlgorithmVisualization.View.Explore
                         var statIndex = stats.ToList().IndexOf(stat);
                         dataTable.Rows[statIndex][runIndex + 1] = stat.Value();
                     }
-                };
-
-                if (run.IsFinished)
-                    fillColumn();
-                else
-                    run.Finished += () => fillColumn();
+                });
             }
 
             table.DataSource = dataTable;

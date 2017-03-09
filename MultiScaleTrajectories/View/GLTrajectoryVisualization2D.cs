@@ -1,18 +1,19 @@
 ﻿using System.Drawing;
 using System.Windows.Forms;
-using AlgorithmVisualization.View.Exploration.Visualization;
+using AlgorithmVisualization.View.Visualization;
+using MultiScaleTrajectories.Algorithm.Geometry;
 using OpenTK;
 using OpenTK.Input;
 using MouseEventArgs = System.Windows.Forms.MouseEventArgs;
 
 namespace MultiScaleTrajectories.View
 {
-    abstract class GLTrajectoryVisualization : GLVisualization2D
+    abstract class GLTrajectoryVisualization2D : GLVisualization2D
     {
         private bool DraggingWorld;
         private Vector2d LastDraggingLocation;
 
-        protected GLTrajectoryVisualization()
+        protected GLTrajectoryVisualization2D()
         {
             MouseDown += HandleMouseDown;
             MouseUp += HandleMouseUp;
@@ -71,6 +72,15 @@ namespace MultiScaleTrajectories.View
 
             ZoomFactor *= scaling;
             Refresh();
+        }
+
+        protected void LookAtTrajectory(Trajectory2D trajectory)
+        {
+            if (trajectory.Count > 0)
+            {
+                BoundingBox2D boundingBox = trajectory.GetBoundingBox();
+                LookAt(boundingBox.Center.X, boundingBox.Center.Y, 1.1 * boundingBox.Width, 1.1 * boundingBox.Height);
+            }
         }
 
     }

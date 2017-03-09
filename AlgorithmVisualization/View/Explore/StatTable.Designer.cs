@@ -1,4 +1,4 @@
-﻿namespace AlgorithmVisualization.View.Exploration
+﻿namespace AlgorithmVisualization.View.Explore
 {
     partial class StatTable<TIn, TOut>
     {
@@ -55,13 +55,13 @@
             this.tableLayoutPanel1.Controls.Add(this.panel2, 0, 1);
             this.tableLayoutPanel1.Controls.Add(this.panel1, 0, 0);
             this.tableLayoutPanel1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.tableLayoutPanel1.Location = new System.Drawing.Point(0, 0);
+            this.tableLayoutPanel1.Location = new System.Drawing.Point(5, 5);
             this.tableLayoutPanel1.Name = "tableLayoutPanel1";
             this.tableLayoutPanel1.RowCount = 3;
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 33.33333F));
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 33.33333F));
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 33.33333F));
-            this.tableLayoutPanel1.Size = new System.Drawing.Size(421, 452);
+            this.tableLayoutPanel1.Size = new System.Drawing.Size(416, 445);
             this.tableLayoutPanel1.TabIndex = 1;
             // 
             // panel3
@@ -69,9 +69,9 @@
             this.panel3.Controls.Add(this.outputStatsTable);
             this.panel3.Controls.Add(this.label3);
             this.panel3.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.panel3.Location = new System.Drawing.Point(3, 303);
+            this.panel3.Location = new System.Drawing.Point(3, 299);
             this.panel3.Name = "panel3";
-            this.panel3.Size = new System.Drawing.Size(415, 146);
+            this.panel3.Size = new System.Drawing.Size(410, 143);
             this.panel3.TabIndex = 4;
             // 
             // outputStatsTable
@@ -91,7 +91,7 @@
             this.outputStatsTable.RowHeadersVisible = false;
             this.outputStatsTable.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
             this.outputStatsTable.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.CellSelect;
-            this.outputStatsTable.Size = new System.Drawing.Size(415, 124);
+            this.outputStatsTable.Size = new System.Drawing.Size(410, 121);
             this.outputStatsTable.TabIndex = 13;
             this.outputStatsTable.DataBindingComplete += new System.Windows.Forms.DataGridViewBindingCompleteEventHandler(this.statsTable_DataBindingComplete);
             this.outputStatsTable.Leave += new System.EventHandler(this.statsTable_Leave);
@@ -110,9 +110,9 @@
             this.panel2.Controls.Add(this.inputStatsTable);
             this.panel2.Controls.Add(this.label2);
             this.panel2.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.panel2.Location = new System.Drawing.Point(3, 153);
+            this.panel2.Location = new System.Drawing.Point(3, 151);
             this.panel2.Name = "panel2";
-            this.panel2.Size = new System.Drawing.Size(415, 144);
+            this.panel2.Size = new System.Drawing.Size(410, 142);
             this.panel2.TabIndex = 3;
             // 
             // inputStatsTable
@@ -132,7 +132,7 @@
             this.inputStatsTable.RowHeadersVisible = false;
             this.inputStatsTable.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
             this.inputStatsTable.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.CellSelect;
-            this.inputStatsTable.Size = new System.Drawing.Size(415, 128);
+            this.inputStatsTable.Size = new System.Drawing.Size(410, 126);
             this.inputStatsTable.TabIndex = 13;
             this.inputStatsTable.DataBindingComplete += new System.Windows.Forms.DataGridViewBindingCompleteEventHandler(this.statsTable_DataBindingComplete);
             this.inputStatsTable.Leave += new System.EventHandler(this.statsTable_Leave);
@@ -153,7 +153,7 @@
             this.panel1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.panel1.Location = new System.Drawing.Point(3, 3);
             this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(415, 144);
+            this.panel1.Size = new System.Drawing.Size(410, 142);
             this.panel1.TabIndex = 2;
             // 
             // runStatsTable
@@ -173,7 +173,7 @@
             this.runStatsTable.RowHeadersVisible = false;
             this.runStatsTable.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
             this.runStatsTable.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.CellSelect;
-            this.runStatsTable.Size = new System.Drawing.Size(415, 128);
+            this.runStatsTable.Size = new System.Drawing.Size(410, 126);
             this.runStatsTable.TabIndex = 13;
             this.runStatsTable.DataBindingComplete += new System.Windows.Forms.DataGridViewBindingCompleteEventHandler(this.statsTable_DataBindingComplete);
             this.runStatsTable.Leave += new System.EventHandler(this.statsTable_Leave);
@@ -193,6 +193,7 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.Controls.Add(this.tableLayoutPanel1);
             this.Name = "StatTable";
+            this.Padding = new System.Windows.Forms.Padding(5, 5, 0, 2);
             this.Size = new System.Drawing.Size(421, 452);
             this.tableLayoutPanel1.ResumeLayout(false);
             this.panel3.ResumeLayout(false);

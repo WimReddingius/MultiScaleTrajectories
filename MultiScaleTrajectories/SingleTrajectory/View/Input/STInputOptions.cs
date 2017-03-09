@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Windows.Forms;
-using AlgorithmVisualization.View.Util;
+using AlgorithmVisualization.Controller;
+using AlgorithmVisualization.Controller.Edit;
 using MultiScaleTrajectories.SingleTrajectory.Algorithm;
 
 namespace MultiScaleTrajectories.SingleTrajectory.View.Input
@@ -35,18 +36,16 @@ namespace MultiScaleTrajectories.SingleTrajectory.View.Input
 
         private void removeLevelButton_Click(object sender, EventArgs e)
         {
-            RemoveLastLevel();
+            if (levelTable.RowCount > 1)
+            {
+                RemoveLevel(levelTable.RowCount);
+            }
         }
 
         private void levelTable_CellEndEdit(object sender, DataGridViewCellEventArgs e)
         {
             int level = e.RowIndex + 1;
             Input.SetEpsilon(level, (double)levelTable.Rows[e.RowIndex].Cells["Closeness"].Value);
-        }
-
-        private void RemoveLastLevel()
-        {
-            RemoveLevel(levelTable.RowCount);
         }
 
         private void RemoveLevel(int level)

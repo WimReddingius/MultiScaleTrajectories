@@ -1,4 +1,6 @@
-﻿namespace AlgorithmVisualization.Algorithm
+﻿using AlgorithmVisualization.Algorithm.Experiment;
+
+namespace AlgorithmVisualization.Algorithm
 {
 
     public delegate void LogEventHandler(string str);

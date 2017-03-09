@@ -55,15 +55,15 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Algorithm\Algorithm.cs" />
-    <Compile Include="Algorithm\AlgorithmRun.cs" />
-    <Compile Include="Algorithm\AlgorithmWorkload.cs" />
+    <Compile Include="Algorithm\Experiment\AlgorithmRun.cs" />
+    <Compile Include="Algorithm\Experiment\AlgorithmWorkload.cs" />
     <Compile Include="Algorithm\Input.cs" />
     <Compile Include="Algorithm\Output.cs" />
-    <Compile Include="Algorithm\Statistics.cs" />
+    <Compile Include="Algorithm\Experiment\Statistics.cs" />
     <Compile Include="Controller\AlgorithmController.cs" />
     <Compile Include="Controller\IAlgorithmController.cs" />
-    <Compile Include="Controller\InputEditor.cs" />
-    <Compile Include="Controller\RunExplorer.cs" />
+    <Compile Include="Controller\Edit\InputEditor.cs" />
+    <Compile Include="Controller\Explore\RunExplorer.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="View\AlgorithmView.cs">
       <SubType>UserControl</SubType>
@@ -71,19 +71,19 @@
     <Compile Include="View\AlgorithmView.Designer.cs">
       <DependentUpon>AlgorithmView.cs</DependentUpon>
     </Compile>
-    <Compile Include="View\Exploration\LogStream.cs">
+    <Compile Include="View\Explore\LogStream.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="View\Exploration\LogStream.Designer.cs">
+    <Compile Include="View\Explore\LogStream.Designer.cs">
       <DependentUpon>LogStream.cs</DependentUpon>
     </Compile>
-    <Compile Include="View\Exploration\StatTable.cs">
+    <Compile Include="View\Explore\StatTable.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="View\Exploration\StatTable.Designer.cs">
+    <Compile Include="View\Explore\StatTable.Designer.cs">
       <DependentUpon>StatTable.cs</DependentUpon>
     </Compile>
-    <Compile Include="View\Util\FormsUtil.cs" />
+    <Compile Include="View\FormsUtil.cs" />
     <Compile Include="View\AlgorithmViewBase.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -93,17 +93,17 @@
     <Compile Include="View\AlgorithmForm.Designer.cs">
       <DependentUpon>AlgorithmForm.cs</DependentUpon>
     </Compile>
-    <Compile Include="View\Exploration\Visualization\GLVisualization.cs">
+    <Compile Include="View\Visualization\GLVisualization.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="View\Exploration\Visualization\GLVisualization2D.cs">
+    <Compile Include="View\Visualization\GLVisualization2D.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="View\Exploration\Visualization\GLUtil\PickNameManager.cs" />
-    <Compile Include="View\Exploration\Visualization\GLUtil\GLTextRenderer2D.cs" />
-    <Compile Include="View\Exploration\Visualization\GLUtil\GLUtil2D.cs" />
-    <Compile Include="View\Util\IInputLoader.cs" />
-    <Compile Include="View\Util\IRunLoader.cs" />
+    <Compile Include="View\Visualization\GLUtil\PickNameManager.cs" />
+    <Compile Include="View\Visualization\GLUtil\GLTextRenderer2D.cs" />
+    <Compile Include="View\Visualization\GLUtil\GLUtil2D.cs" />
+    <Compile Include="Controller\Edit\IInputLoader.cs" />
+    <Compile Include="Controller\Explore\IRunLoader.cs" />
   </ItemGroup>
   <ItemGroup />
   <ItemGroup>
@@ -113,10 +113,10 @@
     <EmbeddedResource Include="View\AlgorithmForm.resx">
       <DependentUpon>AlgorithmForm.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="View\Exploration\LogStream.resx">
+    <EmbeddedResource Include="View\Explore\LogStream.resx">
       <DependentUpon>LogStream.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="View\Exploration\StatTable.resx">
+    <EmbeddedResource Include="View\Explore\StatTable.resx">
       <DependentUpon>StatTable.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>

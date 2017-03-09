@@ -3,8 +3,9 @@ using System.IO;
 using System.Linq;
 using System.Windows.Forms;
 using AlgorithmVisualization.Algorithm;
+using AlgorithmVisualization.Algorithm.Experiment;
 using AlgorithmVisualization.Controller;
-using AlgorithmVisualization.View.Util;
+using AlgorithmVisualization.Controller.Explore;
 using Newtonsoft.Json.Linq;
 
 namespace AlgorithmVisualization.View
@@ -241,6 +242,8 @@ namespace AlgorithmVisualization.View
 
         private void workloadTable_SelectionChanged(object sender, EventArgs e)
         {
+            var previouslySelected = runExplorerComboBox.SelectedItem;
+
             var numRuns = SelectedRuns.Length;
             var availableRunExplorers = Controller.RunExplorers.ToList().FindAll(ex => ex.ConsolidationSupported(numRuns)).ToArray();
 
@@ -249,7 +252,12 @@ namespace AlgorithmVisualization.View
             runExplorerComboBox.Enabled = (availableRunExplorers.Length > 0);
 
             if (availableRunExplorers.Length > 0)
-                runExplorerComboBox.SelectedItem = availableRunExplorers[0];
+            {
+                if (previouslySelected == null)
+                    runExplorerComboBox.SelectedItem = availableRunExplorers[0];
+                else if (availableRunExplorers.Contains(previouslySelected))
+                    runExplorerComboBox.SelectedItem = previouslySelected;
+            }
 
             ExploreSelectedRuns();
         }
@@ -260,9 +268,9 @@ namespace AlgorithmVisualization.View
 
             if (Controller.Workload.HasStarted && runExplorer != null)
             {
-                runExplorer.LoadRuns(SelectedRuns);
                 FormsUtil.FillContainer(runExplorerOptionsContainer, runExplorer.Options);
                 LoadVisualization(CurrentRunExplorer.Visualization);
+                runExplorer.LoadRuns(SelectedRuns);
             }
         }
 

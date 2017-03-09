@@ -16,7 +16,7 @@ namespace MultiScaleTrajectories.Algorithm.Geometry
             MinY = MinX = double.MaxValue;
         }
 
-        public Vector2d Middle => new Vector2d((MaxX + MinX) / 2, (MaxY + MinY) / 2);
+        public Vector2d Center => new Vector2d((MaxX + MinX) / 2, (MaxY + MinY) / 2);
         public double Width => MaxX - MinX;
         public double Height => MaxY - MinY;
 

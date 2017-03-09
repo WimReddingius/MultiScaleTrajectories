@@ -7,11 +7,9 @@ namespace MultiScaleTrajectories.Algorithm.Geometry
 
     class Trajectory2D : List<Point2D>
     {
-        public BoundingBox2D BoundingBox;
-
         public Trajectory2D()
         {
-            BoundingBox = new BoundingBox2D();
+            
         }
 
         public Point2D AppendPoint(double x, double y)
@@ -23,13 +21,20 @@ namespace MultiScaleTrajectories.Algorithm.Geometry
         {
             Point2D p = new Point2D(x, y);
             Insert(index, p);
-            BoundingBox.Update(p.X, p.Y);
+            
             return p;
         }
 
         public void RemovePoint(int index)
         {
             RemoveAt(index);
+        }
+
+        public BoundingBox2D GetBoundingBox()
+        {
+            BoundingBox2D bb = new BoundingBox2D();
+            ForEach(p => bb.Update(p.X, p.Y));
+            return bb;
         }
 
     }

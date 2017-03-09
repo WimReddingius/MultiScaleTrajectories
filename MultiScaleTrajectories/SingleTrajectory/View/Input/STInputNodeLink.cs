@@ -2,8 +2,9 @@
 using System.Drawing;
 using System.Linq;
 using System.Windows.Forms;
-using AlgorithmVisualization.View.Exploration.Visualization.GLUtil;
-using AlgorithmVisualization.View.Util;
+using AlgorithmVisualization.Controller;
+using AlgorithmVisualization.Controller.Edit;
+using AlgorithmVisualization.View.Visualization.GLUtil;
 using MultiScaleTrajectories.Algorithm.Geometry;
 using MultiScaleTrajectories.SingleTrajectory.Algorithm;
 using MultiScaleTrajectories.View;
@@ -13,7 +14,7 @@ using MouseEventArgs = System.Windows.Forms.MouseEventArgs;
 
 namespace MultiScaleTrajectories.SingleTrajectory.View.Input
 {
-    class STInputNodeLink : GLTrajectoryVisualization, IInputLoader<STInput>
+    class STInputNodeLink : GLTrajectoryVisualization2D, IInputLoader<STInput>
     {
         private Point2D LastSelectedPoint;
         private bool DraggingPoint;
@@ -115,12 +116,7 @@ namespace MultiScaleTrajectories.SingleTrajectory.View.Input
         public void LoadInput(STInput input)
         {
             Input = input;
-
-            if (Input.Trajectory.Count > 0)
-            {
-                BoundingBox2D boundingBox = Input.Trajectory.BoundingBox;
-                LookAt(boundingBox.Middle.X, boundingBox.Middle.Y, boundingBox.Width, boundingBox.Height);
-            }
+            LookAtTrajectory(Input.Trajectory);
 
             foreach (Point2D p in Input.Trajectory)
             {

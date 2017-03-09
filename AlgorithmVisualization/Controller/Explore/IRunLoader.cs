@@ -1,4 +1,5 @@
 ﻿using AlgorithmVisualization.Algorithm;
+using AlgorithmVisualization.Algorithm.Experiment;
 
 namespace AlgorithmVisualization.Controller.Explore
 {

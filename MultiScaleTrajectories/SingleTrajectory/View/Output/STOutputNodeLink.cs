@@ -1,29 +1,30 @@
-﻿using System;
-using System.Drawing;
+﻿using System.Drawing;
 using System.Windows.Forms;
-using AlgorithmVisualization.Algorithm;
-using AlgorithmVisualization.View.Exploration.Visualization.GLUtil;
-using AlgorithmVisualization.View.Util;
+using AlgorithmVisualization.Algorithm.Experiment;
+using AlgorithmVisualization.Controller.Explore;
+using AlgorithmVisualization.View.Visualization.GLUtil;
 using MultiScaleTrajectories.Algorithm.Geometry;
 using MultiScaleTrajectories.SingleTrajectory.Algorithm;
 using MultiScaleTrajectories.View;
 
 namespace MultiScaleTrajectories.SingleTrajectory.View.Output
 {
-    class STOutputNodeLink : GLTrajectoryVisualization, IRunLoader<STInput, STOutput>
+    class STOutputNodeLink : GLTrajectoryVisualization2D, IRunLoader<STInput, STOutput>
     {
         private STOutput Output;
+
+        private STInput previousInput;
         private int CurrentLevel;
 
         public STOutputNodeLink()
         {
-            HandleOutputIncomplete();
+            DeregisterEvents();
         }
 
         protected override void RenderWorld()
         {
-            GLUtilTrajectory2D.DrawEdges(GetRenderedTrajectory(), 2.5f, Color.Red);
-            //GLUtilTrajectory2D.DrawPoints(GetRenderedTrajectory(), 3.5f, (p) => Color.Red);
+            Trajectory2D trajectory = Output.GetTrajectoryAtLevel(CurrentLevel);
+            GLUtilTrajectory2D.DrawEdges(trajectory, 2.5f, Color.Red);
         }
 
         protected override void RenderHud()
@@ -32,11 +33,6 @@ namespace MultiScaleTrajectories.SingleTrajectory.View.Output
             string text = "Level " + CurrentLevel;
             Color color = Color.Black;
             GLUtil2D.RenderText((-ClientRectangle.Width / 2) + padding, (-ClientRectangle.Height / 2) + padding, text, color);
-        }
-
-        protected Trajectory2D GetRenderedTrajectory()
-        {
-            return Output.GetTrajectoryAtLevel(CurrentLevel);
         }
 
         private void HandleArrowKeys(object sender, KeyEventArgs e)
@@ -71,33 +67,32 @@ namespace MultiScaleTrajectories.SingleTrajectory.View.Output
 
         public void LoadRuns(AlgorithmRun<STInput, STOutput>[] runs)
         {
-            HandleOutputIncomplete();
-            Output = runs[0].Output;
+            var run = runs[0];
+            Output = run.Output;
 
-            if (runs[0].IsFinished)
-                HandleOutputComplete();
-            else
-                runs[0].Finished += HandleOutputComplete;
+            DeregisterEvents();
+
+            //preserve currently visualized level if the input hasn't changed
+            if (previousInput != run.Input)
+                CurrentLevel = Output.NumLevels;
+
+            //render
+            run.WaitToFinish(HandleRunFinished);
+            previousInput = run.Input;
         }
 
-        private void HandleOutputIncomplete()
+        private void DeregisterEvents()
         {
-            CurrentLevel = -1;
             KeyDown -= HandleArrowKeys;
             Paint -= Render;
         }
 
-        private void HandleOutputComplete()
+        private void HandleRunFinished()
         {
-            CurrentLevel = Output.NumLevels;
+            LookAtTrajectory(Output.GetTrajectoryAtLevel(1));
             KeyDown += HandleArrowKeys;
             Paint += Render;
-
-            if (InvokeRequired)
-            {
-                Action del = Refresh;
-                Invoke(del);
-            }
+            Refresh();
         }
 
     }
