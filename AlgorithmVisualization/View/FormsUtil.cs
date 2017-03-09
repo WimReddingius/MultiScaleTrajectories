@@ -4,7 +4,7 @@ namespace AlgorithmVisualization.View
 {
     class FormsUtil
     {
-        public static void FillContainer(Control container, Control control)
+        public static void FillContainer(Control container, Control control, bool clear = true)
         {
             if (control != null)
             {

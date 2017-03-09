@@ -25,11 +25,6 @@ namespace AlgorithmVisualization.Algorithm
 
         public abstract void Clear();
 
-        public virtual Statistics GetStatistics()
-        {
-            return new Statistics();
-        }
-
         public override string ToString()
         {
             return Name;

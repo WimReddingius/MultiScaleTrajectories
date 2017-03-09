@@ -1,4 +1,6 @@
 ﻿using System;
+using System.ComponentModel;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Windows.Forms;
@@ -12,28 +14,34 @@ namespace AlgorithmVisualization.View
 {
     partial class AlgorithmView<TIn, TOut> : AlgorithmViewBase where TIn : Input, new() where TOut : Output, new()
     {
-        private readonly AlgorithmController<TIn, TOut> Controller;
-
         public sealed override Control VisualizationContainer { get; set; }
 
-        private TIn CurrentInput  => Controller.InputEditor.Input;
+        private readonly AlgorithmController<TIn, TOut> Controller;
+        private readonly ExplorationView<TIn, TOut> ExplorationView;
+        private readonly BindingList<AlgorithmRun<TIn, TOut>> SelectedRuns;
 
-        private RunExplorer<TIn, TOut> CurrentRunExplorer => (RunExplorer<TIn, TOut>)runExplorerComboBox.SelectedItem;
-
-        private AlgorithmRun<TIn, TOut>[] SelectedRuns
-            => workloadTable.SelectedRows.Cast<DataGridViewRow>()
-            .Select(row => (AlgorithmRun<TIn, TOut>)row.Cells["workloadTableRunColumn"].Value)
-            .ToArray();
+        private TIn CurrentInput  => Controller.InputEditor.Input;        
 
 
         public AlgorithmView(AlgorithmController<TIn, TOut> controller)
         {
-            InitializeComponent();
+            InitializeComponent();       
 
             Controller = controller;
             VisualizationContainer = new Control();
 
+            SelectedRuns = new BindingList<AlgorithmRun<TIn, TOut>>();
+            SelectedRuns.ListChanged += OnSelectedRunsChanged;
+
+            //populate controls
             LoadDataSources();
+
+            //initialize exploration view
+            var runExplorers = new BindingList<RunExplorer<TIn, TOut>>(Controller.RunExplorers
+                .ToList()
+                .Select(fac => fac.Create())
+                .ToList());
+            ExplorationView = new ExplorationView<TIn, TOut>(runExplorers, SelectedRuns);
 
             //initialize input controller and load default input
             CreateInput();
@@ -41,11 +49,6 @@ namespace AlgorithmVisualization.View
             
             //initialize input visualization
             SetVisualizationMode(false);
-        }
-
-        private void runExplorerComboBox_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            ExploreSelectedRuns();
         }
 
         private void openInputButton_Click(object sender, EventArgs e)
@@ -72,7 +75,7 @@ namespace AlgorithmVisualization.View
             }
             catch (Exception e)
             {
-                System.Diagnostics.Debug.WriteLine(e);
+                Debug.WriteLine(e);
             }
         }
 
@@ -110,6 +113,7 @@ namespace AlgorithmVisualization.View
         {
             Controller.Workload.Run();
             SetVisualizationMode(true);
+            ExplorationView.LoadRuns(Controller.Workload.Runs.ToArray());
         }
 
         private void resetWorkloadButton_Click(object sender, EventArgs e)
@@ -127,14 +131,12 @@ namespace AlgorithmVisualization.View
             if (!exploring)
             {
                 AddTabPage(inputTabPage);
-                RemoveTabPage(exploreTabPage);
                 LoadVisualization(Controller.InputEditor.Visualization);
             }
             else
             {
                 RemoveTabPage(inputTabPage);
-                AddTabPage(exploreTabPage);
-                ExploreSelectedRuns();
+                LoadVisualization(ExplorationView);
             }
 
             resetWorkloadButton.Enabled = exploring;
@@ -162,6 +164,7 @@ namespace AlgorithmVisualization.View
             var run = Controller.Workload.CreateRun(algo, input);
             workloadTable.Rows.Add(run, input, algo);
 
+            computeWorkloadButton.Enabled = true;
         }
 
         private void removeWorkloadRunButton_Click(object sender, EventArgs e)
@@ -173,6 +176,9 @@ namespace AlgorithmVisualization.View
                 workloadTable.Rows.Remove(row);
                 Controller.Workload.Runs.Remove(run);
             }
+
+            if (Controller.Workload.Runs.Count == 0)
+                computeWorkloadButton.Enabled = false;
         }
 
         private void workloadTable_CellEndEdit(object sender, DataGridViewCellEventArgs e)
@@ -242,36 +248,46 @@ namespace AlgorithmVisualization.View
 
         private void workloadTable_SelectionChanged(object sender, EventArgs e)
         {
-            var previouslySelected = runExplorerComboBox.SelectedItem;
+            SelectedRuns.ListChanged -= OnSelectedRunsChanged;
 
-            var numRuns = SelectedRuns.Length;
-            var availableRunExplorers = Controller.RunExplorers.ToList().FindAll(ex => ex.ConsolidationSupported(numRuns)).ToArray();
-
-            runExplorerComboBox.Items.Clear();
-            runExplorerComboBox.Items.AddRange(availableRunExplorers);
-            runExplorerComboBox.Enabled = (availableRunExplorers.Length > 0);
-
-            if (availableRunExplorers.Length > 0)
+            if (workloadTable.SelectedRows.Count == 0)
+                SelectedRuns.Clear();
+            else
             {
-                if (previouslySelected == null)
-                    runExplorerComboBox.SelectedItem = availableRunExplorers[0];
-                else if (availableRunExplorers.Contains(previouslySelected))
-                    runExplorerComboBox.SelectedItem = previouslySelected;
+                foreach (DataGridViewRow row in workloadTable.SelectedRows)
+                {
+                    var run = (AlgorithmRun<TIn, TOut>) row.Cells["workloadTableRunColumn"].Value;
+                    if (!SelectedRuns.Contains(run))
+                        SelectedRuns.Add(run);
+                }
+
+                var selectedRunsInWorkloadTable = workloadTable.SelectedRows
+                    .Cast<DataGridViewRow>()
+                    .Select(row => (AlgorithmRun<TIn, TOut>) row.Cells["workloadTableRunColumn"].Value)
+                    .ToList();
+
+                foreach (AlgorithmRun<TIn, TOut> run in SelectedRuns.ToList()) //copy to a list
+                {
+                    if (!selectedRunsInWorkloadTable.Contains(run))
+                        SelectedRuns.Remove(run);
+                }
             }
 
-            ExploreSelectedRuns();
+            SelectedRuns.ListChanged += OnSelectedRunsChanged;
         }
 
-        private void ExploreSelectedRuns()
+        private void OnSelectedRunsChanged(object sender, ListChangedEventArgs listChangedEventArgs)
         {
-            RunExplorer<TIn, TOut> runExplorer = CurrentRunExplorer;
+            workloadTable.SelectionChanged -= workloadTable_SelectionChanged;
 
-            if (Controller.Workload.HasStarted && runExplorer != null)
-            {
-                FormsUtil.FillContainer(runExplorerOptionsContainer, runExplorer.Options);
-                LoadVisualization(CurrentRunExplorer.Visualization);
-                runExplorer.LoadRuns(SelectedRuns);
-            }
+            workloadTable.ClearSelection();
+            workloadTable.Rows
+                .Cast<DataGridViewRow>()
+                .ToList()
+                .FindAll(row => SelectedRuns.Contains((AlgorithmRun<TIn, TOut>) row.Cells["workloadTableRunColumn"].Value))
+                .ForEach(row => row.Selected = true);
+
+            workloadTable.SelectionChanged += workloadTable_SelectionChanged;
         }
 
         private void LoadDataSources()

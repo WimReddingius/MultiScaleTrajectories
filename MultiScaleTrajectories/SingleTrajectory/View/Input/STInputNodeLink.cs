@@ -47,9 +47,9 @@ namespace MultiScaleTrajectories.SingleTrajectory.View.Input
         protected override void RenderHud()
         {
             int padding = 5;
-            string text = "Editing";
+            string text = "Editing " + Input.Name;
             Color color = Color.Black;
-            GLUtil2D.RenderText((-ClientRectangle.Width / 2) + padding, (-ClientRectangle.Height / 2) + padding, text, color);
+            GLUtil2D.RenderText(padding, padding, text, color);
         }
 
         private void HandleMouseMove(object sender, MouseEventArgs e)

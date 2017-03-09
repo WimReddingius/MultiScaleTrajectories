@@ -17,7 +17,7 @@ namespace MultiScaleTrajectories
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
 
-            var algoForm = new AlgorithmForm() { Text = Resources.Program_Name };
+            var algoForm = new AlgorithmForm { Text = Resources.Program_Name };
             algoForm.AlgoControllers.Add(new STController());
 
             Application.Run(algoForm);

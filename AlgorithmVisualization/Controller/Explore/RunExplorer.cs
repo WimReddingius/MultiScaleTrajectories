@@ -1,4 +1,4 @@
-﻿using System;
+﻿using System.Diagnostics;
 using System.Windows.Forms;
 using AlgorithmVisualization.Algorithm;
 using AlgorithmVisualization.Algorithm.Experiment;
@@ -7,17 +7,22 @@ namespace AlgorithmVisualization.Controller.Explore
 {
     public class RunExplorer<TIn, TOut> : IRunLoader<TIn, TOut> where TIn : Input, new() where TOut : Output, new()
     {
+        internal bool IsNative;
+
         public Control Options;
         public Control Visualization;
 
         public string Name { get; set; }
-        public Func<int, bool> ConsolidationFunction;
+        public int MinConsolidation;
+        public int MaxConsolidation;
 
 
         public RunExplorer()
         {
             Name = "Run Explorer";
-            ConsolidationFunction = i => i > 0;
+            MinConsolidation = 1;
+            MaxConsolidation = int.MaxValue;
+            IsNative = false;
         }
 
         public void LoadRuns(params AlgorithmRun<TIn, TOut>[] runs)
@@ -31,7 +36,7 @@ namespace AlgorithmVisualization.Controller.Explore
 
         public bool ConsolidationSupported(int numRuns)
         {
-            return ConsolidationFunction(numRuns);
+            return MinConsolidation <= numRuns && numRuns <= MaxConsolidation;
         }
 
         public override string ToString()

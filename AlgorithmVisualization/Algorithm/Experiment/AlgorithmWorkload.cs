@@ -6,6 +6,8 @@ namespace AlgorithmVisualization.Algorithm.Experiment
     {
 
         public BindingList<AlgorithmRun<TIn, TOut>> Runs;
+
+        //TODO: make workload state
         public bool HasStarted;
         
 

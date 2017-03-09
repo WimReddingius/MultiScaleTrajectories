@@ -32,7 +32,7 @@ namespace MultiScaleTrajectories.SingleTrajectory.View.Output
             int padding = 5;
             string text = "Level " + CurrentLevel;
             Color color = Color.Black;
-            GLUtil2D.RenderText((-ClientRectangle.Width / 2) + padding, (-ClientRectangle.Height / 2) + padding, text, color);
+            GLUtil2D.RenderText(padding, padding, text, color);
         }
 
         private void HandleArrowKeys(object sender, KeyEventArgs e)

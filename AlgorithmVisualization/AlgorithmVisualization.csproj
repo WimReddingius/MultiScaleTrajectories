@@ -61,6 +61,7 @@
     <Compile Include="Algorithm\Output.cs" />
     <Compile Include="Algorithm\Experiment\Statistics.cs" />
     <Compile Include="Controller\AlgorithmController.cs" />
+    <Compile Include="Controller\Explore\RunExplorerFactory.cs" />
     <Compile Include="Controller\IAlgorithmController.cs" />
     <Compile Include="Controller\Edit\InputEditor.cs" />
     <Compile Include="Controller\Explore\RunExplorer.cs" />
@@ -70,6 +71,12 @@
     </Compile>
     <Compile Include="View\AlgorithmView.Designer.cs">
       <DependentUpon>AlgorithmView.cs</DependentUpon>
+    </Compile>
+    <Compile Include="View\ExplorationView.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="View\ExplorationView.Designer.cs">
+      <DependentUpon>ExplorationView.cs</DependentUpon>
     </Compile>
     <Compile Include="View\Explore\LogStream.cs">
       <SubType>UserControl</SubType>
@@ -112,6 +119,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="View\AlgorithmForm.resx">
       <DependentUpon>AlgorithmForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="View\ExplorationView.resx">
+      <DependentUpon>ExplorationView.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="View\Explore\LogStream.resx">
       <DependentUpon>LogStream.cs</DependentUpon>

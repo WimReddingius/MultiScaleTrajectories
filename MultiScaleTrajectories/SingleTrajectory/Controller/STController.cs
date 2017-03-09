@@ -24,11 +24,11 @@ namespace MultiScaleTrajectories.SingleTrajectory.Controller
 
             Algorithms.Add(new ShortcutShortestPath());
 
-            RunExplorers.Add(new RunExplorer<STInput, STOutput>
+            AddRunExplorer(() => new RunExplorer<STInput, STOutput>
             {
                 Name = "Node-Link Visualization",
                 Visualization = new STOutputNodeLink(),
-                ConsolidationFunction = i => i == 1
+                MaxConsolidation = 1
             });
         }
 

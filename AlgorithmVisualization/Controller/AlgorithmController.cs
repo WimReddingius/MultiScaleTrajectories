@@ -1,4 +1,5 @@
-﻿using System.ComponentModel;
+﻿using System;
+using System.ComponentModel;
 using AlgorithmVisualization.Algorithm;
 using AlgorithmVisualization.Algorithm.Experiment;
 using AlgorithmVisualization.Controller.Edit;
@@ -21,29 +22,39 @@ namespace AlgorithmVisualization.Controller
 
         public InputEditor<TIn> InputEditor;
         public BindingList<Algorithm<TIn, TOut>> Algorithms;
-        public BindingList<RunExplorer<TIn, TOut>> RunExplorers;
+        public BindingList<RunExplorerFactory<TIn, TOut>> RunExplorers;
 
         
         protected AlgorithmController()
         {
-            RunExplorers = new BindingList<RunExplorer<TIn, TOut>>();
+            RunExplorers = new BindingList<RunExplorerFactory<TIn, TOut>>();
             Algorithms = new BindingList<Algorithm<TIn, TOut>>();
 
-            RunExplorers.Add(new RunExplorer<TIn, TOut>
+            AddRunExplorer(() => new RunExplorer<TIn, TOut>
             {
                 Name = "Statistics",
-                Visualization = new StatTable<TIn, TOut>()
+                Visualization = new StatTable<TIn, TOut>(),
+                IsNative = true
             });
 
-            RunExplorers.Add(new RunExplorer<TIn, TOut>
+            AddRunExplorer(() => new RunExplorer<TIn, TOut>
             {
                 Name = "Log",
                 Visualization = new LogStream<TIn, TOut>(),
-                ConsolidationFunction = (nr) => nr == 1
+                MaxConsolidation = 1,
+                IsNative = true
             });
 
             Workload = new AlgorithmWorkload<TIn, TOut>();
             Inputs = new BindingList<TIn>();
+        }
+
+        protected void AddRunExplorer(Func<RunExplorer<TIn, TOut>> runExplorerFunc)
+        {
+            RunExplorers.Add(new RunExplorerFactory<TIn, TOut>
+            {
+                Create = runExplorerFunc
+            });
         }
 
     }

@@ -45,28 +45,30 @@ namespace AlgorithmVisualization.View.Visualization
         private void SetGLPerspective()
         {
             GL.Viewport(0, 0, ClientRectangle.Width, ClientRectangle.Height);
+
+            //setting up world coordinates
             GL.MatrixMode(MatrixMode.Projection);
             GL.LoadIdentity();
-
             GL.Ortho(0, ClientRectangle.Width, 0, ClientRectangle.Height, 5, -5);
-            GL.Translate(ClientRectangle.Width / 2, ClientRectangle.Height / 2, 0.0);
+            GL.Translate((double)ClientRectangle.Width / 2, (double)ClientRectangle.Height / 2, 0.0);
         }
 
         protected override void Render(object sender, PaintEventArgs e)
         {
-            GL.MatrixMode(MatrixMode.Modelview);
-
             Clear();
 
-            //set center of the screen to worldorigin and apply scaling
+            GL.MatrixMode(MatrixMode.Modelview);
+
+            //world coordinates for world rendering: center of the screen corresponds to worldorigin
             GL.PushMatrix();
             GL.Scale(ZoomFactor, ZoomFactor, 1f);
             GL.Translate(-WorldOrigin.X, -WorldOrigin.Y, 0f);
             RenderWorld();
             GL.PopMatrix();
 
-            //invert world coordinates for hud rendering
+            //screen coordinates for hud rendering
             GL.PushMatrix();
+            GL.Translate(-(double)ClientRectangle.Width / 2, (double)ClientRectangle.Height / 2, 0.0);
             GL.Rotate(180, new Vector3(0f, 0f, 1f));
             GL.Scale(-1f, 1f, 1f);
             RenderHud();
@@ -115,7 +117,6 @@ namespace AlgorithmVisualization.View.Visualization
 
             var width = viewport[2];
             var height = viewport[3];
-
             GL.Scale(width / pickRegionWidth, height / pickRegionHeight, 1.0f);
             GL.Translate((width / 2) - x, y - (height / 2), 0f);
 
