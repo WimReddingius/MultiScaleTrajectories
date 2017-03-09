@@ -91,7 +91,7 @@ namespace AlgorithmVisualization.Algorithm.Experiment
             Finished
         }
 
-        public void WaitToFinish(Action finishAction)
+        public void OnFinish(Action finishAction)
         {
             if (IsFinished)
                 finishAction();

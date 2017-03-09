@@ -3,16 +3,14 @@
 namespace AlgorithmVisualization.Algorithm
 {
 
-    public delegate void ReplacedEventHandler();
-
     public abstract class Input
     {
-
         private static int IdGenerator = 1;
-        public string Name { get; set; }
-        public Input Self => this;
 
+        public Input Self => this;
+        public string Name { get; set; }
         public Statistics Statistics;
+
 
         protected Input()
         {

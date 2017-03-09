@@ -2,7 +2,6 @@
 using System.Drawing;
 using System.Linq;
 using System.Windows.Forms;
-using AlgorithmVisualization.Controller;
 using AlgorithmVisualization.Controller.Edit;
 using AlgorithmVisualization.View.Visualization.GLUtil;
 using MultiScaleTrajectories.Algorithm.Geometry;
@@ -20,6 +19,7 @@ namespace MultiScaleTrajectories.SingleTrajectory.View.Input
         private bool DraggingPoint;
 
         private STInput Input;
+
 
         public STInputNodeLink()
         {

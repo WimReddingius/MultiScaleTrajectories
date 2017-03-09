@@ -77,7 +77,8 @@ namespace MultiScaleTrajectories.SingleTrajectory.View.Output
                 CurrentLevel = Output.NumLevels;
 
             //render
-            run.WaitToFinish(HandleRunFinished);
+            run.OnFinish(HandleRunFinished);
+
             previousInput = run.Input;
         }
 

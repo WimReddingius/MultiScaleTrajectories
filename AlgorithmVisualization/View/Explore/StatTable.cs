@@ -38,7 +38,7 @@ namespace AlgorithmVisualization.View.Explore
                 var runIndex = Array.IndexOf(runs, run);
                 dataTable.Columns.Add(new DataColumn(run.Name));
 
-                run.WaitToFinish(() =>
+                run.OnFinish(() =>
                 {
                     var stats = statFunc(run);
                     foreach (var stat in stats)

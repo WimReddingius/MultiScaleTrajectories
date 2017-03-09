@@ -3,14 +3,13 @@
 namespace AlgorithmVisualization.Algorithm
 {
 
-    public delegate void LogEventHandler(string str);
+    public delegate void LoggedEventHandler(string str);
 
     public abstract class Output
     {
+        public event LoggedEventHandler Logged;
 
         public string LogString;
-        public event LogEventHandler Logged;
-
         public Statistics Statistics;
 
 
