@@ -7,7 +7,7 @@ using System.Windows.Forms;
 using AlgorithmVisualization.Algorithm;
 using AlgorithmVisualization.Algorithm.Experiment;
 using AlgorithmVisualization.Controller;
-using AlgorithmVisualization.Controller.Explore;
+using AlgorithmVisualization.View.Util;
 using Newtonsoft.Json.Linq;
 
 namespace AlgorithmVisualization.View
@@ -16,8 +16,9 @@ namespace AlgorithmVisualization.View
     {
         public sealed override Control VisualizationContainer { get; set; }
 
+        private readonly CompositeExplorationView<TIn, TOut> ExplorationView;
+
         private readonly AlgorithmController<TIn, TOut> Controller;
-        private readonly ExplorationView<TIn, TOut> ExplorationView;
         private readonly BindingList<AlgorithmRun<TIn, TOut>> SelectedRuns;
 
         private TIn CurrentInput  => Controller.InputEditor.Input;        
@@ -29,6 +30,7 @@ namespace AlgorithmVisualization.View
 
             Controller = controller;
             VisualizationContainer = new Control();
+            
 
             SelectedRuns = new BindingList<AlgorithmRun<TIn, TOut>>();
             SelectedRuns.ListChanged += OnSelectedRunsChanged;
@@ -37,11 +39,11 @@ namespace AlgorithmVisualization.View
             LoadDataSources();
 
             //initialize exploration view
-            var runExplorers = new BindingList<RunExplorer<TIn, TOut>>(Controller.RunExplorers
-                .ToList()
-                .Select(fac => fac.Create())
-                .ToList());
-            ExplorationView = new ExplorationView<TIn, TOut>(runExplorers, SelectedRuns);
+            ExplorationView = new CompositeExplorationView<TIn, TOut>(Controller.RunExplorers, SelectedRuns);
+
+            //add additonal row and column to get to two rows/column
+            ExplorationView.AddRow();
+            ExplorationView.AddColumn();
 
             //initialize input controller and load default input
             CreateInput();
@@ -130,12 +132,15 @@ namespace AlgorithmVisualization.View
 
             if (!exploring)
             {
+                RemoveTabPage(exploreTabPage);
                 AddTabPage(inputTabPage);
+                ExplorationView.Deactivate();
                 LoadVisualization(Controller.InputEditor.Visualization);
             }
             else
             {
                 RemoveTabPage(inputTabPage);
+                AddTabPage(exploreTabPage);
                 LoadVisualization(ExplorationView);
             }
 
@@ -309,6 +314,34 @@ namespace AlgorithmVisualization.View
             workloadTableAlgoColumn.DataSource = Controller.Algorithms;
             workloadTableAlgoColumn.DisplayMember = "Name";
             workloadTableAlgoColumn.ValueMember = "Self";
+        }
+
+        private void addExploreRowButton_Click(object sender, EventArgs e)
+        {
+            ExplorationView.AddRow();
+            if (ExplorationView.RowCount > 1)
+                removeExploreRowButton.Enabled = true;
+        }
+
+        private void removeExploreRowButton_Click(object sender, EventArgs e)
+        {
+            ExplorationView.RemoveRow();
+            if (ExplorationView.RowCount == 1)
+                removeExploreRowButton.Enabled = false;
+        }
+
+        private void addExploreColumnButton_Click(object sender, EventArgs e)
+        {
+            ExplorationView.AddColumn();
+            if (ExplorationView.ColumnCount > 1)
+                removeExploreColumnButton.Enabled = true;
+        }
+
+        private void removeExploreColumnButton_Click(object sender, EventArgs e)
+        {
+            ExplorationView.RemoveColumn();
+            if (ExplorationView.ColumnCount == 1)
+                removeExploreColumnButton.Enabled = false;
         }
 
     }

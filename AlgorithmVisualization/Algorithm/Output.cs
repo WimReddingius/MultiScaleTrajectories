@@ -9,8 +9,8 @@ namespace AlgorithmVisualization.Algorithm
     {
         public event LoggedEventHandler Logged;
 
-        public string LogString;
         public Statistics Statistics;
+        public string LogString;
 
 
         protected Output()

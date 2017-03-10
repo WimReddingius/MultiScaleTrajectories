@@ -53,7 +53,7 @@ namespace AlgorithmVisualization.View.Visualization
             GL.Translate((double)ClientRectangle.Width / 2, (double)ClientRectangle.Height / 2, 0.0);
         }
 
-        protected override void Render(object sender, PaintEventArgs e)
+        protected override void Render()
         {
             Clear();
 
@@ -120,7 +120,7 @@ namespace AlgorithmVisualization.View.Visualization
             GL.Scale(width / pickRegionWidth, height / pickRegionHeight, 1.0f);
             GL.Translate((width / 2) - x, y - (height / 2), 0f);
 
-            Render(null, null);
+            Render();
 
             // reset OpenGL state
             GL.MatrixMode(MatrixMode.Projection);

@@ -11,7 +11,7 @@ using OpenTK;
 using OpenTK.Input;
 using MouseEventArgs = System.Windows.Forms.MouseEventArgs;
 
-namespace MultiScaleTrajectories.SingleTrajectory.View.Input
+namespace MultiScaleTrajectories.SingleTrajectory.View.Edit
 {
     class STInputNodeLink : GLTrajectoryVisualization2D, IInputLoader<STInput>
     {
@@ -41,7 +41,7 @@ namespace MultiScaleTrajectories.SingleTrajectory.View.Input
             };
 
             GLUtilTrajectory2D.DrawEdges(Input.Trajectory, 2.5f, Color.Red);
-            GLUtilTrajectory2D.DrawPoints(Input.Trajectory, 3.5 / ZoomFactor, 6, colorFunc, (p) => PickManager.GetPickingId(p));
+            GLUtilTrajectory2D.DrawPoints(Input.Trajectory, 4.5 / ZoomFactor, 6, colorFunc, (p) => PickManager.GetPickingId(p));
         }
 
         protected override void RenderHud()

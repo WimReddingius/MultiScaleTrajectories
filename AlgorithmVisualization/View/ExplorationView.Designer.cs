@@ -37,9 +37,9 @@
             this.runExplorerComboBox.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.runExplorerComboBox.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.runExplorerComboBox.FormattingEnabled = true;
-            this.runExplorerComboBox.Location = new System.Drawing.Point(506, 12);
+            this.runExplorerComboBox.Location = new System.Drawing.Point(268, 0);
             this.runExplorerComboBox.Name = "runExplorerComboBox";
-            this.runExplorerComboBox.Size = new System.Drawing.Size(163, 21);
+            this.runExplorerComboBox.Size = new System.Drawing.Size(175, 21);
             this.runExplorerComboBox.TabIndex = 0;
             this.runExplorerComboBox.SelectedIndexChanged += new System.EventHandler(this.runExplorerComboBox_SelectedIndexChanged);
             // 
@@ -48,7 +48,7 @@
             this.visualizationContainer.Dock = System.Windows.Forms.DockStyle.Fill;
             this.visualizationContainer.Location = new System.Drawing.Point(0, 0);
             this.visualizationContainer.Name = "visualizationContainer";
-            this.visualizationContainer.Size = new System.Drawing.Size(681, 419);
+            this.visualizationContainer.Size = new System.Drawing.Size(443, 424);
             this.visualizationContainer.TabIndex = 1;
             // 
             // ExplorationView
@@ -57,8 +57,9 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.Controls.Add(this.visualizationContainer);
             this.Controls.Add(this.runExplorerComboBox);
+            this.Margin = new System.Windows.Forms.Padding(2);
             this.Name = "ExplorationView";
-            this.Size = new System.Drawing.Size(681, 419);
+            this.Size = new System.Drawing.Size(443, 424);
             this.ResumeLayout(false);
 
         }

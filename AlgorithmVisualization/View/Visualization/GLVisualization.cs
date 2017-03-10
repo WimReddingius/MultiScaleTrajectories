@@ -1,4 +1,5 @@
-﻿using System.Windows.Forms;
+﻿using System;
+using System.Windows.Forms;
 using OpenTK;
 
 namespace AlgorithmVisualization.View.Visualization
@@ -11,8 +12,28 @@ namespace AlgorithmVisualization.View.Visualization
             ParentChanged += (o, e) => MakeCurrent();
         }
 
-        protected abstract void Render(object sender, PaintEventArgs e);
+        protected override void OnLoad(EventArgs e)
+        {
+            base.OnLoad(e);
 
+            MakeCurrent();
+        }
+
+        protected override void OnResize(EventArgs e)
+        {
+            base.OnLoad(e);
+
+            MakeCurrent();
+        }
+
+        protected void Render(object sender, PaintEventArgs e)
+        {
+            MakeCurrent();
+
+            Render();
+        }
+
+        protected abstract void Render();
 
     }
 }

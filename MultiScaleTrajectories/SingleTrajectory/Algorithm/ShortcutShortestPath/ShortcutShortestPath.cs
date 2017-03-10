@@ -46,7 +46,10 @@ namespace MultiScaleTrajectories.SingleTrajectory.Algorithm.ShortcutShortestPath
                 //find shortcuts (inefficient right now: no range query & we find the same shortcuts in different iterations
                 HashSet<Tuple<Point2D, Point2D>> shortcuts = ImaiIri.FindShortcuts(trajectory, epsilon);
 
-                output.LogLine("Number of shortcuts found: " + shortcuts.Where(s => !shortcutGraph.GetNode(s.Item1).OutEdges.ContainsKey(shortcutGraph.GetNode(s.Item2))).Count());
+                output.LogLine("Number of shortcuts found: " + shortcuts
+                    .Count(s => !shortcutGraph.GetNode(s.Item1)
+                        .OutEdges
+                        .ContainsKey(shortcutGraph.GetNode(s.Item2))));
 
                 foreach (Tuple<Point2D, Point2D> shortcut in shortcuts)
                 {

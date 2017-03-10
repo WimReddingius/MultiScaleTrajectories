@@ -5,6 +5,6 @@ namespace AlgorithmVisualization.Controller.Explore
 {
     public interface IRunLoader<TIn, TOut> where TIn : Input, new() where TOut : Output, new()
     {
-        void LoadRuns(AlgorithmRun<TIn, TOut>[] runs);
+        void LoadRuns(params AlgorithmRun<TIn, TOut>[] runs);
     }
 }

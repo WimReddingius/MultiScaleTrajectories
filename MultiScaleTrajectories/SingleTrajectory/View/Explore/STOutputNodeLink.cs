@@ -7,10 +7,11 @@ using MultiScaleTrajectories.Algorithm.Geometry;
 using MultiScaleTrajectories.SingleTrajectory.Algorithm;
 using MultiScaleTrajectories.View;
 
-namespace MultiScaleTrajectories.SingleTrajectory.View.Output
+namespace MultiScaleTrajectories.SingleTrajectory.View.Explore
 {
     class STOutputNodeLink : GLTrajectoryVisualization2D, IRunLoader<STInput, STOutput>
     {
+        private AlgorithmRun<STInput, STOutput> run;
         private STOutput Output;
 
         private STInput previousInput;
@@ -30,9 +31,9 @@ namespace MultiScaleTrajectories.SingleTrajectory.View.Output
         protected override void RenderHud()
         {
             int padding = 5;
-            string text = "Level " + CurrentLevel;
             Color color = Color.Black;
-            GLUtil2D.RenderText(padding, padding, text, color);
+            GLUtil2D.RenderText(padding, padding, run.Name, color);
+            GLUtil2D.RenderText(padding, 20 + padding, "Level " + CurrentLevel, color);
         }
 
         private void HandleArrowKeys(object sender, KeyEventArgs e)
@@ -67,7 +68,7 @@ namespace MultiScaleTrajectories.SingleTrajectory.View.Output
 
         public void LoadRuns(AlgorithmRun<STInput, STOutput>[] runs)
         {
-            var run = runs[0];
+            run = runs[0];
             Output = run.Output;
 
             DeregisterEvents();

@@ -90,7 +90,7 @@
     <Compile Include="View\Explore\StatTable.Designer.cs">
       <DependentUpon>StatTable.cs</DependentUpon>
     </Compile>
-    <Compile Include="View\FormsUtil.cs" />
+    <Compile Include="View\Util\FormsUtil.cs" />
     <Compile Include="View\AlgorithmViewBase.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -99,6 +99,12 @@
     </Compile>
     <Compile Include="View\AlgorithmForm.Designer.cs">
       <DependentUpon>AlgorithmForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="View\CompositeExplorationView.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="View\Util\SplitTableLayoutPanel.cs">
+      <SubType>Component</SubType>
     </Compile>
     <Compile Include="View\Visualization\GLVisualization.cs">
       <SubType>UserControl</SubType>
@@ -131,7 +137,7 @@
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
-    <None Include="View\App.config" />
+    <None Include="App.config" />
     <None Include="OpenTK.dll.config" />
     <None Include="packages.config" />
   </ItemGroup>

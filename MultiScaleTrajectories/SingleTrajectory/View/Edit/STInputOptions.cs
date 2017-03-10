@@ -1,10 +1,9 @@
 ﻿using System;
 using System.Windows.Forms;
-using AlgorithmVisualization.Controller;
 using AlgorithmVisualization.Controller.Edit;
 using MultiScaleTrajectories.SingleTrajectory.Algorithm;
 
-namespace MultiScaleTrajectories.SingleTrajectory.View.Input
+namespace MultiScaleTrajectories.SingleTrajectory.View.Edit
 {
     partial class STInputOptions : UserControl, IInputLoader<STInput>
     {

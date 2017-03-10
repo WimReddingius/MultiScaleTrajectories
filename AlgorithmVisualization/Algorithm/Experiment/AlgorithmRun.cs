@@ -58,6 +58,7 @@ namespace AlgorithmVisualization.Algorithm.Experiment
                     startTime = DateTime.Now;
                     break;
                 case RunState.Idle:
+                    Finished = null;
                     Output = new TOut();
                     break;
             }
@@ -66,9 +67,23 @@ namespace AlgorithmVisualization.Algorithm.Experiment
 
         public void Run()
         {
-            AlgorithmWorker = new BackgroundWorker();
-            AlgorithmWorker.DoWork += (o, e) => { Algorithm.Compute(Input, Output); };
-            AlgorithmWorker.RunWorkerCompleted += (o, e) => { SetState(RunState.Finished); };
+            AlgorithmWorker = new BackgroundWorker
+            {
+                WorkerReportsProgress = true
+            };
+
+            AlgorithmWorker.DoWork += (o, e) =>
+            {
+                Algorithm.Compute(Input, Output);
+            };
+
+            AlgorithmWorker.RunWorkerCompleted += (o, e) =>
+            {
+                if (e.Error != null)
+                    return;
+
+                SetState(RunState.Finished);
+            };
 
             AlgorithmWorker.RunWorkerAsync();
             SetState(RunState.Running);

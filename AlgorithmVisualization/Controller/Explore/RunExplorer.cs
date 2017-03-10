@@ -1,5 +1,4 @@
-﻿using System.Diagnostics;
-using System.Windows.Forms;
+﻿using System.Windows.Forms;
 using AlgorithmVisualization.Algorithm;
 using AlgorithmVisualization.Algorithm.Experiment;
 
@@ -9,7 +8,6 @@ namespace AlgorithmVisualization.Controller.Explore
     {
         internal bool IsNative;
 
-        public Control Options;
         public Control Visualization;
 
         public string Name { get; set; }
@@ -29,7 +27,6 @@ namespace AlgorithmVisualization.Controller.Explore
         {
             if (ConsolidationSupported(runs.Length))
             {
-                (Options as IRunLoader<TIn, TOut>)?.LoadRuns(runs);
                 (Visualization as IRunLoader<TIn, TOut>)?.LoadRuns(runs);
             }
         }

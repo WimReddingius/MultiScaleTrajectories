@@ -27,7 +27,7 @@ namespace MultiScaleTrajectories.SingleTrajectory.Algorithm.ShortcutShortestPath
 
         public void IncrementAllEdgeWeights()
         {
-            foreach (DataEdge<int> edge in Edges)
+            foreach (WeightedEdge edge in Edges)
             {
                 int weight = edge.Data;
                 edge.Data = weight + 1;

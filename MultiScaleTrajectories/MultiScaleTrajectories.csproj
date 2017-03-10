@@ -98,16 +98,16 @@
     <Compile Include="Algorithm\DataStructures\Graph\Node.cs" />
     <Compile Include="Algorithm\DataStructures\Graph\WeightedEdge.cs" />
     <Compile Include="SingleTrajectory\Controller\STController.cs" />
-    <Compile Include="SingleTrajectory\View\Input\STInputOptions.cs">
+    <Compile Include="SingleTrajectory\View\Edit\STInputOptions.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="SingleTrajectory\View\Input\STInputOptions.Designer.cs">
+    <Compile Include="SingleTrajectory\View\Edit\STInputOptions.Designer.cs">
       <DependentUpon>STInputOptions.cs</DependentUpon>
     </Compile>
-    <Compile Include="SingleTrajectory\View\Input\STInputNodeLink.cs">
+    <Compile Include="SingleTrajectory\View\Edit\STInputNodeLink.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="SingleTrajectory\View\Output\STOutputNodeLink.cs">
+    <Compile Include="SingleTrajectory\View\Explore\STOutputNodeLink.cs">
       <SubType>UserControl</SubType>
     </Compile>
     <Compile Include="View\GLTrajectoryVisualization2D.cs">
@@ -124,7 +124,7 @@
       <DependentUpon>Resources.resx</DependentUpon>
       <DesignTime>True</DesignTime>
     </Compile>
-    <EmbeddedResource Include="SingleTrajectory\View\Input\STInputOptions.resx">
+    <EmbeddedResource Include="SingleTrajectory\View\Edit\STInputOptions.resx">
       <DependentUpon>STInputOptions.cs</DependentUpon>
     </EmbeddedResource>
     <None Include="OpenTK.dll.config" />

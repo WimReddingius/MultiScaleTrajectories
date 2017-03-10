@@ -4,8 +4,8 @@ using AlgorithmVisualization.Controller.Explore;
 using AlgorithmVisualization.Controller.Edit;
 using MultiScaleTrajectories.SingleTrajectory.Algorithm;
 using MultiScaleTrajectories.SingleTrajectory.Algorithm.ShortcutShortestPath;
-using MultiScaleTrajectories.SingleTrajectory.View.Input;
-using MultiScaleTrajectories.SingleTrajectory.View.Output;
+using MultiScaleTrajectories.SingleTrajectory.View.Edit;
+using MultiScaleTrajectories.SingleTrajectory.View.Explore;
 
 namespace MultiScaleTrajectories.SingleTrajectory.Controller
 {

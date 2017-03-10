@@ -1,9 +1,11 @@
-﻿using System.ComponentModel;
+﻿using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 using System.Windows.Forms;
 using AlgorithmVisualization.Algorithm;
 using AlgorithmVisualization.Algorithm.Experiment;
 using AlgorithmVisualization.Controller.Explore;
+using AlgorithmVisualization.View.Util;
 
 namespace AlgorithmVisualization.View
 {
@@ -11,11 +13,18 @@ namespace AlgorithmVisualization.View
     {
 
         private readonly BindingList<RunExplorer<TIn, TOut>> runExplorers;
-        private readonly BindingList<AlgorithmRun<TIn, TOut>> selectedRuns;
         private AlgorithmRun<TIn, TOut>[] runs;
 
+        //runs that are currently selected from the outside
+        private readonly BindingList<AlgorithmRun<TIn, TOut>> selectedRuns;
 
-        //TODO: change into factories later on
+        //runs that were selected from the outside the last time this view was active
+        private List<AlgorithmRun<TIn, TOut>> lastSelectedRuns;
+
+        //whether or not this exploration view listens to changes in the run selection
+        private bool active;
+
+
         public ExplorationView(BindingList<RunExplorer<TIn, TOut>> runExplorers, BindingList<AlgorithmRun<TIn, TOut>> selectedRuns)
         {
             InitializeComponent();
@@ -23,15 +32,46 @@ namespace AlgorithmVisualization.View
 
             this.runExplorers = runExplorers;
             this.selectedRuns = selectedRuns;
-            this.selectedRuns.ListChanged += RunSelectionChanged;
+
+            active = false;
+            lastSelectedRuns = new List<AlgorithmRun<TIn, TOut>>();
+        }
+
+        public void Activate()
+        {
+            if (!active)
+            {
+                //loading last selected runs
+                selectedRuns.Clear();
+
+                lastSelectedRuns.ForEach(run =>
+                {
+                    if (runs.Contains(run))
+                        selectedRuns.Add(run);
+                });
+
+                selectedRuns.ListChanged += RunSelectionChanged;
+                active = true;
+            }
+        }
+
+        public void Deactivate()
+        {
+            if (active)
+            {
+                //saving selected runs
+                lastSelectedRuns = selectedRuns.ToList();
+                selectedRuns.ListChanged -= RunSelectionChanged;
+                active = false;
+            }
         }
 
         public void LoadRuns(AlgorithmRun<TIn, TOut>[] runs)
         {
             this.runs = runs;
 
-            var previouslySelected = runExplorerComboBox.SelectedItem;
-
+            //populate combobox
+            var previouslySelected = (RunExplorer<TIn, TOut>) runExplorerComboBox.SelectedItem;
             var numRuns = runs.Length;
             var availableRunExplorers = runExplorers
                 .ToList()
@@ -45,6 +85,7 @@ namespace AlgorithmVisualization.View
 
             if (availableRunExplorers.Length > 0)
             {
+                //preserve selection if possible
                 if (previouslySelected == null)
                     runExplorerComboBox.SelectedItem = availableRunExplorers[0];
                 else if (availableRunExplorers.Contains(previouslySelected))
@@ -67,7 +108,11 @@ namespace AlgorithmVisualization.View
         {
             var runExplorer = (RunExplorer<TIn, TOut>)runExplorerComboBox.SelectedItem;
 
-            //try to add the maximum amount of runs
+            //unsubscribe to prevent loading runs twice
+            if (active)
+                selectedRuns.ListChanged -= RunSelectionChanged;
+
+            //try to add the maximize the amount of visualized runs
             while (selectedRuns.Count < runExplorer.MaxConsolidation && selectedRuns.Count < runs.Length)
             {
                 var nonSelectedRun = runs
@@ -76,18 +121,19 @@ namespace AlgorithmVisualization.View
 
                 selectedRuns.Add(nonSelectedRun);
             }
-
-            //try to remove the least amount of runs
             while (selectedRuns.Count > runExplorer.MaxConsolidation)
             {
                 selectedRuns.RemoveAt(selectedRuns.Count - 1);
             }
 
-            runExplorer.LoadRuns(selectedRuns.ToArray());
+            //resubscribe
+            if (active)
+                selectedRuns.ListChanged += RunSelectionChanged;
 
+
+            runExplorer.LoadRuns(selectedRuns.ToArray());
             FormsUtil.FillContainer(visualizationContainer, runExplorer.Visualization);
             runExplorer.Visualization?.Focus();
-            //TODO: load options
         }
 
     }

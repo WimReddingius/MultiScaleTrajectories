@@ -53,6 +53,15 @@ namespace AlgorithmVisualization.View
             this.saveInputButton = new System.Windows.Forms.Button();
             this.clearInputButton = new System.Windows.Forms.Button();
             this.openInputButton = new System.Windows.Forms.Button();
+            this.exploreTabPage = new System.Windows.Forms.TabPage();
+            this.label2 = new System.Windows.Forms.Label();
+            this.tableLayoutPanel5 = new System.Windows.Forms.TableLayoutPanel();
+            this.addExploreColumnButton = new System.Windows.Forms.Button();
+            this.removeExploreColumnButton = new System.Windows.Forms.Button();
+            this.label1 = new System.Windows.Forms.Label();
+            this.tableLayoutPanel3 = new System.Windows.Forms.TableLayoutPanel();
+            this.addExploreRowButton = new System.Windows.Forms.Button();
+            this.removeExploreRowButton = new System.Windows.Forms.Button();
             this.openInputDialog = new System.Windows.Forms.OpenFileDialog();
             this.saveInputDialog = new System.Windows.Forms.SaveFileDialog();
             this.tabControl.SuspendLayout();
@@ -66,12 +75,16 @@ namespace AlgorithmVisualization.View
             this.inputSplitContainer.SuspendLayout();
             this.tableLayoutPanel2.SuspendLayout();
             this.tableLayoutPanel4.SuspendLayout();
+            this.exploreTabPage.SuspendLayout();
+            this.tableLayoutPanel5.SuspendLayout();
+            this.tableLayoutPanel3.SuspendLayout();
             this.SuspendLayout();
             // 
             // tabControl
             // 
             this.tabControl.Controls.Add(this.runTabPage);
             this.tabControl.Controls.Add(this.inputTabPage);
+            this.tabControl.Controls.Add(this.exploreTabPage);
             this.tabControl.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tabControl.Location = new System.Drawing.Point(0, 0);
             this.tabControl.Multiline = true;
@@ -355,6 +368,111 @@ namespace AlgorithmVisualization.View
             this.openInputButton.UseVisualStyleBackColor = true;
             this.openInputButton.Click += new System.EventHandler(this.openInputButton_Click);
             // 
+            // exploreTabPage
+            // 
+            this.exploreTabPage.Controls.Add(this.label2);
+            this.exploreTabPage.Controls.Add(this.tableLayoutPanel5);
+            this.exploreTabPage.Controls.Add(this.label1);
+            this.exploreTabPage.Controls.Add(this.tableLayoutPanel3);
+            this.exploreTabPage.Location = new System.Drawing.Point(4, 22);
+            this.exploreTabPage.Name = "exploreTabPage";
+            this.exploreTabPage.Padding = new System.Windows.Forms.Padding(3);
+            this.exploreTabPage.Size = new System.Drawing.Size(262, 497);
+            this.exploreTabPage.TabIndex = 3;
+            this.exploreTabPage.Text = "Explore";
+            this.exploreTabPage.UseVisualStyleBackColor = true;
+            // 
+            // label2
+            // 
+            this.label2.AutoSize = true;
+            this.label2.Location = new System.Drawing.Point(4, 71);
+            this.label2.Name = "label2";
+            this.label2.Size = new System.Drawing.Size(47, 13);
+            this.label2.TabIndex = 19;
+            this.label2.Text = "Columns";
+            // 
+            // tableLayoutPanel5
+            // 
+            this.tableLayoutPanel5.ColumnCount = 2;
+            this.tableLayoutPanel5.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
+            this.tableLayoutPanel5.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
+            this.tableLayoutPanel5.Controls.Add(this.addExploreColumnButton, 0, 0);
+            this.tableLayoutPanel5.Controls.Add(this.removeExploreColumnButton, 1, 0);
+            this.tableLayoutPanel5.Location = new System.Drawing.Point(1, 87);
+            this.tableLayoutPanel5.Name = "tableLayoutPanel5";
+            this.tableLayoutPanel5.RowCount = 1;
+            this.tableLayoutPanel5.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
+            this.tableLayoutPanel5.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 40F));
+            this.tableLayoutPanel5.Size = new System.Drawing.Size(261, 40);
+            this.tableLayoutPanel5.TabIndex = 18;
+            // 
+            // addExploreColumnButton
+            // 
+            this.addExploreColumnButton.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.addExploreColumnButton.Location = new System.Drawing.Point(3, 3);
+            this.addExploreColumnButton.Name = "addExploreColumnButton";
+            this.addExploreColumnButton.Size = new System.Drawing.Size(124, 34);
+            this.addExploreColumnButton.TabIndex = 16;
+            this.addExploreColumnButton.Text = "Add";
+            this.addExploreColumnButton.UseVisualStyleBackColor = true;
+            this.addExploreColumnButton.Click += new System.EventHandler(this.addExploreColumnButton_Click);
+            // 
+            // removeExploreColumnButton
+            // 
+            this.removeExploreColumnButton.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.removeExploreColumnButton.Location = new System.Drawing.Point(133, 3);
+            this.removeExploreColumnButton.Name = "removeExploreColumnButton";
+            this.removeExploreColumnButton.Size = new System.Drawing.Size(125, 34);
+            this.removeExploreColumnButton.TabIndex = 17;
+            this.removeExploreColumnButton.Text = "Remove";
+            this.removeExploreColumnButton.UseVisualStyleBackColor = true;
+            this.removeExploreColumnButton.Click += new System.EventHandler(this.removeExploreColumnButton_Click);
+            // 
+            // label1
+            // 
+            this.label1.AutoSize = true;
+            this.label1.Location = new System.Drawing.Point(4, 7);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(34, 13);
+            this.label1.TabIndex = 2;
+            this.label1.Text = "Rows";
+            // 
+            // tableLayoutPanel3
+            // 
+            this.tableLayoutPanel3.ColumnCount = 2;
+            this.tableLayoutPanel3.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
+            this.tableLayoutPanel3.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
+            this.tableLayoutPanel3.Controls.Add(this.addExploreRowButton, 0, 0);
+            this.tableLayoutPanel3.Controls.Add(this.removeExploreRowButton, 1, 0);
+            this.tableLayoutPanel3.Location = new System.Drawing.Point(1, 23);
+            this.tableLayoutPanel3.Name = "tableLayoutPanel3";
+            this.tableLayoutPanel3.RowCount = 1;
+            this.tableLayoutPanel3.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
+            this.tableLayoutPanel3.Size = new System.Drawing.Size(261, 39);
+            this.tableLayoutPanel3.TabIndex = 1;
+            // 
+            // addExploreRowButton
+            // 
+            this.addExploreRowButton.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.addExploreRowButton.Location = new System.Drawing.Point(3, 3);
+            this.addExploreRowButton.Name = "addExploreRowButton";
+            this.addExploreRowButton.Size = new System.Drawing.Size(124, 33);
+            this.addExploreRowButton.TabIndex = 16;
+            this.addExploreRowButton.Text = "Add";
+            this.addExploreRowButton.UseVisualStyleBackColor = true;
+            this.addExploreRowButton.Click += new System.EventHandler(this.addExploreRowButton_Click);
+            // 
+            // removeExploreRowButton
+            // 
+            this.removeExploreRowButton.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.removeExploreRowButton.Location = new System.Drawing.Point(133, 3);
+            this.removeExploreRowButton.Name = "removeExploreRowButton";
+            this.removeExploreRowButton.Size = new System.Drawing.Size(125, 33);
+            this.removeExploreRowButton.TabIndex = 17;
+            this.removeExploreRowButton.Text = "Remove";
+            this.removeExploreRowButton.UseVisualStyleBackColor = true;
+            this.removeExploreRowButton.Click += new System.EventHandler(this.removeExploreRowButton_Click);
+            // 
             // openInputDialog
             // 
             this.openInputDialog.DefaultExt = "json";
@@ -386,6 +504,10 @@ namespace AlgorithmVisualization.View
             this.inputSplitContainer.ResumeLayout(false);
             this.tableLayoutPanel2.ResumeLayout(false);
             this.tableLayoutPanel4.ResumeLayout(false);
+            this.exploreTabPage.ResumeLayout(false);
+            this.exploreTabPage.PerformLayout();
+            this.tableLayoutPanel5.ResumeLayout(false);
+            this.tableLayoutPanel3.ResumeLayout(false);
             this.ResumeLayout(false);
 
         }
@@ -416,5 +538,14 @@ namespace AlgorithmVisualization.View
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel1;
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel2;
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel4;
+        private System.Windows.Forms.TabPage exploreTabPage;
+        private System.Windows.Forms.Label label2;
+        private System.Windows.Forms.TableLayoutPanel tableLayoutPanel5;
+        private System.Windows.Forms.Button addExploreColumnButton;
+        private System.Windows.Forms.Button removeExploreColumnButton;
+        private System.Windows.Forms.Label label1;
+        private System.Windows.Forms.TableLayoutPanel tableLayoutPanel3;
+        private System.Windows.Forms.Button addExploreRowButton;
+        private System.Windows.Forms.Button removeExploreRowButton;
     }
 }
