@@ -19,14 +19,13 @@ namespace AlgorithmVisualization.Algorithm.Experiment
         public Algorithm<TIn, TOut> Algorithm;
         public BackgroundWorker AlgorithmWorker;
 
-        private static int idGenerator = 1;
-        public string Name { get; }
-        public AlgorithmRun<TIn, TOut> Self => this;
-
+        public Statistics Statistics;
         private DateTime startTime;
         private DateTime endTime;
 
-        public Statistics Statistics;
+        private static int idGenerator = 1;
+        public string Name { get; }
+        public AlgorithmRun<TIn, TOut> Self => this;
 
 
         public AlgorithmRun(Algorithm<TIn, TOut> algorithm, TIn input)
@@ -67,11 +66,7 @@ namespace AlgorithmVisualization.Algorithm.Experiment
 
         public void Run()
         {
-            AlgorithmWorker = new BackgroundWorker
-            {
-                WorkerReportsProgress = true
-            };
-
+            AlgorithmWorker = new BackgroundWorker();
             AlgorithmWorker.DoWork += (o, e) =>
             {
                 Algorithm.Compute(Input, Output);

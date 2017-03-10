@@ -211,6 +211,8 @@ namespace AlgorithmVisualization.View
         private void CreateInput()
         {
             TIn input = new TIn();
+            input.Clear();
+
             Controller.Inputs.Add(input);
             Controller.InputEditor.LoadInput(input);
             inputComboBox.SelectedItem = input;

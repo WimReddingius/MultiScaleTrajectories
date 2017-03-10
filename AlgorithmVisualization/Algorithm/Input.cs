@@ -1,4 +1,5 @@
 ﻿using AlgorithmVisualization.Algorithm.Experiment;
+using Newtonsoft.Json;
 
 namespace AlgorithmVisualization.Algorithm
 {
@@ -7,8 +8,12 @@ namespace AlgorithmVisualization.Algorithm
     {
         private static int IdGenerator = 1;
 
-        public Input Self => this;
         public string Name { get; set; }
+
+        [JsonIgnore]
+        public Input Self => this;
+
+        [JsonIgnore]
         public Statistics Statistics;
 
 

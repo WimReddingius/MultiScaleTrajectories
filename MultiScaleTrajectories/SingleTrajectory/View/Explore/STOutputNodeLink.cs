@@ -68,19 +68,12 @@ namespace MultiScaleTrajectories.SingleTrajectory.View.Explore
 
         public void LoadRuns(AlgorithmRun<STInput, STOutput>[] runs)
         {
+            DeregisterEvents();
+
             run = runs[0];
             Output = run.Output;
 
-            DeregisterEvents();
-
-            //preserve currently visualized level if the input hasn't changed
-            if (previousInput != run.Input)
-                CurrentLevel = Output.NumLevels;
-
-            //render
             run.OnFinish(HandleRunFinished);
-
-            previousInput = run.Input;
         }
 
         private void DeregisterEvents()
@@ -91,9 +84,20 @@ namespace MultiScaleTrajectories.SingleTrajectory.View.Explore
 
         private void HandleRunFinished()
         {
+            //preserve currently visualized level if the input hasn't changed
+            if (previousInput != run.Input)
+                CurrentLevel = 1;
+
+            previousInput = run.Input;
+
             LookAtTrajectory(Output.GetTrajectoryAtLevel(1));
+
+            //purely a safeguard to prevent double event subscription
+            DeregisterEvents();
+
             KeyDown += HandleArrowKeys;
             Paint += Render;
+
             Refresh();
         }
 
