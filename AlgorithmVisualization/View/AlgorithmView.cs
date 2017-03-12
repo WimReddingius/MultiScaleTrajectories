@@ -41,7 +41,7 @@ namespace AlgorithmVisualization.View
 
             //initialize exploration view
             splittableExplorer = new SplittableExplorer<TIn, TOut>(Controller.RunExplorers, SelectedRuns);
-            InitializeExplorationView();
+            InitializeSplittableExplorer();
 
             //load views
             SetVisualizationMode(false);
@@ -56,7 +56,7 @@ namespace AlgorithmVisualization.View
             };
         }
 
-        private void InitializeExplorationView()
+        private void InitializeSplittableExplorer()
         {
             var problemSpecificView = splittableExplorer.CreateExplorationView();
             var statView = splittableExplorer.CreateExplorationView();
