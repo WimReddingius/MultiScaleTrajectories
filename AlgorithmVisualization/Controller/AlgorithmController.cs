@@ -52,7 +52,7 @@ namespace AlgorithmVisualization.Controller
 
                 var wrapperType = wrapper.GetType();
                 Type[] typeArgsFactory = {typeof(TIn), typeof(TOut), wrapperType};
-                var genericTypeFactory = typeof(GenericRunExplorerFactory<,,>).MakeGenericType(typeArgsFactory);
+                var genericTypeFactory = typeof(ConcreteRunExplorerFactory<,,>).MakeGenericType(typeArgsFactory);
                 var factory = (RunExplorerFactory<TIn, TOut>) Activator.CreateInstance(genericTypeFactory);
                 RunExplorers.Add(factory);
             }

@@ -54,8 +54,8 @@
             // 
             this.baseSplitContainer.Panel2.Controls.Add(this.configurationSplitContainer);
             this.baseSplitContainer.Panel2.Padding = new System.Windows.Forms.Padding(1, 4, 2, 4);
-            this.baseSplitContainer.Size = new System.Drawing.Size(1106, 648);
-            this.baseSplitContainer.SplitterDistance = 797;
+            this.baseSplitContainer.Size = new System.Drawing.Size(1319, 710);
+            this.baseSplitContainer.SplitterDistance = 1010;
             this.baseSplitContainer.TabIndex = 0;
             // 
             // configurationSplitContainer
@@ -71,7 +71,7 @@
             // 
             this.configurationSplitContainer.Panel1.Controls.Add(this.algorithmTypeLabel);
             this.configurationSplitContainer.Panel1.Controls.Add(this.algorithmTypeComboBox);
-            this.configurationSplitContainer.Size = new System.Drawing.Size(302, 640);
+            this.configurationSplitContainer.Size = new System.Drawing.Size(302, 702);
             this.configurationSplitContainer.SplitterDistance = 58;
             this.configurationSplitContainer.TabIndex = 11;
             // 
@@ -112,11 +112,12 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1106, 648);
+            this.ClientSize = new System.Drawing.Size(1319, 710);
             this.Controls.Add(this.baseSplitContainer);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Name = "AlgorithmForm";
             this.Text = "Algorithm Form";
+            this.WindowState = System.Windows.Forms.FormWindowState.Maximized;
             this.baseSplitContainer.Panel2.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.baseSplitContainer)).EndInit();
             this.baseSplitContainer.ResumeLayout(false);

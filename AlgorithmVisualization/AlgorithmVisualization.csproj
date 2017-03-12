@@ -66,7 +66,7 @@
     </Compile>
     <Compile Include="Controller\Explore\IRunExplorer.cs" />
     <Compile Include="Controller\Explore\Factory\RunExplorerFactory.cs" />
-    <Compile Include="Controller\Explore\Factory\GenericRunExplorerFactory.cs" />
+    <Compile Include="Controller\Explore\Factory\ConcreteRunExplorerFactory.cs" />
     <Compile Include="Controller\Explore\RunExplorer.cs">
       <SubType>UserControl</SubType>
     </Compile>

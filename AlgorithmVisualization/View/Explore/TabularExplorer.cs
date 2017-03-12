@@ -10,7 +10,7 @@ using AlgorithmVisualization.View.Util;
 
 namespace AlgorithmVisualization.View.Explore
 {
-    class TabularExplorationView<TIn, TOut> : ResizableTableLayoutPanel where TIn : Input, new() where TOut : Output, new()
+    class TabularExplorer<TIn, TOut> : ResizableTableLayoutPanel where TIn : Input, new() where TOut : Output, new()
     {
         private readonly BindingList<RunExplorerFactory<TIn, TOut>> runExplorerFactories;
         private readonly BindingList<AlgorithmRun<TIn, TOut>> selectedRuns;
@@ -20,7 +20,7 @@ namespace AlgorithmVisualization.View.Explore
         private RunExplorerChooser<TIn, TOut> currentExplorationView;
 
 
-        public TabularExplorationView(BindingList<RunExplorerFactory<TIn, TOut>> runExplorerFactories, BindingList<AlgorithmRun<TIn, TOut>> selectedRuns)
+        public TabularExplorer(BindingList<RunExplorerFactory<TIn, TOut>> runExplorerFactories, BindingList<AlgorithmRun<TIn, TOut>> selectedRuns)
         {
             this.selectedRuns = selectedRuns;
             this.runExplorerFactories = runExplorerFactories;

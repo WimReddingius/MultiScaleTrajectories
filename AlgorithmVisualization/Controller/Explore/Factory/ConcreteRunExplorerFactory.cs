@@ -2,7 +2,7 @@
 
 namespace AlgorithmVisualization.Controller.Explore.Factory
 {
-    public class GenericRunExplorerFactory<TIn, TOut, TExplorer> : RunExplorerFactory<TIn, TOut>
+    public class ConcreteRunExplorerFactory<TIn, TOut, TExplorer> : RunExplorerFactory<TIn, TOut>
         where TIn: Input, new() 
         where TOut: Output, new() 
         where TExplorer : RunExplorer<TIn, TOut>, new()
