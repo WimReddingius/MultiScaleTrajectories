@@ -1,33 +1,22 @@
-﻿using System.Windows.Forms;
+﻿using System;
+using System.Windows.Forms;
 using AlgorithmVisualization.Algorithm;
 using AlgorithmVisualization.Algorithm.Experiment;
 
 namespace AlgorithmVisualization.Controller.Explore
 {
-    public class RunExplorer<TIn, TOut> : IRunLoader<TIn, TOut> where TIn : Input, new() where TOut : Output, new()
+    public abstract class RunExplorer<TIn, TOut> : UserControl, IRunExplorer<TIn, TOut> where TIn : Input, new() where TOut : Output, new()
     {
-        internal bool IsNative;
+        public abstract string VisualizationName { get; }
+        public abstract int MinConsolidation { get;  }
+        public abstract int MaxConsolidation { get; }
+        public abstract int Priority { get; }
 
-        public Control Visualization;
-
-        public string Name { get; set; }
-        public int MinConsolidation;
-        public int MaxConsolidation;
-
-
-        public RunExplorer()
+        public virtual void LoadRuns(params AlgorithmRun<TIn, TOut>[] runs)
         {
-            Name = "Run Explorer";
-            MinConsolidation = 1;
-            MaxConsolidation = int.MaxValue;
-            IsNative = false;
-        }
-
-        public void LoadRuns(params AlgorithmRun<TIn, TOut>[] runs)
-        {
-            if (ConsolidationSupported(runs.Length))
+            if (!ConsolidationSupported(runs.Length))
             {
-                (Visualization as IRunLoader<TIn, TOut>)?.LoadRuns(runs);
+                throw new ArgumentOutOfRangeException(nameof(runs), "Consolidation not supported for " + runs.Length + " runs.");
             }
         }
 
@@ -38,8 +27,7 @@ namespace AlgorithmVisualization.Controller.Explore
 
         public override string ToString()
         {
-            return Name;
+            return VisualizationName;
         }
-
     }
 }

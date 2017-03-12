@@ -1,10 +1,9 @@
 ﻿using System;
-using System.Windows.Forms;
-using AlgorithmVisualization.View.Visualization.GLUtil;
+using AlgorithmVisualization.View.GLVisualization.GLUtil;
 using OpenTK;
 using OpenTK.Graphics.OpenGL;
 
-namespace AlgorithmVisualization.View.Visualization
+namespace AlgorithmVisualization.View.GLVisualization
 {
     public abstract class GLVisualization2D : GLVisualization
     {

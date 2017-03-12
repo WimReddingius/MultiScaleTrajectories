@@ -6,10 +6,15 @@ using AlgorithmVisualization.Algorithm;
 using AlgorithmVisualization.Algorithm.Experiment;
 using AlgorithmVisualization.Controller.Explore;
 
-namespace AlgorithmVisualization.View.Explore
+namespace AlgorithmVisualization.View.Explore.Components
 {
-    partial class StatTable<TIn, TOut> : UserControl, IRunLoader<TIn, TOut> where TIn : Input, new() where TOut : Output, new()
+    partial class StatTable<TIn, TOut> : UserControl, IRunExplorer<TIn, TOut> where TIn : Input, new() where TOut : Output, new()
     {
+        public string VisualizationName => "Statistics";
+        public int MinConsolidation => 1;
+        public int MaxConsolidation => int.MaxValue;
+        public int Priority => 100;
+
         public StatTable()
         {
             InitializeComponent();

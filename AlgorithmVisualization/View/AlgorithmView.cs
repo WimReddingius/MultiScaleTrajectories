@@ -7,6 +7,9 @@ using System.Windows.Forms;
 using AlgorithmVisualization.Algorithm;
 using AlgorithmVisualization.Algorithm.Experiment;
 using AlgorithmVisualization.Controller;
+using AlgorithmVisualization.Controller.Explore;
+using AlgorithmVisualization.View.Explore;
+using AlgorithmVisualization.View.Explore.Components;
 using AlgorithmVisualization.View.Util;
 using Newtonsoft.Json.Linq;
 
@@ -16,8 +19,7 @@ namespace AlgorithmVisualization.View
     {
         public sealed override Control VisualizationContainer { get; set; }
 
-        private readonly CompositeExplorationView<TIn, TOut> ExplorationView;
-
+        private readonly SplittableExplorer<TIn, TOut> splittableExplorer;
         private readonly AlgorithmController<TIn, TOut> Controller;
         private readonly BindingList<AlgorithmRun<TIn, TOut>> SelectedRuns;
 
@@ -30,7 +32,6 @@ namespace AlgorithmVisualization.View
 
             Controller = controller;
             VisualizationContainer = new Control();
-            
 
             SelectedRuns = new BindingList<AlgorithmRun<TIn, TOut>>();
             SelectedRuns.ListChanged += OnSelectedRunsChanged;
@@ -39,11 +40,8 @@ namespace AlgorithmVisualization.View
             LoadDataSources();
 
             //initialize exploration view
-            ExplorationView = new CompositeExplorationView<TIn, TOut>(Controller.RunExplorers, SelectedRuns);
-
-            //add additonal row and column to get to two rows/column
-            ExplorationView.AddRow();
-            ExplorationView.AddColumn();
+            splittableExplorer = new SplittableExplorer<TIn, TOut>(Controller.RunExplorers, SelectedRuns);
+            InitializeExplorationView();
 
             //initialize input controller and load default input
             CreateInput();
@@ -51,6 +49,21 @@ namespace AlgorithmVisualization.View
             
             //initialize input visualization
             SetVisualizationMode(false);
+        }
+
+        private void InitializeExplorationView()
+        {
+            var problemSpecificView = splittableExplorer.CreateExplorationView();
+            var statView = splittableExplorer.CreateExplorationView();
+            var logView = splittableExplorer.CreateExplorationView();
+            statView.DefaultExplorer = statView.RunExplorers.ToList().Find(ex => ex is RunExplorerWrapper<TIn, TOut, StatTable<TIn, TOut>>);
+            logView.DefaultExplorer = logView.RunExplorers.ToList().Find(ex => ex is RunExplorerWrapper<TIn, TOut, LogStream<TIn, TOut>>);
+
+            var splitContainer = splittableExplorer.Split(splittableExplorer, Orientation.Vertical);
+            var rightSplitContainer = splittableExplorer.Split(splitContainer.Panel2, Orientation.Horizontal);
+            FormsUtil.FillContainer(splitContainer.Panel1, problemSpecificView);
+            FormsUtil.FillContainer(rightSplitContainer.Panel1, statView);
+            FormsUtil.FillContainer(rightSplitContainer.Panel2, logView);
         }
 
         private void openInputButton_Click(object sender, EventArgs e)
@@ -115,7 +128,7 @@ namespace AlgorithmVisualization.View
         {
             Controller.Workload.Run();
             SetVisualizationMode(true);
-            ExplorationView.LoadRuns(Controller.Workload.Runs.ToArray());
+            splittableExplorer.LoadRuns(Controller.Workload.Runs.ToArray());
         }
 
         private void resetWorkloadButton_Click(object sender, EventArgs e)
@@ -134,14 +147,14 @@ namespace AlgorithmVisualization.View
             {
                 RemoveTabPage(exploreTabPage);
                 AddTabPage(inputTabPage);
-                ExplorationView.Deactivate();
+                splittableExplorer.Deactivate();
                 LoadVisualization(Controller.InputEditor.Visualization);
             }
             else
             {
                 RemoveTabPage(inputTabPage);
                 AddTabPage(exploreTabPage);
-                LoadVisualization(ExplorationView);
+                LoadVisualization(splittableExplorer);
             }
 
             resetWorkloadButton.Enabled = exploring;
@@ -318,32 +331,26 @@ namespace AlgorithmVisualization.View
             workloadTableAlgoColumn.ValueMember = "Self";
         }
 
-        private void addExploreRowButton_Click(object sender, EventArgs e)
+        private void splitHorizontallyButton_Click(object sender, EventArgs e)
         {
-            ExplorationView.AddRow();
-            if (ExplorationView.RowCount > 1)
-                removeExploreRowButton.Enabled = true;
+            splittableExplorer.SplitActiveView(Orientation.Horizontal);
+            unsplitButton.Enabled = true;
         }
 
-        private void removeExploreRowButton_Click(object sender, EventArgs e)
+        private void SplitVerticallyButton_Click(object sender, EventArgs e)
         {
-            ExplorationView.RemoveRow();
-            if (ExplorationView.RowCount == 1)
-                removeExploreRowButton.Enabled = false;
+            splittableExplorer.SplitActiveView(Orientation.Vertical);
+            unsplitButton.Enabled = true;
         }
 
-        private void addExploreColumnButton_Click(object sender, EventArgs e)
+        private void unsplitButton_Click(object sender, EventArgs e)
         {
-            ExplorationView.AddColumn();
-            if (ExplorationView.ColumnCount > 1)
-                removeExploreColumnButton.Enabled = true;
-        }
+            if (splittableExplorer.CanUnsplit)
+            {
+                splittableExplorer.Unsplit();
 
-        private void removeExploreColumnButton_Click(object sender, EventArgs e)
-        {
-            ExplorationView.RemoveColumn();
-            if (ExplorationView.ColumnCount == 1)
-                removeExploreColumnButton.Enabled = false;
+                unsplitButton.Enabled = splittableExplorer.CanUnsplit;
+            }
         }
 
     }

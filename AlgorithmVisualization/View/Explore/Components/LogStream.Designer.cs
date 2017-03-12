@@ -1,4 +1,4 @@
-﻿namespace AlgorithmVisualization.View.Explore
+﻿namespace AlgorithmVisualization.View.Explore.Components
 {
     partial class LogStream<TIn, TOut>
     {

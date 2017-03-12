@@ -1,4 +1,4 @@
-﻿namespace AlgorithmVisualization.View.Explore
+﻿namespace AlgorithmVisualization.View.Explore.Components
 {
     partial class StatTable<TIn, TOut>
     {
@@ -193,9 +193,9 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.AutoValidate = System.Windows.Forms.AutoValidate.EnableAllowFocusChange;
             this.Controls.Add(this.tableLayoutPanel1);
-            this.Name = "StatTable";
             this.Padding = new System.Windows.Forms.Padding(5, 5, 0, 2);
             this.Size = new System.Drawing.Size(421, 452);
+            this.Name = "StatTable";
             this.tableLayoutPanel1.ResumeLayout(false);
             this.panel3.ResumeLayout(false);
             this.panel3.PerformLayout();

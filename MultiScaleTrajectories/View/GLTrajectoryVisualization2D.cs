@@ -1,6 +1,6 @@
 ﻿using System.Drawing;
 using System.Windows.Forms;
-using AlgorithmVisualization.View.Visualization;
+using AlgorithmVisualization.View.GLVisualization;
 using MultiScaleTrajectories.Algorithm.Geometry;
 using OpenTK;
 using OpenTK.Input;

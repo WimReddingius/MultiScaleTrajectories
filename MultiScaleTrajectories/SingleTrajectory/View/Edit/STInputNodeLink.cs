@@ -3,7 +3,7 @@ using System.Drawing;
 using System.Linq;
 using System.Windows.Forms;
 using AlgorithmVisualization.Controller.Edit;
-using AlgorithmVisualization.View.Visualization.GLUtil;
+using AlgorithmVisualization.View.GLVisualization.GLUtil;
 using MultiScaleTrajectories.Algorithm.Geometry;
 using MultiScaleTrajectories.SingleTrajectory.Algorithm;
 using MultiScaleTrajectories.View;

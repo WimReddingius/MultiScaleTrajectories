@@ -61,10 +61,17 @@
     <Compile Include="Algorithm\Output.cs" />
     <Compile Include="Algorithm\Experiment\Statistics.cs" />
     <Compile Include="Controller\AlgorithmController.cs" />
-    <Compile Include="Controller\Explore\RunExplorerFactory.cs" />
+    <Compile Include="Controller\Explore\RunExplorerWrapper.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Controller\Explore\IRunExplorer.cs" />
+    <Compile Include="Controller\Explore\Factory\RunExplorerFactory.cs" />
+    <Compile Include="Controller\Explore\Factory\GenericRunExplorerFactory.cs" />
+    <Compile Include="Controller\Explore\RunExplorer.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
     <Compile Include="Controller\IAlgorithmController.cs" />
     <Compile Include="Controller\Edit\InputEditor.cs" />
-    <Compile Include="Controller\Explore\RunExplorer.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="View\AlgorithmView.cs">
       <SubType>UserControl</SubType>
@@ -72,23 +79,29 @@
     <Compile Include="View\AlgorithmView.Designer.cs">
       <DependentUpon>AlgorithmView.cs</DependentUpon>
     </Compile>
-    <Compile Include="View\ExplorationView.cs">
+    <Compile Include="View\Explore\RunExplorerChooser.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="View\ExplorationView.Designer.cs">
-      <DependentUpon>ExplorationView.cs</DependentUpon>
+    <Compile Include="View\Explore\RunExplorerChooser.Designer.cs">
+      <DependentUpon>RunExplorerChooser.cs</DependentUpon>
     </Compile>
-    <Compile Include="View\Explore\LogStream.cs">
+    <Compile Include="View\Explore\Components\LogStream.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="View\Explore\LogStream.Designer.cs">
+    <Compile Include="View\Explore\Components\LogStream.Designer.cs">
       <DependentUpon>LogStream.cs</DependentUpon>
     </Compile>
-    <Compile Include="View\Explore\StatTable.cs">
+    <Compile Include="View\Explore\Components\StatTable.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="View\Explore\StatTable.Designer.cs">
+    <Compile Include="View\Explore\Components\StatTable.Designer.cs">
       <DependentUpon>StatTable.cs</DependentUpon>
+    </Compile>
+    <Compile Include="View\Explore\SplittableExplorer.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="View\Explore\SplittableExplorer.Designer.cs">
+      <DependentUpon>SplittableExplorer.cs</DependentUpon>
     </Compile>
     <Compile Include="View\Util\FormsUtil.cs" />
     <Compile Include="View\AlgorithmViewBase.cs">
@@ -100,23 +113,22 @@
     <Compile Include="View\AlgorithmForm.Designer.cs">
       <DependentUpon>AlgorithmForm.cs</DependentUpon>
     </Compile>
-    <Compile Include="View\CompositeExplorationView.cs">
+    <Compile Include="View\Explore\TabularExplorer.cs">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="View\Util\SplitTableLayoutPanel.cs">
+    <Compile Include="View\Util\ResizableTableLayoutPanel.cs">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="View\Visualization\GLVisualization.cs">
+    <Compile Include="View\GLVisualization\GLVisualization.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="View\Visualization\GLVisualization2D.cs">
+    <Compile Include="View\GLVisualization\GLVisualization2D.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="View\Visualization\GLUtil\PickNameManager.cs" />
-    <Compile Include="View\Visualization\GLUtil\GLTextRenderer2D.cs" />
-    <Compile Include="View\Visualization\GLUtil\GLUtil2D.cs" />
+    <Compile Include="View\GLVisualization\GLUtil\PickNameManager.cs" />
+    <Compile Include="View\GLVisualization\GLUtil\GLTextRenderer2D.cs" />
+    <Compile Include="View\GLVisualization\GLUtil\GLUtil2D.cs" />
     <Compile Include="Controller\Edit\IInputLoader.cs" />
-    <Compile Include="Controller\Explore\IRunLoader.cs" />
   </ItemGroup>
   <ItemGroup />
   <ItemGroup>
@@ -126,14 +138,17 @@
     <EmbeddedResource Include="View\AlgorithmForm.resx">
       <DependentUpon>AlgorithmForm.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="View\ExplorationView.resx">
-      <DependentUpon>ExplorationView.cs</DependentUpon>
+    <EmbeddedResource Include="View\Explore\RunExplorerChooser.resx">
+      <DependentUpon>RunExplorerChooser.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="View\Explore\LogStream.resx">
+    <EmbeddedResource Include="View\Explore\Components\LogStream.resx">
       <DependentUpon>LogStream.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="View\Explore\StatTable.resx">
+    <EmbeddedResource Include="View\Explore\Components\StatTable.resx">
       <DependentUpon>StatTable.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="View\Explore\SplittableExplorer.resx">
+      <DependentUpon>SplittableExplorer.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>

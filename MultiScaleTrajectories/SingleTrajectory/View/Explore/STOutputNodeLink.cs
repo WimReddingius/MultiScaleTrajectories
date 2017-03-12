@@ -2,15 +2,20 @@
 using System.Windows.Forms;
 using AlgorithmVisualization.Algorithm.Experiment;
 using AlgorithmVisualization.Controller.Explore;
-using AlgorithmVisualization.View.Visualization.GLUtil;
+using AlgorithmVisualization.View.GLVisualization.GLUtil;
 using MultiScaleTrajectories.Algorithm.Geometry;
 using MultiScaleTrajectories.SingleTrajectory.Algorithm;
 using MultiScaleTrajectories.View;
 
 namespace MultiScaleTrajectories.SingleTrajectory.View.Explore
 {
-    class STOutputNodeLink : GLTrajectoryVisualization2D, IRunLoader<STInput, STOutput>
+    class STOutputNodeLink : GLTrajectoryVisualization2D, IRunExplorer<STInput, STOutput>
     {
+        public string VisualizationName => "Node-Link Visualization";
+        public int MinConsolidation => 1;
+        public int MaxConsolidation => 1;
+        public int Priority => 1;
+
         private AlgorithmRun<STInput, STOutput> run;
         private STOutput Output;
 

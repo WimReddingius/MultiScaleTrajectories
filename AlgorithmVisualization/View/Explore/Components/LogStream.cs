@@ -4,10 +4,15 @@ using AlgorithmVisualization.Algorithm;
 using AlgorithmVisualization.Algorithm.Experiment;
 using AlgorithmVisualization.Controller.Explore;
 
-namespace AlgorithmVisualization.View.Explore
+namespace AlgorithmVisualization.View.Explore.Components
 {
-    partial class LogStream<TIn, TOut> : UserControl, IRunLoader<TIn, TOut> where TOut : Output, new() where TIn : Input, new()
+    partial class LogStream<TIn, TOut> : UserControl, IRunExplorer<TIn, TOut> where TOut : Output, new() where TIn : Input, new()
     {
+        public string VisualizationName => "Log";
+        public int MinConsolidation => 1;
+        public int MaxConsolidation => 1;
+        public int Priority => 100;
+
         public LogStream()
         {
             InitializeComponent();

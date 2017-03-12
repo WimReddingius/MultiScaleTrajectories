@@ -2,6 +2,7 @@
 using AlgorithmVisualization.Controller;
 using AlgorithmVisualization.Controller.Explore;
 using AlgorithmVisualization.Controller.Edit;
+using AlgorithmVisualization.Controller.Explore.Factory;
 using MultiScaleTrajectories.SingleTrajectory.Algorithm;
 using MultiScaleTrajectories.SingleTrajectory.Algorithm.ShortcutShortestPath;
 using MultiScaleTrajectories.SingleTrajectory.View.Edit;
@@ -24,12 +25,8 @@ namespace MultiScaleTrajectories.SingleTrajectory.Controller
 
             Algorithms.Add(new ShortcutShortestPath());
 
-            AddRunExplorer(() => new RunExplorer<STInput, STOutput>
-            {
-                Name = "Node-Link Visualization",
-                Visualization = new STOutputNodeLink(),
-                MaxConsolidation = 1
-            });
+            AddUnwrappedRunExplorer(typeof(STOutputNodeLink));
+
         }
 
     }

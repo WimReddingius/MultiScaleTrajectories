@@ -5,7 +5,7 @@ using System.Windows.Forms;
 
 namespace AlgorithmVisualization.View.Util
 {
-    class SplitTableLayoutPanel : TableLayoutPanel
+    class ResizableTableLayoutPanel : TableLayoutPanel
     {
         public int SplitterSize { get; set; }
 
@@ -24,7 +24,7 @@ namespace AlgorithmVisualization.View.Util
         List<RectangleF> tlpCols = new List<RectangleF>();
         int[] colWidths = new int[0];
 
-        public SplitTableLayoutPanel()
+        public ResizableTableLayoutPanel()
         {
             MouseDown += SplitTablePanel_MouseDown;
             MouseMove += SplitTablePanel_MouseMove;

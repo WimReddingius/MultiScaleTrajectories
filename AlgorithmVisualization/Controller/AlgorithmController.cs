@@ -1,11 +1,13 @@
 ﻿using System;
 using System.ComponentModel;
+using System.Windows.Forms;
 using AlgorithmVisualization.Algorithm;
 using AlgorithmVisualization.Algorithm.Experiment;
 using AlgorithmVisualization.Controller.Edit;
 using AlgorithmVisualization.Controller.Explore;
+using AlgorithmVisualization.Controller.Explore.Factory;
 using AlgorithmVisualization.View;
-using AlgorithmVisualization.View.Explore;
+using AlgorithmVisualization.View.Explore.Components;
 
 namespace AlgorithmVisualization.Controller
 {
@@ -19,10 +21,10 @@ namespace AlgorithmVisualization.Controller
 
         internal AlgorithmWorkload<TIn, TOut> Workload;
         internal BindingList<TIn> Inputs;
+        internal BindingList<RunExplorerFactory<TIn, TOut>> RunExplorers;
 
         public InputEditor<TIn> InputEditor;
         public BindingList<Algorithm<TIn, TOut>> Algorithms;
-        public BindingList<RunExplorerFactory<TIn, TOut>> RunExplorers;
 
         
         protected AlgorithmController()
@@ -30,31 +32,34 @@ namespace AlgorithmVisualization.Controller
             RunExplorers = new BindingList<RunExplorerFactory<TIn, TOut>>();
             Algorithms = new BindingList<Algorithm<TIn, TOut>>();
 
-            AddRunExplorer(() => new RunExplorer<TIn, TOut>
-            {
-                Name = "Statistics",
-                Visualization = new StatTable<TIn, TOut>(),
-                IsNative = true
-            });
-
-            AddRunExplorer(() => new RunExplorer<TIn, TOut>
-            {
-                Name = "Log",
-                Visualization = new LogStream<TIn, TOut>(),
-                MaxConsolidation = 1,
-                IsNative = true
-            });
+            AddUnwrappedRunExplorer(typeof(StatTable<TIn, TOut>));
+            AddUnwrappedRunExplorer(typeof(LogStream<TIn, TOut>));
 
             Workload = new AlgorithmWorkload<TIn, TOut>();
             Inputs = new BindingList<TIn>();
         }
 
-        protected void AddRunExplorer(Func<RunExplorer<TIn, TOut>> runExplorerFunc)
+        protected void AddUnwrappedRunExplorer(Type runExplorerType)
         {
-            RunExplorers.Add(new RunExplorerFactory<TIn, TOut>
+            Type iRunExplorerType = typeof(IRunExplorer<TIn, TOut>);
+            Type iControlType = typeof(Control);
+
+            if (iControlType.IsAssignableFrom(runExplorerType) && iRunExplorerType.IsAssignableFrom(runExplorerType))
             {
-                Create = runExplorerFunc
-            });
+                Type[] typeArgsWrapper = {typeof(TIn), typeof(TOut), runExplorerType};
+                var genericTypeWrapper = typeof(RunExplorerWrapper<,,>).MakeGenericType(typeArgsWrapper);
+                var wrapper = (RunExplorer<TIn, TOut>) Activator.CreateInstance(genericTypeWrapper);
+
+                var wrapperType = wrapper.GetType();
+                Type[] typeArgsFactory = {typeof(TIn), typeof(TOut), wrapperType};
+                var genericTypeFactory = typeof(GenericRunExplorerFactory<,,>).MakeGenericType(typeArgsFactory);
+                var factory = (RunExplorerFactory<TIn, TOut>) Activator.CreateInstance(genericTypeFactory);
+                RunExplorers.Add(factory);
+            }
+            else
+            {
+                throw new ArgumentOutOfRangeException((nameof(runExplorerType)), "Type provided does not inherit from both Control and IRunExplorer");
+            }
         }
 
     }
