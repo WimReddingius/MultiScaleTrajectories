@@ -5,7 +5,7 @@ using AlgorithmVisualization.View.Util;
 
 namespace AlgorithmVisualization.Controller.Explore
 {
-    public class RunExplorerWrapper<TIn, TOut, TExplore> : RunExplorer<TIn, TOut> 
+    public class RunExplorerConcrete<TIn, TOut, TExplore> : RunExplorer<TIn, TOut> 
         where TIn : Input, new() 
         where TOut : Output, new()
         where TExplore : Control, IRunExplorer<TIn, TOut>, new()
@@ -17,7 +17,7 @@ namespace AlgorithmVisualization.Controller.Explore
         public override string VisualizationName => explorer.VisualizationName;
         public override int Priority => explorer.Priority;
 
-        public RunExplorerWrapper()
+        public RunExplorerConcrete()
         {
             explorer = new TExplore();
 

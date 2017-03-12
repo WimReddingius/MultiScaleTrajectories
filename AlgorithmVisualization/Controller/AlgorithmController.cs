@@ -1,13 +1,17 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel;
+using System.Configuration;
 using System.Windows.Forms;
 using AlgorithmVisualization.Algorithm;
 using AlgorithmVisualization.Algorithm.Experiment;
 using AlgorithmVisualization.Controller.Edit;
 using AlgorithmVisualization.Controller.Explore;
 using AlgorithmVisualization.Controller.Explore.Factory;
+using AlgorithmVisualization.Properties;
 using AlgorithmVisualization.View;
 using AlgorithmVisualization.View.Explore.Components;
+using Newtonsoft.Json;
 
 namespace AlgorithmVisualization.Controller
 {
@@ -15,10 +19,11 @@ namespace AlgorithmVisualization.Controller
     {
 
         public abstract string Name { get; }
-
+        
         private AlgorithmViewBase algorithmView;
         public AlgorithmViewBase AlgorithmView => algorithmView ?? (algorithmView = new AlgorithmView<TIn, TOut>(this));
 
+        internal AlgorithmControllerSettings Settings;
         internal AlgorithmWorkload<TIn, TOut> Workload;
         internal BindingList<TIn> Inputs;
         internal BindingList<RunExplorerFactory<TIn, TOut>> RunExplorers;
@@ -37,6 +42,7 @@ namespace AlgorithmVisualization.Controller
 
             Workload = new AlgorithmWorkload<TIn, TOut>();
             Inputs = new BindingList<TIn>();
+            Settings = AlgorithmControllerSettingsManager.GetSettings(this);
         }
 
         protected void AddUnwrappedRunExplorer(Type runExplorerType)
@@ -47,7 +53,7 @@ namespace AlgorithmVisualization.Controller
             if (iControlType.IsAssignableFrom(runExplorerType) && iRunExplorerType.IsAssignableFrom(runExplorerType))
             {
                 Type[] typeArgsWrapper = {typeof(TIn), typeof(TOut), runExplorerType};
-                var genericTypeWrapper = typeof(RunExplorerWrapper<,,>).MakeGenericType(typeArgsWrapper);
+                var genericTypeWrapper = typeof(RunExplorerConcrete<,,>).MakeGenericType(typeArgsWrapper);
                 var wrapper = (RunExplorer<TIn, TOut>) Activator.CreateInstance(genericTypeWrapper);
 
                 var wrapperType = wrapper.GetType();
@@ -61,6 +67,6 @@ namespace AlgorithmVisualization.Controller
                 throw new ArgumentOutOfRangeException((nameof(runExplorerType)), "Type provided does not inherit from both Control and IRunExplorer");
             }
         }
-
+        
     }
 }

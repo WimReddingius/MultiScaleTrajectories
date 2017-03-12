@@ -50,7 +50,11 @@ namespace MultiScaleTrajectories.Algorithm.DataStructures.Graph
         {
             List<N> shortestPath = null;
             List<N> nodeList = new List<N>();
+
+            //the predecessor node of a given node in the current path
             Dictionary<N, N> prevNode = new Dictionary<N, N>();
+
+            //distance from source to node
             Dictionary<N, int> nodeDistance = new Dictionary<N, int>();            
 
             //initialization
@@ -81,11 +85,11 @@ namespace MultiScaleTrajectories.Algorithm.DataStructures.Graph
                 if (closestNode.Equals(target))
                 {
                     //Build path
-                    shortestPath = new List<N>();
+                    shortestPath = new List<N> {closestNode};
                     while (prevNode.ContainsKey(closestNode))
                     {
-                        shortestPath.Insert(0, closestNode);
                         closestNode = prevNode[closestNode];
+                        shortestPath.Insert(0, closestNode);
                     }
                     break;
                 }
@@ -97,8 +101,9 @@ namespace MultiScaleTrajectories.Algorithm.DataStructures.Graph
                 }
 
                 //increment distances of adjacent nodes
-                foreach (N neighbor in closestNode.OutEdges.Keys)
+                foreach (var node in closestNode.OutEdges.Keys)
                 {
+                    var neighbor = (N) node;
                     E outEdge = (E) closestNode.OutEdges[neighbor];
                     int altDistance = nodeDistance[closestNode];
 

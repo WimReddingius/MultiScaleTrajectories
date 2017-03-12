@@ -11,10 +11,10 @@ namespace AlgorithmVisualization.View.Util
                 container.Controls.Clear();
 
                 control.CreateControl();
-                container.Controls.Add(control);
-
                 control.Dock = DockStyle.Fill;
                 control.Location = new System.Drawing.Point(0, 0);
+
+                container.Controls.Add(control);                
             }
         }
 

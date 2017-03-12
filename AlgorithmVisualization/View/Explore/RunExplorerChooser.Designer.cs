@@ -44,6 +44,7 @@
             // 
             // visualizationContainer
             // 
+            this.visualizationContainer.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
             this.visualizationContainer.Dock = System.Windows.Forms.DockStyle.Fill;
             this.visualizationContainer.Location = new System.Drawing.Point(0, 0);
             this.visualizationContainer.Name = "visualizationContainer";

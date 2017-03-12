@@ -10,8 +10,11 @@ namespace MultiScaleTrajectories.SingleTrajectory.Algorithm
 
     class STInput : Input
     {
+        [JsonProperty]
         public Trajectory2D Trajectory;
-        public List<double> Epsilons;
+
+        [JsonProperty]
+        private List<double> Epsilons;
 
         public int NumLevels => Epsilons.Count;
 

@@ -27,6 +27,8 @@ namespace MultiScaleTrajectories.SingleTrajectory.View.Edit
             MouseUp += HandleMouseUp;
             MouseMove += HandleMouseMove;
 
+            Paint -= Render;
+
             DraggingPoint = false;
         }
 
@@ -115,6 +117,8 @@ namespace MultiScaleTrajectories.SingleTrajectory.View.Edit
 
         public void LoadInput(STInput input)
         {
+            Paint -= Render;
+
             Input = input;
             LookAtTrajectory(Input.Trajectory);
 
@@ -123,6 +127,7 @@ namespace MultiScaleTrajectories.SingleTrajectory.View.Edit
                 PickManager.AssignPickId(p);
             }
 
+            Paint += Render;
             Refresh();
         }
 

@@ -43,12 +43,17 @@ namespace AlgorithmVisualization.View
             splittableExplorer = new SplittableExplorer<TIn, TOut>(Controller.RunExplorers, SelectedRuns);
             InitializeExplorationView();
 
-            //initialize input controller and load default input
-            CreateInput();
-            FormsUtil.FillContainer(inputOptionsPanel, Controller.InputEditor.Options);
-            
-            //initialize input visualization
+            //load views
             SetVisualizationMode(false);
+            FormsUtil.FillContainer(inputOptionsPanel, Controller.InputEditor.Options);
+
+            //once visualization container is loaded into algo form, initialize input
+            VisualizationContainer.Layout += (o, e) =>
+            {
+                CreateInput();
+                if (Controller.Settings.InputFile != null)
+                    OpenInputFile(Controller.Settings.InputFile);
+            };
         }
 
         private void InitializeExplorationView()
@@ -56,8 +61,8 @@ namespace AlgorithmVisualization.View
             var problemSpecificView = splittableExplorer.CreateExplorationView();
             var statView = splittableExplorer.CreateExplorationView();
             var logView = splittableExplorer.CreateExplorationView();
-            statView.DefaultExplorer = statView.RunExplorers.ToList().Find(ex => ex is RunExplorerWrapper<TIn, TOut, StatTable<TIn, TOut>>);
-            logView.DefaultExplorer = logView.RunExplorers.ToList().Find(ex => ex is RunExplorerWrapper<TIn, TOut, LogStream<TIn, TOut>>);
+            statView.DefaultExplorer = statView.RunExplorers.ToList().Find(ex => ex is RunExplorerConcrete<TIn, TOut, StatTable<TIn, TOut>>);
+            logView.DefaultExplorer = logView.RunExplorers.ToList().Find(ex => ex is RunExplorerConcrete<TIn, TOut, LogStream<TIn, TOut>>);
 
             var splitContainer = splittableExplorer.Split(splittableExplorer, Orientation.Vertical);
             var rightSplitContainer = splittableExplorer.Split(splitContainer.Panel2, Orientation.Horizontal);
@@ -73,7 +78,7 @@ namespace AlgorithmVisualization.View
             {
                 string fileName = openInputDialog.FileName;
                 OpenInputFile(fileName);
-                //Properties.Settings.Default["InputFile"] = fileName;
+                Controller.Settings.InputFile = fileName;
             }
         }
 
@@ -109,7 +114,7 @@ namespace AlgorithmVisualization.View
 
                     File.WriteAllText(fileName, input);
 
-                    //Properties.Settings.Default["InputFile"] = fileName;
+                    CurrentInput.Name = fileName;
                 }
                 catch (IOException)
                 {
@@ -121,7 +126,7 @@ namespace AlgorithmVisualization.View
         {
             CurrentInput.Clear();
             Controller.InputEditor.Reload();
-            //Properties.Settings.Default["InputFile"] = "";
+            Controller.Settings.InputFile = null;
         }
 
         private void computeWorkloadButton_Click(object sender, EventArgs e)

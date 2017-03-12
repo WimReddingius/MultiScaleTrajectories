@@ -8,7 +8,6 @@ namespace AlgorithmVisualization.View
 {
     public partial class AlgorithmForm : Form
     {
-
         public readonly BindingList<IAlgorithmController> AlgoControllers;
 
         public AlgorithmForm()
@@ -16,6 +15,7 @@ namespace AlgorithmVisualization.View
             InitializeComponent();
 
             OpenTK.Toolkit.Init();
+            AlgorithmControllerSettingsManager.Init();
 
             AlgoControllers = new BindingList<IAlgorithmController>();
             AlgoControllers.ListChanged += (o, e) =>
@@ -32,5 +32,9 @@ namespace AlgorithmVisualization.View
             FormsUtil.FillContainer(configurationSplitContainer.Panel2, algoView);
         }
 
+        private void AlgorithmForm_FormClosed(object sender, FormClosedEventArgs e)
+        {
+            AlgorithmControllerSettingsManager.Save();
+        }
     }
 }

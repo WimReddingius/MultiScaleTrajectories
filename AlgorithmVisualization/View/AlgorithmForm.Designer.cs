@@ -118,6 +118,7 @@
             this.Name = "AlgorithmForm";
             this.Text = "Algorithm Form";
             this.WindowState = System.Windows.Forms.FormWindowState.Maximized;
+            this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.AlgorithmForm_FormClosed);
             this.baseSplitContainer.Panel2.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.baseSplitContainer)).EndInit();
             this.baseSplitContainer.ResumeLayout(false);

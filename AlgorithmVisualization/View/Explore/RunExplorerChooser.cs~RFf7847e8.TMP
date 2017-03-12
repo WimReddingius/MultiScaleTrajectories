@@ -33,10 +33,8 @@ namespace AlgorithmVisualization.View.Explore
 
             runExplorerComboBox.BringToFront();
             runExplorerComboBox.Visible = false;
-
-            var mouseMessageFilter = new MouseMessageFilter();
-            mouseMessageFilter.MouseMoved += HandleMouseMove;
-            Application.AddMessageFilter(mouseMessageFilter);
+            MouseEnter += HandleMouseEnter;
+            MouseLeave += HandleMouseLeave;
 
             RunExplorers = runExplorers;
             this.activeSelection = activeSelection;
@@ -159,16 +157,25 @@ namespace AlgorithmVisualization.View.Explore
             runExplorer.LoadRuns(runSelectionList.ToArray());
         }
 
-        private void HandleMouseMove(object sender, MouseEventArgs mouseEventArgs)
+        private void HandleMouseEnter(object sender, EventArgs e)
         {
-            var mouseInside = Bounds.Contains(PointToClient(MousePosition));
-            runExplorerComboBox.Visible = mouseInside;
+            runExplorerComboBox.Visible = true;
         }
 
-        public new void Dispose()
+        private void HandleMouseLeave(object sender, EventArgs e)
         {
+            runExplorerComboBox.Visible = false;
+        }
 
-            base.Dispose();
+        private const int WS_EX_TRANSPARENT = 0x20;
+        protected override CreateParams CreateParams
+        {
+            get
+            {
+                CreateParams cp = base.CreateParams;
+                cp.ExStyle = cp.ExStyle | WS_EX_TRANSPARENT;
+                return cp;
+            }
         }
 
     }
