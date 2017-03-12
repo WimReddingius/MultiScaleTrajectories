@@ -43,17 +43,18 @@ namespace AlgorithmVisualization.View
             splittableExplorer = new SplittableExplorer<TIn, TOut>(Controller.RunExplorers, SelectedRuns);
             InitializeSplittableExplorer();
 
-            //load views
-            SetVisualizationMode(false);
+            //load input options
             FormsUtil.FillContainer(inputOptionsPanel, Controller.InputEditor.Options);
 
-            //once visualization container is loaded into algo form, initialize input
-            VisualizationContainer.Layout += (o, e) =>
-            {
-                CreateInput();
-                if (Controller.Settings.InputFile != null)
-                    OpenInputFile(Controller.Settings.InputFile);
-            };
+            //change to input mode
+            SetVisualizationMode(false);
+        }
+
+        public override void Activate()
+        {
+            CreateInput();
+            if (Controller.Settings.InputFile != null)
+                OpenInputFile(Controller.Settings.InputFile);
         }
 
         private void InitializeSplittableExplorer()

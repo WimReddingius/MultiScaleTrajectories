@@ -8,14 +8,18 @@ namespace AlgorithmVisualization.View
         public class AlgorithmViewBase : UserControl
         {
             public virtual Control VisualizationContainer { get; set; }
+
+            public virtual void Activate() { }
         }
 
-    #else
+#else
 
         abstract class AlgorithmViewBase : UserControl
         {
             public abstract Control VisualizationContainer { get; set; }
+
+            public abstract void Activate();
         }
 
-    #endif
+#endif
 }

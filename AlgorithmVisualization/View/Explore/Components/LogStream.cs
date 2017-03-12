@@ -8,7 +8,7 @@ namespace AlgorithmVisualization.View.Explore.Components
 {
     partial class LogStream<TIn, TOut> : UserControl, IRunExplorer<TIn, TOut> where TOut : Output, new() where TIn : Input, new()
     {
-        public string VisualizationName => "Log";
+        public string DisplayName => "Log";
         public int MinConsolidation => 1;
         public int MaxConsolidation => 1;
         public int Priority => 100;

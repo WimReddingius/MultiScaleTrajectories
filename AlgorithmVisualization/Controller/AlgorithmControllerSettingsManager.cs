@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using AlgorithmVisualization.Algorithm;
 using Newtonsoft.Json;
 
 namespace AlgorithmVisualization.Controller
@@ -7,7 +8,8 @@ namespace AlgorithmVisualization.Controller
     {
         private static Dictionary<string, AlgorithmControllerSettings> settingsMap;
 
-        public static AlgorithmControllerSettings GetSettings(IAlgorithmController controller)
+        public static AlgorithmControllerSettings GetSettings<TIn, TOut>(AlgorithmController<TIn, TOut> controller)
+             where TIn : Input, new() where TOut : Output, new()
         {
             if (!settingsMap.ContainsKey(controller.Name))
             {

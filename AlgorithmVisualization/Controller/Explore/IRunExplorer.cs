@@ -7,7 +7,7 @@ namespace AlgorithmVisualization.Controller.Explore
     {
         int Priority { get; }
 
-        string VisualizationName { get; }
+        string DisplayName { get; }
 
         int MinConsolidation { get; }
 

@@ -14,7 +14,7 @@ namespace AlgorithmVisualization.Controller.Explore
 
         public override int MinConsolidation => explorer.MinConsolidation;
         public override int MaxConsolidation => explorer.MaxConsolidation;
-        public override string VisualizationName => explorer.VisualizationName;
+        public override string DisplayName => explorer.DisplayName;
         public override int Priority => explorer.Priority;
 
         public RunExplorerConcrete()
@@ -32,7 +32,7 @@ namespace AlgorithmVisualization.Controller.Explore
 
         public override string ToString()
         {
-            return VisualizationName;
+            return DisplayName;
         }
 
     }

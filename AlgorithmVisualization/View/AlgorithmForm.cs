@@ -28,8 +28,11 @@ namespace AlgorithmVisualization.View
         private void algorithmTypeComboBox_SelectedIndexChanged(object sender, EventArgs e)
         {
             var algoView = ((IAlgorithmController) algorithmTypeComboBox.SelectedItem).AlgorithmView;
+
             FormsUtil.FillContainer(baseSplitContainer.Panel1, algoView.VisualizationContainer);
             FormsUtil.FillContainer(configurationSplitContainer.Panel2, algoView);
+
+            algoView.Activate();
         }
 
         private void AlgorithmForm_FormClosed(object sender, FormClosedEventArgs e)

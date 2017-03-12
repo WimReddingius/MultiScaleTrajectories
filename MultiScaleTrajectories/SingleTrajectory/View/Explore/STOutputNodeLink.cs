@@ -11,7 +11,7 @@ namespace MultiScaleTrajectories.SingleTrajectory.View.Explore
 {
     class STOutputNodeLink : GLTrajectoryVisualization2D, IRunExplorer<STInput, STOutput>
     {
-        public string VisualizationName => "Node-Link Visualization";
+        public string DisplayName => "Node-Link Visualization";
         public int MinConsolidation => 1;
         public int MaxConsolidation => 1;
         public int Priority => 1;
