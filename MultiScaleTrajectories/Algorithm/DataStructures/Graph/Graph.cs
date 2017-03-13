@@ -50,12 +50,8 @@ namespace MultiScaleTrajectories.Algorithm.DataStructures.Graph
         {
             List<N> shortestPath = null;
             List<N> nodeList = new List<N>();
-
-            //the predecessor node of a given node in the current path
             Dictionary<N, N> prevNode = new Dictionary<N, N>();
-
-            //distance from source to node
-            Dictionary<N, int> nodeDistance = new Dictionary<N, int>();            
+            Dictionary<N, int> nodeDistance = new Dictionary<N, int>();
 
             //initialization
             foreach (N node in Nodes)
@@ -85,11 +81,11 @@ namespace MultiScaleTrajectories.Algorithm.DataStructures.Graph
                 if (closestNode.Equals(target))
                 {
                     //Build path
-                    shortestPath = new List<N> {closestNode};
+                    shortestPath = new List<N>();
                     while (prevNode.ContainsKey(closestNode))
                     {
-                        closestNode = prevNode[closestNode];
                         shortestPath.Insert(0, closestNode);
+                        closestNode = prevNode[closestNode];
                     }
                     break;
                 }
@@ -101,10 +97,9 @@ namespace MultiScaleTrajectories.Algorithm.DataStructures.Graph
                 }
 
                 //increment distances of adjacent nodes
-                foreach (var node in closestNode.OutEdges.Keys)
+                foreach (N neighbor in closestNode.OutEdges.Keys)
                 {
-                    var neighbor = (N) node;
-                    E outEdge = (E) closestNode.OutEdges[neighbor];
+                    E outEdge = (E)closestNode.OutEdges[neighbor];
                     int altDistance = nodeDistance[closestNode];
 
                     WeightedEdge weightedEdge = outEdge as WeightedEdge;
@@ -120,7 +115,7 @@ namespace MultiScaleTrajectories.Algorithm.DataStructures.Graph
                     }
                 }
             }
-            
+
             return shortestPath;
         }
 

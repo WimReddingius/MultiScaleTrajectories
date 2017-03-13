@@ -4,7 +4,7 @@ using Newtonsoft.Json;
 
 namespace AlgorithmVisualization.Controller
 {
-    class AlgorithmControllerSettingsManager
+    static class AlgorithmControllerSettingsManager
     {
         private static Dictionary<string, AlgorithmControllerSettings> settingsMap;
 

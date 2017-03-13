@@ -24,6 +24,8 @@ namespace AlgorithmVisualization.View.Explore.Components
 
             richTextBox.Clear();
             richTextBox.Text = run.Output.LogString;
+
+            run.Output.Logged -= AppendLoggedOutput;
             run.Output.Logged += AppendLoggedOutput;
         }
 
@@ -31,7 +33,16 @@ namespace AlgorithmVisualization.View.Explore.Components
         {
             if (InvokeRequired)
             {
-                Action del = () => richTextBox.Text += str;
+                Action del = () =>
+                {
+                    richTextBox.Text += str;
+
+                    // set the current caret position to the end
+                    richTextBox.SelectionStart = richTextBox.Text.Length;
+
+                    // scroll it automatically
+                    richTextBox.ScrollToCaret();
+                };
                 Invoke(del);
             }
         }

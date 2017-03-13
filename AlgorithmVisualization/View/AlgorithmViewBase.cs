@@ -9,7 +9,7 @@ namespace AlgorithmVisualization.View
         {
             public virtual Control VisualizationContainer { get; set; }
 
-            public virtual void Activate() { }
+            public virtual void Reset() { }
         }
 
 #else
@@ -18,7 +18,7 @@ namespace AlgorithmVisualization.View
         {
             public abstract Control VisualizationContainer { get; set; }
 
-            public abstract void Activate();
+            public abstract void Reset();
         }
 
 #endif

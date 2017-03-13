@@ -28,7 +28,7 @@ namespace AlgorithmVisualization.View.Explore.Components
             dataTable.Columns.Add(new DataColumn("Statistic"));
 
             //add rows
-            //TODO: thread unsafe
+            //TODO: thread unsafe, and kinda weird
             var randomStats = statFunc(runs[0]); //just picking a random run
             foreach (var stat in randomStats)
             {

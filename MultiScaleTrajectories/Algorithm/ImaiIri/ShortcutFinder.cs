@@ -7,33 +7,14 @@ namespace MultiScaleTrajectories.Algorithm.ImaiIri
     static class ShortcutFinder
     {
 
-        public struct Shortcut
+        public static List<MaxDistanceShortcut> FindAllMaxDistanceShortcuts(Trajectory2D trajectory)
         {
-            public Point2D Start;
-            public Point2D End;
-            public double MaxDistance;
-
-            public Shortcut(Point2D start, Point2D end, double distance)
-            {
-                Start = start;
-                End = end;
-                MaxDistance = distance;
-            }
-
-            public override string ToString()
-            {
-                return "From " + Start + " to " + End;
-            }
-        }
-
-        public static List<Shortcut> FindAllShortcuts(Trajectory2D trajectory)
-        {
-            var shortcuts = new List<Shortcut>();
+            var shortcuts = new List<MaxDistanceShortcut>();
             for (var i = 0; i < trajectory.Count - 2; i++)
             {
                 for (var j = i + 2; j < trajectory.Count; j++)
                 {
-                    shortcuts.Add(new Shortcut(trajectory[i], trajectory[j], GetMaxDistance(trajectory, i, j)));
+                    shortcuts.Add(new MaxDistanceShortcut(trajectory[i], trajectory[j], GetMaxDistance(trajectory, i, j)));
                 }
             }
             return shortcuts;
@@ -63,7 +44,7 @@ namespace MultiScaleTrajectories.Algorithm.ImaiIri
                     {
                         Point2D p1 = trajectory[i];
                         Point2D p2 = trajectory[j];
-                        shortcuts.Add(new Shortcut(p1, p2, epsilon));
+                        shortcuts.Add(new Shortcut(p1, p2));
                     }
                 }
             }
@@ -72,9 +53,7 @@ namespace MultiScaleTrajectories.Algorithm.ImaiIri
 
         public static bool IsShortCutPossible(Trajectory2D trajectory, int start, int end, double epsilon)
         {
-            Trajectory2D shortcut = new Trajectory2D();
-            shortcut.Add(trajectory[start]);
-            shortcut.Add(trajectory[end]);
+            Trajectory2D shortcut = new Trajectory2D {trajectory[start], trajectory[end]};
 
             for (int k = start + 1; k < end; k++)
             {
@@ -83,6 +62,61 @@ namespace MultiScaleTrajectories.Algorithm.ImaiIri
                     return false;
             }
             return true;
+        }
+
+        //TODO: also go in opposite direction
+        public static List<Shortcut> FindAllShortcutsSmart(Trajectory2D trajectory, double epsilon)
+        {
+            var shortcuts = new List<Shortcut>();
+            for (var i = 0; i < trajectory.Count - 1; i++)
+            {
+                Point2D start = trajectory[i];
+                Wedge wedge = null;
+
+                for (var j = i + 1; j < trajectory.Count; j++)
+                {
+                    Point2D end = trajectory[j];
+
+                    //check if valid shortcut
+                    if (j >= i + 2)
+                    {
+                        //note that wedge cannot be null
+                        if (wedge.Contains(end))
+                        {
+                            var shortcut = new Shortcut(trajectory[i], trajectory[j]);
+                            shortcuts.Add(shortcut);
+                        }
+                    }
+
+                    //break when end of trajectory is reached
+                    if (j == trajectory.Count)
+                        break;
+                    
+                    //get angle of shortcut line with respect to the unit circle
+                    var shortcutLine = new Line2D(start, end);
+                    var rightVector = new Line2D(start, new Point2D(start.X + 1, start.Y));
+                    var worldAngle = Geometry2D.Angle(shortcutLine, rightVector);
+
+                    //angle between shortcut line and epsilon circles
+                    var wedgeAngle = Math.Asin(epsilon / Geometry2D.Distance(start, end));
+
+                    //build wedge
+                    var wedgeStart = Geometry2D.SimplifyAngle(worldAngle - wedgeAngle);
+                    var wedgeEnd = Geometry2D.SimplifyAngle(worldAngle + wedgeAngle);
+                    var newWedge = new Wedge(start, wedgeStart, wedgeEnd);
+
+                    //intersect wedge
+                    if (wedge == null)
+                        wedge = newWedge;
+                    else
+                    {
+                        wedge = Wedge.Intersect(newWedge, wedge);
+                        if (wedge == null)
+                            break;
+                    }
+                }
+            }
+            return shortcuts;
         }
 
     }

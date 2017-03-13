@@ -26,6 +26,8 @@ namespace AlgorithmVisualization.View.Explore
         //whether or not this exploration view listens to changes in the run selection
         private bool active;
 
+        private readonly MouseMessageFilter mouseMessageFilter;
+
 
         public RunExplorerChooser(BindingList<RunExplorer<TIn, TOut>> runExplorers, BindingList<AlgorithmRun<TIn, TOut>> activeSelection)
         {
@@ -34,7 +36,7 @@ namespace AlgorithmVisualization.View.Explore
             runExplorerComboBox.BringToFront();
             runExplorerComboBox.Visible = false;
 
-            var mouseMessageFilter = new MouseMessageFilter();
+            mouseMessageFilter = new MouseMessageFilter();
             mouseMessageFilter.MouseMoved += HandleMouseMove;
             Application.AddMessageFilter(mouseMessageFilter);
 
@@ -51,12 +53,7 @@ namespace AlgorithmVisualization.View.Explore
             {
                 //loading last selected runs
                 activeSelection.Clear();
-
-                lastSelection.ForEach(run =>
-                {
-                    if (runs.Contains(run))
-                        activeSelection.Add(run);
-                });
+                lastSelection.ForEach(run => { activeSelection.Add(run); });
 
                 activeSelection.ListChanged += RunSelectionChanged;
                 active = true;
@@ -77,6 +74,11 @@ namespace AlgorithmVisualization.View.Explore
         public void LoadRuns(AlgorithmRun<TIn, TOut>[] runs)
         {
             this.runs = runs;
+
+            //remove runs from lastSelected that have now been removed
+            lastSelection
+                .FindAll(run => !runs.Contains(run))
+                .ForEach(run => lastSelection.Remove(run));
 
             //populate combobox
             var previouslySelected = (RunExplorer<TIn, TOut>) runExplorerComboBox.SelectedItem;
@@ -167,7 +169,7 @@ namespace AlgorithmVisualization.View.Explore
 
         public new void Dispose()
         {
-
+            Application.RemoveMessageFilter(mouseMessageFilter);
             base.Dispose();
         }
 

@@ -20,45 +20,47 @@ namespace AlgorithmVisualization.View
         public sealed override Control VisualizationContainer { get; set; }
 
         private readonly SplittableExplorer<TIn, TOut> splittableExplorer;
-        private readonly AlgorithmController<TIn, TOut> Controller;
-        private readonly BindingList<AlgorithmRun<TIn, TOut>> SelectedRuns;
+        private readonly AlgorithmController<TIn, TOut> controller;
+        private readonly BindingList<AlgorithmRun<TIn, TOut>> selectedRuns;
 
-        private TIn CurrentInput  => Controller.InputEditor.Input;        
-
+        private TIn CurrentInput => controller.InputEditor.Input;
 
         public AlgorithmView(AlgorithmController<TIn, TOut> controller)
         {
             InitializeComponent();       
 
-            Controller = controller;
+            this.controller = controller;
             VisualizationContainer = new Control();
 
-            SelectedRuns = new BindingList<AlgorithmRun<TIn, TOut>>();
-            SelectedRuns.ListChanged += OnSelectedRunsChanged;
+            selectedRuns = new BindingList<AlgorithmRun<TIn, TOut>>();
+            selectedRuns.ListChanged += OnSelectedRunsChanged;
+
+            splittableExplorer = new SplittableExplorer<TIn, TOut>(controller.RunExplorers, selectedRuns);
 
             //populate controls
-            LoadDataSources();
+            PopulateControls();
 
-            //initialize exploration view
-            splittableExplorer = new SplittableExplorer<TIn, TOut>(Controller.RunExplorers, SelectedRuns);
-            InitializeSplittableExplorer();
-
-            //load input options
-            FormsUtil.FillContainer(inputOptionsPanel, Controller.InputEditor.Options);
+            //load input
+            FormsUtil.FillContainer(inputOptionsPanel, this.controller.InputEditor.Options);
+            CreateInput();
+            if (this.controller.Settings.InputFile != null)
+                OpenInputFile(this.controller.Settings.InputFile);
 
             //change to input mode
             SetVisualizationMode(false);
         }
 
-        public override void Activate()
+        //preserve the entire state, but rebuild the views
+        public override void Reset()
         {
-            CreateInput();
-            if (Controller.Settings.InputFile != null)
-                OpenInputFile(Controller.Settings.InputFile);
+            controller.InputEditor.Reload();    //forces redraw of input editor
+            ReloadSplittableExplorer();         //forces reconfiguratino of splittable explorer
         }
 
-        private void InitializeSplittableExplorer()
+        private void ReloadSplittableExplorer()
         {
+            splittableExplorer.Clear();
+
             var problemSpecificView = splittableExplorer.CreateExplorationView();
             var statView = splittableExplorer.CreateExplorationView();
             var logView = splittableExplorer.CreateExplorationView();
@@ -79,7 +81,7 @@ namespace AlgorithmVisualization.View
             {
                 string fileName = openInputDialog.FileName;
                 OpenInputFile(fileName);
-                Controller.Settings.InputFile = fileName;
+                controller.Settings.InputFile = fileName;
             }
         }
 
@@ -87,12 +89,12 @@ namespace AlgorithmVisualization.View
         {
             try
             {
-                CurrentInput.LoadSerialized(fileName);
-                CurrentInput.Name = Path.GetFileNameWithoutExtension(fileName);
-                Controller.InputEditor.Reload();
-
                 //force redraw of controls that use input name
-                LoadDataSources();
+                CurrentInput.Name = Path.GetFileNameWithoutExtension(fileName);
+                PopulateControls();
+
+                CurrentInput.LoadSerialized(fileName);
+                controller.InputEditor.Reload();
             }
             catch (Exception e)
             {
@@ -109,13 +111,13 @@ namespace AlgorithmVisualization.View
                 try
                 {
                     string input = CurrentInput.Serialize();
-
-                    JObject jObject = JObject.Parse(input);
-                    jObject.Add("AlgorithmType", Controller.GetType().AssemblyQualifiedName);
-
                     File.WriteAllText(fileName, input);
 
-                    CurrentInput.Name = fileName;
+                    //update name
+                    CurrentInput.Name = Path.GetFileNameWithoutExtension(fileName);
+                    PopulateControls();
+
+                    controller.Settings.InputFile = fileName;
                 }
                 catch (IOException)
                 {
@@ -126,21 +128,21 @@ namespace AlgorithmVisualization.View
         private void clearInputButton_Click(object sender, EventArgs e)
         {
             CurrentInput.Clear();
-            Controller.InputEditor.Reload();
-            Controller.Settings.InputFile = null;
+            controller.InputEditor.Reload();
+            controller.Settings.InputFile = null;
         }
 
         private void computeWorkloadButton_Click(object sender, EventArgs e)
         {
-            Controller.Workload.Run();
+            controller.Workload.Run();
             SetVisualizationMode(true);
-            splittableExplorer.LoadRuns(Controller.Workload.Runs.ToArray());
+            splittableExplorer.LoadRuns(controller.Workload.Runs.ToArray());
         }
 
         private void resetWorkloadButton_Click(object sender, EventArgs e)
         {
             SetVisualizationMode(false);
-            Controller.Workload.Reset();
+            controller.Workload.Reset();
         }
 
         private void SetVisualizationMode(bool exploring)
@@ -154,13 +156,13 @@ namespace AlgorithmVisualization.View
                 RemoveTabPage(exploreTabPage);
                 AddTabPage(inputTabPage);
                 splittableExplorer.Deactivate();
-                LoadVisualization(Controller.InputEditor.Visualization);
+                FormsUtil.FillContainer(VisualizationContainer, controller.InputEditor.Visualization);
             }
             else
             {
                 RemoveTabPage(inputTabPage);
                 AddTabPage(exploreTabPage);
-                LoadVisualization(splittableExplorer);
+                FormsUtil.FillContainer(VisualizationContainer, splittableExplorer);
             }
 
             resetWorkloadButton.Enabled = exploring;
@@ -182,10 +184,10 @@ namespace AlgorithmVisualization.View
 
         private void addWorkloadRunButton_Click(object sender, EventArgs e)
         {
-            TIn input = Controller.Inputs[0];
-            Algorithm<TIn, TOut> algo = Controller.Algorithms[0];
+            TIn input = controller.Inputs[0];
+            Algorithm<TIn, TOut> algo = controller.Algorithms[0];
 
-            var run = Controller.Workload.CreateRun(algo, input);
+            var run = controller.Workload.CreateRun(algo, input);
             workloadTable.Rows.Add(run, input, algo);
 
             computeWorkloadButton.Enabled = true;
@@ -198,10 +200,10 @@ namespace AlgorithmVisualization.View
                 var run = (AlgorithmRun<TIn, TOut>)row.Cells["workloadTableRunColumn"].Value;
 
                 workloadTable.Rows.Remove(row);
-                Controller.Workload.Runs.Remove(run);
+                controller.Workload.Runs.Remove(run);
             }
 
-            if (Controller.Workload.Runs.Count == 0)
+            if (controller.Workload.Runs.Count == 0)
                 computeWorkloadButton.Enabled = false;
         }
 
@@ -219,7 +221,7 @@ namespace AlgorithmVisualization.View
         private void inputComboBox_SelectedIndexChanged(object sender, EventArgs e)
         {
             TIn newInput = (TIn)inputComboBox.SelectedItem;
-            Controller.InputEditor.LoadInput(newInput);
+            controller.InputEditor.LoadInput(newInput);
         }
 
         private void addInputButton_Click(object sender, EventArgs e)
@@ -232,39 +234,33 @@ namespace AlgorithmVisualization.View
             TIn input = new TIn();
             input.Clear();
 
-            Controller.Inputs.Add(input);
-            Controller.InputEditor.LoadInput(input);
+            controller.Inputs.Add(input);
+            controller.InputEditor.LoadInput(input);
             inputComboBox.SelectedItem = input;
         }
 
         private void removeInputButton_Click(object sender, EventArgs e)
         {
-            if (Controller.Inputs.Count > 1)
+            if (controller.Inputs.Count > 1)
             {
                 TIn oldInput = (TIn)inputComboBox.SelectedItem;
 
-                Controller.Inputs.Remove(oldInput);
+                controller.Inputs.Remove(oldInput);
 
                 //remove appropriate workload runs
-                var itemToRemove = Controller.Workload.Runs.Where(r => r.Input == oldInput).ToList();
+                var itemToRemove = controller.Workload.Runs.Where(r => r.Input == oldInput).ToList();
                 foreach (var run in itemToRemove)
                 {
                     RemoveWorkloadRun(run);
                 }
 
-                Controller.InputEditor.LoadInput((TIn) inputComboBox.SelectedItem);
+                controller.InputEditor.LoadInput((TIn) inputComboBox.SelectedItem);
             }
-        }
-
-        private void LoadVisualization(Control control)
-        {
-            FormsUtil.FillContainer(VisualizationContainer, control);
-            control?.Focus();
         }
 
         private void RemoveWorkloadRun(AlgorithmRun<TIn, TOut> run)
         {
-            Controller.Workload.Runs.Remove(run);
+            controller.Workload.Runs.Remove(run);
 
             workloadTable.Rows
             .Cast<DataGridViewRow>().ToList()
@@ -274,17 +270,17 @@ namespace AlgorithmVisualization.View
 
         private void workloadTable_SelectionChanged(object sender, EventArgs e)
         {
-            SelectedRuns.ListChanged -= OnSelectedRunsChanged;
+            selectedRuns.ListChanged -= OnSelectedRunsChanged;
 
             if (workloadTable.SelectedRows.Count == 0)
-                SelectedRuns.Clear();
+                selectedRuns.Clear();
             else
             {
                 foreach (DataGridViewRow row in workloadTable.SelectedRows)
                 {
                     var run = (AlgorithmRun<TIn, TOut>) row.Cells["workloadTableRunColumn"].Value;
-                    if (!SelectedRuns.Contains(run))
-                        SelectedRuns.Add(run);
+                    if (!selectedRuns.Contains(run))
+                        selectedRuns.Add(run);
                 }
 
                 var selectedRunsInWorkloadTable = workloadTable.SelectedRows
@@ -292,14 +288,14 @@ namespace AlgorithmVisualization.View
                     .Select(row => (AlgorithmRun<TIn, TOut>) row.Cells["workloadTableRunColumn"].Value)
                     .ToList();
 
-                foreach (AlgorithmRun<TIn, TOut> run in SelectedRuns.ToList()) //copy to a list
+                foreach (AlgorithmRun<TIn, TOut> run in selectedRuns.ToList()) //copy to a list
                 {
                     if (!selectedRunsInWorkloadTable.Contains(run))
-                        SelectedRuns.Remove(run);
+                        selectedRuns.Remove(run);
                 }
             }
 
-            SelectedRuns.ListChanged += OnSelectedRunsChanged;
+            selectedRuns.ListChanged += OnSelectedRunsChanged;
         }
 
         private void OnSelectedRunsChanged(object sender, ListChangedEventArgs listChangedEventArgs)
@@ -310,31 +306,35 @@ namespace AlgorithmVisualization.View
             workloadTable.Rows
                 .Cast<DataGridViewRow>()
                 .ToList()
-                .FindAll(row => SelectedRuns.Contains((AlgorithmRun<TIn, TOut>) row.Cells["workloadTableRunColumn"].Value))
+                .FindAll(row => selectedRuns.Contains((AlgorithmRun<TIn, TOut>) row.Cells["workloadTableRunColumn"].Value))
                 .ForEach(row => row.Selected = true);
 
             workloadTable.SelectionChanged += workloadTable_SelectionChanged;
         }
 
-        private void LoadDataSources()
+        private void PopulateControls()
         {
+            inputComboBox.SelectedIndexChanged -= inputComboBox_SelectedIndexChanged;
+
             //force redraw
             inputComboBox.DisplayMember = "";
             workloadTableInputColumn.DisplayMember = "";
             workloadTableAlgoColumn.DisplayMember = "";
 
             //actual loading
-            workloadTableInputColumn.DataSource = Controller.Inputs;
+            workloadTableInputColumn.DataSource = controller.Inputs;
             workloadTableInputColumn.DisplayMember = "Name";
             workloadTableInputColumn.ValueMember = "Self";
 
-            inputComboBox.DataSource = Controller.Inputs;
+            inputComboBox.DataSource = controller.Inputs;
             inputComboBox.DisplayMember = "Name";
             inputComboBox.ValueMember = "Self";
 
-            workloadTableAlgoColumn.DataSource = Controller.Algorithms;
+            workloadTableAlgoColumn.DataSource = controller.Algorithms;
             workloadTableAlgoColumn.DisplayMember = "Name";
             workloadTableAlgoColumn.ValueMember = "Self";
+
+            inputComboBox.SelectedIndexChanged += inputComboBox_SelectedIndexChanged;
         }
 
         private void splitHorizontallyButton_Click(object sender, EventArgs e)

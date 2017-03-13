@@ -30,7 +30,7 @@ namespace AlgorithmVisualization.View
         /// </summary>
         private void InitializeComponent()
         {
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle3 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
             this.tabControl = new System.Windows.Forms.TabControl();
             this.runTabPage = new System.Windows.Forms.TabPage();
             this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
@@ -209,8 +209,8 @@ namespace AlgorithmVisualization.View
             // workloadTableInputColumn
             // 
             this.workloadTableInputColumn.AutoComplete = false;
-            dataGridViewCellStyle3.NullValue = null;
-            this.workloadTableInputColumn.DefaultCellStyle = dataGridViewCellStyle3;
+            dataGridViewCellStyle1.NullValue = null;
+            this.workloadTableInputColumn.DefaultCellStyle = dataGridViewCellStyle1;
             this.workloadTableInputColumn.FillWeight = 50F;
             this.workloadTableInputColumn.HeaderText = "Input";
             this.workloadTableInputColumn.Name = "workloadTableInputColumn";
@@ -407,7 +407,7 @@ namespace AlgorithmVisualization.View
             this.unsplitButton.Name = "unsplitButton";
             this.unsplitButton.Size = new System.Drawing.Size(255, 33);
             this.unsplitButton.TabIndex = 0;
-            this.unsplitButton.Text = "UnSplit";
+            this.unsplitButton.Text = "Unsplit";
             this.unsplitButton.UseVisualStyleBackColor = true;
             this.unsplitButton.Click += new System.EventHandler(this.unsplitButton_Click);
             // 

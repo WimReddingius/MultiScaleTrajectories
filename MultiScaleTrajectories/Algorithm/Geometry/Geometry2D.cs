@@ -5,6 +5,35 @@ namespace MultiScaleTrajectories.Algorithm.Geometry
     class Geometry2D
     {
 
+        public static double Dot(Point2D p1, Point2D p2)
+        {
+            return p1.X * p2.X + p1.Y * p2.Y;
+        }
+
+        public static double Cross(Point2D p1, Point2D p2)
+        {
+            return p1.X * p2.Y - p1.Y * p2.X;
+        }
+
+        //angle between two lines in degrees
+        public static double Angle(Line2D line1, Line2D line2)
+        {
+            double angle1 = Math.Atan2(line1.Point1.Y - line1.Point2.Y, line1.Point1.X - line1.Point2.X);
+            double angle2 = Math.Atan2(line2.Point1.Y - line2.Point2.Y, line2.Point1.X - line2.Point2.X);
+            return SimplifyAngle(angle1 - angle2);
+        }
+
+        //in degrees
+        public static double SimplifyAngle(double angle)
+        {
+            var simplerAngle = angle % 360;
+
+            if (simplerAngle < 0)
+                simplerAngle += 360;
+
+            return simplerAngle;
+        }
+
         public static double Distance(Point2D p1, Point2D p2)
         {
             return Math.Sqrt(Math.Pow(p1.Y - p2.Y, 2) + Math.Pow(p1.X - p2.X, 2));

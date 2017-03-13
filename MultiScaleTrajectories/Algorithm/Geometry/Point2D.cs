@@ -23,5 +23,15 @@
             return "(" + X + ", " + Y + ")" ;
         }
 
+        public Point2D Clone()
+        {
+            return new Point2D(X, Y);
+        }
+
+        public void Translate(double xd, double yd)
+        {
+            X += xd;
+            Y += yd;
+        }
     }
 }

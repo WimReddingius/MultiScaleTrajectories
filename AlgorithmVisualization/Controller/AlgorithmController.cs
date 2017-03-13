@@ -1,17 +1,13 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.ComponentModel;
-using System.Configuration;
 using System.Windows.Forms;
 using AlgorithmVisualization.Algorithm;
 using AlgorithmVisualization.Algorithm.Experiment;
 using AlgorithmVisualization.Controller.Edit;
 using AlgorithmVisualization.Controller.Explore;
 using AlgorithmVisualization.Controller.Explore.Factory;
-using AlgorithmVisualization.Properties;
 using AlgorithmVisualization.View;
 using AlgorithmVisualization.View.Explore.Components;
-using Newtonsoft.Json;
 
 namespace AlgorithmVisualization.Controller
 {
@@ -26,8 +22,8 @@ namespace AlgorithmVisualization.Controller
         internal AlgorithmControllerSettings Settings;
         internal AlgorithmWorkload<TIn, TOut> Workload;
         internal BindingList<TIn> Inputs;
-        internal BindingList<RunExplorerFactory<TIn, TOut>> RunExplorers;
 
+        internal BindingList<RunExplorerFactory<TIn, TOut>> RunExplorers;
         public InputEditor<TIn> InputEditor;
         public BindingList<Algorithm<TIn, TOut>> Algorithms;
 

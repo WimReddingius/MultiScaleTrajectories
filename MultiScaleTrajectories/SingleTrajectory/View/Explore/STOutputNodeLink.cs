@@ -18,8 +18,6 @@ namespace MultiScaleTrajectories.SingleTrajectory.View.Explore
 
         private AlgorithmRun<STInput, STOutput> run;
         private STOutput Output;
-
-        private STInput previousInput;
         private int CurrentLevel;
 
         public STOutputNodeLink()
@@ -90,10 +88,7 @@ namespace MultiScaleTrajectories.SingleTrajectory.View.Explore
         private void HandleRunFinished()
         {
             //preserve currently visualized level if the input hasn't changed
-            if (previousInput != run.Input)
-                CurrentLevel = 1;
-
-            previousInput = run.Input;
+            CurrentLevel = 1;
 
             LookAtTrajectory(Output.GetTrajectoryAtLevel(1));
 

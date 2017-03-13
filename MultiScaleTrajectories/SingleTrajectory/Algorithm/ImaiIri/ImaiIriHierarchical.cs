@@ -5,9 +5,9 @@ using MultiScaleTrajectories.Algorithm.DataStructures.Graph;
 using MultiScaleTrajectories.Algorithm.Geometry;
 using MultiScaleTrajectories.Algorithm.ImaiIri;
 
-namespace MultiScaleTrajectories.SingleTrajectory.Algorithm.ShortcutShortestPath
+namespace MultiScaleTrajectories.SingleTrajectory.Algorithm.ImaiIri
 {
-    class HierarchicalImaiIri : Algorithm<STInput, STOutput>
+    class ImaiIriHierarchical : Algorithm<STInput, STOutput>
     {
 
         public override string Name => "Imai Iri - Hierarchical";
@@ -19,24 +19,25 @@ namespace MultiScaleTrajectories.SingleTrajectory.Algorithm.ShortcutShortestPath
             //build initial graph (just a simple sequence of nodes like in the trajectory)
             var shortcutGraph = new ShortcutGraph(trajectory);
 
-            //find shortcuts (inefficient right now: no range query & we find the same shortcuts in different iterations
-            List<ShortcutFinder.Shortcut> shortcuts = ShortcutFinder.FindAllShortcuts(trajectory);
+            //preprocess shortcuts, inefficient method
+            List<MaxDistanceShortcut> shortcuts = ShortcutFinder.FindAllMaxDistanceShortcuts(trajectory);
 
-            output.LogLine("Shortcut Graph: " + shortcutGraph);
+            output.LogLine("Full number of shortcuts: " + shortcuts.Count);
 
-            for (int level = 1 ; level <= input.NumLevels; level++) {
+            for (var level = 1 ; level <= input.NumLevels; level++) {
 
                 double epsilon = input.GetEpsilon(level);
 
+                //select correct shortcuts
                 var levelShortcuts = shortcuts
                     .FindAll(s => s.MaxDistance <= epsilon);
 
-                output.LogLine("Number of new shortcuts found: " + levelShortcuts
+                output.LogLine("Number of shortcuts found for level " + level + ": " + levelShortcuts
                     .Count(s => !shortcutGraph.GetNode(s.Start)
                     .OutEdges
                     .ContainsKey(shortcutGraph.GetNode(s.End))));
 
-                foreach (ShortcutFinder.Shortcut shortcut in levelShortcuts)
+                foreach (var shortcut in levelShortcuts)
                 {
                     //creating edge for this shortcut
                     DataNode<Point2D> sourceNode = shortcutGraph.GetNode(shortcut.Start);
@@ -48,8 +49,10 @@ namespace MultiScaleTrajectories.SingleTrajectory.Algorithm.ShortcutShortestPath
                         //dijkstra to get edge weight
                         List<DataNode<Point2D>> shortestPathShortcut = shortcutGraph.GetShortestPath(sourceNode, targetNode);
 
-                        output.LogLine("Shortcut: " + shortcut);
-                        output.LogLine("Shortcut Shortest Path: " + string.Join<DataNode<Point2D>>(", ", shortestPathShortcut.ToArray()));
+                        //output.LogLine("Shortcut: " + shortcut);
+                        //output.LogLine("Shortcut Shortest Path: " + string.Join<DataNode<Point2D>>(", ", shortestPathShortcut.ToArray()));
+                        //output.LogLine("Shortcut Shortest Path weight: " + shortcutGraph.GetPathWeight(shortestPathShortcut));
+                        //output.LogLine("");
 
                         //create edge and set edge weight
                         WeightedEdge edge = new WeightedEdge(sourceNode, targetNode, shortcutGraph.GetPathWeight(shortestPathShortcut));
@@ -63,13 +66,12 @@ namespace MultiScaleTrajectories.SingleTrajectory.Algorithm.ShortcutShortestPath
                 //dijkstra on level graph
                 var shortestPath = shortcutGraph.GetShortestPath(shortcutGraph.FirstNode, shortcutGraph.LastNode);
 
-                output.LogLine("Shortcut Graph: " + shortcutGraph);
-                output.LogLine("Level Shortest Path: " + string.Join<DataNode<Point2D>>(", ", shortestPath.ToArray()));
+                //output.LogLine("Shortcut Graph: " + shortcutGraph);
+                //output.LogLine("Level Shortest Path: " + string.Join<DataNode<Point2D>>(", ", shortestPath.ToArray()));
+                //output.LogLine("");
 
                 //computing trajectory from found shortest path
                 output.SetTrajectoryAtLevel(level, shortcutGraph.GetTrajectory(shortestPath));
-
-                output.LogLine("");
             }
         }
 

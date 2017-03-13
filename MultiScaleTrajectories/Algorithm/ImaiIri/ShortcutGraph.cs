@@ -54,7 +54,7 @@ namespace MultiScaleTrajectories.Algorithm.ImaiIri
             }
         }
 
-        public void AddShortcut(ShortcutFinder.Shortcut shortcut, int weight = 1)
+        public void AddShortcut(Shortcut shortcut, int weight = 1)
         {
             var p1 = GetNode(shortcut.Start);
             var p2 = GetNode(shortcut.End);
@@ -63,15 +63,14 @@ namespace MultiScaleTrajectories.Algorithm.ImaiIri
 
         public Trajectory2D GetTrajectory(List<DataNode<Point2D>> path)
         {
-            var trajectory = new Trajectory2D();
+            var traj = new Trajectory2D();
             foreach (DataNode<Point2D> node in path)
             {
                 Point2D point = node.Data;
-                trajectory.Add(point);
+                traj.Add(point);
             }
-            return trajectory;
+            return traj;
         }
-
 
         public int GetPathWeight(List<DataNode<Point2D>> path)
         {

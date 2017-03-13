@@ -20,7 +20,8 @@ namespace MultiScaleTrajectories.SingleTrajectory.Algorithm
         public void SetTrajectoryAtLevel(int level, Trajectory2D trajectory)
         {
             Levels.Add(level, trajectory);
-            Statistics["Points @ level " + level] = () => Levels[level].Count;
+            //Statistics["Points @ level " + level] = () => Levels[level].Count;
+            //TODO: fix
         }
 
         public Trajectory2D GetTrajectoryAtLevel(int i)

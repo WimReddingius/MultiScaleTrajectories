@@ -31,8 +31,7 @@ namespace AlgorithmVisualization.View
 
             FormsUtil.FillContainer(baseSplitContainer.Panel1, algoView.VisualizationContainer);
             FormsUtil.FillContainer(configurationSplitContainer.Panel2, algoView);
-
-            algoView.Activate();
+            algoView.Reset();
         }
 
         private void AlgorithmForm_FormClosed(object sender, FormClosedEventArgs e)
