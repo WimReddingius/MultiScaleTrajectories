@@ -81,11 +81,11 @@ namespace MultiScaleTrajectories.Algorithm.DataStructures.Graph
                 if (closestNode.Equals(target))
                 {
                     //Build path
-                    shortestPath = new List<N>();
+                    shortestPath = new List<N> {closestNode};
                     while (prevNode.ContainsKey(closestNode))
                     {
-                        shortestPath.Insert(0, closestNode);
                         closestNode = prevNode[closestNode];
+                        shortestPath.Insert(0, closestNode);
                     }
                     break;
                 }
@@ -97,8 +97,9 @@ namespace MultiScaleTrajectories.Algorithm.DataStructures.Graph
                 }
 
                 //increment distances of adjacent nodes
-                foreach (N neighbor in closestNode.OutEdges.Keys)
+                foreach (var node in closestNode.OutEdges.Keys)
                 {
+                    var neighbor = (N) node;
                     E outEdge = (E)closestNode.OutEdges[neighbor];
                     int altDistance = nodeDistance[closestNode];
 
@@ -124,7 +125,7 @@ namespace MultiScaleTrajectories.Algorithm.DataStructures.Graph
             string str = "";
             foreach (E edge in Edges)
             {
-                str += edge.ToString() + "\n";
+                str += edge + "\n";
             }
             return str;
         }

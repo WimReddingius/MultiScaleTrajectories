@@ -29,10 +29,10 @@ namespace AlgorithmVisualization.View.GLVisualization
         {
             MakeCurrent();
 
-            Render();
+            RenderScene();
         }
 
-        protected abstract void Render();
+        protected abstract void RenderScene();
 
     }
 }

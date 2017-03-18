@@ -16,14 +16,14 @@ namespace AlgorithmVisualization.Controller
 
         public abstract string Name { get; }
         
-        private AlgorithmViewBase algorithmView;
-        public AlgorithmViewBase AlgorithmView => algorithmView ?? (algorithmView = new AlgorithmView<TIn, TOut>(this));
+        private AlgorithmView algorithmView;
+        public AlgorithmView AlgorithmView => algorithmView ?? (algorithmView = new AlgorithmViewConcrete<TIn, TOut>(this));
 
         internal AlgorithmControllerSettings Settings;
-        internal AlgorithmWorkload<TIn, TOut> Workload;
+        internal BindingList<AlgorithmRun<TIn, TOut>> Runs;
         internal BindingList<TIn> Inputs;
 
-        internal BindingList<RunExplorerFactory<TIn, TOut>> RunExplorers;
+        public BindingList<RunExplorerFactory<TIn, TOut>> RunExplorers;
         public InputEditor<TIn> InputEditor;
         public BindingList<Algorithm<TIn, TOut>> Algorithms;
 
@@ -33,15 +33,15 @@ namespace AlgorithmVisualization.Controller
             RunExplorers = new BindingList<RunExplorerFactory<TIn, TOut>>();
             Algorithms = new BindingList<Algorithm<TIn, TOut>>();
 
-            AddUnwrappedRunExplorer(typeof(StatTable<TIn, TOut>));
-            AddUnwrappedRunExplorer(typeof(LogStream<TIn, TOut>));
+            AddRunExplorerType(typeof(StatTable<TIn, TOut>));
+            AddRunExplorerType(typeof(LogStream<TIn, TOut>));
 
-            Workload = new AlgorithmWorkload<TIn, TOut>();
+            Runs = new BindingList<AlgorithmRun<TIn, TOut>>();
             Inputs = new BindingList<TIn>();
             Settings = AlgorithmControllerSettingsManager.GetSettings(this);
         }
 
-        protected void AddUnwrappedRunExplorer(Type runExplorerType)
+        protected void AddRunExplorerType(Type runExplorerType)
         {
             Type iRunExplorerType = typeof(IRunExplorer<TIn, TOut>);
             Type iControlType = typeof(Control);
@@ -50,17 +50,17 @@ namespace AlgorithmVisualization.Controller
             {
                 Type[] typeArgsWrapper = {typeof(TIn), typeof(TOut), runExplorerType};
                 var genericTypeWrapper = typeof(RunExplorerConcrete<,,>).MakeGenericType(typeArgsWrapper);
-                var wrapper = (RunExplorer<TIn, TOut>) Activator.CreateInstance(genericTypeWrapper);
+                var concrete = (RunExplorer<TIn, TOut>) Activator.CreateInstance(genericTypeWrapper);
 
-                var wrapperType = wrapper.GetType();
-                Type[] typeArgsFactory = {typeof(TIn), typeof(TOut), wrapperType};
+                var concreteType = concrete.GetType();
+                Type[] typeArgsFactory = {typeof(TIn), typeof(TOut), concreteType };
                 var genericTypeFactory = typeof(ConcreteRunExplorerFactory<,,>).MakeGenericType(typeArgsFactory);
                 var factory = (RunExplorerFactory<TIn, TOut>) Activator.CreateInstance(genericTypeFactory);
                 RunExplorers.Add(factory);
             }
             else
             {
-                throw new ArgumentOutOfRangeException((nameof(runExplorerType)), "Type provided does not inherit from both Control and IRunExplorer");
+                throw new ArgumentOutOfRangeException(nameof(runExplorerType), "Type provided does not inherit from both Control and IRunExplorer");
             }
         }
         

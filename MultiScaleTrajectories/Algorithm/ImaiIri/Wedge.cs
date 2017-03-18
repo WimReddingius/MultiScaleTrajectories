@@ -34,6 +34,8 @@ namespace MultiScaleTrajectories.Algorithm.ImaiIri
             var rotation1 = Geometry2D.Cross(A, P) * Geometry2D.Cross(A, B);
             var rotation2 = Geometry2D.Cross(B, P) * Geometry2D.Cross(B, A);
             return rotation1 >= 0 && rotation2 >= 0;
+
+            //AP POSSItive, bp negative
         }
 
         public Wedge Clone()

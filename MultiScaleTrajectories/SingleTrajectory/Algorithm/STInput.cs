@@ -10,18 +10,30 @@ namespace MultiScaleTrajectories.SingleTrajectory.Algorithm
 
     class STInput : Input
     {
-        [JsonProperty]
+        public int NumLevels => Epsilons.Count;
         public Trajectory2D Trajectory;
 
         [JsonProperty]
         private List<double> Epsilons;
+        
 
-        public int NumLevels => Epsilons.Count;
+        [JsonConstructor]
+        public STInput(Trajectory2D Trajectory, List<double> Epsilons)
+        {
+            Load(Trajectory, Epsilons);
+            InitializeStatistics();
+        }
 
         public STInput()
         {
-            Trajectory = new Trajectory2D();
-            Epsilons = new List<double>();
+            Clear();
+            InitializeStatistics();
+        }
+
+        private void InitializeStatistics()
+        {
+            Statistics.Put("Levels", () => Epsilons.Count);
+            Statistics.Put("Points", () => Trajectory.Count);
         }
 
         public void AppendLevel(double epsilon)
@@ -56,7 +68,7 @@ namespace MultiScaleTrajectories.SingleTrajectory.Algorithm
 
         public override string Serialize()
         {
-            return JsonConvert.SerializeObject(this);
+            return JsonConvert.SerializeObject(this, Formatting.Indented);
         }
 
         public override void LoadSerialized(string fileName)
@@ -78,8 +90,6 @@ namespace MultiScaleTrajectories.SingleTrajectory.Algorithm
         {
             Trajectory = trajectory;
             Epsilons = epsilons;
-            Statistics["Levels"] = () => Epsilons.Count;
-            Statistics["Points"] = () => Trajectory.Count;
         }
 
     }

@@ -58,23 +58,28 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Algorithm\Algorithm.cs" />
+    <Compile Include="Algorithm\Experiment\Statistics\RunTimeStatistic.cs" />
+    <Compile Include="Algorithm\Experiment\Statistics\Statistic.cs" />
+    <Compile Include="Algorithm\Experiment\Statistics\DynamicStatistic.cs" />
+    <Compile Include="Algorithm\Util\StringBuffer.cs" />
+    <Compile Include="Algorithm\Util\Bindable.cs" />
     <Compile Include="Algorithm\Experiment\AlgorithmRun.cs" />
     <Compile Include="Algorithm\Experiment\AlgorithmWorkload.cs" />
     <Compile Include="Algorithm\Input.cs" />
     <Compile Include="Algorithm\Output.cs" />
-    <Compile Include="Algorithm\Experiment\Statistics.cs" />
+    <Compile Include="Algorithm\Experiment\Statistics\StatisticManager.cs" />
     <Compile Include="Controller\AlgorithmControllerSettingsManager.cs" />
     <Compile Include="Controller\AlgorithmController.cs" />
     <Compile Include="Controller\AlgorithmControllerSettings.cs" />
+    <Compile Include="Controller\Explore\RunExplorer.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
     <Compile Include="Controller\Explore\RunExplorerConcrete.cs">
       <SubType>UserControl</SubType>
     </Compile>
     <Compile Include="Controller\Explore\IRunExplorer.cs" />
     <Compile Include="Controller\Explore\Factory\RunExplorerFactory.cs" />
     <Compile Include="Controller\Explore\Factory\RunExplorerFactoryConcrete.cs" />
-    <Compile Include="Controller\Explore\RunExplorer.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
     <Compile Include="Controller\IAlgorithmController.cs" />
     <Compile Include="Controller\Edit\InputEditor.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -83,11 +88,12 @@
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
       <DependentUpon>Settings.settings</DependentUpon>
     </Compile>
-    <Compile Include="View\AlgorithmView.cs">
+    <Compile Include="Util\ThreadUtil.cs" />
+    <Compile Include="View\AlgorithmViewConcrete.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="View\AlgorithmView.Designer.cs">
-      <DependentUpon>AlgorithmView.cs</DependentUpon>
+    <Compile Include="View\AlgorithmViewConcrete.Designer.cs">
+      <DependentUpon>AlgorithmViewConcrete.cs</DependentUpon>
     </Compile>
     <Compile Include="View\Explore\RunExplorerChooser.cs">
       <SubType>UserControl</SubType>
@@ -114,7 +120,7 @@
       <DependentUpon>SplittableExplorer.cs</DependentUpon>
     </Compile>
     <Compile Include="View\Util\FormsUtil.cs" />
-    <Compile Include="View\AlgorithmViewBase.cs">
+    <Compile Include="View\AlgorithmView.cs">
       <SubType>UserControl</SubType>
     </Compile>
     <Compile Include="View\AlgorithmForm.cs">
@@ -143,8 +149,8 @@
   </ItemGroup>
   <ItemGroup />
   <ItemGroup>
-    <EmbeddedResource Include="View\AlgorithmView.resx">
-      <DependentUpon>AlgorithmView.cs</DependentUpon>
+    <EmbeddedResource Include="View\AlgorithmViewConcrete.resx">
+      <DependentUpon>AlgorithmViewConcrete.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="View\AlgorithmForm.resx">
       <DependentUpon>AlgorithmForm.cs</DependentUpon>

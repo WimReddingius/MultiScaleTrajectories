@@ -7,10 +7,6 @@ namespace MultiScaleTrajectories.Algorithm.Geometry
 
     class Trajectory2D : List<Point2D>
     {
-        public Trajectory2D()
-        {
-            
-        }
 
         public Point2D AppendPoint(double x, double y)
         {

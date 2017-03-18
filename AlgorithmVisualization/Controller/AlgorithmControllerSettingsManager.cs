@@ -29,7 +29,7 @@ namespace AlgorithmVisualization.Controller
 
         public static void Save()
         {
-            var str = JsonConvert.SerializeObject(settingsMap);
+            var str = JsonConvert.SerializeObject(settingsMap, Formatting.Indented);
             Properties.Settings.Default["AlgorithmControllerSettings"] = str;
             Properties.Settings.Default.Save();
         }

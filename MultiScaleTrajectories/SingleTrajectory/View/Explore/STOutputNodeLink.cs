@@ -16,18 +16,21 @@ namespace MultiScaleTrajectories.SingleTrajectory.View.Explore
         public int MaxConsolidation => 1;
         public int Priority => 1;
 
-        private AlgorithmRun<STInput, STOutput> run;
+        private AlgorithmRun<STInput, STOutput> Run;
         private STOutput Output;
-        private int CurrentLevel;
+
+        private int currentLevel;
+        private bool active => Visible;
+
 
         public STOutputNodeLink()
         {
-            DeregisterEvents();
+            Visible = false;
         }
 
         protected override void RenderWorld()
         {
-            Trajectory2D trajectory = Output.GetTrajectoryAtLevel(CurrentLevel);
+            Trajectory2D trajectory = Output.GetTrajectoryAtLevel(currentLevel);
             GLUtilTrajectory2D.DrawEdges(trajectory, 2.5f, Color.Red);
         }
 
@@ -35,8 +38,8 @@ namespace MultiScaleTrajectories.SingleTrajectory.View.Explore
         {
             int padding = 5;
             Color color = Color.Black;
-            GLUtil2D.RenderText(padding, padding, run.Name, color);
-            GLUtil2D.RenderText(padding, 20 + padding, "Level " + CurrentLevel, color);
+            GLUtil2D.RenderText(padding, padding, Run.Name, color);
+            GLUtil2D.RenderText(padding, 20 + padding, "Level " + currentLevel, color);
         }
 
         private void HandleArrowKeys(object sender, KeyEventArgs e)
@@ -44,14 +47,14 @@ namespace MultiScaleTrajectories.SingleTrajectory.View.Explore
             bool levelDown = e.KeyCode == Keys.Up;
             bool levelUp = e.KeyCode == Keys.Down;
 
-            if (levelDown && CurrentLevel > 1)
+            if (levelDown && currentLevel > 1)
             {  // here up
-                CurrentLevel--;
+                currentLevel--;
             }
 
-            if (levelUp && CurrentLevel < Output.NumLevels)
+            if (levelUp && currentLevel < Output.NumLevels)
             {  // here down
-                CurrentLevel++;
+                currentLevel++;
             }
             Refresh();
         }
@@ -69,36 +72,32 @@ namespace MultiScaleTrajectories.SingleTrajectory.View.Explore
             return base.IsInputKey(keyData);
         }
 
-        public void LoadRuns(AlgorithmRun<STInput, STOutput>[] runs)
+        public void RunSelectionChanged(AlgorithmRun<STInput, STOutput>[] runs)
         {
-            DeregisterEvents();
-
-            run = runs[0];
-            Output = run.Output;
-
-            run.OnFinish(HandleRunFinished);
+            Run = runs[0];
+            Output = runs[0].Output;
         }
 
-        private void DeregisterEvents()
+        public void RunStateChanged(AlgorithmRun<STInput, STOutput> run, RunState state)
         {
-            KeyDown -= HandleArrowKeys;
-            Paint -= Render;
-        }
+            if (state == RunState.Idle)
+            {
+                KeyDown -= HandleArrowKeys;
+                Visible = false;
+            }
 
-        private void HandleRunFinished()
-        {
-            //preserve currently visualized level if the input hasn't changed
-            CurrentLevel = 1;
+            if (state >= RunState.OutputAvailable)
+            {
+                if (active) return;
 
-            LookAtTrajectory(Output.GetTrajectoryAtLevel(1));
+                Visible = true;
 
-            //purely a safeguard to prevent double event subscription
-            DeregisterEvents();
+                currentLevel = 1;
+                LookAtTrajectory(run.Output.GetTrajectoryAtLevel(1));
 
-            KeyDown += HandleArrowKeys;
-            Paint += Render;
-
-            Refresh();
+                KeyDown -= HandleArrowKeys;
+                KeyDown += HandleArrowKeys;
+            }
         }
 
     }

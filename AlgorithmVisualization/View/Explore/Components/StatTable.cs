@@ -1,10 +1,16 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.ComponentModel;
 using System.Data;
 using System.Linq;
+using System.Threading;
 using System.Windows.Forms;
 using AlgorithmVisualization.Algorithm;
 using AlgorithmVisualization.Algorithm.Experiment;
+using AlgorithmVisualization.Algorithm.Experiment.Statistics;
 using AlgorithmVisualization.Controller.Explore;
+using AlgorithmVisualization.Util;
+using AlgorithmVisualization.View.Util;
 
 namespace AlgorithmVisualization.View.Explore.Components
 {
@@ -15,55 +21,120 @@ namespace AlgorithmVisualization.View.Explore.Components
         public int MaxConsolidation => int.MaxValue;
         public int Priority => 100;
 
+        private BackgroundWorker statPollingWorker;
+
         public StatTable()
         {
             InitializeComponent();
         }
 
-        public void LoadDataInTable(AlgorithmRun<TIn, TOut>[] runs, Func<AlgorithmRun<TIn, TOut>, Statistics> statFunc, DataGridView table)
+        public List<Action> LoadDataInTable(AlgorithmRun<TIn, TOut>[] runs, Func<AlgorithmRun<TIn, TOut>, StatisticManager> statFunc, DataGridView table)
         {
             var dataTable = new DataTable();
+            var pollActions = new List<Action>();
+            var statToRow = new Dictionary<string, DataRow>();
 
             dataTable.Clear();
-            dataTable.Columns.Add(new DataColumn("Statistic"));
+            dataTable.Columns.Add("Statistic");
 
-            //add rows
-            //TODO: thread unsafe, and kinda weird
-            var randomStats = statFunc(runs[0]); //just picking a random run
-            foreach (var stat in randomStats)
-            {
-                dataTable.Rows.Add();
-
-                var statIndex = randomStats.ToList().IndexOf(stat);
-                dataTable.Rows[statIndex][0] = stat.Key;
-            }
-
-            //add and fill columns
             foreach (var run in runs)
             {
-                var runIndex = Array.IndexOf(runs, run);
-                dataTable.Columns.Add(new DataColumn(run.Name));
+                var column = dataTable.Columns.Add();
+                column.Caption = run.Name;
+                var colIndex = dataTable.Columns.IndexOf(column);
+                var currentlyTrackedStats = new List<string>();
 
-                run.OnFinish(() =>
+                pollActions.Add(() =>
                 {
+                    var updatedStats = new List<string>();
+
+                    //update the current stats
                     var stats = statFunc(run);
-                    foreach (var stat in stats)
+                    stats.Update();
+
+                    //fill cells
+                    foreach (var stat in stats.ToList()) //cloning for thread safety
                     {
-                        var statIndex = stats.ToList().IndexOf(stat);
-                        dataTable.Rows[statIndex][runIndex + 1] = stat.Value();
+                        if (!statToRow.ContainsKey(stat.Key))
+                        {
+                            var row = dataTable.Rows.Add(stat.Key);
+                            statToRow[stat.Key] = row;
+                        }
+
+                        if (!currentlyTrackedStats.Contains(stat.Key))
+                        {
+                            currentlyTrackedStats.Add(stat.Key);
+                        }
+
+                        statToRow[stat.Key][colIndex] = stat.Value.Value;
+
+                        updatedStats.Add(stat.Key);
                     }
+
+                    //removing run stats and, if necessary, empty rows
+                    if (currentlyTrackedStats.Count > updatedStats.Count)
+                    {
+                        currentlyTrackedStats
+                        .FindAll(stat => !updatedStats.Contains(stat))
+                        .ForEach(stat => 
+                        {
+                            currentlyTrackedStats.Remove(stat);
+
+                            var row = statToRow[stat];
+                            row[colIndex] = null;
+
+
+                            var columnCount = dataTable.Columns.Count;
+                            for (var col = 1; col < columnCount; col++)
+                            {
+                                if (row[col] != DBNull.Value)
+                                    return;
+                            }
+
+                            dataTable.Rows.Remove(row);
+                            statToRow.Remove(stat);
+                        });
+                    }
+
                 });
             }
 
             table.DataSource = dataTable;
             table.ClearSelection();
+            return pollActions;
         }
 
-        public void LoadRuns(AlgorithmRun<TIn, TOut>[] runs)
+        public void RunSelectionChanged(AlgorithmRun<TIn, TOut>[] runs)
         {
-            LoadDataInTable(runs, run => run.Statistics, runStatsTable);
-            LoadDataInTable(runs, run => run.Input.Statistics, inputStatsTable);
-            LoadDataInTable(runs, run => run.Output.Statistics, outputStatsTable);
+            var tasks = new List<Action>();
+            tasks.AddRange(LoadDataInTable(runs, run => run.Statistics, runStatsTable));
+            tasks.AddRange(LoadDataInTable(runs, run => run.Input.Statistics, inputStatsTable));
+            tasks.AddRange(LoadDataInTable(runs, run => run.Output.Statistics, outputStatsTable));
+
+            var newWorker = new BackgroundWorker();
+            newWorker.DoWork += (o, e) =>
+            {
+                while (!newWorker.CancellationPending)
+                {
+                    this.InvokeIfRequired(() =>
+                    {
+                        tasks.ForEach(task => task());
+                    });
+                    Thread.Sleep(500);
+                }
+            };
+
+            if (statPollingWorker != null)
+                statPollingWorker.PerformAfterCancelling(() => newWorker.RunWorkerAsync());
+            else
+                newWorker.RunWorkerAsync();
+
+            statPollingWorker = newWorker;
+        }
+
+        public void RunStateChanged(AlgorithmRun<TIn, TOut> runs, RunState state)
+        {
+            
         }
 
         private void statsTable_DataBindingComplete(object sender, DataGridViewBindingCompleteEventArgs e)
@@ -75,5 +146,6 @@ namespace AlgorithmVisualization.View.Explore.Components
         {
             ((DataGridView)sender).ClearSelection();
         }
+
     }
 }

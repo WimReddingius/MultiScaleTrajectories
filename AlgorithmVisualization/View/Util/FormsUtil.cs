@@ -2,19 +2,32 @@
 
 namespace AlgorithmVisualization.View.Util
 {
-    class FormsUtil
+    static class FormsUtil
     {
-        public static void FillContainer(Control container, Control control, bool clear = true)
+        public static void Fill(this Control container, Control control, bool clear = true)
         {
             if (control != null)
             {
-                container.Controls.Clear();
+                if (clear)
+                    container.Controls.Clear();
 
                 control.CreateControl();
                 control.Dock = DockStyle.Fill;
                 control.Location = new System.Drawing.Point(0, 0);
 
                 container.Controls.Add(control);                
+            }
+        }
+
+        public static void InvokeIfRequired(this Control control, MethodInvoker action)
+        {
+            if (control.InvokeRequired)
+            {
+                control.Invoke(action);
+            }
+            else
+            {
+                action();
             }
         }
 

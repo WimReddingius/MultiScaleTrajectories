@@ -1,5 +1,4 @@
-﻿using System.Drawing;
-using System.Windows.Forms;
+﻿using System.Windows.Forms;
 using AlgorithmVisualization.Algorithm;
 using AlgorithmVisualization.Algorithm.Experiment;
 using AlgorithmVisualization.View.Util;
@@ -22,37 +21,20 @@ namespace AlgorithmVisualization.Controller.Explore
         {
             explorer = new TExplore();
 
-            var visUnavailableLabel = new Label
-            {
-                Text = "Visualization not (yet) available",
-                TextAlign = ContentAlignment.MiddleCenter
-            };
-
-            this.Fill(visUnavailableLabel);
-            this.Fill(explorer, false);
-            explorer.BringToFront();
+            //FormsUtil.FillContainer(this, explorer, false);
         }
 
-        public override void RunSelectionChanged(params AlgorithmRun<TIn, TOut>[] runs)
+        public override void LoadRuns(params AlgorithmRun<TIn, TOut>[] runs)
         {
-            //first change run selection in explorer, before calling runstatechanged
-            explorer.RunSelectionChanged(runs);
-            base.RunSelectionChanged(runs);
-        }
-
-        public override void RunStateChanged(AlgorithmRun<TIn, TOut> run, RunState state)
-        {
-            //always marshal to the UI thread
-            explorer.InvokeIfRequired(() =>
-            {
-                explorer.RunStateChanged(run, state);
-            });
+            base.LoadRuns(runs);
+            explorer.LoadRuns(runs);
         }
 
         public override string ToString()
         {
             return DisplayName;
         }
+
     }
 
 }

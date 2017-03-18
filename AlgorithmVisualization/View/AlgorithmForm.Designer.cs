@@ -55,7 +55,7 @@
             this.baseSplitContainer.Panel2.Controls.Add(this.configurationSplitContainer);
             this.baseSplitContainer.Panel2.Padding = new System.Windows.Forms.Padding(1, 4, 2, 4);
             this.baseSplitContainer.Size = new System.Drawing.Size(1319, 710);
-            this.baseSplitContainer.SplitterDistance = 1010;
+            this.baseSplitContainer.SplitterDistance = 940;
             this.baseSplitContainer.TabIndex = 0;
             // 
             // configurationSplitContainer
@@ -71,7 +71,7 @@
             // 
             this.configurationSplitContainer.Panel1.Controls.Add(this.algorithmTypeLabel);
             this.configurationSplitContainer.Panel1.Controls.Add(this.algorithmTypeComboBox);
-            this.configurationSplitContainer.Size = new System.Drawing.Size(302, 702);
+            this.configurationSplitContainer.Size = new System.Drawing.Size(372, 702);
             this.configurationSplitContainer.SplitterDistance = 58;
             this.configurationSplitContainer.TabIndex = 11;
             // 
@@ -91,7 +91,7 @@
             this.algorithmTypeComboBox.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.algorithmTypeComboBox.Location = new System.Drawing.Point(0, 25);
             this.algorithmTypeComboBox.Name = "algorithmTypeComboBox";
-            this.algorithmTypeComboBox.Size = new System.Drawing.Size(299, 21);
+            this.algorithmTypeComboBox.Size = new System.Drawing.Size(369, 21);
             this.algorithmTypeComboBox.TabIndex = 1;
             this.algorithmTypeComboBox.SelectedIndexChanged += new System.EventHandler(this.algorithmTypeComboBox_SelectedIndexChanged);
             // 

@@ -84,6 +84,7 @@
     <Compile Include="Algorithm\Geometry\Line2D.cs" />
     <Compile Include="Algorithm\Geometry\Point2D.cs" />
     <Compile Include="Algorithm\Geometry\Trajectory2D.cs" />
+    <Compile Include="Algorithm\Geometry\TrajectoryPoint2D.cs" />
     <Compile Include="Algorithm\ImaiIri\MaxDistanceShortcut.cs" />
     <Compile Include="Algorithm\ImaiIri\Shortcut.cs" />
     <Compile Include="SingleTrajectory\Algorithm\ImaiIri\ImaiIriNaive.cs" />

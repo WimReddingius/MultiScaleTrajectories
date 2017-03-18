@@ -1,8 +1,12 @@
-﻿using System;
+﻿using System.ComponentModel;
+using System.Threading;
 using System.Windows.Forms;
 using AlgorithmVisualization.Algorithm;
 using AlgorithmVisualization.Algorithm.Experiment;
+using AlgorithmVisualization.Algorithm.Util;
 using AlgorithmVisualization.Controller.Explore;
+using AlgorithmVisualization.Util;
+using AlgorithmVisualization.View.Util;
 
 namespace AlgorithmVisualization.View.Explore.Components
 {
@@ -13,38 +17,70 @@ namespace AlgorithmVisualization.View.Explore.Components
         public int MaxConsolidation => 1;
         public int Priority => 100;
 
+        private BackgroundWorker logPollingWorker;
+        private bool active => Visible;
+
         public LogStream()
         {
             InitializeComponent();
         }
 
-        public void LoadRuns(AlgorithmRun<TIn, TOut>[] runs)
+        public void RunSelectionChanged(AlgorithmRun<TIn, TOut>[] runs)
         {
-            var run = runs[0];
+        }
 
-            richTextBox.Clear();
-            richTextBox.Text = run.Output.LogString;
+        public void RunStateChanged(AlgorithmRun<TIn, TOut> run, RunState state)
+        {
+            TOut output = run.Output;
 
-            run.Output.Logged -= AppendLoggedOutput;
-            run.Output.Logged += AppendLoggedOutput;
+            if (state < RunState.Started)
+            {
+                Visible = false;
+            }
+
+            if (state >= RunState.Started)
+            {
+                if (active) return;
+
+                var newWorker = new BackgroundWorker();
+                newWorker.DoWork += (o, e) =>
+                {
+                    var buffer = new StringBuffer();
+
+                    this.InvokeIfRequired(() =>
+                    {
+                        output.LogBuffers.Add(buffer);
+                        richTextBox.Text = output.LogString;
+                        Visible = true;
+                    });
+
+                    while (!newWorker.CancellationPending)
+                    {
+                        this.InvokeIfRequired(() =>
+                        {
+                            AppendLoggedOutput(buffer.Flush());
+                        });
+                        Thread.Sleep(100);
+                    }
+                };
+
+                if (logPollingWorker != null)
+                    logPollingWorker.PerformAfterCancelling(() => newWorker.RunWorkerAsync());
+                else
+                    newWorker.RunWorkerAsync();
+
+                logPollingWorker = newWorker;
+
+            }
         }
 
         private void AppendLoggedOutput(string str)
         {
-            if (InvokeRequired)
-            {
-                Action del = () =>
-                {
-                    richTextBox.Text += str;
+            if (str == "") return;
 
-                    // set the current caret position to the end
-                    richTextBox.SelectionStart = richTextBox.Text.Length;
-
-                    // scroll it automatically
-                    richTextBox.ScrollToCaret();
-                };
-                Invoke(del);
-            }
+            richTextBox.Text += str;
+            richTextBox.SelectionStart = richTextBox.Text.Length;
+            richTextBox.ScrollToCaret();
         }
 
     }

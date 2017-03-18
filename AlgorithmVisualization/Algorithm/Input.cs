@@ -1,27 +1,25 @@
-﻿using AlgorithmVisualization.Algorithm.Experiment;
-using Newtonsoft.Json;
+﻿using AlgorithmVisualization.Algorithm.Experiment.Statistics;
+using AlgorithmVisualization.Algorithm.Util;
 
 namespace AlgorithmVisualization.Algorithm
 {
 
-    public abstract class Input
+    public abstract class Input : Bindable
     {
         private static int IdGenerator = 1;
 
         public string Name { get; set; }
 
-        [JsonIgnore]
-        public Input Self => this;
+        public bool ReadOnly;
 
-        [JsonIgnore]
-        public Statistics Statistics;
-
+        public StatisticManager Statistics;
+        
 
         protected Input()
         {
             Name = "Input " + IdGenerator++;
 
-            Statistics = new Statistics();
+            Statistics = new StatisticManager();
         }
 
         public abstract string Serialize();

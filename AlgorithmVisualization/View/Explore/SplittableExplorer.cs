@@ -1,34 +1,30 @@
 ﻿using System.Collections.Generic;
 using System.ComponentModel;
-using System.Linq;
 using System.Windows.Forms;
 using AlgorithmVisualization.Algorithm;
 using AlgorithmVisualization.Algorithm.Experiment;
-using AlgorithmVisualization.Controller.Explore;
-using AlgorithmVisualization.Controller.Explore.Factory;
+using AlgorithmVisualization.Controller;
 using AlgorithmVisualization.View.Util;
+using System;
 
 namespace AlgorithmVisualization.View.Explore
 {
     partial class SplittableExplorer<TIn, TOut> : UserControl where TIn : Input, new() where TOut : Output, new()
     {
 
-        private readonly BindingList<RunExplorerFactory<TIn, TOut>> runExplorerFactories;
+        private readonly AlgorithmController<TIn, TOut> controller;
         private readonly BindingList<AlgorithmRun<TIn, TOut>> selectedRuns;
         private readonly List<RunExplorerChooser<TIn, TOut>> explorerChoosers;
 
-        private AlgorithmRun<TIn, TOut>[] runs;
         private RunExplorerChooser<TIn, TOut> currentRunExplorerChooser;
 
-        public bool CanUnsplit => currentRunExplorerChooser.Parent is SplitterPanel;
 
-
-        public SplittableExplorer(BindingList<RunExplorerFactory<TIn, TOut>> runExplorerFactories, BindingList<AlgorithmRun<TIn, TOut>> selectedRuns)
+        public SplittableExplorer(AlgorithmController<TIn, TOut> controller, BindingList<AlgorithmRun<TIn, TOut>> selectedRuns)
         {
             InitializeComponent();
 
             this.selectedRuns = selectedRuns;
-            this.runExplorerFactories = runExplorerFactories;
+            this.controller = controller;
 
             explorerChoosers = new List<RunExplorerChooser<TIn, TOut>>();
 
@@ -50,13 +46,15 @@ namespace AlgorithmVisualization.View.Explore
 
         public void SplitActiveView(Orientation orientation)
         {
+            SplitView(currentRunExplorerChooser, orientation);
+        }
+
+        private void SplitView(RunExplorerChooser<TIn, TOut> view, Orientation orientation)
+        {
             var newView = CreateExplorationView();
-
-            var splitContainer = Split(currentRunExplorerChooser.Parent, orientation);
-            FormsUtil.FillContainer(splitContainer.Panel1, currentRunExplorerChooser);
-            FormsUtil.FillContainer(splitContainer.Panel2, newView);
-
-            newView.LoadRuns(runs);
+            var splitContainer = Split(view.Parent, orientation);
+            splitContainer.Panel1.Fill(view);
+            splitContainer.Panel2.Fill(newView);
         }
 
         public SplitContainer Split(Control container, Orientation orientation)
@@ -68,7 +66,7 @@ namespace AlgorithmVisualization.View.Explore
                 Panel2MinSize = 0
             };
 
-            FormsUtil.FillContainer(container, splitContainer);
+            container.Fill(splitContainer);
 
             switch (orientation)
             {
@@ -83,68 +81,50 @@ namespace AlgorithmVisualization.View.Explore
             return splitContainer;
         }
 
-        public void Unsplit()
+        public void Unsplit(RunExplorerChooser<TIn, TOut> view)
         {
-            if (CanUnsplit)
+            if (view.Parent is SplitterPanel)
             {
-                var SplitterPanel = currentRunExplorerChooser.Parent;
+                var SplitterPanel = view.Parent;
                 var splitContainer = (SplitContainer) SplitterPanel.Parent;
-                FormsUtil.FillContainer(splitContainer.Parent, currentRunExplorerChooser);
+                splitContainer.Parent.Fill(view);
 
-                RunExplorerChooser<TIn, TOut> chooser;
+                RunExplorerChooser<TIn, TOut> otherChooser;
                 if (splitContainer.Panel1 == SplitterPanel)
-                    chooser = (RunExplorerChooser<TIn, TOut>) splitContainer.Panel2.Controls[0];
+                    otherChooser = (RunExplorerChooser<TIn, TOut>) splitContainer.Panel2.Controls[0];
                 else
-                    chooser = (RunExplorerChooser<TIn, TOut>)splitContainer.Panel1.Controls[0];
+                    otherChooser = (RunExplorerChooser<TIn, TOut>) splitContainer.Panel1.Controls[0];
 
-                chooser.Dispose();
-                explorerChoosers.Remove(chooser);
+                otherChooser.Dispose();
+                explorerChoosers.Remove(otherChooser);
             }
         }
 
-        public RunExplorerChooser<TIn, TOut> CreateExplorationView()
+        public RunExplorerChooser<TIn, TOut> CreateExplorationView(Type defaultExplorerType = null)
         {
-            var runExplorers = new BindingList<RunExplorer<TIn, TOut>>(runExplorerFactories
-                .ToList()
-                .Select(fac => fac.Create())
-                .ToList());
-
-            var explorationView = new RunExplorerChooser<TIn, TOut>(runExplorers, selectedRuns);
+            var explorationView = new RunExplorerChooser<TIn, TOut>(controller, selectedRuns, defaultExplorerType);
 
             explorerChoosers.Add(explorationView);
-            explorationView.Enter += (o, e) => { SetActiveView(explorationView); };
+            
+            explorationView.horizontalSplitContextMenuItem.Click += (o, e) => { SplitView(explorationView, Orientation.Horizontal); };
+            explorationView.verticalSplitContextMenuItem.Click += (o, e) => { SplitView(explorationView, Orientation.Vertical); };
+            explorationView.unsplitContextMenuItem.Click += (o, e) => { Unsplit(explorationView); };
 
             return explorationView;
         }
 
-        public void SetActiveView(RunExplorerChooser<TIn, TOut> view)
+        public void ActivateRunSelection(RunExplorerChooser<TIn, TOut> view)
         {
-            currentRunExplorerChooser?.Deactivate();
+            currentRunExplorerChooser?.DeactivateRunSelection();
             currentRunExplorerChooser = view;
-            currentRunExplorerChooser?.Activate();
+            currentRunExplorerChooser?.ActivateRunSelection();
+            Refresh();
         }
 
         public void Deactivate()
         {
-            currentRunExplorerChooser?.Deactivate();
+            currentRunExplorerChooser?.DeactivateRunSelection();
             currentRunExplorerChooser = null;
-            runs = null;
-        }
-
-        public void LoadRuns(AlgorithmRun<TIn, TOut>[] runs)
-        {
-            this.runs = runs;
-
-            foreach (var view in explorerChoosers)
-            {
-                view.LoadRuns(runs);
-            }
-
-            //activate default view
-            if (explorerChoosers.Count > 0)
-            {
-                SetActiveView(explorerChoosers[0]);
-            }
         }
 
     }

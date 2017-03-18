@@ -29,8 +29,8 @@ namespace AlgorithmVisualization.View
         {
             var algoView = ((IAlgorithmController) algorithmTypeComboBox.SelectedItem).AlgorithmView;
 
-            FormsUtil.FillContainer(baseSplitContainer.Panel1, algoView.VisualizationContainer);
-            FormsUtil.FillContainer(configurationSplitContainer.Panel2, algoView);
+            baseSplitContainer.Panel1.Fill(algoView.VisualizationContainer);
+            configurationSplitContainer.Panel2.Fill(algoView);
             algoView.Reset();
         }
 

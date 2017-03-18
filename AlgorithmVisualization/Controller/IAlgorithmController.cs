@@ -5,7 +5,7 @@ namespace AlgorithmVisualization.Controller
     public interface IAlgorithmController
     {
 
-        AlgorithmViewBase AlgorithmView { get; }
+        AlgorithmView AlgorithmView { get; }
 
         string Name { get;  }
         

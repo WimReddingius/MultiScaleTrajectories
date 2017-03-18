@@ -1,18 +1,17 @@
 ﻿using System.Collections.Generic;
 using System.ComponentModel;
-using System.Linq;
 using System.Windows.Forms;
 using AlgorithmVisualization.Algorithm;
 using AlgorithmVisualization.Algorithm.Experiment;
+using AlgorithmVisualization.Controller;
 using AlgorithmVisualization.Controller.Explore;
-using AlgorithmVisualization.Controller.Explore.Factory;
 using AlgorithmVisualization.View.Util;
 
 namespace AlgorithmVisualization.View.Explore
 {
     class TabularExplorer<TIn, TOut> : ResizableTableLayoutPanel where TIn : Input, new() where TOut : Output, new()
     {
-        private readonly BindingList<RunExplorerFactory<TIn, TOut>> runExplorerFactories;
+        private readonly AlgorithmController<TIn, TOut> controller;
         private readonly BindingList<AlgorithmRun<TIn, TOut>> selectedRuns;
         private AlgorithmRun<TIn, TOut>[] runs;
 
@@ -20,10 +19,10 @@ namespace AlgorithmVisualization.View.Explore
         private RunExplorerChooser<TIn, TOut> currentExplorationView;
 
 
-        public TabularExplorer(BindingList<RunExplorerFactory<TIn, TOut>> runExplorerFactories, BindingList<AlgorithmRun<TIn, TOut>> selectedRuns)
+        public TabularExplorer(AlgorithmController<TIn, TOut> controller, BindingList<AlgorithmRun<TIn, TOut>> selectedRuns)
         {
             this.selectedRuns = selectedRuns;
-            this.runExplorerFactories = runExplorerFactories;
+            this.controller = controller;
 
             explorationViews = new List<RunExplorerChooser<TIn, TOut>>();
             RowCount = ColumnCount = 0;
@@ -104,15 +103,10 @@ namespace AlgorithmVisualization.View.Explore
 
         private RunExplorerChooser<TIn, TOut> GenerateView()
         {
-            var runExplorers = new BindingList<RunExplorer<TIn, TOut>>(runExplorerFactories
-                .ToList()
-                .Select(fac => fac.Create())
-                .ToList());
+            var explorationView = new RunExplorerChooser<TIn, TOut>(controller, selectedRuns);
 
-            var explorationView = new RunExplorerChooser<TIn, TOut>(runExplorers, selectedRuns);
-
-            if (runs != null)
-                explorationView.LoadRuns(runs);
+            //if (runs != null)
+            //    explorationView.LoadRuns(runs);
 
             explorationViews.Add(explorationView);
             explorationView.Enter += (o, e) => { ViewChanged(explorationView); };
@@ -122,32 +116,32 @@ namespace AlgorithmVisualization.View.Explore
 
         public void ViewChanged(RunExplorerChooser<TIn, TOut> view)
         {
-            currentExplorationView?.Deactivate();
+            currentExplorationView?.DeactivateRunSelection();
             currentExplorationView = view;
-            currentExplorationView?.Activate();
+            currentExplorationView?.ActivateRunSelection();
         }
 
         public void Deactivate()
         {
-            currentExplorationView?.Deactivate();
+            currentExplorationView?.DeactivateRunSelection();
             runs = null;
         }
 
-        public void LoadRuns(AlgorithmRun<TIn, TOut>[] runs)
-        {
-            this.runs = runs;
+        //public void LoadRuns(AlgorithmRun<TIn, TOut>[] runs)
+        //{
+        //    this.runs = runs;
 
-            foreach (var view in explorationViews)
-            {
-                view.LoadRuns(runs);
-            }
+        //    foreach (var view in explorationViews)
+        //    {
+        //        view.LoadRuns(runs);
+        //    }
 
-            //activate default view
-            if (explorationViews.Count > 0)
-            {
-                ViewChanged(explorationViews[0]);
-            }
-        }
+        //    //activate default view
+        //    if (explorationViews.Count > 0)
+        //    {
+        //        ViewChanged(explorationViews[0]);
+        //    }
+        //}
 
     }
 }
