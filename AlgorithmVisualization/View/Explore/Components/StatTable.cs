@@ -39,8 +39,7 @@ namespace AlgorithmVisualization.View.Explore.Components
 
             foreach (var run in runs)
             {
-                var column = dataTable.Columns.Add();
-                column.Caption = run.Name;
+                var column = dataTable.Columns.Add(run.Name);
                 var colIndex = dataTable.Columns.IndexOf(column);
                 var currentlyTrackedStats = new List<string>();
 

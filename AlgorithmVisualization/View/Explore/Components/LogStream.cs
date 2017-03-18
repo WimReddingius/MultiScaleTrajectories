@@ -5,7 +5,6 @@ using AlgorithmVisualization.Algorithm;
 using AlgorithmVisualization.Algorithm.Experiment;
 using AlgorithmVisualization.Algorithm.Util;
 using AlgorithmVisualization.Controller.Explore;
-using AlgorithmVisualization.Util;
 using AlgorithmVisualization.View.Util;
 
 namespace AlgorithmVisualization.View.Explore.Components
