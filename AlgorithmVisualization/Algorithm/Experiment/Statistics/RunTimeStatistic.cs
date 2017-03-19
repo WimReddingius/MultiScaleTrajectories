@@ -9,7 +9,7 @@ namespace AlgorithmVisualization.Algorithm.Experiment.Statistics
         public DateTime? StartTime;
         public DateTime? EndTime;
 
-        public RunTimeStatisticValue() : base(() => null)
+        public RunTimeStatisticValue()
         {
             ValueFunc = () =>
             {

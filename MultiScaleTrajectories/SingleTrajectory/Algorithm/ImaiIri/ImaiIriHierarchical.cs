@@ -16,26 +16,40 @@ namespace MultiScaleTrajectories.SingleTrajectory.Algorithm.ImaiIri
         {
             Trajectory2D trajectory = input.Trajectory;
 
-            //build initial graph (just a simple sequence of nodes like in the trajectory)
-            var shortcutGraph = new ShortcutGraph(trajectory);
-
             //preprocess shortcuts, inefficient method
             List<MaxDistanceShortcut> shortcuts = ShortcutFinder.FindAllMaxDistanceShortcuts(trajectory);
 
             output.LogLine("Full number of shortcuts: " + shortcuts.Count);
 
-            for (var level = 1 ; level <= input.NumLevels; level++) {
+            Dictionary<int, ShortcutGraph> shortcutGraphs = new Dictionary<int, ShortcutGraph>();
+            ShortcutGraph prevShortcutGraph = null;
 
+            for (var level = 1; level <= input.NumLevels; level++)
+            {
                 double epsilon = input.GetEpsilon(level);
+
+                ShortcutGraph shortcutGraph;
+                if (prevShortcutGraph != null)
+                {
+                    //clone graph from previous level
+                    shortcutGraph = (ShortcutGraph) prevShortcutGraph.Clone();
+                }
+                else
+                {
+                    //build initial graph (just a simple sequence of nodes like in the trajectory)
+                    shortcutGraph = new ShortcutGraph(trajectory);
+                }
 
                 //select correct shortcuts
                 var levelShortcuts = shortcuts
                     .FindAll(s => s.MaxDistance <= epsilon);
 
-                output.LogLine("Number of shortcuts found for level " + level + ": " + levelShortcuts
-                    .Count(s => !shortcutGraph.GetNode(s.Start)
-                    .OutEdges
-                    .ContainsKey(shortcutGraph.GetNode(s.End))));
+                output.LogObject("Number of shortcuts found for level " + level + ": ", () =>
+                {
+                    return levelShortcuts
+                        .Count(s => !shortcutGraph.GetNode(s.Start)
+                        .OutEdges.ContainsKey(shortcutGraph.GetNode(s.End)));
+                });
 
                 foreach (var shortcut in levelShortcuts)
                 {
@@ -49,29 +63,65 @@ namespace MultiScaleTrajectories.SingleTrajectory.Algorithm.ImaiIri
                         //dijkstra to get edge weight
                         List<DataNode<Point2D>> shortestPathShortcut = shortcutGraph.GetShortestPath(sourceNode, targetNode);
 
-                        output.LogLine("Shortcut: " + shortcut);
-                        output.LogLine("Shortcut Shortest Path: " + string.Join<DataNode<Point2D>>(", ", shortestPathShortcut.ToArray()));
-                        output.LogLine("Shortcut Shortest Path weight: " + shortcutGraph.GetPathWeight(shortestPathShortcut));
+                        var shortcutTrajectory = shortcutGraph.GetTrajectory(sourceNode, shortestPathShortcut);
+
+                        output.LogObject("Shortcut", shortcut);
+                        output.LogObject("Shortcut Shortest Path", shortcutTrajectory);
+                        output.LogLine("Shortcut Shortest Path weight: " + shortcutGraph.GetPathWeight(sourceNode, shortestPathShortcut));
                         output.LogLine("");
 
                         //create edge and set edge weight
-                        WeightedEdge edge = new WeightedEdge(sourceNode, targetNode, shortcutGraph.GetPathWeight(shortestPathShortcut));
+                        WeightedEdge edge = new WeightedEdge(sourceNode, targetNode, shortcutGraph.GetPathWeight(sourceNode, shortestPathShortcut));
+
                         shortcutGraph.AddEdge(edge);
                     }
                 }
 
                 //increment weights of all edges by 1
                 shortcutGraph.IncrementAllEdgeWeights();
+               
+                output.LogObject("Shortcut Graph", shortcutGraph);
 
-                //dijkstra on level graph
-                var shortestPath = shortcutGraph.GetShortestPath(shortcutGraph.FirstNode, shortcutGraph.LastNode);
+                shortcutGraphs[level] = shortcutGraph;
+                prevShortcutGraph = shortcutGraph;
+            }
 
-                output.LogLine("Shortcut Graph: " + shortcutGraph);
-                output.LogLine("Level Shortest Path: " + string.Join<DataNode<Point2D>>(", ", shortestPath.ToArray()));
+            output.LogLine("Starting calculations of level trajectories");
+
+            List<DataNode<Point2D>> prevShortestPath = null;
+            for (var level = input.NumLevels; level >= 1; level--)
+            {
+                var shortcutGraph = shortcutGraphs[level];
+
+                if (prevShortestPath == null)
+                {
+                    prevShortestPath = new List<DataNode<Point2D>> { shortcutGraph.FirstNode, shortcutGraph.LastNode };
+                }
+
+                var prevNodePoint = prevShortestPath[0].Data;
+                var prevNode = shortcutGraph.GetNode(prevNodePoint);
+
+                var newShortestPath = new List<DataNode<Point2D>> { prevNode };
+                for (var i = 1; i < prevShortestPath.Count; i++)
+                {
+                    var nodePoint = prevShortestPath[i].Data;
+                    var node = shortcutGraph.GetNode(nodePoint);
+
+                    var shortestPath = shortcutGraph.GetShortestPath(prevNode, node);
+                    newShortestPath.AddRange(shortestPath);
+
+                    prevNode = node;
+                }
+
+                var levelTrajectory = shortcutGraph.GetTrajectory(shortcutGraph.FirstNode, newShortestPath);
+
+                output.LogObject("Level Shortest Path", levelTrajectory);
                 output.LogLine("");
 
-                //computing trajectory from found shortest path
-                output.SetTrajectoryAtLevel(level, shortcutGraph.GetTrajectory(shortestPath));
+                //report shortest path
+                output.SetTrajectoryAtLevel(level, levelTrajectory);
+
+                prevShortestPath = newShortestPath;
             }
         }
 

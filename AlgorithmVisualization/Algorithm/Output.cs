@@ -1,5 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
+using System.Runtime.Serialization;
+using System.Text;
 using AlgorithmVisualization.Algorithm.Experiment;
 using AlgorithmVisualization.Algorithm.Experiment.Statistics;
 using AlgorithmVisualization.Algorithm.Util;
@@ -14,28 +17,73 @@ namespace AlgorithmVisualization.Algorithm
     {
         public event LoggedEventHandler Logged;
 
-        public StatisticManager Statistics;
+        public StatisticMap Statistics;
 
-        public string LogString;
+        public ThreadSafeStringBuilder LogStringBuilder;
+
+        [JsonIgnore]
+        public bool Logging;
 
         [JsonIgnore]
         public List<StringBuffer> LogBuffers;
 
+        [JsonProperty]
+        private string log;
+
 
         protected Output()
         {
-            Statistics = new StatisticManager();
+            LogStringBuilder = new ThreadSafeStringBuilder();
+            Statistics = new StatisticMap();
             LogBuffers = new List<StringBuffer>();
+            Logging = true;
         }
 
         public void LogLine(string str)
         {
-            var line = str + "\n";
+            if (Logging)
+            {
+                var line = str + "\n";
+                LogStringBuilder.Append(line);
+                LogBuffers.ForEach(b => b.Append(line));
+                //Logged?.Invoke(line);
+            }
+        }
 
-            LogString += line;
-            LogBuffers.ForEach(b => b.Append(line));
+        public void LogObject(string name, object obj)
+        {
+            if (Logging)
+            {
+                LogLine(name + " : " + obj);
+            }
+        }
 
-            Logged?.Invoke(line);
+        public void LogObject(string name, Func<object> func)
+        {
+            if (Logging)
+            {
+                LogObject(name, func());
+            }
+        }
+
+        public void LogObject<T>(string name, List<T> obj)
+        {
+            if (Logging)
+            {
+                LogObject(name, string.Join(",", obj));
+            }
+        }
+
+        [OnSerializing]
+        internal void OnSerializingMethod(StreamingContext context)
+        {
+            log = LogStringBuilder.ToString();
+        }
+
+        [OnDeserialized]
+        internal void OnDeserializedMethod(StreamingContext context)
+        {
+            LogStringBuilder.Append(log);
         }
 
     }

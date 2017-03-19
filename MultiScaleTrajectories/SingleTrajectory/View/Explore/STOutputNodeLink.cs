@@ -1,7 +1,6 @@
 ﻿using System.Drawing;
 using System.Windows.Forms;
 using AlgorithmVisualization.Algorithm.Experiment;
-using AlgorithmVisualization.Controller.Explore;
 using AlgorithmVisualization.View.GLVisualization.GLUtil;
 using MultiScaleTrajectories.Algorithm.Geometry;
 using MultiScaleTrajectories.SingleTrajectory.Algorithm;
@@ -9,22 +8,17 @@ using MultiScaleTrajectories.View;
 
 namespace MultiScaleTrajectories.SingleTrajectory.View.Explore
 {
-    class STOutputNodeLink : GLTrajectoryVisualization2D, IRunExplorer<STInput, STOutput>
+    class STOutputNodeLink : GLTrajectoryVisualization2D
     {
-        public string DisplayName => "Node-Link Visualization";
-        public int MinConsolidation => 1;
-        public int MaxConsolidation => 1;
-        public int Priority => 1;
-
         private AlgorithmRun<STInput, STOutput> Run;
         private STOutput Output;
 
         private int currentLevel;
-        private bool active => Visible;
 
 
         public STOutputNodeLink()
         {
+            KeyDown += HandleArrowKeys;
             Visible = false;
         }
 
@@ -72,32 +66,19 @@ namespace MultiScaleTrajectories.SingleTrajectory.View.Explore
             return base.IsInputKey(keyData);
         }
 
-        public void RunSelectionChanged(AlgorithmRun<STInput, STOutput>[] runs)
+        public void BeforeOutputAvailable(AlgorithmRun<STInput, STOutput> run)
         {
-            Run = runs[0];
-            Output = runs[0].Output;
+            Visible = false;
         }
 
-        public void RunStateChanged(AlgorithmRun<STInput, STOutput> run, RunState state)
+        public void AfterOutputAvailable(AlgorithmRun<STInput, STOutput> run)
         {
-            if (state == RunState.Idle)
-            {
-                KeyDown -= HandleArrowKeys;
-                Visible = false;
-            }
+            Run = run;
+            Output = run.Output;
 
-            if (state >= RunState.OutputAvailable)
-            {
-                if (active) return;
-
-                Visible = true;
-
-                currentLevel = 1;
-                LookAtTrajectory(run.Output.GetTrajectoryAtLevel(1));
-
-                KeyDown -= HandleArrowKeys;
-                KeyDown += HandleArrowKeys;
-            }
+            Visible = true;
+            currentLevel = 1;
+            LookAtTrajectory(Output.GetTrajectoryAtLevel(1));
         }
 
     }

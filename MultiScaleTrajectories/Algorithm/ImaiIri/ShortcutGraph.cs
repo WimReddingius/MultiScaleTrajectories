@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using MultiScaleTrajectories.Algorithm.DataStructures.Graph;
 using MultiScaleTrajectories.Algorithm.Geometry;
@@ -7,16 +8,17 @@ namespace MultiScaleTrajectories.Algorithm.ImaiIri
 {
     class ShortcutGraph : Graph<DataNode<Point2D>, WeightedEdge>
     {
-        private readonly Dictionary<Point2D, DataNode<Point2D>> PointNodeMapping;
-
+        private readonly Dictionary<Point2D, DataNode<Point2D>> pointNodeMapping;
         private readonly Trajectory2D trajectory;
+
         public DataNode<Point2D> FirstNode => GetNode(trajectory.First());
         public DataNode<Point2D> LastNode => GetNode(trajectory.Last());
 
+
         public ShortcutGraph(Trajectory2D trajectory)
         {
-            PointNodeMapping = new Dictionary<Point2D, DataNode<Point2D>>();
             this.trajectory = trajectory;
+            pointNodeMapping = new Dictionary<Point2D, DataNode<Point2D>>();
 
             DataNode<Point2D> prevNode = null;
             foreach (Point2D point in trajectory)
@@ -33,16 +35,23 @@ namespace MultiScaleTrajectories.Algorithm.ImaiIri
             }
         }
 
+        public ShortcutGraph(Trajectory2D trajectory, Dictionary<Point2D, DataNode<Point2D>> pointNodeMapping, 
+            HashSet<DataNode<Point2D>> nodes, HashSet<WeightedEdge> edges) : base(nodes, edges)
+        {
+            this.pointNodeMapping = pointNodeMapping;
+            this.trajectory = trajectory;
+        }
+
         public DataNode<Point2D> GenerateNode(Point2D point)
         {
             DataNode<Point2D> node = new DataNode<Point2D>(point);
-            PointNodeMapping.Add(point, node);
+            pointNodeMapping.Add(point, node);
             return node;
         }
 
         public DataNode<Point2D> GetNode(Point2D point)
         {
-            return PointNodeMapping[point];
+            return pointNodeMapping[point];
         }
 
         public void IncrementAllEdgeWeights()
@@ -61,9 +70,9 @@ namespace MultiScaleTrajectories.Algorithm.ImaiIri
             AddEdge(new WeightedEdge(p1, p2, weight));
         }
 
-        public Trajectory2D GetTrajectory(List<DataNode<Point2D>> path)
+        public Trajectory2D GetTrajectory(DataNode<Point2D> firstNode, List<DataNode<Point2D>> path)
         {
-            var traj = new Trajectory2D();
+            var traj = new Trajectory2D { firstNode.Data };
             foreach (DataNode<Point2D> node in path)
             {
                 Point2D point = node.Data;
@@ -72,17 +81,57 @@ namespace MultiScaleTrajectories.Algorithm.ImaiIri
             return traj;
         }
 
-        public int GetPathWeight(List<DataNode<Point2D>> path)
+        public int GetPathWeight(DataNode<Point2D> firstNode, List<DataNode<Point2D>> path)
         {
             int weight = 0;
-            DataNode<Point2D> prevNode = path[0];
-            for (var i = 1; i < path.Count; i++)
+            DataNode<Point2D> prevNode = firstNode;
+            foreach (var node in path)
             {
-                var node = path[i];
                 weight += ((WeightedEdge)prevNode.OutEdges[node]).Data;
                 prevNode = node;
             }
             return weight;
+        }
+
+        public override object Clone()
+        {
+            var nodeMap = new Dictionary<DataNode<Point2D>, DataNode<Point2D>>();
+            var edgeMap = new Dictionary<WeightedEdge, WeightedEdge>();
+
+            foreach (var node in Nodes)
+            {
+                nodeMap[node] = new DataNode<Point2D>(node.Data);
+            }
+
+            foreach (var edge in Edges)
+            {
+                edgeMap[edge] = new WeightedEdge(nodeMap[(DataNode<Point2D>)edge.Source], nodeMap[(DataNode<Point2D>)edge.Target], edge.Data);
+            }
+
+            foreach (var node in Nodes)
+            {
+                var newNode = nodeMap[node];
+                foreach (var pair in node.InEdges)
+                {
+                    var keyNode = nodeMap[(DataNode<Point2D>)pair.Key];
+                    var valueEdge = edgeMap[(WeightedEdge)pair.Value];
+                    newNode.InEdges[keyNode] = valueEdge;
+                }
+                foreach (var pair in node.OutEdges)
+                {
+                    var keyNode = nodeMap[(DataNode<Point2D>)pair.Key];
+                    var valueEdge = edgeMap[(WeightedEdge)pair.Value];
+                    newNode.OutEdges[keyNode] = valueEdge;
+                }
+            }
+
+            var newPointNodeMapping = new Dictionary<Point2D, DataNode<Point2D>>();
+            foreach (var pair in pointNodeMapping)
+            {
+                newPointNodeMapping[pair.Key] = nodeMap[pair.Value];
+            }
+
+            return new ShortcutGraph(trajectory, newPointNodeMapping, new HashSet<DataNode<Point2D>>(nodeMap.Values), new HashSet<WeightedEdge>(edgeMap.Values));
         }
 
     }

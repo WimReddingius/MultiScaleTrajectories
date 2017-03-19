@@ -9,14 +9,14 @@
             Data = default(D);
         }
 
-        public DataEdge(Node source, Node target, D attribute) : base(source, target)
+        public DataEdge(Node source, Node target, D data) : base(source, target)
         {
-            this.Data = attribute;
+            Data = data;
         }
 
         public override string ToString()
         {
-            return "(" + Source.ToString() + " -(" + Data + ")-> " + Target.ToString() + ")";
+            return "(" + Source + " -(" + Data + ")-> " + Target + ")";
         }
 
     }

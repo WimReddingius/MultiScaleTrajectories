@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.Windows.Forms;
 using AlgorithmVisualization.Algorithm;
 using AlgorithmVisualization.Algorithm.Experiment;
@@ -15,6 +16,27 @@ namespace AlgorithmVisualization.Controller.Explore
         public abstract int Priority { get; }
 
         protected AlgorithmRun<TIn, TOut>[] previousRuns;
+        private readonly Dictionary<AlgorithmRun<TIn, TOut>, StateReachedHandlerMap<TIn, TOut>> stateReachedHandlers;
+
+
+        protected RunExplorer()
+        {
+            stateReachedHandlers = new Dictionary<AlgorithmRun<TIn, TOut>, StateReachedHandlerMap<TIn, TOut>>();
+
+            var visUnavailableLabel = new Label
+            {
+                Text = "Visualization not (yet) available",
+                TextAlign = ContentAlignment.MiddleCenter
+            };
+
+            this.Fill(visUnavailableLabel);
+        }
+
+        protected void WrapVisualization(Control control)
+        {
+            this.Fill(control, false);
+            control.BringToFront();
+        }
 
         public virtual void RunSelectionChanged(params AlgorithmRun<TIn, TOut>[] runs)
         {
@@ -23,29 +45,46 @@ namespace AlgorithmVisualization.Controller.Explore
                 throw new ArgumentOutOfRangeException(nameof(runs), "Consolidation not supported for " + runs.Length + " runs.");
             }
 
-            if (previousRuns != null)
+            ClearStateReachedHandlers();
+            VisualizeRunSelection(runs);
+        }
+
+        private void ClearStateReachedHandlers()
+        {
+            //remove all previous handlers
+            foreach (var run in stateReachedHandlers.Keys)
             {
-                foreach (var run in previousRuns)
+                foreach (var runState in stateReachedHandlers[run].Keys)
                 {
-                    run.StateChanged -= RunStateChanged;
+                    foreach (var handler in stateReachedHandlers[run][runState])
+                    {
+                        run.StateReached[runState].Remove(handler);
+                    }
                 }
             }
 
-            previousRuns = runs;
-
-            foreach (var run in runs)
-            {
-                RunStateChanged(run, run.State);
-                run.StateChanged += RunStateChanged;
-            }
+            stateReachedHandlers.Clear();
         }
 
-        public virtual void RunStateChanged(AlgorithmRun<TIn, TOut> run, RunState state)
+        public abstract void VisualizeRunSelection(params AlgorithmRun<TIn, TOut>[] runs);
+
+        protected void AddStateReachedHandler(AlgorithmRun<TIn, TOut> run, RunState state, RunStateReachedEventHandler<TIn, TOut> handler)
         {
-            this.InvokeIfRequired(() =>
-            {
-                RunStateChanged(run, state);
-            });
+            if (!stateReachedHandlers.ContainsKey(run))
+                stateReachedHandlers[run] = new StateReachedHandlerMap<TIn, TOut>();
+
+            if (!stateReachedHandlers[run].ContainsKey(state))
+                stateReachedHandlers[run][state] = new List<RunStateReachedEventHandler<TIn, TOut>>();
+
+            //wrap the handler
+            RunStateReachedEventHandler<TIn, TOut> act = r => this.InvokeIfRequired(() => handler(r));
+            run.StateReached[state].Add(act);
+            stateReachedHandlers[run][state].Add(act);
+        }
+
+        protected void AddResetHandler(AlgorithmRun<TIn, TOut> run, RunStateReachedEventHandler<TIn, TOut> handler)
+        {
+            AddStateReachedHandler(run, RunState.Idle, handler);
         }
 
         public virtual bool ConsolidationSupported(int numRuns)
@@ -57,6 +96,11 @@ namespace AlgorithmVisualization.Controller.Explore
         {
             return DisplayName;
         }
+
+        //public void Deactivate()
+        //{
+        //    ClearStateReachedHandlers();
+        //}
 
     }
 }

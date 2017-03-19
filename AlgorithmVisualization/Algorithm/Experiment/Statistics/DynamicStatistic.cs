@@ -8,17 +8,24 @@ namespace AlgorithmVisualization.Algorithm.Experiment.Statistics
         [JsonIgnore]
         public Func<object> ValueFunc;
 
+        public override object Value => ValueFunc();
 
-        public DynamicStatisticValue(Func<object> valueFunc) : base(valueFunc())
+
+        public DynamicStatisticValue(Func<object> valueFunc)
         {
             ValueFunc = valueFunc;
         }
 
-        public object Update()
+        public DynamicStatisticValue()
         {
-            Value = ValueFunc();
-            return Value;
+            
         }
+
+        //public object Update()
+        //{
+        //    Value = ValueFunc();
+        //    return Value;
+        //}
 
     }
 }

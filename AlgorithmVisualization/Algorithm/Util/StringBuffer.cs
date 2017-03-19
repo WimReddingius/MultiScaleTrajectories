@@ -3,24 +3,24 @@
     public class StringBuffer
     {
 
-        private string buffer;
+        private readonly ThreadSafeStringBuilder buffer;
 
         public StringBuffer()
         {
-            buffer = "";
+            buffer = new ThreadSafeStringBuilder();
         }
 
-        //is this completely thread safe?
         public string Flush()
         {
-            var str = buffer;
-            buffer = "";
+            var str = buffer.ToString();
+            buffer.Clear();
             return str;
         }
 
+        //TODO: no locking?
         public void Append(string str)
         {
-            buffer += str;
+            buffer.Append(str);
         }
 
     }

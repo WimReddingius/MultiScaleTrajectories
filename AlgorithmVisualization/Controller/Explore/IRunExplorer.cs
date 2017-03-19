@@ -13,8 +13,7 @@ namespace AlgorithmVisualization.Controller.Explore
 
         int MaxConsolidation { get; }
 
-        void RunSelectionChanged(params AlgorithmRun<TIn, TOut>[] runs);
+        void VisualizeRunSelection(params AlgorithmRun<TIn, TOut>[] runs);
 
-        void RunStateChanged(AlgorithmRun<TIn, TOut> runs, RunState state);
     }
 }

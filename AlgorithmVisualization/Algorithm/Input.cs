@@ -12,14 +12,14 @@ namespace AlgorithmVisualization.Algorithm
 
         public bool ReadOnly;
 
-        public StatisticManager Statistics;
+        public StatisticMap Statistics;
         
 
         protected Input()
         {
             Name = "Input " + IdGenerator++;
 
-            Statistics = new StatisticManager();
+            Statistics = new StatisticMap();
         }
 
         public abstract string Serialize();

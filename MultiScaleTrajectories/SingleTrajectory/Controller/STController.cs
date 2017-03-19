@@ -23,7 +23,8 @@ namespace MultiScaleTrajectories.SingleTrajectory.Controller
             Algorithms.Add(new ImaiIriHierarchical());
             Algorithms.Add(new ImaiIriNaive());
 
-            AddRunExplorerType(typeof(STOutputNodeLink));
+            //AddRunExplorerType(typeof(STOutputNodeLink));
+            AddRunExplorerType(typeof(STOutputExplorer));
         }
 
     }

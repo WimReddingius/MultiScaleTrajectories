@@ -11,7 +11,7 @@
 
         public DataNode(D attribute)
         {
-            this.Data = attribute;
+            Data = attribute;
         }
 
         public override string ToString()

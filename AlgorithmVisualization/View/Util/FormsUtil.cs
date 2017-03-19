@@ -1,4 +1,5 @@
-﻿using System.Windows.Forms;
+﻿using System;
+using System.Windows.Forms;
 
 namespace AlgorithmVisualization.View.Util
 {
@@ -19,7 +20,7 @@ namespace AlgorithmVisualization.View.Util
             }
         }
 
-        public static void InvokeIfRequired(this Control control, MethodInvoker action)
+        public static void InvokeIfRequired(this Control control, Action action)
         {
             if (control.InvokeRequired)
             {
@@ -29,6 +30,23 @@ namespace AlgorithmVisualization.View.Util
             {
                 action();
             }
+        }
+
+        public static void InvokeIfRequired<T>(this Control control, Action<T> action, T par)
+        {
+            if (control.InvokeRequired)
+            {
+                control.Invoke(action, par);
+            }
+            else
+            {
+                action(par);
+            }
+        }
+
+        public static void ShowErrorMessage(string str)
+        {
+            MessageBox.Show(str, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
         }
 
     }

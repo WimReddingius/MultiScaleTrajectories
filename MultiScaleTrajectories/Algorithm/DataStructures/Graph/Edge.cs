@@ -2,13 +2,13 @@
 {
     class Edge
     {
-        public readonly Node Source;
-        public readonly Node Target;
+        public Node Source;
+        public Node Target;
 
         public Edge(Node source, Node target)
         {
-            this.Source = source;
-            this.Target = target;
+            Source = source;
+            Target = target;
         }
 
         public override string ToString()

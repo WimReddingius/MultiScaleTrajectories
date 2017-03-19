@@ -8,6 +8,8 @@ using AlgorithmVisualization.Controller.Explore;
 using AlgorithmVisualization.Controller.Explore.Factory;
 using AlgorithmVisualization.View;
 using AlgorithmVisualization.View.Explore.Components;
+using AlgorithmVisualization.View.Explore.Components.Log;
+using AlgorithmVisualization.View.Explore.Components.Stats;
 
 namespace AlgorithmVisualization.Controller
 {
@@ -33,15 +35,17 @@ namespace AlgorithmVisualization.Controller
             RunExplorers = new BindingList<RunExplorerFactory<TIn, TOut>>();
             Algorithms = new BindingList<Algorithm<TIn, TOut>>();
 
-            AddRunExplorerType(typeof(StatTable<TIn, TOut>));
-            AddRunExplorerType(typeof(LogStream<TIn, TOut>));
+            AddStatelessRunExplorerType(typeof(StatTable<TIn, TOut>));
+            AddRunExplorerType(typeof(LogExplorer<TIn, TOut>));
 
             Runs = new BindingList<AlgorithmRun<TIn, TOut>>();
             Inputs = new BindingList<TIn>();
             Settings = AlgorithmControllerSettingsManager.GetSettings(this);
         }
 
-        protected void AddRunExplorerType(Type runExplorerType)
+        //run explorer has no state and is initialized using the RunExplorerConcrete wrapper class
+        //type has to implement IRunExplorer
+        protected void AddStatelessRunExplorerType(Type runExplorerType)
         {
             Type iRunExplorerType = typeof(IRunExplorer<TIn, TOut>);
             Type iControlType = typeof(Control);
@@ -52,17 +56,32 @@ namespace AlgorithmVisualization.Controller
                 var genericTypeWrapper = typeof(RunExplorerConcrete<,,>).MakeGenericType(typeArgsWrapper);
                 var concrete = (RunExplorer<TIn, TOut>) Activator.CreateInstance(genericTypeWrapper);
 
-                var concreteType = concrete.GetType();
-                Type[] typeArgsFactory = {typeof(TIn), typeof(TOut), concreteType };
-                var genericTypeFactory = typeof(ConcreteRunExplorerFactory<,,>).MakeGenericType(typeArgsFactory);
-                var factory = (RunExplorerFactory<TIn, TOut>) Activator.CreateInstance(genericTypeFactory);
-                RunExplorers.Add(factory);
+                AddRunExplorerType(concrete.GetType());
             }
             else
             {
                 throw new ArgumentOutOfRangeException(nameof(runExplorerType), "Type provided does not inherit from both Control and IRunExplorer");
             }
         }
-        
+
+        //run explorer depends on the state of the runs it visualizes
+        //type has to implement RunExplorer
+        protected void AddRunExplorerType(Type type)
+        {
+            Type RunExplorerType = typeof(RunExplorer<TIn, TOut>);
+
+            if (RunExplorerType.IsAssignableFrom(type))
+            {
+                Type[] typeArgsFactory = {typeof(TIn), typeof(TOut), type};
+                var genericTypeFactory = typeof(ConcreteRunExplorerFactory<,,>).MakeGenericType(typeArgsFactory);
+                var factory = (RunExplorerFactory<TIn, TOut>) Activator.CreateInstance(genericTypeFactory);
+                RunExplorers.Add(factory);
+            }
+            else
+            {
+                throw new ArgumentOutOfRangeException(nameof(type), "Type provided does not inherit from RunExplorer");
+            }
+        }
+
     }
 }

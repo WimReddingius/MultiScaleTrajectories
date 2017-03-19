@@ -30,8 +30,8 @@ namespace AlgorithmVisualization.View
         /// </summary>
         private void InitializeComponent()
         {
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle9 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle10 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle11 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle12 = new System.Windows.Forms.DataGridViewCellStyle();
             this.openInputDialog = new System.Windows.Forms.OpenFileDialog();
             this.saveInputDialog = new System.Windows.Forms.SaveFileDialog();
             this.inputTabPage = new System.Windows.Forms.TabPage();
@@ -78,15 +78,15 @@ namespace AlgorithmVisualization.View
             // 
             // openInputDialog
             // 
-            this.openInputDialog.DefaultExt = "json";
+            this.openInputDialog.DefaultExt = "input";
             this.openInputDialog.FileName = "openFileDialog1";
-            this.openInputDialog.Filter = "Input Files|*.json; *.csv";
+            this.openInputDialog.Filter = "Input Files|*.input; *.csv";
             this.openInputDialog.Title = "Open Input";
             // 
             // saveInputDialog
             // 
-            this.saveInputDialog.DefaultExt = "json";
-            this.saveInputDialog.Filter = "JSON(*.json)|*json";
+            this.saveInputDialog.DefaultExt = "input";
+            this.saveInputDialog.Filter = "Input Files(*.input)|*input";
             this.saveInputDialog.Title = "Save Input";
             // 
             // inputTabPage
@@ -387,8 +387,8 @@ namespace AlgorithmVisualization.View
             // workloadTableInputColumn
             // 
             this.workloadTableInputColumn.AutoComplete = false;
-            dataGridViewCellStyle9.NullValue = null;
-            this.workloadTableInputColumn.DefaultCellStyle = dataGridViewCellStyle9;
+            dataGridViewCellStyle11.NullValue = null;
+            this.workloadTableInputColumn.DefaultCellStyle = dataGridViewCellStyle11;
             this.workloadTableInputColumn.FillWeight = 76F;
             this.workloadTableInputColumn.HeaderText = "Input";
             this.workloadTableInputColumn.Name = "workloadTableInputColumn";
@@ -405,9 +405,9 @@ namespace AlgorithmVisualization.View
             // 
             // workloadTableAmountColumn
             // 
-            dataGridViewCellStyle10.Format = "N0";
-            dataGridViewCellStyle10.NullValue = null;
-            this.workloadTableAmountColumn.DefaultCellStyle = dataGridViewCellStyle10;
+            dataGridViewCellStyle12.Format = "N0";
+            dataGridViewCellStyle12.NullValue = null;
+            this.workloadTableAmountColumn.DefaultCellStyle = dataGridViewCellStyle12;
             this.workloadTableAmountColumn.FillWeight = 50F;
             this.workloadTableAmountColumn.HeaderText = "Amount";
             this.workloadTableAmountColumn.Name = "workloadTableAmountColumn";
@@ -427,14 +427,14 @@ namespace AlgorithmVisualization.View
             // 
             // openRunDialog
             // 
-            this.openRunDialog.DefaultExt = "json";
-            this.openRunDialog.Filter = "JSON(*.json)|*json";
+            this.openRunDialog.DefaultExt = "run";
+            this.openRunDialog.Filter = "Run Files(*.run)|*run";
             this.openRunDialog.Title = "Open Run";
             // 
             // saveRunDialog
             // 
-            this.saveRunDialog.DefaultExt = "json";
-            this.saveRunDialog.Filter = "JSON(*.json)|*json";
+            this.saveRunDialog.DefaultExt = "run";
+            this.saveRunDialog.Filter = "Run Files(*.run)|*run";
             this.saveRunDialog.Title = "Save Run";
             // 
             // AlgorithmViewConcrete

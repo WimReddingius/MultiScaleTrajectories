@@ -67,7 +67,8 @@
     <Compile Include="Algorithm\Experiment\AlgorithmWorkload.cs" />
     <Compile Include="Algorithm\Input.cs" />
     <Compile Include="Algorithm\Output.cs" />
-    <Compile Include="Algorithm\Experiment\Statistics\StatisticManager.cs" />
+    <Compile Include="Algorithm\Experiment\Statistics\StatisticMap.cs" />
+    <Compile Include="Algorithm\Util\ThreadSafeStringBuilder.cs" />
     <Compile Include="Controller\AlgorithmControllerSettingsManager.cs" />
     <Compile Include="Controller\AlgorithmController.cs" />
     <Compile Include="Controller\AlgorithmControllerSettings.cs" />
@@ -80,6 +81,12 @@
     <Compile Include="Controller\Explore\IRunExplorer.cs" />
     <Compile Include="Controller\Explore\Factory\RunExplorerFactory.cs" />
     <Compile Include="Controller\Explore\Factory\RunExplorerFactoryConcrete.cs" />
+    <Compile Include="Controller\Explore\SingularRunExplorer.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Controller\Explore\SingularRunExplorerAfterState.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
     <Compile Include="Controller\IAlgorithmController.cs" />
     <Compile Include="Controller\Edit\InputEditor.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -87,6 +94,9 @@
       <AutoGen>True</AutoGen>
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
       <DependentUpon>Settings.settings</DependentUpon>
+    </Compile>
+    <Compile Include="View\Explore\Components\Log\LogExplorer.cs">
+      <SubType>UserControl</SubType>
     </Compile>
     <Compile Include="View\Util\ThreadUtil.cs" />
     <Compile Include="View\AlgorithmViewConcrete.cs">
@@ -101,16 +111,16 @@
     <Compile Include="View\Explore\RunExplorerChooser.Designer.cs">
       <DependentUpon>RunExplorerChooser.cs</DependentUpon>
     </Compile>
-    <Compile Include="View\Explore\Components\LogStream.cs">
+    <Compile Include="View\Explore\Components\Log\LogStream.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="View\Explore\Components\LogStream.Designer.cs">
+    <Compile Include="View\Explore\Components\Log\LogStream.Designer.cs">
       <DependentUpon>LogStream.cs</DependentUpon>
     </Compile>
-    <Compile Include="View\Explore\Components\StatTable.cs">
+    <Compile Include="View\Explore\Components\Stats\StatTable.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="View\Explore\Components\StatTable.Designer.cs">
+    <Compile Include="View\Explore\Components\Stats\StatTable.Designer.cs">
       <DependentUpon>StatTable.cs</DependentUpon>
     </Compile>
     <Compile Include="View\Explore\SplittableExplorer.cs">
@@ -158,10 +168,10 @@
     <EmbeddedResource Include="View\Explore\RunExplorerChooser.resx">
       <DependentUpon>RunExplorerChooser.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="View\Explore\Components\LogStream.resx">
+    <EmbeddedResource Include="View\Explore\Components\Log\LogStream.resx">
       <DependentUpon>LogStream.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="View\Explore\Components\StatTable.resx">
+    <EmbeddedResource Include="View\Explore\Components\Stats\StatTable.resx">
       <DependentUpon>StatTable.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="View\Explore\SplittableExplorer.resx">

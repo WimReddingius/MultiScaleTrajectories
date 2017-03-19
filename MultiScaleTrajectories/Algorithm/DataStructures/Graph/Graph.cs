@@ -1,8 +1,10 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using System.Text;
 
 namespace MultiScaleTrajectories.Algorithm.DataStructures.Graph
 {
-    class Graph<N, E> where N : Node where E : Edge
+    class Graph<N, E> : ICloneable where N : Node, new() where E : Edge
     {
 
         public readonly HashSet<N> Nodes;
@@ -10,8 +12,14 @@ namespace MultiScaleTrajectories.Algorithm.DataStructures.Graph
 
         public Graph()
         {
-            this.Nodes = new HashSet<N>();
-            this.Edges = new HashSet<E>();
+            Nodes = new HashSet<N>();
+            Edges = new HashSet<E>();
+        }
+
+        public Graph(HashSet<N> nodes, HashSet<E> edges)
+        {
+            Nodes = nodes;
+            Edges = edges;
         }
 
         public void AddEdge(E edge)
@@ -80,12 +88,19 @@ namespace MultiScaleTrajectories.Algorithm.DataStructures.Graph
                 //target node found
                 if (closestNode.Equals(target))
                 {
-                    //Build path
-                    shortestPath = new List<N> {closestNode};
+                    //shortestPath = new List<N> {closestNode};
+                    //while (prevNode.ContainsKey(closestNode))
+                    //{
+                        //closestNode = prevNode[closestNode];
+                        //shortestPath.Insert(0, closestNode);
+                    //}
+
+                    //Build path. We don't include first node
+                    shortestPath = new List<N>();
                     while (prevNode.ContainsKey(closestNode))
                     {
-                        closestNode = prevNode[closestNode];
                         shortestPath.Insert(0, closestNode);
+                        closestNode = prevNode[closestNode];
                     }
                     break;
                 }
@@ -122,12 +137,55 @@ namespace MultiScaleTrajectories.Algorithm.DataStructures.Graph
 
         public override string ToString()
         {
-            string str = "";
+            var builder = new StringBuilder();
             foreach (E edge in Edges)
             {
-                str += edge + "\n";
+                builder.Append(edge + "\n");
             }
-            return str;
+            return builder.ToString();
+        }
+
+        public virtual object Clone()
+        {
+            var nodeMap = new Dictionary<N, N>();
+            var edgeMap = new Dictionary<E, E>();
+
+            foreach (N node in Nodes)
+            {
+                nodeMap[node] = new N();
+            }
+
+            foreach (E edge in Edges)
+            {
+                object[] args =
+                {
+                    nodeMap[(N) edge.Source],
+                    nodeMap[(N) edge.Target]
+                };
+
+                E newEdge = (E) Activator.CreateInstance(typeof(E), args);
+                edgeMap[edge] = newEdge;
+            }
+
+            foreach (N node in Nodes)
+            {
+                var newNode = nodeMap[node];
+                foreach (var pair in node.InEdges)
+                {
+                    var keyNode = nodeMap[(N) pair.Key];
+                    var valueEdge = edgeMap[(E) pair.Value];
+                    newNode.InEdges[keyNode] = valueEdge;
+                }
+                foreach (var pair in node.OutEdges)
+                {
+                    var keyNode = nodeMap[(N)pair.Key];
+                    var valueEdge = edgeMap[(E)pair.Value];
+                    newNode.OutEdges[keyNode] = valueEdge;
+                }
+            }
+
+            return new Graph<N, E>(new HashSet<N>(nodeMap.Values), new HashSet<E>(edgeMap.Values));
+
         }
 
     }

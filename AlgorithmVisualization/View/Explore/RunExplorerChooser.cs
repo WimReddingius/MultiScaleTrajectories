@@ -234,6 +234,13 @@ namespace AlgorithmVisualization.View.Explore
         public new void Dispose()
         {
             Application.RemoveMessageFilter(mouseMessageFilter);
+
+            //var runExplorer = (RunExplorer<TIn, TOut>)runExplorerComboBox.SelectedItem;
+            //runExplorer.Deactivate();
+
+            AutoSelect = false;
+            UsingActiveSelection = false;
+
             base.Dispose();
         }
 

@@ -24,13 +24,16 @@ namespace MultiScaleTrajectories.SingleTrajectory.View.Edit
 
         private void addLevelButton_Click(object sender, EventArgs e)
         {
-            int rowCount = levelTable.RowCount;
-            double epsilon = 10.0;
+            var insertAt = levelTable.Rows.Count;
 
-            if (rowCount > 0)
-                epsilon = (double)levelTable.Rows[rowCount - 1].Cells["Closeness"].Value;
+            if (levelTable.SelectedCells.Count > 0)
+                insertAt = levelTable.SelectedCells[0].RowIndex + 1;
 
-            PrependLevel(epsilon);
+            double epsilon = double.PositiveInfinity;
+            if (levelTable.RowCount > insertAt)
+                epsilon = (double)levelTable.Rows[insertAt].Cells["Closeness"].Value;
+
+            InsertLevel(insertAt + 1, epsilon);
         }
 
         private void removeLevelButton_Click(object sender, EventArgs e)

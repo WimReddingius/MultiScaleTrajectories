@@ -35,9 +35,9 @@ namespace MultiScaleTrajectories.View
 
                 Vector2d newMouseLoc = GetWorldCoordinates(e.Location.X, e.Location.Y);
                 LastDraggingLocation = newMouseLoc;
-            }
 
-            Refresh();
+                Refresh();
+            }
         }
 
         private void HandleMouseDown(object sender, MouseEventArgs e)

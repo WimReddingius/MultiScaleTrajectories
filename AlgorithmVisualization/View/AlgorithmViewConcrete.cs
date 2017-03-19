@@ -9,7 +9,8 @@ using AlgorithmVisualization.Algorithm.Experiment;
 using AlgorithmVisualization.Controller;
 using AlgorithmVisualization.Controller.Explore;
 using AlgorithmVisualization.View.Explore;
-using AlgorithmVisualization.View.Explore.Components;
+using AlgorithmVisualization.View.Explore.Components.Log;
+using AlgorithmVisualization.View.Explore.Components.Stats;
 using AlgorithmVisualization.View.Util;
 using Newtonsoft.Json;
 
@@ -70,7 +71,7 @@ namespace AlgorithmVisualization.View
 
             var problemSpecificView = splittableExplorer.CreateExplorationView();
             var statView = splittableExplorer.CreateExplorationView(typeof(RunExplorerConcrete<TIn, TOut, StatTable<TIn, TOut>>));
-            var logView = splittableExplorer.CreateExplorationView(typeof(RunExplorerConcrete<TIn, TOut, LogStream<TIn, TOut>>));
+            var logView = splittableExplorer.CreateExplorationView(typeof(LogExplorer<TIn, TOut>));
 
             var splitContainer = splittableExplorer.Split(splittableExplorer, Orientation.Vertical);
             var rightSplitContainer = splittableExplorer.Split(splitContainer.Panel2, Orientation.Horizontal);
@@ -103,7 +104,7 @@ namespace AlgorithmVisualization.View
             }
             catch (Exception err)
             {
-                ShowErrorMessage(err.ToString());
+                FormsUtil.ShowErrorMessage(err.ToString());
             }
         }
 
@@ -126,7 +127,7 @@ namespace AlgorithmVisualization.View
                 }
                 catch (Exception err)
                 {
-                    ShowErrorMessage(err.ToString());
+                    FormsUtil.ShowErrorMessage(err.ToString());
                 }
             }
         }
@@ -220,11 +221,9 @@ namespace AlgorithmVisualization.View
 
             var multCell = workloadTable.Rows[rowIndex].Cells["workloadTableAmountColumn"];
 
-            multCell.Style.SelectionForeColor = Color.Black;
-            multCell.Style.SelectionBackColor = Color.IndianRed;
-            multCell.Style.BackColor = Color.IndianRed;
+            multCell.Style.SelectionForeColor = Color.FromArgb(255, 40, 40, 40);
 
-            run.StateChanged += (r, state) =>
+            RunStateChangedEventHandler<TIn, TOut> stateChanged = (r, state) =>
             {
                 Color color = multCell.Style.BackColor;
                 switch (state)
@@ -236,16 +235,19 @@ namespace AlgorithmVisualization.View
                         color = Color.Yellow;
                         break;
                     case RunState.OutputAvailable:
-                        color = Color.LightGreen;
+                        color = Color.GreenYellow;
                         break;
                     case RunState.Finished:
-                        color = Color.Green;
+                        color = Color.LimeGreen;
                         break;
                 }
 
                 multCell.Style.BackColor = color;
                 multCell.Style.SelectionBackColor = color;
             };
+
+            stateChanged(run, run.State);
+            run.StateChanged += stateChanged;
         }
 
         private void removeWorkloadRunButton_Click(object sender, EventArgs e)
@@ -438,11 +440,11 @@ namespace AlgorithmVisualization.View
         {
             if (workloadTable.SelectedRows.Count == 1)
             {
-                DialogResult result = saveInputDialog.ShowDialog();
+                DialogResult result = saveRunDialog.ShowDialog();
 
                 if (result == DialogResult.OK)
                 {
-                    string fileName = saveInputDialog.FileName;
+                    string fileName = saveRunDialog.FileName;
                     try
                     {
                         var run = (AlgorithmRun<TIn, TOut>)workloadTable.SelectedRows[0].Cells["workloadTableRunColumn"].Value;
@@ -455,7 +457,7 @@ namespace AlgorithmVisualization.View
                     }
                     catch (Exception err)
                     {
-                        ShowErrorMessage(err.ToString());
+                        FormsUtil.ShowErrorMessage(err.ToString());
                     }
                 }
             }
@@ -483,14 +485,8 @@ namespace AlgorithmVisualization.View
             }
             catch (Exception err)
             {
-                ShowErrorMessage(err.ToString());
+                FormsUtil.ShowErrorMessage(err.ToString());
             }
-        }
-
-        private void ShowErrorMessage(string str)
-        {
-            MessageBox.Show(str, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error,
-                MessageBoxDefaultButton.Button1, MessageBoxOptions.RightAlign, true);
         }
 
     }

@@ -2,11 +2,16 @@
 {
     public class StatisticValue
     {
-        public object Value;
+        public virtual object Value { get; set; }
 
         public StatisticValue(object value)
         {
             Value = value;
+        }
+
+        public StatisticValue()
+        {
+            
         }
 
     }

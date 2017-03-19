@@ -4,13 +4,13 @@ using System.Linq;
 
 namespace AlgorithmVisualization.Algorithm.Experiment.Statistics
 {
-    public class StatisticManager : Dictionary<string, StatisticValue>
+    public class StatisticMap : Dictionary<string, StatisticValue>
     {
 
-        public void Update()
-        {
-            Values.ToList().ForEach(s => (s as DynamicStatisticValue)?.Update());
-        }
+        //public void Update()
+        //{
+        //    Values.ToList().ForEach(s => (s as DynamicStatisticValue)?.Update());
+        //}
 
         public void Put(string name, Func<object> valueFunc)
         {

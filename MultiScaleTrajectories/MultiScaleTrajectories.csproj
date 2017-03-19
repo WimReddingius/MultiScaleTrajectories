@@ -89,6 +89,9 @@
     <Compile Include="Algorithm\ImaiIri\Shortcut.cs" />
     <Compile Include="SingleTrajectory\Algorithm\ImaiIri\ImaiIriNaive.cs" />
     <Compile Include="Algorithm\ImaiIri\Wedge.cs" />
+    <Compile Include="SingleTrajectory\View\Explore\STOutputExplorer.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
     <Compile Include="Util\MoveBank.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

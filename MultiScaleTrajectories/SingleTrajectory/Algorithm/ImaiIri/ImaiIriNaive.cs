@@ -1,5 +1,4 @@
 ﻿using AlgorithmVisualization.Algorithm;
-using MultiScaleTrajectories.Algorithm.DataStructures.Graph;
 using MultiScaleTrajectories.Algorithm.Geometry;
 using MultiScaleTrajectories.Algorithm.ImaiIri;
 
@@ -18,7 +17,6 @@ namespace MultiScaleTrajectories.SingleTrajectory.Algorithm.ImaiIri
 
             output.LogLine("Full number of shortcuts: " + shortcuts.Count);
 
-
             //k * (n^2 + n^2)
             for (var level = 1; level <= input.NumLevels; level++)
             {
@@ -34,12 +32,13 @@ namespace MultiScaleTrajectories.SingleTrajectory.Algorithm.ImaiIri
                 levelShortcuts.ForEach(s => shortcutGraph.AddShortcut(s));
 
                 var shortestPath = shortcutGraph.GetShortestPath(shortcutGraph.FirstNode, shortcutGraph.LastNode);
+                var shortestPathTrajectory = shortcutGraph.GetTrajectory(shortcutGraph.FirstNode, shortestPath);
 
-                //output.LogLine("Level Shortest Path: " + string.Join<DataNode<Point2D>>(", ", shortestPath.ToArray()));
+                output.LogLine("Level Shortest Path: " + string.Join<Point2D>(", ", shortestPathTrajectory.ToArray()));
 
-                output.SetTrajectoryAtLevel(level, shortcutGraph.GetTrajectory(shortestPath));
+                output.SetTrajectoryAtLevel(level, shortestPathTrajectory);
 
-                //output.LogLine("");
+                output.LogLine("");
             }
         }
         

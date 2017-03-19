@@ -21,38 +21,19 @@ namespace AlgorithmVisualization.Controller.Explore
         public RunExplorerConcrete()
         {
             explorer = new TExplore();
-
-            var visUnavailableLabel = new Label
-            {
-                Text = "Visualization not (yet) available",
-                TextAlign = ContentAlignment.MiddleCenter
-            };
-
-            this.Fill(visUnavailableLabel);
-            this.Fill(explorer, false);
-            explorer.BringToFront();
+            WrapVisualization(explorer);
         }
 
-        public override void RunSelectionChanged(params AlgorithmRun<TIn, TOut>[] runs)
+        public override void VisualizeRunSelection(params AlgorithmRun<TIn, TOut>[] runs)
         {
-            //first change run selection in explorer, before calling runstatechanged
-            explorer.RunSelectionChanged(runs);
-            base.RunSelectionChanged(runs);
-        }
-
-        public override void RunStateChanged(AlgorithmRun<TIn, TOut> run, RunState state)
-        {
-            //always marshal to the UI thread
-            explorer.InvokeIfRequired(() =>
-            {
-                explorer.RunStateChanged(run, state);
-            });
+            explorer.VisualizeRunSelection(runs);
         }
 
         public override string ToString()
         {
             return DisplayName;
         }
+
     }
 
 }
