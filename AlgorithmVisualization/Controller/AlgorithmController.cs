@@ -21,8 +21,6 @@ namespace AlgorithmVisualization.Controller
         private AlgorithmView algorithmView;
         public AlgorithmView AlgorithmView => algorithmView ?? (algorithmView = new AlgorithmViewConcrete<TIn, TOut>(this));
 
-        //internal AlgorithmControllerSettings Settings;
-
         [JsonProperty]
         internal BindingList<AlgorithmRun<TIn, TOut>> Runs;
 

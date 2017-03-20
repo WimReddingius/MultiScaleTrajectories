@@ -11,7 +11,6 @@ namespace AlgorithmVisualization.View.Explore
 {
     partial class SplittableExplorer<TIn, TOut> : UserControl where TIn : Input, new() where TOut : Output, new()
     {
-
         private readonly AlgorithmController<TIn, TOut> controller;
         private readonly BindingList<AlgorithmRun<TIn, TOut>> selectedRuns;
         private readonly List<RunExplorerChooser<TIn, TOut>> explorerChoosers;

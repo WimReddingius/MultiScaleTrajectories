@@ -9,6 +9,7 @@ using AlgorithmVisualization.View.Util;
 
 namespace AlgorithmVisualization.View.Explore
 {
+    //not used because SplittableExplorer is more powerful in many regards
     class TabularExplorer<TIn, TOut> : ResizableTableLayoutPanel where TIn : Input, new() where TOut : Output, new()
     {
         private readonly AlgorithmController<TIn, TOut> controller;

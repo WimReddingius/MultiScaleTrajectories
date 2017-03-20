@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.IO;
+using System.Runtime.Serialization;
 using AlgorithmVisualization.Algorithm;
 using MultiScaleTrajectories.Algorithm.Geometry;
 using MultiScaleTrajectories.Util;
@@ -21,7 +22,6 @@ namespace MultiScaleTrajectories.SingleTrajectory.Algorithm
         public STInput(Trajectory2D Trajectory, List<double> Epsilons, long Id) : base(Id)
         {
             Load(Trajectory, Epsilons);
-            InitializeStatistics();
         }
 
         public STInput()
@@ -80,8 +80,8 @@ namespace MultiScaleTrajectories.SingleTrajectory.Algorithm
             }
             else
             {
-                string serializedInput = File.ReadAllText(fileName);
-                STInput input = JsonConvert.DeserializeObject<STInput>(serializedInput);
+                var serializedInput = File.ReadAllText(fileName);
+                var input = JsonConvert.DeserializeObject<STInput>(serializedInput);
                 Load(input.Trajectory, input.Epsilons);
             }
         }
@@ -90,6 +90,12 @@ namespace MultiScaleTrajectories.SingleTrajectory.Algorithm
         {
             Trajectory = trajectory;
             Epsilons = epsilons;
+        }
+
+        [OnDeserialized]
+        internal void OnDeserializedMethod(StreamingContext context)
+        {
+            InitializeStatistics();
         }
 
     }

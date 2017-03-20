@@ -65,7 +65,6 @@
     <Compile Include="Algorithm\Util\StringBuffer.cs" />
     <Compile Include="Algorithm\Util\Bindable.cs" />
     <Compile Include="Algorithm\Experiment\AlgorithmRun.cs" />
-    <Compile Include="Algorithm\Experiment\AlgorithmWorkload.cs" />
     <Compile Include="Algorithm\Input.cs" />
     <Compile Include="Algorithm\Output.cs" />
     <Compile Include="Algorithm\Experiment\Statistics\StatisticMap.cs" />

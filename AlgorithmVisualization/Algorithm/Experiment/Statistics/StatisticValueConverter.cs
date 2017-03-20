@@ -21,9 +21,11 @@ namespace AlgorithmVisualization.Algorithm.Experiment.Statistics
         public override void WriteJson(JsonWriter writer, object value, JsonSerializer serializer)
         {
             JObject jo = new JObject();
-            var statistic = (StatisticValue) value;
 
-            jo.Add("Value", JToken.FromObject(statistic.Value, serializer));
+            var dynamicStatisticValue = value as DynamicStatisticValue;
+            var statisticValue = dynamicStatisticValue != null ? dynamicStatisticValue.Value : ((StatisticValue)value).Value;
+
+            jo.Add("Value", JToken.FromObject(statisticValue, serializer));
             jo.WriteTo(writer);
         }
     }
