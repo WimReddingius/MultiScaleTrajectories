@@ -3,6 +3,7 @@ using Newtonsoft.Json;
 
 namespace AlgorithmVisualization.Algorithm.Experiment.Statistics
 {
+    [JsonConverter(typeof(StatisticValueConverter))]
     class DynamicStatisticValue : StatisticValue
     {
         [JsonIgnore]

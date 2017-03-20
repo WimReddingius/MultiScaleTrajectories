@@ -27,7 +27,7 @@ namespace AlgorithmVisualization.View.Explore.Components.Log
         {
             TOut output = run.Output;
 
-            var newWorker = new BackgroundWorker();
+            var newWorker = new BackgroundWorker {WorkerSupportsCancellation = true};
             newWorker.DoWork += (o, e) =>
             {
                 var buffer = new StringBuffer();
@@ -49,11 +49,7 @@ namespace AlgorithmVisualization.View.Explore.Components.Log
                 }
             };
 
-            if (logPollingWorker != null)
-                logPollingWorker.PerformAfterCancelling(newWorker.RunWorkerAsync);
-            else
-                newWorker.RunWorkerAsync();
-
+            logPollingWorker.DoAfterCancel(newWorker.RunWorkerAsync);
             logPollingWorker = newWorker;
         }
 
@@ -64,6 +60,11 @@ namespace AlgorithmVisualization.View.Explore.Components.Log
             richTextBox.Text += str;
             richTextBox.SelectionStart = richTextBox.Text.Length;
             richTextBox.ScrollToCaret();
+        }
+
+        public new void Dispose()
+        {
+            logPollingWorker?.DoAfterCancel(base.Dispose);
         }
 
     }

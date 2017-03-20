@@ -4,51 +4,33 @@ using System.ComponentModel;
 using System.Runtime.Serialization;
 using AlgorithmVisualization.Algorithm.Experiment.Statistics;
 using AlgorithmVisualization.Algorithm.Util;
-using AlgorithmVisualization.View.Util;
 using Newtonsoft.Json;
 
 namespace AlgorithmVisualization.Algorithm.Experiment
 {
-    public enum RunState
-    {
-        Idle,
-        Started,
-        OutputAvailable,
-        Finished
-    }
-
-    public delegate void RunStateChangedEventHandler<TIn, TOut>(AlgorithmRun<TIn, TOut> run, RunState runState) 
-        where TIn : Input, new() where TOut : Output, new();
-
-    public delegate void RunStateReachedEventHandler<TIn, TOut>(AlgorithmRun<TIn, TOut> run)
-        where TIn : Input, new() where TOut : Output, new();
-
 
     public class AlgorithmRun<TIn, TOut> : Bindable where TIn : Input, new() where TOut : Output, new()
-    {
-        private static int idGenerator = 1;
-        
+    {        
         public event RunStateChangedEventHandler<TIn, TOut> StateChanged;
 
-        [JsonIgnore]
-        public StateReachedHandlerMap<TIn, TOut> StateReached;
+        [JsonIgnore] public RunStateReachedHandlerMap<TIn, TOut> StateReached;
 
         public string Name { get; set; }
+        public long Id;
 
         public RunState State;
         public bool IsOutputAvailable => (State >= RunState.OutputAvailable);
         public bool IsFinished => State == RunState.Finished;
 
-        public TIn Input;
         public TOut Output;
         public int NumIterations;
         public StatisticMap Statistics;
 
-        [JsonIgnore]
-        public Algorithm<TIn, TOut> Algorithm;
+        [JsonIgnore] public Algorithm<TIn, TOut> Algorithm;
+        [JsonIgnore] public TIn Input;
 
-        [JsonProperty]
-        internal Type AlgorithmType;
+        [JsonProperty] internal Type AlgorithmType;
+        [JsonProperty] internal long InputId;
 
         private BackgroundWorker algorithmWorker;
 
@@ -57,7 +39,7 @@ namespace AlgorithmVisualization.Algorithm.Experiment
         public AlgorithmRun()
         {
             Statistics = new StatisticMap();
-            StateReached = new StateReachedHandlerMap<TIn, TOut>();
+            StateReached = new RunStateReachedHandlerMap<TIn, TOut>();
             foreach (RunState state in Enum.GetValues(typeof(RunState)))
             {
                 StateReached[state] = new List<RunStateReachedEventHandler<TIn, TOut>>();
@@ -70,7 +52,9 @@ namespace AlgorithmVisualization.Algorithm.Experiment
             Input = input;
             NumIterations = 1;
 
-            Name = "Run " + idGenerator++;
+            Id = (long) Properties.Settings.Default["InputIdGenerator"];
+            Properties.Settings.Default["InputIdGenerator"] = Id + 1;
+            Name = "Run " + Id;
 
             SetState(RunState.Idle);
         }
@@ -113,7 +97,9 @@ namespace AlgorithmVisualization.Algorithm.Experiment
                     Statistics.Put("Running time (s) - Iteration " + it, iterationRunTime);
 
                     iterationRunTime.Start();
-
+#if (DEBUG)
+                    Algorithm.Compute(Input, output);
+#else
                     try
                     {
                         Algorithm.Compute(Input, output);
@@ -123,7 +109,7 @@ namespace AlgorithmVisualization.Algorithm.Experiment
                         FormsUtil.ShowErrorMessage(ex.ToString());
                         return;
                     }
-
+#endif
                     iterationRunTime.End();
 
                     if (it == 1)
@@ -155,24 +141,11 @@ namespace AlgorithmVisualization.Algorithm.Experiment
             SetState(RunState.Idle);
         }
 
-        //public void UpdateStatistics()
-        //{
-        //    Statistics.Update();
-        //    Input.Statistics.Update();
-        //    Output.Statistics.Update();
-        //}
-
-        //public void SubscribeStateChanged(RunStateChangedEventHandler handler)
-        //{
-        //    StateChanged -= handler;
-        //    StateChanged += handler;
-        //}
-
         [OnSerializing]
         internal void OnSerializingMethod(StreamingContext context)
         {
             AlgorithmType = Algorithm.GetType();
-            //UpdateStatistics();
+            InputId = Input.Id;
         }
 
         public override string ToString()
@@ -181,10 +154,23 @@ namespace AlgorithmVisualization.Algorithm.Experiment
         }
     }
 
-    public class StateReachedHandlerMap<TIn, TOut> : Dictionary<RunState, List<RunStateReachedEventHandler<TIn, TOut>>> 
-        where TIn : Input, new() 
-        where TOut : Output, new()
+    public enum RunState
     {
-        
+        Idle,
+        Started,
+        OutputAvailable,
+        Finished
     }
+
+    public delegate void RunStateChangedEventHandler<TIn, TOut>(AlgorithmRun<TIn, TOut> run, RunState runState)
+        where TIn : Input, new() where TOut : Output, new();
+
+    public delegate void RunStateReachedEventHandler<TIn, TOut>(AlgorithmRun<TIn, TOut> run)
+        where TIn : Input, new() where TOut : Output, new();
+
+    public class RunStateReachedHandlerMap<TIn, TOut> : Dictionary<RunState, List<RunStateReachedEventHandler<TIn, TOut>>> 
+        where TIn : Input, new() where TOut : Output, new()
+    {
+    }
+
 }

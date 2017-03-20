@@ -17,7 +17,6 @@
             return str;
         }
 
-        //TODO: no locking?
         public void Append(string str)
         {
             buffer.Append(str);

@@ -6,12 +6,15 @@ namespace AlgorithmVisualization.View.Util
     static class ThreadUtil
     {
 
-        public static void PerformAfterCancelling(this BackgroundWorker worker, Action action)
+        public static void DoAfterCancel(this BackgroundWorker worker, Action action)
         {
-            worker.WorkerSupportsCancellation = true;
+            var workerIsBusy = false;
+            if (worker != null)
+                workerIsBusy = worker.IsBusy;
 
-            if (worker.IsBusy)
+            if (workerIsBusy)
             {
+                worker.WorkerSupportsCancellation = true;
                 worker.RunWorkerCompleted += (o, e) =>
                 {
                     action();
@@ -24,35 +27,12 @@ namespace AlgorithmVisualization.View.Util
             }
         }
 
-        public static BackgroundWorker CreateWorkerAfterCancellation(BackgroundWorker worker, Action workAction)
-        {
-            var newWorker = new BackgroundWorker();
-            newWorker.DoWork += (o, e) => { workAction(); };
-
-            if (worker.IsBusy)
-            {
-                worker.WorkerSupportsCancellation = true;
-                worker.RunWorkerCompleted += (o, e) => { newWorker.RunWorkerAsync(); };
-                worker.CancelAsync();
-            }
-            else
-            {
-                newWorker.RunWorkerAsync();
-            }
-
-            return newWorker;
-        }
-
         public static BackgroundWorker CreateCancellableWorker(Action workAction)
         {
-            var newWorker = new BackgroundWorker();
+            var newWorker = new BackgroundWorker {WorkerSupportsCancellation = true};
             newWorker.DoWork += (o, e) =>
             {
-                while (!newWorker.CancellationPending)
-                {
-                    workAction();
-                }
-                e.Cancel = true;
+                workAction();
             };
             return newWorker;
         }

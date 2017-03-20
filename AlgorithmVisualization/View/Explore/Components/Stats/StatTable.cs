@@ -16,8 +16,8 @@ namespace AlgorithmVisualization.View.Explore.Components.Stats
     partial class StatTable<TIn, TOut> : UserControl, IRunExplorer<TIn, TOut> where TIn : Input, new() where TOut : Output, new()
     {
         public string DisplayName => "Statistics";
+        public int MaxConsolidation => 10;
         public int MinConsolidation => 1;
-        public int MaxConsolidation => int.MaxValue;
         public int Priority => 100;
 
         private BackgroundWorker statPollingWorker;
@@ -102,7 +102,7 @@ namespace AlgorithmVisualization.View.Explore.Components.Stats
             }
         }
 
-        public void VisualizeRunSelection(AlgorithmRun<TIn, TOut>[] runs)
+        public void VisualizeRunSelection(params AlgorithmRun<TIn, TOut>[] runs)
         {
             var columnFillTasks = new List<Action>();
 
@@ -110,7 +110,7 @@ namespace AlgorithmVisualization.View.Explore.Components.Stats
             columnFillTasks.AddRange(GetColumnFillTasks(inputStatsTable, runs, run => run.Input.Statistics));
             columnFillTasks.AddRange(GetColumnFillTasks(outputStatsTable, runs, run => run.Output.Statistics));
 
-            var newWorker = new BackgroundWorker();
+            var newWorker = new BackgroundWorker { WorkerSupportsCancellation = true };
             newWorker.DoWork += (o, e) =>
             {
                 while (!newWorker.CancellationPending)
@@ -123,11 +123,7 @@ namespace AlgorithmVisualization.View.Explore.Components.Stats
                 }
             };
 
-            if (statPollingWorker != null)
-                statPollingWorker.PerformAfterCancelling(newWorker.RunWorkerAsync);
-            else
-                newWorker.RunWorkerAsync();
-
+            statPollingWorker.DoAfterCancel(newWorker.RunWorkerAsync);
             statPollingWorker = newWorker;
         }
 
@@ -139,6 +135,11 @@ namespace AlgorithmVisualization.View.Explore.Components.Stats
         private void statsTable_Leave(object sender, EventArgs e)
         {
             ((DataGridView)sender).ClearSelection();
+        }
+
+        public new void Dispose()
+        {
+            statPollingWorker?.DoAfterCancel(base.Dispose);
         }
 
     }

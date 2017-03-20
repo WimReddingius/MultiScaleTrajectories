@@ -18,7 +18,7 @@ namespace MultiScaleTrajectories.SingleTrajectory.Algorithm
         
 
         [JsonConstructor]
-        public STInput(Trajectory2D Trajectory, List<double> Epsilons)
+        public STInput(Trajectory2D Trajectory, List<double> Epsilons, long Id) : base(Id)
         {
             Load(Trajectory, Epsilons);
             InitializeStatistics();
@@ -63,7 +63,7 @@ namespace MultiScaleTrajectories.SingleTrajectory.Algorithm
 
         public sealed override void Clear()
         {
-            Load(new Trajectory2D(), new List<double> { double.PositiveInfinity });
+            Load(new Trajectory2D(), new List<double> { 0.0 }); //double.PositiveInfinity });
         }
 
         public override string Serialize()

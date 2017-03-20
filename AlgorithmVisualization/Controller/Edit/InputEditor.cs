@@ -18,8 +18,12 @@ namespace AlgorithmVisualization.Controller.Edit
 
         public void Reload()
         {
-            (Options as IInputLoader<TIn>)?.LoadInput(Input);
-            (Visualization as IInputLoader<TIn>)?.LoadInput(Input);
+            if (Input != null)
+            {
+                (Options as IInputLoader<TIn>)?.LoadInput(Input);
+                (Visualization as IInputLoader<TIn>)?.LoadInput(Input);
+            }
         }
+
     }
 }

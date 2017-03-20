@@ -59,8 +59,9 @@
   <ItemGroup>
     <Compile Include="Algorithm\Algorithm.cs" />
     <Compile Include="Algorithm\Experiment\Statistics\RunTimeStatistic.cs" />
-    <Compile Include="Algorithm\Experiment\Statistics\Statistic.cs" />
+    <Compile Include="Algorithm\Experiment\Statistics\StatisticValue.cs" />
     <Compile Include="Algorithm\Experiment\Statistics\DynamicStatistic.cs" />
+    <Compile Include="Algorithm\Experiment\Statistics\StatisticValueConverter.cs" />
     <Compile Include="Algorithm\Util\StringBuffer.cs" />
     <Compile Include="Algorithm\Util\Bindable.cs" />
     <Compile Include="Algorithm\Experiment\AlgorithmRun.cs" />
@@ -69,13 +70,12 @@
     <Compile Include="Algorithm\Output.cs" />
     <Compile Include="Algorithm\Experiment\Statistics\StatisticMap.cs" />
     <Compile Include="Algorithm\Util\ThreadSafeStringBuilder.cs" />
-    <Compile Include="Controller\AlgorithmControllerSettingsManager.cs" />
+    <Compile Include="Controller\AlgorithmControllerConverter.cs" />
     <Compile Include="Controller\AlgorithmController.cs" />
-    <Compile Include="Controller\AlgorithmControllerSettings.cs" />
     <Compile Include="Controller\Explore\RunExplorer.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="Controller\Explore\RunExplorerConcrete.cs">
+    <Compile Include="Controller\Explore\SimpleRunExplorer.cs">
       <SubType>UserControl</SubType>
     </Compile>
     <Compile Include="Controller\Explore\IRunExplorer.cs" />
@@ -84,7 +84,7 @@
     <Compile Include="Controller\Explore\SingularRunExplorer.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="Controller\Explore\SingularRunExplorerAfterState.cs">
+    <Compile Include="Controller\Explore\SingularRunExplorerSingleState.cs">
       <SubType>UserControl</SubType>
     </Compile>
     <Compile Include="Controller\IAlgorithmController.cs" />

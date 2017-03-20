@@ -85,18 +85,29 @@ namespace AlgorithmVisualization.View.Explore
         {
             if (view.Parent is SplitterPanel)
             {
-                var SplitterPanel = view.Parent;
-                var splitContainer = (SplitContainer) SplitterPanel.Parent;
+                var splitterPanel = view.Parent;
+                var splitContainer = (SplitContainer) splitterPanel.Parent;
                 splitContainer.Parent.Fill(view);
+                DisposeSplitterPanel(splitContainer.Panel1 == splitterPanel ? splitContainer.Panel2 : splitContainer.Panel1);
+            }
+        }
 
-                RunExplorerChooser<TIn, TOut> otherChooser;
-                if (splitContainer.Panel1 == SplitterPanel)
-                    otherChooser = (RunExplorerChooser<TIn, TOut>) splitContainer.Panel2.Controls[0];
-                else
-                    otherChooser = (RunExplorerChooser<TIn, TOut>) splitContainer.Panel1.Controls[0];
+        private void DisposeSplitterPanel(SplitterPanel panel)
+        {
+            var child = panel.Controls[0];
 
-                otherChooser.Dispose();
-                explorerChoosers.Remove(otherChooser);
+            if (child is SplitContainer)
+            {
+                var container = child as SplitContainer;
+                DisposeSplitterPanel(container.Panel1);
+                DisposeSplitterPanel(container.Panel2);
+                container.Dispose();
+            }
+            else if (child is RunExplorerChooser<TIn, TOut>)
+            {
+                var chooser = child as RunExplorerChooser<TIn, TOut>;
+                chooser.Dispose();
+                explorerChoosers.Remove(chooser);
             }
         }
 

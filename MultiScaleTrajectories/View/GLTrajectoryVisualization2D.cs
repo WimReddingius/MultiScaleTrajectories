@@ -12,6 +12,7 @@ namespace MultiScaleTrajectories.View
         private bool DraggingWorld;
         private Vector2d LastDraggingLocation;
 
+
         protected GLTrajectoryVisualization2D()
         {
             MouseDown += HandleMouseDown;

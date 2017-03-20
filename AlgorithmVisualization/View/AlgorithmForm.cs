@@ -8,19 +8,32 @@ namespace AlgorithmVisualization.View
 {
     public partial class AlgorithmForm : Form
     {
-        public readonly BindingList<IAlgorithmController> AlgoControllers;
+        public readonly BindingList<Type> AlgoControllerTypes;
+        private readonly BindingList<IAlgorithmController> algoControllers;
+
 
         public AlgorithmForm()
         {
             InitializeComponent();
 
             OpenTK.Toolkit.Init();
-            AlgorithmControllerSettingsManager.Init();
+            AlgorithmControllerConverter.Init();
 
-            AlgoControllers = new BindingList<IAlgorithmController>();
-            AlgoControllers.ListChanged += (o, e) =>
+            AlgoControllerTypes = new BindingList<Type>();
+            algoControllers = new BindingList<IAlgorithmController>();
+
+            AlgoControllerTypes.ListChanged += (o, e) =>
             {
-                algorithmTypeComboBox.DataSource = AlgoControllers;
+                if (e.ListChangedType == ListChangedType.ItemAdded)
+                {
+                    algoControllers.Add(AlgorithmControllerConverter.GetController(AlgoControllerTypes[e.NewIndex]));
+                }
+                if (e.ListChangedType == ListChangedType.ItemDeleted)
+                {
+                    algoControllers.Remove(AlgorithmControllerConverter.GetController(AlgoControllerTypes[e.NewIndex]));
+                }
+
+                algorithmTypeComboBox.DataSource = algoControllers;
                 algorithmTypeComboBox.DisplayMember = "Name";
             };
         }
@@ -36,7 +49,7 @@ namespace AlgorithmVisualization.View
 
         private void AlgorithmForm_FormClosed(object sender, FormClosedEventArgs e)
         {
-            AlgorithmControllerSettingsManager.Save();
+            AlgorithmControllerConverter.Save();
         }
     }
 }

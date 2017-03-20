@@ -1,11 +1,12 @@
 ﻿using System;
 using System.Diagnostics;
+using Newtonsoft.Json;
 
 namespace AlgorithmVisualization.Algorithm.Experiment.Statistics
 {
+    [JsonConverter(typeof(StatisticValueConverter))]
     class RunTimeStatisticValue : DynamicStatisticValue
     {
-
         public DateTime? StartTime;
         public DateTime? EndTime;
 

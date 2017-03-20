@@ -1,5 +1,7 @@
 ﻿using AlgorithmVisualization.Controller;
 using AlgorithmVisualization.Controller.Edit;
+using MultiScaleTrajectories.Algorithm.ImaiIri.Fast;
+using MultiScaleTrajectories.Algorithm.ImaiIri.Slow;
 using MultiScaleTrajectories.SingleTrajectory.Algorithm;
 using MultiScaleTrajectories.SingleTrajectory.Algorithm.ImaiIri;
 using MultiScaleTrajectories.SingleTrajectory.View.Edit;
@@ -20,10 +22,13 @@ namespace MultiScaleTrajectories.SingleTrajectory.Controller
                 Options = new STInputOptions()
             };
 
-            Algorithms.Add(new ImaiIriHierarchical());
-            Algorithms.Add(new ImaiIriNaive());
+            Algorithms.Add(new ImaiIriHierarchical(new SlowShortcutFinder()));
+            Algorithms.Add(new ImaiIriHierarchical(new FastShortcutFinder()));
+            Algorithms.Add(new ImaiIriGreedy(new SlowShortcutFinder()));
+            Algorithms.Add(new ImaiIriGreedy(new FastShortcutFinder()));
+            Algorithms.Add(new ImaiIriNaive(new SlowShortcutFinder()));            
+            Algorithms.Add(new ImaiIriNaive(new FastShortcutFinder()));
 
-            //AddRunExplorerType(typeof(STOutputNodeLink));
             AddRunExplorerType(typeof(STOutputExplorer));
         }
 

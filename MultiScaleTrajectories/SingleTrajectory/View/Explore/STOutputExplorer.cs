@@ -4,7 +4,7 @@ using MultiScaleTrajectories.SingleTrajectory.Algorithm;
 
 namespace MultiScaleTrajectories.SingleTrajectory.View.Explore
 {
-    class STOutputExplorer : SingularRunExplorerAfterState<STInput, STOutput>
+    class STOutputExplorer : SingularRunExplorerSingleState<STInput, STOutput>
     {
         public override int Priority => 1;
         public override string DisplayName => "Node-Link Visualization";

@@ -19,6 +19,7 @@ namespace AlgorithmVisualization.Algorithm
 
         public StatisticMap Statistics;
 
+        [JsonIgnore]
         public ThreadSafeStringBuilder LogStringBuilder;
 
         [JsonIgnore]

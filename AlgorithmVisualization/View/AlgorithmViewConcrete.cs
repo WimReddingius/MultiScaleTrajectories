@@ -45,16 +45,27 @@ namespace AlgorithmVisualization.View
             PopulateControls();
 
             //default input
-            inputOptionsPanel.Fill(this.controller.InputEditor.Options);
-            AddInput(new TIn());
-            if (this.controller.Settings.InputFile != null)
-                OpenInputFile(this.controller.Settings.InputFile);
+            if (controller.Inputs.Count == 0)
+                AddInput(new TIn());
+            else
+            {
+                inputComboBox.SelectedItem = controller.Inputs[0];
+                controller.InputEditor.LoadInput(controller.Inputs[0]);
+            }
 
             //default run
-            if (controller.Algorithms.Count > 0 && controller.Inputs.Count > 0)
-                AddRun(new AlgorithmRun<TIn, TOut>(controller.Algorithms[0], controller.Inputs[0]));
+            if (controller.Runs.Count == 0)
+            {
+                if (controller.Algorithms.Count > 0 && controller.Inputs.Count > 0)
+                    AddRunToTable(new AlgorithmRun<TIn, TOut>(controller.Algorithms[0], controller.Inputs[0]));
+            }
+            else
+            {
+                controller.Runs.ToList().ForEach(InitializeDeserializedRun);
+            }
 
-            //change to exploration mode
+            //initialize view
+            inputOptionsPanel.Fill(controller.InputEditor.Options);
             SetExploring(true);
         }
 
@@ -70,7 +81,7 @@ namespace AlgorithmVisualization.View
             splittableExplorer.Clear();
 
             var problemSpecificView = splittableExplorer.CreateExplorationView();
-            var statView = splittableExplorer.CreateExplorationView(typeof(RunExplorerConcrete<TIn, TOut, StatTable<TIn, TOut>>));
+            var statView = splittableExplorer.CreateExplorationView(typeof(SimpleRunExplorer<TIn, TOut, StatTable<TIn, TOut>>));
             var logView = splittableExplorer.CreateExplorationView(typeof(LogExplorer<TIn, TOut>));
 
             var splitContainer = splittableExplorer.Split(splittableExplorer, Orientation.Vertical);
@@ -87,7 +98,6 @@ namespace AlgorithmVisualization.View
             {
                 string fileName = openInputDialog.FileName;
                 OpenInputFile(fileName);
-                controller.Settings.InputFile = fileName;
             }
         }
 
@@ -122,8 +132,6 @@ namespace AlgorithmVisualization.View
                     //update name
                     CurrentInput.Name = Path.GetFileNameWithoutExtension(fileName);
                     PopulateControls();
-
-                    controller.Settings.InputFile = fileName;
                 }
                 catch (Exception err)
                 {
@@ -136,7 +144,6 @@ namespace AlgorithmVisualization.View
         {
             CurrentInput.Clear();
             controller.InputEditor.Reload();
-            controller.Settings.InputFile = null;
         }
 
         private void computeWorkloadButton_Click(object sender, EventArgs e)
@@ -211,12 +218,13 @@ namespace AlgorithmVisualization.View
         {
             var input = controller.Inputs[0];
             var algo = controller.Algorithms[0];
-            AddRun(new AlgorithmRun<TIn, TOut>(algo, input));
+            var run = new AlgorithmRun<TIn, TOut>(algo, input);
+            controller.Runs.Add(run);
+            AddRunToTable(run);
         }
 
-        private void AddRun(AlgorithmRun<TIn, TOut> run)
+        private void AddRunToTable(AlgorithmRun<TIn, TOut> run)
         {
-            controller.Runs.Add(run);
             var rowIndex = workloadTable.Rows.Add(run, run.Input, run.Algorithm, 1);
 
             var multCell = workloadTable.Rows[rowIndex].Cells["workloadTableAmountColumn"];
@@ -463,6 +471,7 @@ namespace AlgorithmVisualization.View
             }
         }
 
+        //TODO: bind to existing input
         private void OpenRunFile(string fileName)
         {
             try
@@ -470,15 +479,18 @@ namespace AlgorithmVisualization.View
                 var runStr = File.ReadAllText(fileName);
                 var run = JsonConvert.DeserializeObject<AlgorithmRun<TIn, TOut>>(runStr);
 
+                InitializeDeserializedRun(run);
+
+                if (run.Input == null)
+                {
+                    FormsUtil.ShowErrorMessage("Corresponding input not found!");
+                    return;
+                }
+
                 var name = Path.GetFileNameWithoutExtension(fileName);
                 run.Name = name + " " + (controller.Runs.Count(r => r.Name.StartsWith(name)) + 1);
 
-                run.Input.Name = run.Name + " input";
-                run.Algorithm = controller.Algorithms.ToList()
-                    .Find(alg => alg.GetType() == run.AlgorithmType);
-
-                AddInput(run.Input);
-                AddRun(run);
+                controller.Runs.Add(run);
 
                 //force redraw
                 PopulateControls();
@@ -487,6 +499,20 @@ namespace AlgorithmVisualization.View
             {
                 FormsUtil.ShowErrorMessage(err.ToString());
             }
+        }
+
+        private void InitializeDeserializedRun(AlgorithmRun<TIn, TOut> run)
+        {
+            //run.Input.Name = run.Name + " input";
+            //AddInput(run.Input);
+
+            run.Input = controller.Inputs.ToList()
+                .Find(inp => inp.Id == run.InputId);
+
+            run.Algorithm = controller.Algorithms.ToList()
+                .Find(alg => alg.GetType() == run.AlgorithmType);
+
+            AddRunToTable(run);
         }
 
     }

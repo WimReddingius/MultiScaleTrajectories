@@ -7,22 +7,26 @@ using AlgorithmVisualization.Controller.Edit;
 using AlgorithmVisualization.Controller.Explore;
 using AlgorithmVisualization.Controller.Explore.Factory;
 using AlgorithmVisualization.View;
-using AlgorithmVisualization.View.Explore.Components;
 using AlgorithmVisualization.View.Explore.Components.Log;
 using AlgorithmVisualization.View.Explore.Components.Stats;
+using Newtonsoft.Json;
 
 namespace AlgorithmVisualization.Controller
 {
+    [JsonObject(MemberSerialization.OptIn)]
     public abstract class AlgorithmController<TIn, TOut> : IAlgorithmController where TOut : Output, new() where TIn : Input, new()
     {
-
         public abstract string Name { get; }
         
         private AlgorithmView algorithmView;
         public AlgorithmView AlgorithmView => algorithmView ?? (algorithmView = new AlgorithmViewConcrete<TIn, TOut>(this));
 
-        internal AlgorithmControllerSettings Settings;
+        //internal AlgorithmControllerSettings Settings;
+
+        [JsonProperty]
         internal BindingList<AlgorithmRun<TIn, TOut>> Runs;
+
+        [JsonProperty]
         internal BindingList<TIn> Inputs;
 
         public BindingList<RunExplorerFactory<TIn, TOut>> RunExplorers;
@@ -35,17 +39,17 @@ namespace AlgorithmVisualization.Controller
             RunExplorers = new BindingList<RunExplorerFactory<TIn, TOut>>();
             Algorithms = new BindingList<Algorithm<TIn, TOut>>();
 
-            AddStatelessRunExplorerType(typeof(StatTable<TIn, TOut>));
+            AddSimpleRunExplorerType(typeof(StatTable<TIn, TOut>));
             AddRunExplorerType(typeof(LogExplorer<TIn, TOut>));
 
             Runs = new BindingList<AlgorithmRun<TIn, TOut>>();
             Inputs = new BindingList<TIn>();
-            Settings = AlgorithmControllerSettingsManager.GetSettings(this);
+            //Settings = AlgorithmControllerSettingsManager.GetSettings(this);
         }
 
         //run explorer has no state and is initialized using the RunExplorerConcrete wrapper class
         //type has to implement IRunExplorer
-        protected void AddStatelessRunExplorerType(Type runExplorerType)
+        protected void AddSimpleRunExplorerType(Type runExplorerType)
         {
             Type iRunExplorerType = typeof(IRunExplorer<TIn, TOut>);
             Type iControlType = typeof(Control);
@@ -53,7 +57,7 @@ namespace AlgorithmVisualization.Controller
             if (iControlType.IsAssignableFrom(runExplorerType) && iRunExplorerType.IsAssignableFrom(runExplorerType))
             {
                 Type[] typeArgsWrapper = {typeof(TIn), typeof(TOut), runExplorerType};
-                var genericTypeWrapper = typeof(RunExplorerConcrete<,,>).MakeGenericType(typeArgsWrapper);
+                var genericTypeWrapper = typeof(SimpleRunExplorer<,,>).MakeGenericType(typeArgsWrapper);
                 var concrete = (RunExplorer<TIn, TOut>) Activator.CreateInstance(genericTypeWrapper);
 
                 AddRunExplorerType(concrete.GetType());

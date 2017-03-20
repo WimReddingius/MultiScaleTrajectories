@@ -85,10 +85,15 @@
     <Compile Include="Algorithm\Geometry\Point2D.cs" />
     <Compile Include="Algorithm\Geometry\Trajectory2D.cs" />
     <Compile Include="Algorithm\Geometry\TrajectoryPoint2D.cs" />
-    <Compile Include="Algorithm\ImaiIri\MaxDistanceShortcut.cs" />
+    <Compile Include="Algorithm\ImaiIri\Fast\FastShortcutFinder.cs" />
+    <Compile Include="Algorithm\ImaiIri\Slow\MaxDistanceShortcut.cs" />
     <Compile Include="Algorithm\ImaiIri\Shortcut.cs" />
+    <Compile Include="Algorithm\ImaiIri\ShortcutFinder.cs" />
+    <Compile Include="Algorithm\ImaiIri\ShortcutSet.cs" />
+    <Compile Include="Algorithm\ImaiIri\Slow\SlowShortcutFinder.cs" />
+    <Compile Include="SingleTrajectory\Algorithm\ImaiIri\ImaiIriGreedy.cs" />
     <Compile Include="SingleTrajectory\Algorithm\ImaiIri\ImaiIriNaive.cs" />
-    <Compile Include="Algorithm\ImaiIri\Wedge.cs" />
+    <Compile Include="Algorithm\ImaiIri\Fast\Wedge.cs" />
     <Compile Include="SingleTrajectory\View\Explore\STOutputExplorer.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -99,7 +104,7 @@
     <Compile Include="SingleTrajectory\Algorithm\ImaiIri\ImaiIriHierarchical.cs" />
     <Compile Include="SingleTrajectory\Algorithm\STInput.cs" />
     <Compile Include="SingleTrajectory\Algorithm\STOutput.cs" />
-    <Compile Include="Algorithm\ImaiIri\ShortcutFinder.cs" />
+    <Compile Include="Algorithm\ImaiIri\ShortcutFinderOld.cs" />
     <Compile Include="Algorithm\DataStructures\Graph\DataEdge.cs" />
     <Compile Include="Algorithm\DataStructures\Graph\DataNode.cs" />
     <Compile Include="Algorithm\DataStructures\Graph\Edge.cs" />
@@ -172,6 +177,7 @@
   <ItemGroup>
     <Content Include="Icon.ico" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

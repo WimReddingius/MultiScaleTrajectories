@@ -3,7 +3,7 @@ using AlgorithmVisualization.Algorithm.Experiment;
 
 namespace AlgorithmVisualization.Controller.Explore
 {
-    public abstract class SingularRunExplorerAfterState<TIn, TOut> : SingularRunExplorer<TIn, TOut> where TIn : Input, new() where TOut : Output, new()
+    public abstract class SingularRunExplorerSingleState<TIn, TOut> : SingularRunExplorer<TIn, TOut> where TIn : Input, new() where TOut : Output, new()
     {
         protected abstract RunState VisualizableState { get; }
         protected abstract RunStateReachedEventHandler<TIn, TOut> BeforeStateReachedHandler { get;  }

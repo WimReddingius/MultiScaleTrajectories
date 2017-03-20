@@ -53,6 +53,26 @@ namespace MultiScaleTrajectories.Algorithm.DataStructures.Graph
             Edges.Remove(edge);
         }
 
+        public void RemoveNode(N node)
+        {
+            foreach (var outNeighbor in node.OutEdges.Keys)
+            {
+                var edge = node.OutEdges[outNeighbor];
+
+                outNeighbor.InEdges.Remove(node);
+                Edges.Remove((E) edge);
+            }
+
+            foreach (var inNeighbor in node.InEdges.Keys)
+            {
+                var edge = node.InEdges[inNeighbor];
+
+                inNeighbor.OutEdges.Remove(node);
+                Edges.Remove((E)edge);
+            }
+            Nodes.Remove(node);
+        }
+
         //Uses Dijkstra
         public List<N> GetShortestPath(N source, N target)
         {

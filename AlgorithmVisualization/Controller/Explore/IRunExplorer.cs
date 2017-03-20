@@ -15,5 +15,7 @@ namespace AlgorithmVisualization.Controller.Explore
 
         void VisualizeRunSelection(params AlgorithmRun<TIn, TOut>[] runs);
 
+        void Dispose();
+
     }
 }

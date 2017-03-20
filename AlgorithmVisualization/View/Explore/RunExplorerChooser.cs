@@ -51,7 +51,10 @@ namespace AlgorithmVisualization.View.Explore
                 autoChooseRunsCheckBox.CheckState = value ? CheckState.Checked : CheckState.Unchecked;
                 autoChooseRunsCheckBox.CheckedChanged += autoChooseRunsCheckBox_CheckedChanged;
                 if (value)
+                {
                     controller.Runs.ListChanged += UpdateAutoSelection;
+                    UpdateAutoSelection(null, null);
+                }
                 else
                     controller.Runs.ListChanged -= UpdateAutoSelection;
             }
@@ -73,9 +76,11 @@ namespace AlgorithmVisualization.View.Explore
             //set to auto selection by default
             autoChooseRunsCheckBox.CheckState = CheckState.Checked;;
 
-            //initialize run explorers and default run selection
-            UsingActiveSelection = false;
+            //default run selection
             lastSelection = new List<AlgorithmRun<TIn, TOut>>();
+            UsingActiveSelection = false;
+
+            //initialize run explorers
             RunExplorers = new BindingList<RunExplorer<TIn, TOut>>(controller.RunExplorers
                 .ToList()
                 .Select(fac => fac.Create())
@@ -102,10 +107,7 @@ namespace AlgorithmVisualization.View.Explore
                         .ToList()
                         .Find(ex => ex.GetType() == defaultExplorerType);
 
-                if (defaultExplorer != null)
-                    runExplorerComboBox.SelectedItem = defaultExplorer;
-                else
-                    runExplorerComboBox.SelectedItem = availableRunExplorers[0];
+                runExplorerComboBox.SelectedItem = defaultExplorer ?? availableRunExplorers[0];
             }
         }
 
@@ -235,8 +237,8 @@ namespace AlgorithmVisualization.View.Explore
         {
             Application.RemoveMessageFilter(mouseMessageFilter);
 
-            //var runExplorer = (RunExplorer<TIn, TOut>)runExplorerComboBox.SelectedItem;
-            //runExplorer.Deactivate();
+            var runExplorer = (RunExplorer<TIn, TOut>)runExplorerComboBox.SelectedItem;
+            runExplorer?.Dispose();
 
             AutoSelect = false;
             UsingActiveSelection = false;

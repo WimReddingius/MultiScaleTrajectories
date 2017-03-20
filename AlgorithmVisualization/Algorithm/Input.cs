@@ -1,23 +1,32 @@
 ﻿using AlgorithmVisualization.Algorithm.Experiment.Statistics;
 using AlgorithmVisualization.Algorithm.Util;
+using Newtonsoft.Json;
 
 namespace AlgorithmVisualization.Algorithm
 {
 
     public abstract class Input : Bindable
     {
-        private static int IdGenerator = 1;
+        public long Id;
 
         public string Name { get; set; }
 
-        public bool ReadOnly;
+        internal bool ReadOnly;
 
         public StatisticMap Statistics;
-        
+
+        [JsonConstructor]
+        protected Input(long Id)
+        {
+            Statistics = new StatisticMap();
+            this.Id = Id;
+        }
 
         protected Input()
         {
-            Name = "Input " + IdGenerator++;
+            Id = (long) Properties.Settings.Default["InputIdGenerator"];
+            Properties.Settings.Default["InputIdGenerator"] = Id + 1;
+            Name = "Input " + Id;
 
             Statistics = new StatisticMap();
         }

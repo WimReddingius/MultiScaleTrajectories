@@ -1,7 +1,7 @@
 ﻿using System;
 using MultiScaleTrajectories.Algorithm.Geometry;
 
-namespace MultiScaleTrajectories.Algorithm.ImaiIri
+namespace MultiScaleTrajectories.Algorithm.ImaiIri.Fast
 {
     class Wedge
     {

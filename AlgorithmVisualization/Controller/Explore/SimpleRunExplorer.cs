@@ -1,12 +1,10 @@
-﻿using System.Drawing;
-using System.Windows.Forms;
+﻿using System.Windows.Forms;
 using AlgorithmVisualization.Algorithm;
 using AlgorithmVisualization.Algorithm.Experiment;
-using AlgorithmVisualization.View.Util;
 
 namespace AlgorithmVisualization.Controller.Explore
 {
-    public class RunExplorerConcrete<TIn, TOut, TExplore> : RunExplorer<TIn, TOut> 
+    public class SimpleRunExplorer<TIn, TOut, TExplore> : RunExplorer<TIn, TOut> 
         where TIn : Input, new() 
         where TOut : Output, new()
         where TExplore : Control, IRunExplorer<TIn, TOut>, new()
@@ -18,7 +16,7 @@ namespace AlgorithmVisualization.Controller.Explore
         public override string DisplayName => explorer.DisplayName;
         public override int Priority => explorer.Priority;
 
-        public RunExplorerConcrete()
+        public SimpleRunExplorer()
         {
             explorer = new TExplore();
             WrapVisualization(explorer);
@@ -27,6 +25,12 @@ namespace AlgorithmVisualization.Controller.Explore
         public override void VisualizeRunSelection(params AlgorithmRun<TIn, TOut>[] runs)
         {
             explorer.VisualizeRunSelection(runs);
+        }
+
+        public override void Dispose()
+        {
+            ((IRunExplorer<TIn, TOut>) explorer).Dispose();
+            base.Dispose();
         }
 
         public override string ToString()

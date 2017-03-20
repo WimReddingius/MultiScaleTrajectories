@@ -16,12 +16,12 @@ namespace AlgorithmVisualization.Controller.Explore
         public abstract int Priority { get; }
 
         protected AlgorithmRun<TIn, TOut>[] previousRuns;
-        private readonly Dictionary<AlgorithmRun<TIn, TOut>, StateReachedHandlerMap<TIn, TOut>> stateReachedHandlers;
+        private readonly Dictionary<AlgorithmRun<TIn, TOut>, RunStateReachedHandlerMap<TIn, TOut>> stateReachedHandlers;
 
 
         protected RunExplorer()
         {
-            stateReachedHandlers = new Dictionary<AlgorithmRun<TIn, TOut>, StateReachedHandlerMap<TIn, TOut>>();
+            stateReachedHandlers = new Dictionary<AlgorithmRun<TIn, TOut>, RunStateReachedHandlerMap<TIn, TOut>>();
 
             var visUnavailableLabel = new Label
             {
@@ -71,7 +71,7 @@ namespace AlgorithmVisualization.Controller.Explore
         protected void AddStateReachedHandler(AlgorithmRun<TIn, TOut> run, RunState state, RunStateReachedEventHandler<TIn, TOut> handler)
         {
             if (!stateReachedHandlers.ContainsKey(run))
-                stateReachedHandlers[run] = new StateReachedHandlerMap<TIn, TOut>();
+                stateReachedHandlers[run] = new RunStateReachedHandlerMap<TIn, TOut>();
 
             if (!stateReachedHandlers[run].ContainsKey(state))
                 stateReachedHandlers[run][state] = new List<RunStateReachedEventHandler<TIn, TOut>>();
@@ -97,10 +97,10 @@ namespace AlgorithmVisualization.Controller.Explore
             return DisplayName;
         }
 
-        //public void Deactivate()
-        //{
-        //    ClearStateReachedHandlers();
-        //}
+        public new virtual void Dispose()
+        {
+            base.Dispose();
+        }
 
     }
 }

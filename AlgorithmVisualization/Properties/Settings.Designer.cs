@@ -26,12 +26,36 @@ namespace AlgorithmVisualization.Properties {
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("")]
-        public string AlgorithmControllerSettings {
+        public string AlgorithmControllers {
             get {
-                return ((string)(this["AlgorithmControllerSettings"]));
+                return ((string)(this["AlgorithmControllers"]));
             }
             set {
-                this["AlgorithmControllerSettings"] = value;
+                this["AlgorithmControllers"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("0")]
+        public long InputIdGenerator {
+            get {
+                return ((long)(this["InputIdGenerator"]));
+            }
+            set {
+                this["InputIdGenerator"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("")]
+        public string RunIdGenerator {
+            get {
+                return ((string)(this["RunIdGenerator"]));
+            }
+            set {
+                this["RunIdGenerator"] = value;
             }
         }
     }
