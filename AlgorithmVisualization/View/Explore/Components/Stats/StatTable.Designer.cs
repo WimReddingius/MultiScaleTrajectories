@@ -1,4 +1,6 @@
-﻿namespace AlgorithmVisualization.View.Explore.Components.Stats
+﻿using AlgorithmVisualization.View.Util.Components;
+
+namespace AlgorithmVisualization.View.Explore.Components.Stats
 {
     partial class StatTable<TIn, TOut>
     {
@@ -28,7 +30,7 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.resizableTableLayoutPanel1 = new AlgorithmVisualization.View.Util.ResizableTableLayoutPanel();
+            this.resizableTableLayoutPanel1 = new ResizableTableLayoutPanel();
             this.panel3 = new System.Windows.Forms.Panel();
             this.outputStatsTable = new System.Windows.Forms.DataGridView();
             this.label3 = new System.Windows.Forms.Label();
@@ -221,6 +223,6 @@
         private System.Windows.Forms.Panel panel3;
         private System.Windows.Forms.DataGridView outputStatsTable;
         private System.Windows.Forms.Label label3;
-        private Util.ResizableTableLayoutPanel resizableTableLayoutPanel1;
+        private ResizableTableLayoutPanel resizableTableLayoutPanel1;
     }
 }

@@ -149,7 +149,7 @@
     </Compile>
     <Compile Include="View\Util\MouseMessageFilter.cs" />
     <Compile Include="View\Util\PersistentBindable.cs" />
-    <Compile Include="View\Util\ResizableTableLayoutPanel.cs">
+    <Compile Include="View\Util\Components\ResizableTableLayoutPanel.cs">
       <SubType>Component</SubType>
     </Compile>
     <Compile Include="View\GLVisualization\GLVisualization.cs">

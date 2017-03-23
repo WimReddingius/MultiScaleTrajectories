@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Drawing;
 using System.Windows.Forms;
 
-namespace AlgorithmVisualization.View.Util
+namespace AlgorithmVisualization.View.Util.Components
 {
     class ResizableTableLayoutPanel : TableLayoutPanel
     {

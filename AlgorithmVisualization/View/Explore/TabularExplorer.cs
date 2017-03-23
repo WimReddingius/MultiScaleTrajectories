@@ -6,6 +6,7 @@ using AlgorithmVisualization.Algorithm.Run;
 using AlgorithmVisualization.Controller;
 using AlgorithmVisualization.Controller.Explore;
 using AlgorithmVisualization.View.Util;
+using AlgorithmVisualization.View.Util.Components;
 
 namespace AlgorithmVisualization.View.Explore
 {
