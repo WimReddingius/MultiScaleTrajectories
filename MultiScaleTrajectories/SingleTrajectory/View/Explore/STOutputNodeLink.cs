@@ -1,6 +1,7 @@
 ﻿using System.Drawing;
 using System.Windows.Forms;
-using AlgorithmVisualization.Algorithm.Experiment;
+using AlgorithmVisualization.Algorithm;
+using AlgorithmVisualization.Algorithm.Run;
 using AlgorithmVisualization.View.GLVisualization.GLUtil;
 using MultiScaleTrajectories.Algorithm.Geometry;
 using MultiScaleTrajectories.SingleTrajectory.Algorithm;
@@ -32,7 +33,7 @@ namespace MultiScaleTrajectories.SingleTrajectory.View.Explore
         {
             int padding = 5;
             Color color = Color.Black;
-            GLUtil2D.RenderText(padding, padding, Run.Name, color);
+            GLUtil2D.RenderText(padding, padding, Run.DisplayName, color);
             GLUtil2D.RenderText(padding, 20 + padding, "Level " + currentLevel, color);
         }
 

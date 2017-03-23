@@ -5,7 +5,7 @@ using System.ComponentModel;
 using System.Drawing;
 using System.Linq;
 using AlgorithmVisualization.Algorithm;
-using AlgorithmVisualization.Algorithm.Experiment;
+using AlgorithmVisualization.Algorithm.Run;
 using AlgorithmVisualization.Controller;
 using AlgorithmVisualization.Controller.Explore;
 using AlgorithmVisualization.View.Util;
@@ -81,7 +81,7 @@ namespace AlgorithmVisualization.View.Explore
             UsingActiveSelection = false;
 
             //initialize run explorers
-            RunExplorers = new BindingList<RunExplorer<TIn, TOut>>(controller.RunExplorers
+            RunExplorers = new BindingList<RunExplorer<TIn, TOut>>(controller.RunExplorerFactories
                 .ToList()
                 .Select(fac => fac.Create())
                 .ToList());

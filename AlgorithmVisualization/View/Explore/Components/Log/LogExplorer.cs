@@ -1,5 +1,6 @@
-﻿using AlgorithmVisualization.Algorithm;
-using AlgorithmVisualization.Algorithm.Experiment;
+﻿using System;
+using AlgorithmVisualization.Algorithm;
+using AlgorithmVisualization.Algorithm.Run;
 using AlgorithmVisualization.Controller.Explore;
 
 namespace AlgorithmVisualization.View.Explore.Components.Log
@@ -10,8 +11,8 @@ namespace AlgorithmVisualization.View.Explore.Components.Log
         public override int Priority => 100;
 
         protected override RunState VisualizableState => RunState.Started;
-        protected override RunStateReachedEventHandler<TIn, TOut> BeforeStateReachedHandler => logStream.BeforeStarted;
-        protected override RunStateReachedEventHandler<TIn, TOut> AfterStateReachedHandler => logStream.AfterStarted;
+        protected override Action<AlgorithmRun<TIn, TOut>> BeforeStateReachedHandler => logStream.BeforeStarted;
+        protected override Action<AlgorithmRun<TIn, TOut>> AfterStateReachedHandler => logStream.AfterStarted;
 
         private readonly LogStream<TIn, TOut> logStream;
 

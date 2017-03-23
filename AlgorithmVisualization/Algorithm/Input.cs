@@ -1,45 +1,36 @@
-﻿using AlgorithmVisualization.Algorithm.Experiment.Statistics;
-using AlgorithmVisualization.Algorithm.Util;
-using Newtonsoft.Json;
+﻿using System.Runtime.Serialization;
+using AlgorithmVisualization.Algorithm.Statistics;
+using AlgorithmVisualization.View.Util;
 
 namespace AlgorithmVisualization.Algorithm
 {
-
-    public abstract class Input : Bindable
+    public abstract class Input : PersistentBindable
     {
-        public long Id;
-
-        public string Name { get; set; }
+        private static long nextId = 1;
 
         internal bool ReadOnly;
-
         public StatisticMap Statistics;
 
-        [JsonConstructor]
-        protected Input(long Id)
+        protected Input(string DisplayName = null)
         {
             Statistics = new StatisticMap();
-            this.Id = Id;
+
+            this.DisplayName = DisplayName ?? "Input " + nextId++;
+
+            InitStatistics();
         }
 
-        protected Input()
+        //overrides may not use instance members
+        protected virtual void InitStatistics()
         {
-            Id = (long) Properties.Settings.Default["InputIdGenerator"];
-            Properties.Settings.Default["InputIdGenerator"] = Id + 1;
-            Name = "Input " + Id;
-
-            Statistics = new StatisticMap();
         }
-
-        public abstract string Serialize();
-
-        public abstract void LoadSerialized(string fileName);
 
         public abstract void Clear();
 
-        public override string ToString()
+        [OnDeserialized]
+        internal void OnDeserialized(StreamingContext context)
         {
-            return Name;
+            InitStatistics();
         }
 
     }

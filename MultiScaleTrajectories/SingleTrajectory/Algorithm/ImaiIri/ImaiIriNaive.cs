@@ -1,23 +1,28 @@
-﻿using AlgorithmVisualization.Algorithm;
-using MultiScaleTrajectories.Algorithm.ImaiIri;
+﻿using MultiScaleTrajectories.Algorithm.ImaiIri;
+using MultiScaleTrajectories.SingleTrajectory.View.Algorithm;
+using Newtonsoft.Json;
 
 namespace MultiScaleTrajectories.SingleTrajectory.Algorithm.ImaiIri
 {
-    class ImaiIriNaive : Algorithm<STInput, STOutput>
+    class ImaiIriNaive : ImaiIriAlgorithm
     {
-        public override string Name => "ImaiIri - Naive - " + shortcutFinder.Name;
+        public override string AlgoName => "ImaiIri - Naive";
 
-        private readonly ShortcutFinder shortcutFinder;
-
-        public ImaiIriNaive(ShortcutFinder shortcutFinder)
+        public ImaiIriNaive()
         {
-            this.shortcutFinder = shortcutFinder;
+
+        }
+
+        [JsonConstructor]
+        public ImaiIriNaive(ImaiIriOptions imaiIriOptions) : base(imaiIriOptions)
+        {
+
         }
 
         public override void Compute(STInput input, STOutput output)
         {
             var trajectory = input.Trajectory;
-            shortcutFinder.Initialize(input, output);
+            var shortcutFinder = ShortcutFinderFactory.Create(input, output);
 
             for (var level = 1; level <= input.NumLevels; level++)
             {

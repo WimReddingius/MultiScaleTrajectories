@@ -64,7 +64,6 @@ namespace MultiScaleTrajectories.Algorithm.ImaiIri
             }
         }
 
-        //tad bit ugly
         public void RemoveByStartEnd(Point2D start, Point2D end)
         {
             Remove(AllShortcuts.Find(s => s.Start == start && s.End == end));

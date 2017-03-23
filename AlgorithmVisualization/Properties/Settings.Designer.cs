@@ -8,54 +8,37 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace AlgorithmVisualization.Properties {
-    
-    
+namespace AlgorithmVisualization.Properties
+{
+
+
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
     [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.VisualStudio.Editors.SettingsDesigner.SettingsSingleFileGenerator", "14.0.0.0")]
-    public sealed partial class Settings : global::System.Configuration.ApplicationSettingsBase {
-        
+    public sealed partial class Settings : global::System.Configuration.ApplicationSettingsBase
+    {
+
         private static Settings defaultInstance = ((Settings)(global::System.Configuration.ApplicationSettingsBase.Synchronized(new Settings())));
-        
-        public static Settings Default {
-            get {
+
+        public static Settings Default
+        {
+            get
+            {
                 return defaultInstance;
             }
         }
-        
+
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("")]
-        public string AlgorithmControllers {
-            get {
-                return ((string)(this["AlgorithmControllers"]));
+        public string ProblemControllers
+        {
+            get
+            {
+                return ((string)(this["ProblemControllers"]));
             }
-            set {
-                this["AlgorithmControllers"] = value;
-            }
-        }
-        
-        [global::System.Configuration.UserScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("0")]
-        public long InputIdGenerator {
-            get {
-                return ((long)(this["InputIdGenerator"]));
-            }
-            set {
-                this["InputIdGenerator"] = value;
-            }
-        }
-        
-        [global::System.Configuration.UserScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("")]
-        public string RunIdGenerator {
-            get {
-                return ((string)(this["RunIdGenerator"]));
-            }
-            set {
-                this["RunIdGenerator"] = value;
+            set
+            {
+                this["ProblemControllers"] = value;
             }
         }
     }

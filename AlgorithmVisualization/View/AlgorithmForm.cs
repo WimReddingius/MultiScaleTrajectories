@@ -8,8 +8,8 @@ namespace AlgorithmVisualization.View
 {
     public partial class AlgorithmForm : Form
     {
-        public readonly BindingList<Type> AlgoControllerTypes;
-        private readonly BindingList<IAlgorithmController> algoControllers;
+        public readonly BindingList<Type> ProblemControllerTypes;
+        private readonly BindingList<IAlgorithmController> problemControllers;
 
 
         public AlgorithmForm()
@@ -19,28 +19,28 @@ namespace AlgorithmVisualization.View
             OpenTK.Toolkit.Init();
             AlgorithmControllerConverter.Init();
 
-            AlgoControllerTypes = new BindingList<Type>();
-            algoControllers = new BindingList<IAlgorithmController>();
+            ProblemControllerTypes = new BindingList<Type>();
+            problemControllers = new BindingList<IAlgorithmController>();
 
-            AlgoControllerTypes.ListChanged += (o, e) =>
+            ProblemControllerTypes.ListChanged += (o, e) =>
             {
                 if (e.ListChangedType == ListChangedType.ItemAdded)
                 {
-                    algoControllers.Add(AlgorithmControllerConverter.GetController(AlgoControllerTypes[e.NewIndex]));
+                    problemControllers.Add(AlgorithmControllerConverter.GetController(ProblemControllerTypes[e.NewIndex]));
                 }
                 if (e.ListChangedType == ListChangedType.ItemDeleted)
                 {
-                    algoControllers.Remove(AlgorithmControllerConverter.GetController(AlgoControllerTypes[e.NewIndex]));
+                    problemControllers.Remove(AlgorithmControllerConverter.GetController(ProblemControllerTypes[e.NewIndex]));
                 }
 
-                algorithmTypeComboBox.DataSource = algoControllers;
-                algorithmTypeComboBox.DisplayMember = "Name";
+                algorithmProblemComboBox.DataSource = problemControllers;
+                algorithmProblemComboBox.DisplayMember = "Name";
             };
         }
 
-        private void algorithmTypeComboBox_SelectedIndexChanged(object sender, EventArgs e)
+        private void algorithmProblemComboBox_SelectedIndexChanged(object sender, EventArgs e)
         {
-            var algoView = ((IAlgorithmController) algorithmTypeComboBox.SelectedItem).AlgorithmView;
+            var algoView = ((IAlgorithmController) algorithmProblemComboBox.SelectedItem).AlgorithmView;
 
             baseSplitContainer.Panel1.Fill(algoView.VisualizationContainer);
             configurationSplitContainer.Panel2.Fill(algoView);

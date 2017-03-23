@@ -1,6 +1,6 @@
 ﻿using System.Text;
 
-namespace AlgorithmVisualization.Algorithm.Util
+namespace AlgorithmVisualization.Util
 {
     public class ThreadSafeStringBuilder
     {

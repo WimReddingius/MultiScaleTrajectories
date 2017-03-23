@@ -1,8 +1,8 @@
-﻿using System;
+using System;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 
-namespace AlgorithmVisualization.Algorithm.Experiment.Statistics
+namespace AlgorithmVisualization.Algorithm.Statistics
 {
     class StatisticValueConverter : JsonConverter
     {

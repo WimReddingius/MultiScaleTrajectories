@@ -12,25 +12,26 @@ namespace MultiScaleTrajectories.Algorithm.ImaiIri.Slow
     {
         public override string Name => "Slow";
 
-        private ShortcutSet<MaxDistanceShortcut> shortcutSet;
+        private readonly ShortcutSet<MaxDistanceShortcut> shortcutSet;
 
-        public override void Initialize(STInput input, STOutput output)
+        public SlowShortcutFinder(STInput input, STOutput output) : base(input, output)
         {
-            base.Initialize(input, output);
             shortcutSet = FindAllShortcuts(input.Trajectory);
             output.LogObject("Full number of shortcuts", shortcutSet.AllShortcuts.Count);
         }
 
-        //tad bit ugly
         public override List<Shortcut> GetShortcuts(double epsilon)
         {
-            return shortcutSet.AllShortcuts.FindAll(s => s.MaxDistance <= epsilon).Cast<Shortcut>().ToList(); 
+            return shortcutSet.AllShortcuts.FindAll(s =>
+            {
+                var x = shortcutSet.AllShortcuts.IndexOf(s);
+                return s.MaxDistance <= epsilon;
+            }).Cast<Shortcut>().ToList();
         }
 
         public override void DontFindInTheFuture(Shortcut shortcut)
         {
             shortcutSet.Remove((MaxDistanceShortcut)shortcut);
-            //shortcutSet.RemoveByStartEnd(start, end);
         }
 
         public override void RemoveFutureShortcutsWithPoint(Point2D point)

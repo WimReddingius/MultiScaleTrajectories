@@ -31,8 +31,8 @@
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(AlgorithmForm));
             this.baseSplitContainer = new System.Windows.Forms.SplitContainer();
             this.configurationSplitContainer = new System.Windows.Forms.SplitContainer();
-            this.algorithmTypeLabel = new System.Windows.Forms.Label();
-            this.algorithmTypeComboBox = new System.Windows.Forms.ComboBox();
+            this.algorithmProblemLabel = new System.Windows.Forms.Label();
+            this.algorithmProblemComboBox = new System.Windows.Forms.ComboBox();
             this.saveInputDialog = new System.Windows.Forms.SaveFileDialog();
             this.openInputDialog = new System.Windows.Forms.OpenFileDialog();
             ((System.ComponentModel.ISupportInitialize)(this.baseSplitContainer)).BeginInit();
@@ -69,31 +69,31 @@
             // 
             // configurationSplitContainer.Panel1
             // 
-            this.configurationSplitContainer.Panel1.Controls.Add(this.algorithmTypeLabel);
-            this.configurationSplitContainer.Panel1.Controls.Add(this.algorithmTypeComboBox);
+            this.configurationSplitContainer.Panel1.Controls.Add(this.algorithmProblemLabel);
+            this.configurationSplitContainer.Panel1.Controls.Add(this.algorithmProblemComboBox);
             this.configurationSplitContainer.Size = new System.Drawing.Size(372, 702);
             this.configurationSplitContainer.SplitterDistance = 58;
             this.configurationSplitContainer.TabIndex = 11;
             // 
-            // algorithmTypeLabel
+            // algorithmProblemLabel
             // 
-            this.algorithmTypeLabel.AutoSize = true;
-            this.algorithmTypeLabel.Location = new System.Drawing.Point(-3, 9);
-            this.algorithmTypeLabel.Name = "algorithmTypeLabel";
-            this.algorithmTypeLabel.Size = new System.Drawing.Size(77, 13);
-            this.algorithmTypeLabel.TabIndex = 10;
-            this.algorithmTypeLabel.Text = "Algorithm Type";
+            this.algorithmProblemLabel.AutoSize = true;
+            this.algorithmProblemLabel.Location = new System.Drawing.Point(-3, 9);
+            this.algorithmProblemLabel.Name = "algorithmProblemLabel";
+            this.algorithmProblemLabel.Size = new System.Drawing.Size(91, 13);
+            this.algorithmProblemLabel.TabIndex = 10;
+            this.algorithmProblemLabel.Text = "Algorithm Problem";
             // 
-            // algorithmTypeComboBox
+            // algorithmProblemComboBox
             // 
-            this.algorithmTypeComboBox.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            this.algorithmProblemComboBox.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.algorithmTypeComboBox.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.algorithmTypeComboBox.Location = new System.Drawing.Point(0, 25);
-            this.algorithmTypeComboBox.Name = "algorithmTypeComboBox";
-            this.algorithmTypeComboBox.Size = new System.Drawing.Size(369, 21);
-            this.algorithmTypeComboBox.TabIndex = 1;
-            this.algorithmTypeComboBox.SelectedIndexChanged += new System.EventHandler(this.algorithmTypeComboBox_SelectedIndexChanged);
+            this.algorithmProblemComboBox.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.algorithmProblemComboBox.Location = new System.Drawing.Point(0, 25);
+            this.algorithmProblemComboBox.Name = "algorithmProblemComboBox";
+            this.algorithmProblemComboBox.Size = new System.Drawing.Size(369, 21);
+            this.algorithmProblemComboBox.TabIndex = 1;
+            this.algorithmProblemComboBox.SelectedIndexChanged += new System.EventHandler(this.algorithmProblemComboBox_SelectedIndexChanged);
             // 
             // saveInputDialog
             // 
@@ -133,8 +133,8 @@
         #endregion
 
         private System.Windows.Forms.SplitContainer baseSplitContainer;
-        private System.Windows.Forms.ComboBox algorithmTypeComboBox;
-        private System.Windows.Forms.Label algorithmTypeLabel;
+        private System.Windows.Forms.ComboBox algorithmProblemComboBox;
+        private System.Windows.Forms.Label algorithmProblemLabel;
         private System.Windows.Forms.SaveFileDialog saveInputDialog;
         private System.Windows.Forms.OpenFileDialog openInputDialog;
         private System.Windows.Forms.SplitContainer configurationSplitContainer;

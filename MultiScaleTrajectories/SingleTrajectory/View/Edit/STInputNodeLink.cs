@@ -48,7 +48,7 @@ namespace MultiScaleTrajectories.SingleTrajectory.View.Edit
         protected override void RenderHud()
         {
             int padding = 5;
-            string text = "Editing " + Input.Name;
+            string text = "Editing " + Input.DisplayName;
             Color color = Color.Black;
             GLUtil2D.RenderText(padding, padding, text, color);
         }

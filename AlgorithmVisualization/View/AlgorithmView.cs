@@ -2,7 +2,7 @@
 
 namespace AlgorithmVisualization.View
 {
-    #if DEBUG
+#if DEBUG
 
         //For showing in Visual Studio Designer
         public class AlgorithmView : UserControl

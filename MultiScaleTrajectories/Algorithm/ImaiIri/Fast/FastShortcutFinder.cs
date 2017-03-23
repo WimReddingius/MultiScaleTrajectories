@@ -8,9 +8,14 @@ namespace MultiScaleTrajectories.Algorithm.ImaiIri.Fast
     //selection: k * n^2
     class FastShortcutFinder : ShortcutFinder
     {
+
         public override string Name => "Fast";
 
         private Trajectory2D trajectory => Input.Trajectory;
+
+        public FastShortcutFinder(STInput input, STOutput output) : base(input, output)
+        {
+        }
 
         public override List<Shortcut> GetShortcuts(double epsilon)
         {

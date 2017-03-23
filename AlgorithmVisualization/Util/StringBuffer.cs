@@ -1,4 +1,4 @@
-﻿namespace AlgorithmVisualization.Algorithm.Util
+﻿namespace AlgorithmVisualization.Util
 {
     public class StringBuffer
     {

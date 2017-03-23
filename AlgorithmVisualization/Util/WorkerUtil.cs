@@ -1,9 +1,9 @@
 ﻿using System;
 using System.ComponentModel;
 
-namespace AlgorithmVisualization.View.Util
+namespace AlgorithmVisualization.Util
 {
-    static class ThreadUtil
+    static class WorkerUtil
     {
 
         public static void DoAfterCancel(this BackgroundWorker worker, Action action)

@@ -6,9 +6,10 @@ using System.Linq;
 using System.Threading;
 using System.Windows.Forms;
 using AlgorithmVisualization.Algorithm;
-using AlgorithmVisualization.Algorithm.Experiment;
-using AlgorithmVisualization.Algorithm.Experiment.Statistics;
+using AlgorithmVisualization.Algorithm.Run;
+using AlgorithmVisualization.Algorithm.Statistics;
 using AlgorithmVisualization.Controller.Explore;
+using AlgorithmVisualization.Util;
 using AlgorithmVisualization.View.Util;
 
 namespace AlgorithmVisualization.View.Explore.Components.Stats
@@ -38,7 +39,7 @@ namespace AlgorithmVisualization.View.Explore.Components.Stats
 
             foreach (var run in runs)
             {
-                var column = table.Columns.Add(run.Name);
+                var column = table.Columns.Add(run.DisplayName);
                 var columnIndex = table.Columns.IndexOf(column);
                 var currentlyTrackedStats = new List<string>();
 
@@ -119,7 +120,7 @@ namespace AlgorithmVisualization.View.Explore.Components.Stats
                     {
                         columnFillTasks.ForEach(task => task());
                     });
-                    Thread.Sleep(300);
+                    Thread.Sleep(1000 / 10);
                 }
             };
 

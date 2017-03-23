@@ -91,9 +91,17 @@
     <Compile Include="Algorithm\ImaiIri\ShortcutFinder.cs" />
     <Compile Include="Algorithm\ImaiIri\ShortcutSet.cs" />
     <Compile Include="Algorithm\ImaiIri\Slow\SlowShortcutFinder.cs" />
+    <Compile Include="SingleTrajectory\Algorithm\ImaiIri\ImaiIriAlgorithm.cs" />
     <Compile Include="SingleTrajectory\Algorithm\ImaiIri\ImaiIriGreedy.cs" />
     <Compile Include="SingleTrajectory\Algorithm\ImaiIri\ImaiIriNaive.cs" />
     <Compile Include="Algorithm\ImaiIri\Fast\Wedge.cs" />
+    <Compile Include="SingleTrajectory\Controller\STInputEditor.cs" />
+    <Compile Include="SingleTrajectory\View\Algorithm\ImaiIriOptions.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="SingleTrajectory\View\Algorithm\ImaiIriOptions.Designer.cs">
+      <DependentUpon>ImaiIriOptions.cs</DependentUpon>
+    </Compile>
     <Compile Include="SingleTrajectory\View\Explore\STOutputExplorer.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -138,6 +146,9 @@
       <DependentUpon>Resources.resx</DependentUpon>
       <DesignTime>True</DesignTime>
     </Compile>
+    <EmbeddedResource Include="SingleTrajectory\View\Algorithm\ImaiIriOptions.resx">
+      <DependentUpon>ImaiIriOptions.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="SingleTrajectory\View\Edit\STInputOptions.resx">
       <DependentUpon>STInputOptions.cs</DependentUpon>
     </EmbeddedResource>

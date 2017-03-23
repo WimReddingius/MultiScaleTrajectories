@@ -2,10 +2,11 @@
 using System.ComponentModel;
 using System.Windows.Forms;
 using AlgorithmVisualization.Algorithm;
-using AlgorithmVisualization.Algorithm.Experiment;
+using AlgorithmVisualization.Algorithm.Run;
+using AlgorithmVisualization.Controller.Algorithm;
 using AlgorithmVisualization.Controller.Edit;
 using AlgorithmVisualization.Controller.Explore;
-using AlgorithmVisualization.Controller.Explore.Factory;
+using AlgorithmVisualization.Util.Factory;
 using AlgorithmVisualization.View;
 using AlgorithmVisualization.View.Explore.Components.Log;
 using AlgorithmVisualization.View.Explore.Components.Stats;
@@ -21,28 +22,27 @@ namespace AlgorithmVisualization.Controller
         private AlgorithmView algorithmView;
         public AlgorithmView AlgorithmView => algorithmView ?? (algorithmView = new AlgorithmViewConcrete<TIn, TOut>(this));
 
-        [JsonProperty]
-        internal BindingList<AlgorithmRun<TIn, TOut>> Runs;
+        [JsonProperty] internal readonly BindingList<AlgorithmRun<TIn, TOut>> Runs;
+        [JsonProperty] internal readonly BindingList<TIn> Inputs;
+        [JsonProperty] internal readonly BindingList<Algorithm<TIn, TOut>> Algorithms;
 
-        [JsonProperty]
-        internal BindingList<TIn> Inputs;
-
-        public BindingList<RunExplorerFactory<TIn, TOut>> RunExplorers;
+        public BindingList<IFactory<RunExplorer<TIn, TOut>>> RunExplorerFactories;
+        public BindingList<AlgorithmFactory<TIn, TOut>> AlgorithmFactories;
         public InputEditor<TIn> InputEditor;
-        public BindingList<Algorithm<TIn, TOut>> Algorithms;
 
         
         protected AlgorithmController()
         {
-            RunExplorers = new BindingList<RunExplorerFactory<TIn, TOut>>();
-            Algorithms = new BindingList<Algorithm<TIn, TOut>>();
-
-            AddSimpleRunExplorerType(typeof(StatTable<TIn, TOut>));
-            AddRunExplorerType(typeof(LogExplorer<TIn, TOut>));
-
+            AlgorithmFactories = new BindingList<AlgorithmFactory<TIn, TOut>>();
+            RunExplorerFactories = new BindingList<IFactory<RunExplorer<TIn, TOut>>>
+            {
+                new Factory<SimpleRunExplorer<TIn, TOut, StatTable<TIn, TOut>>>(),
+                new Factory<LogExplorer<TIn, TOut>>()
+            };
+            
             Runs = new BindingList<AlgorithmRun<TIn, TOut>>();
             Inputs = new BindingList<TIn>();
-            //Settings = AlgorithmControllerSettingsManager.GetSettings(this);
+            Algorithms = new BindingList<Algorithm<TIn, TOut>>();
         }
 
         //run explorer has no state and is initialized using the RunExplorerConcrete wrapper class
@@ -54,8 +54,7 @@ namespace AlgorithmVisualization.Controller
 
             if (iControlType.IsAssignableFrom(runExplorerType) && iRunExplorerType.IsAssignableFrom(runExplorerType))
             {
-                Type[] typeArgsWrapper = {typeof(TIn), typeof(TOut), runExplorerType};
-                var genericTypeWrapper = typeof(SimpleRunExplorer<,,>).MakeGenericType(typeArgsWrapper);
+                var genericTypeWrapper = typeof(SimpleRunExplorer<,,>).MakeGenericType(typeof(TIn), typeof(TOut), runExplorerType);
                 var concrete = (RunExplorer<TIn, TOut>) Activator.CreateInstance(genericTypeWrapper);
 
                 AddRunExplorerType(concrete.GetType());
@@ -74,10 +73,9 @@ namespace AlgorithmVisualization.Controller
 
             if (RunExplorerType.IsAssignableFrom(type))
             {
-                Type[] typeArgsFactory = {typeof(TIn), typeof(TOut), type};
-                var genericTypeFactory = typeof(ConcreteRunExplorerFactory<,,>).MakeGenericType(typeArgsFactory);
-                var factory = (RunExplorerFactory<TIn, TOut>) Activator.CreateInstance(genericTypeFactory);
-                RunExplorers.Add(factory);
+                var genericTypeFactory = typeof(Factory<>).MakeGenericType(type);
+                var factory = (IFactory<RunExplorer<TIn, TOut>>) Activator.CreateInstance(genericTypeFactory);
+                RunExplorerFactories.Add(factory);
             }
             else
             {

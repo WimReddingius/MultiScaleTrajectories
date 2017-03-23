@@ -1,24 +1,28 @@
-﻿using System;
-using AlgorithmVisualization.Algorithm;
-using MultiScaleTrajectories.Algorithm.ImaiIri;
+﻿using MultiScaleTrajectories.Algorithm.ImaiIri;
+using MultiScaleTrajectories.SingleTrajectory.View.Algorithm;
+using Newtonsoft.Json;
 
 namespace MultiScaleTrajectories.SingleTrajectory.Algorithm.ImaiIri
 {
-    class ImaiIriGreedy : Algorithm<STInput, STOutput>
+    class ImaiIriGreedy : ImaiIriAlgorithm
     {
-        public override string Name => "ImaiIri - Greedy - " + shortcutFinder.Name;
+        public override string AlgoName => "ImaiIri - Greedy";
 
-        private readonly ShortcutFinder shortcutFinder;
-
-        public ImaiIriGreedy(ShortcutFinder shortcutFinder)
+        public ImaiIriGreedy()
         {
-            this.shortcutFinder = shortcutFinder;
+            
+        }
+
+        [JsonConstructor]
+        public ImaiIriGreedy(ImaiIriOptions imaiIriOptions) : base(imaiIriOptions)
+        {
+            
         }
 
         public override void Compute(STInput input, STOutput output)
         {
             var trajectory = input.Trajectory;
-            shortcutFinder.Initialize(input, output);
+            var shortcutFinder = ShortcutFinderFactory.Create(input, output);
 
             var shortcutGraph = new ShortcutGraph(trajectory);
 

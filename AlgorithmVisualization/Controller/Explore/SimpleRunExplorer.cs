@@ -1,6 +1,6 @@
 ﻿using System.Windows.Forms;
 using AlgorithmVisualization.Algorithm;
-using AlgorithmVisualization.Algorithm.Experiment;
+using AlgorithmVisualization.Algorithm.Run;
 
 namespace AlgorithmVisualization.Controller.Explore
 {

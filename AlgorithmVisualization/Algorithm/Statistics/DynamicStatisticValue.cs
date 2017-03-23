@@ -1,7 +1,7 @@
 ﻿using System;
 using Newtonsoft.Json;
 
-namespace AlgorithmVisualization.Algorithm.Experiment.Statistics
+namespace AlgorithmVisualization.Algorithm.Statistics
 {
     [JsonConverter(typeof(StatisticValueConverter))]
     class DynamicStatisticValue : StatisticValue
@@ -21,12 +21,6 @@ namespace AlgorithmVisualization.Algorithm.Experiment.Statistics
         {
             
         }
-
-        //public object Update()
-        //{
-        //    Value = ValueFunc();
-        //    return Value;
-        //}
 
     }
 }

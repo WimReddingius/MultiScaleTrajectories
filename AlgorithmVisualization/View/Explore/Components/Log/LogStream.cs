@@ -2,8 +2,8 @@
 using System.Threading;
 using System.Windows.Forms;
 using AlgorithmVisualization.Algorithm;
-using AlgorithmVisualization.Algorithm.Experiment;
-using AlgorithmVisualization.Algorithm.Util;
+using AlgorithmVisualization.Algorithm.Run;
+using AlgorithmVisualization.Util;
 using AlgorithmVisualization.View.Util;
 
 namespace AlgorithmVisualization.View.Explore.Components.Log

@@ -5,13 +5,13 @@ namespace AlgorithmVisualization.View.GLVisualization.GLUtil
 {
     public class PickNameManager
     {
-        private OneToOneMap<int, object> Map;
-        private int PickIdGenerator;
+        private readonly OneToOneMap<int, object> map;
+        private int pickIdGenerator;
 
         public PickNameManager()
         {
-            PickIdGenerator = 1;
-            Map = new OneToOneMap<int, Object>();
+            pickIdGenerator = 1;
+            map = new OneToOneMap<int, Object>();
         }
 
         public bool PickingHit(int pickId)
@@ -22,19 +22,19 @@ namespace AlgorithmVisualization.View.GLVisualization.GLUtil
         public object GetPickedObject(int pickId)
         {
             if (PickingHit(pickId))
-                return Map.GetValueFromKey(pickId);
-            else
-                throw new InvalidOperationException();
+                return map.GetValueFromKey(pickId);
+
+            throw new InvalidOperationException();
         }
 
         public int GetPickingId(object obj)
         {
-            return Map.GetKeyFromValue(obj);
+            return map.GetKeyFromValue(obj);
         }
 
         public void AssignPickId(object obj)
         {
-            Map.Put(PickIdGenerator++, obj);
+            map.Put(pickIdGenerator++, obj);
         }
 
         private class OneToOneMap<K, V>

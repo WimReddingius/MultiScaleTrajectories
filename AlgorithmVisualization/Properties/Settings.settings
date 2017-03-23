@@ -2,13 +2,7 @@
 <SettingsFile xmlns="http://schemas.microsoft.com/VisualStudio/2004/01/settings" CurrentProfile="(Default)" GeneratedClassNamespace="AlgorithmVisualization.Properties" GeneratedClassName="Settings">
   <Profiles />
   <Settings>
-    <Setting Name="AlgorithmControllers" Type="System.String" Scope="User">
-      <Value Profile="(Default)" />
-    </Setting>
-    <Setting Name="InputIdGenerator" Type="System.Int64" Scope="User">
-      <Value Profile="(Default)">0</Value>
-    </Setting>
-    <Setting Name="RunIdGenerator" Type="System.String" Scope="User">
+    <Setting Name="ProblemControllers" Type="System.String" Scope="User">
       <Value Profile="(Default)" />
     </Setting>
   </Settings>

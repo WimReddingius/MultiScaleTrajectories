@@ -1,11 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Runtime.Serialization;
-using System.Text;
-using AlgorithmVisualization.Algorithm.Experiment;
-using AlgorithmVisualization.Algorithm.Experiment.Statistics;
-using AlgorithmVisualization.Algorithm.Util;
+using AlgorithmVisualization.Algorithm.Statistics;
+using AlgorithmVisualization.Util;
 using Newtonsoft.Json;
 
 namespace AlgorithmVisualization.Algorithm
@@ -38,6 +35,13 @@ namespace AlgorithmVisualization.Algorithm
             Statistics = new StatisticMap();
             LogBuffers = new List<StringBuffer>();
             Logging = true;
+
+            InitStatistics();
+        }
+
+        //overrides may not use instance members
+        protected virtual void InitStatistics()
+        {
         }
 
         public void LogLine(string str)
@@ -85,6 +89,7 @@ namespace AlgorithmVisualization.Algorithm
         internal void OnDeserializedMethod(StreamingContext context)
         {
             LogStringBuilder.Append(log);
+            InitStatistics();
         }
 
     }

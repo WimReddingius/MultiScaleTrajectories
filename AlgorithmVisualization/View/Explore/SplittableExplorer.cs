@@ -2,10 +2,10 @@
 using System.ComponentModel;
 using System.Windows.Forms;
 using AlgorithmVisualization.Algorithm;
-using AlgorithmVisualization.Algorithm.Experiment;
 using AlgorithmVisualization.Controller;
 using AlgorithmVisualization.View.Util;
 using System;
+using AlgorithmVisualization.Algorithm.Run;
 
 namespace AlgorithmVisualization.View.Explore
 {

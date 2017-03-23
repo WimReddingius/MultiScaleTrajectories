@@ -1,4 +1,4 @@
-﻿namespace AlgorithmVisualization.Algorithm.Experiment.Statistics
+﻿namespace AlgorithmVisualization.Algorithm.Statistics
 {
     public class StatisticValue
     {

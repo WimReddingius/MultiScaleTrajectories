@@ -10,7 +10,7 @@ namespace MultiScaleTrajectories.Algorithm.ImaiIri
         protected STOutput Output;
         protected STInput Input;
 
-        public virtual void Initialize(STInput input, STOutput output)
+        protected ShortcutFinder(STInput input, STOutput output)
         {
             Input = input;
             Output = output;

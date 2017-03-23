@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.Serialization;
 using AlgorithmVisualization.Algorithm;
 using MultiScaleTrajectories.Algorithm.Geometry;
 using Newtonsoft.Json;
@@ -16,6 +17,10 @@ namespace MultiScaleTrajectories.SingleTrajectory.Algorithm
         public STOutput()
         {
             Levels = new Dictionary<int, Trajectory2D>();
+        }
+
+        protected override void InitStatistics()
+        {
             Statistics.Put("Points", () =>
             {
                 if (Levels.Count == 0)

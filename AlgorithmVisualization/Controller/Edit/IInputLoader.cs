@@ -1,6 +1,8 @@
-﻿namespace AlgorithmVisualization.Controller.Edit
+﻿using AlgorithmVisualization.Algorithm;
+
+namespace AlgorithmVisualization.Controller.Edit
 {
-    public interface IInputLoader<TIn> where TIn : Algorithm.Input, new()
+    public interface IInputLoader<in TIn> where TIn : Input, new()
     {
         void LoadInput(TIn input);
     }

@@ -1,9 +1,6 @@
 ﻿using System.Collections.Generic;
-using System.IO;
-using System.Runtime.Serialization;
 using AlgorithmVisualization.Algorithm;
 using MultiScaleTrajectories.Algorithm.Geometry;
-using MultiScaleTrajectories.Util;
 using Newtonsoft.Json;
 
 namespace MultiScaleTrajectories.SingleTrajectory.Algorithm
@@ -19,18 +16,23 @@ namespace MultiScaleTrajectories.SingleTrajectory.Algorithm
         
 
         [JsonConstructor]
-        public STInput(Trajectory2D Trajectory, List<double> Epsilons, long Id) : base(Id)
+        public STInput(Trajectory2D Trajectory, List<double> Epsilons, string DisplayName) : base(DisplayName)
         {
             Load(Trajectory, Epsilons);
+        }
+
+        public STInput(Trajectory2D trajectory)
+        {
+            Clear();
+            Trajectory = trajectory;
         }
 
         public STInput()
         {
             Clear();
-            InitializeStatistics();
         }
 
-        private void InitializeStatistics()
+        protected override void InitStatistics()
         {
             Statistics.Put("Levels", () => Epsilons.Count);
             Statistics.Put("Points", () => Trajectory.Count);
@@ -65,37 +67,10 @@ namespace MultiScaleTrajectories.SingleTrajectory.Algorithm
         {
             Load(new Trajectory2D(), new List<double> { 0.0 }); //double.PositiveInfinity });
         }
-
-        public override string Serialize()
-        {
-            return JsonConvert.SerializeObject(this, Formatting.Indented);
-        }
-
-        public override void LoadSerialized(string fileName)
-        {
-            if (MoveBank.IsMoveBankFile(fileName))
-            {
-                Clear();
-                Trajectory = MoveBank.ReadSingleTrajectory(fileName);
-            }
-            else
-            {
-                var serializedInput = File.ReadAllText(fileName);
-                var input = JsonConvert.DeserializeObject<STInput>(serializedInput);
-                Load(input.Trajectory, input.Epsilons);
-            }
-        }
-
         private void Load(Trajectory2D trajectory, List<double> epsilons)
         {
             Trajectory = trajectory;
             Epsilons = epsilons;
-        }
-
-        [OnDeserialized]
-        internal void OnDeserializedMethod(StreamingContext context)
-        {
-            InitializeStatistics();
         }
 
     }

@@ -22,7 +22,7 @@ namespace AlgorithmVisualization.Controller
 
         public static void Init()
         {
-            var settingsStr = (string)Properties.Settings.Default["AlgorithmControllers"];
+            var settingsStr = Properties.Settings.Default.ProblemControllers;
 
             if (string.IsNullOrEmpty(settingsStr))
             {
@@ -33,6 +33,7 @@ namespace AlgorithmVisualization.Controller
                 controllerMap = JsonConvert.DeserializeObject<Dictionary<Type, IAlgorithmController>>(settingsStr, new JsonSerializerSettings
                 {
                     TypeNameHandling = TypeNameHandling.Auto,
+                    PreserveReferencesHandling = PreserveReferencesHandling.All,
                     Binder = new TypeNameSerializationBinder()
                 });
             }
@@ -40,17 +41,18 @@ namespace AlgorithmVisualization.Controller
 
         public static void Save()
         {
-            var str = JsonConvert.SerializeObject(controllerMap, typeof(Dictionary<Type, IAlgorithmController>), Formatting.Indented, new JsonSerializerSettings
+            var str = JsonConvert.SerializeObject(controllerMap, typeof(Dictionary<Type, IAlgorithmController>), new JsonSerializerSettings
             {
                 TypeNameHandling = TypeNameHandling.Auto,
+                PreserveReferencesHandling = PreserveReferencesHandling.All,
                 Binder = new TypeNameSerializationBinder()
             });
 
-            Properties.Settings.Default["AlgorithmControllers"] = str;
+            Properties.Settings.Default.ProblemControllers = str;
             Properties.Settings.Default.Save();
         }
 
-        class TypeNameSerializationBinder : SerializationBinder
+        private class TypeNameSerializationBinder : SerializationBinder
         {
             public override void BindToName(Type serializedType, out string assemblyName, out string typeName)
             {

@@ -58,17 +58,23 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Algorithm\Algorithm.cs" />
-    <Compile Include="Algorithm\Experiment\Statistics\RunTimeStatistic.cs" />
-    <Compile Include="Algorithm\Experiment\Statistics\StatisticValue.cs" />
-    <Compile Include="Algorithm\Experiment\Statistics\DynamicStatistic.cs" />
-    <Compile Include="Algorithm\Experiment\Statistics\StatisticValueConverter.cs" />
-    <Compile Include="Algorithm\Util\StringBuffer.cs" />
-    <Compile Include="Algorithm\Util\Bindable.cs" />
-    <Compile Include="Algorithm\Experiment\AlgorithmRun.cs" />
+    <Compile Include="Controller\Algorithm\AlgorithmFactoryConcrete.cs" />
+    <Compile Include="Algorithm\Run\RunState.cs" />
+    <Compile Include="Algorithm\Statistics\RunTimeStatisticValue.cs" />
+    <Compile Include="Algorithm\Statistics\StatisticValue.cs" />
+    <Compile Include="Algorithm\Statistics\DynamicStatisticValue.cs" />
+    <Compile Include="Algorithm\Statistics\StatisticValueConverter.cs" />
+    <Compile Include="Algorithm\IAlgorithm.cs" />
+    <Compile Include="Controller\Algorithm\AlgorithmFactory.cs" />
+    <Compile Include="Util\Factory\BindableFactory.cs" />
+    <Compile Include="Util\StringBuffer.cs" />
+    <Compile Include="Util\TimeFormatter.cs" />
+    <Compile Include="View\Util\Bindable.cs" />
+    <Compile Include="Algorithm\Run\AlgorithmRun.cs" />
     <Compile Include="Algorithm\Input.cs" />
     <Compile Include="Algorithm\Output.cs" />
-    <Compile Include="Algorithm\Experiment\Statistics\StatisticMap.cs" />
-    <Compile Include="Algorithm\Util\ThreadSafeStringBuilder.cs" />
+    <Compile Include="Algorithm\Statistics\StatisticMap.cs" />
+    <Compile Include="Util\ThreadSafeStringBuilder.cs" />
     <Compile Include="Controller\AlgorithmControllerConverter.cs" />
     <Compile Include="Controller\AlgorithmController.cs" />
     <Compile Include="Controller\Explore\RunExplorer.cs">
@@ -78,8 +84,6 @@
       <SubType>UserControl</SubType>
     </Compile>
     <Compile Include="Controller\Explore\IRunExplorer.cs" />
-    <Compile Include="Controller\Explore\Factory\RunExplorerFactory.cs" />
-    <Compile Include="Controller\Explore\Factory\RunExplorerFactoryConcrete.cs" />
     <Compile Include="Controller\Explore\SingularRunExplorer.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -94,10 +98,12 @@
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
       <DependentUpon>Settings.settings</DependentUpon>
     </Compile>
+    <Compile Include="Util\Factory\Factory.cs" />
+    <Compile Include="Util\Factory\IFactory.cs" />
     <Compile Include="View\Explore\Components\Log\LogExplorer.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="View\Util\ThreadUtil.cs" />
+    <Compile Include="Util\WorkerUtil.cs" />
     <Compile Include="View\AlgorithmViewConcrete.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -142,6 +148,7 @@
       <SubType>Component</SubType>
     </Compile>
     <Compile Include="View\Util\MouseMessageFilter.cs" />
+    <Compile Include="View\Util\PersistentBindable.cs" />
     <Compile Include="View\Util\ResizableTableLayoutPanel.cs">
       <SubType>Component</SubType>
     </Compile>
@@ -183,7 +190,7 @@
     <None Include="packages.config" />
     <None Include="Properties\Settings.settings">
       <Generator>PublicSettingsSingleFileGenerator</Generator>
-      <LastGenOutput>Settings.Designer.cs</LastGenOutput>
+      <LastGenOutput>Settings1.Designer.cs</LastGenOutput>
     </None>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
