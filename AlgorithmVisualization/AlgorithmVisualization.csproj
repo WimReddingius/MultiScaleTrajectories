@@ -33,8 +33,8 @@
     <StartupObject />
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Newtonsoft.Json, Version=9.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
-      <HintPath>..\packages\Newtonsoft.Json.9.0.1\lib\net45\Newtonsoft.Json.dll</HintPath>
+    <Reference Include="Newtonsoft.Json, Version=10.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\packages\Newtonsoft.Json.10.0.1\lib\net45\Newtonsoft.Json.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="OpenTK, Version=2.0.0.0, Culture=neutral, PublicKeyToken=bad199fe84eb3df4, processorArchitecture=MSIL">
@@ -58,18 +58,21 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Algorithm\Algorithm.cs" />
-    <Compile Include="Controller\Algorithm\AlgorithmFactoryConcrete.cs" />
     <Compile Include="Algorithm\Run\RunState.cs" />
     <Compile Include="Algorithm\Statistics\RunTimeStatisticValue.cs" />
     <Compile Include="Algorithm\Statistics\StatisticValue.cs" />
     <Compile Include="Algorithm\Statistics\DynamicStatisticValue.cs" />
     <Compile Include="Algorithm\Statistics\StatisticValueConverter.cs" />
-    <Compile Include="Algorithm\IAlgorithm.cs" />
-    <Compile Include="Controller\Algorithm\AlgorithmFactory.cs" />
-    <Compile Include="Util\Factory\BindableFactory.cs" />
+    <Compile Include="View\Util\Components\DoubleBufferedUserControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="View\Util\Nameable\INameable.cs" />
+    <Compile Include="View\Util\Nameable\INameableFactory.cs" />
+    <Compile Include="View\Util\Nameable\NumberedNameable.cs" />
+    <Compile Include="View\Util\Nameable\NameableFactory.cs" />
     <Compile Include="Util\StringBuffer.cs" />
     <Compile Include="Util\TimeFormatter.cs" />
-    <Compile Include="View\Util\Bindable.cs" />
+    <Compile Include="View\Util\Nameable\Nameable.cs" />
     <Compile Include="Algorithm\Run\AlgorithmRun.cs" />
     <Compile Include="Algorithm\Input.cs" />
     <Compile Include="Algorithm\Output.cs" />
@@ -122,11 +125,11 @@
     <Compile Include="View\Explore\Components\Log\LogStream.Designer.cs">
       <DependentUpon>LogStream.cs</DependentUpon>
     </Compile>
-    <Compile Include="View\Explore\Components\Stats\StatTable.cs">
+    <Compile Include="View\Explore\Components\Stats\StatOverview.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="View\Explore\Components\Stats\StatTable.Designer.cs">
-      <DependentUpon>StatTable.cs</DependentUpon>
+    <Compile Include="View\Explore\Components\Stats\StatOverview.Designer.cs">
+      <DependentUpon>StatOverview.cs</DependentUpon>
     </Compile>
     <Compile Include="View\Explore\SplittableExplorer.cs">
       <SubType>UserControl</SubType>
@@ -148,7 +151,6 @@
       <SubType>Component</SubType>
     </Compile>
     <Compile Include="View\Util\MouseMessageFilter.cs" />
-    <Compile Include="View\Util\PersistentBindable.cs" />
     <Compile Include="View\Util\Components\ResizableTableLayoutPanel.cs">
       <SubType>Component</SubType>
     </Compile>
@@ -162,6 +164,7 @@
     <Compile Include="View\GLVisualization\GLUtil\GLTextRenderer2D.cs" />
     <Compile Include="View\GLVisualization\GLUtil\GLUtil2D.cs" />
     <Compile Include="Controller\Edit\IInputLoader.cs" />
+    <Compile Include="View\Util\Nameable\NamingList.cs" />
   </ItemGroup>
   <ItemGroup />
   <ItemGroup>
@@ -177,8 +180,8 @@
     <EmbeddedResource Include="View\Explore\Components\Log\LogStream.resx">
       <DependentUpon>LogStream.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="View\Explore\Components\Stats\StatTable.resx">
-      <DependentUpon>StatTable.cs</DependentUpon>
+    <EmbeddedResource Include="View\Explore\Components\Stats\StatOverview.resx">
+      <DependentUpon>StatOverview.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="View\Explore\SplittableExplorer.resx">
       <DependentUpon>SplittableExplorer.cs</DependentUpon>

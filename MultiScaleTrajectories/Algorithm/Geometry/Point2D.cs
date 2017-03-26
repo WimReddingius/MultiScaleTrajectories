@@ -1,4 +1,6 @@
-﻿namespace MultiScaleTrajectories.Algorithm.Geometry
+﻿using OpenTK;
+
+namespace MultiScaleTrajectories.Algorithm.Geometry
 {
 
     class Point2D
@@ -26,6 +28,11 @@
         public Point2D Clone()
         {
             return new Point2D(X, Y);
+        }
+
+        public Vector2d AsVector()
+        {
+            return new Vector2d(X, Y);
         }
 
         public void Translate(double xd, double yd)

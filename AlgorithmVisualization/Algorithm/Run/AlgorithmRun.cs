@@ -1,8 +1,6 @@
 ﻿using System.ComponentModel;
-using System.Runtime.Serialization;
 using AlgorithmVisualization.Algorithm.Statistics;
-using AlgorithmVisualization.Util;
-using AlgorithmVisualization.View.Util;
+using AlgorithmVisualization.View.Util.Nameable;
 using Newtonsoft.Json;
 
 namespace AlgorithmVisualization.Algorithm.Run
@@ -10,11 +8,9 @@ namespace AlgorithmVisualization.Algorithm.Run
     public delegate void RunStateChangedHandler<TIn, TOut>(AlgorithmRun<TIn, TOut> run, RunState runState)
         where TIn : Input, new() where TOut : Output, new();
 
-    public class AlgorithmRun<TIn, TOut> : PersistentBindable where TIn : Input, new() where TOut : Output, new()
+    public class AlgorithmRun<TIn, TOut> : NumberedNameable where TIn : Input, new() where TOut : Output, new()
     {
-        private static long nextId = 1;
-
-        public event RunStateChangedHandler<TIn, TOut> StateChanged;     
+        public event RunStateChangedHandler<TIn, TOut> StateChanged;
 
         public RunState State;
         public TIn Input;
@@ -37,7 +33,7 @@ namespace AlgorithmVisualization.Algorithm.Run
             Algorithm = algorithm;
             Input = input;
             NumIterations = 1;
-            DisplayName = "Run " + nextId++;
+            BaseName = "Run";
 
             SetState(RunState.Idle);
         }
@@ -50,8 +46,8 @@ namespace AlgorithmVisualization.Algorithm.Run
             {
                 Output = new TOut();
                 Statistics.Clear();
-                Statistics.Put("Algorithm name", () => Algorithm.AlgoName);
-                Statistics.Put("Input name", () => Input.DisplayName);
+                Statistics.Put("Algorithm name", () => Algorithm.Name);
+                Statistics.Put("Input name", () => Input.Name);
             }
 
             StateChanged?.Invoke(this, state);

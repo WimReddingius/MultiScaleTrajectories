@@ -6,7 +6,6 @@ namespace MultiScaleTrajectories.Algorithm.ImaiIri
 {
     abstract class ShortcutFinder
     {
-        public abstract string Name { get; }
         protected STOutput Output;
         protected STInput Input;
 

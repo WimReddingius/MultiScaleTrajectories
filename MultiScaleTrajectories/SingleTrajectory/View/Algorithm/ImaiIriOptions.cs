@@ -3,9 +3,10 @@ using System.Linq;
 using System.Runtime.Serialization;
 using System.Windows.Forms;
 using AlgorithmVisualization.Util.Factory;
+using AlgorithmVisualization.View.Util.Nameable;
 using MultiScaleTrajectories.Algorithm.ImaiIri;
-using MultiScaleTrajectories.Algorithm.ImaiIri.Fast;
-using MultiScaleTrajectories.Algorithm.ImaiIri.Slow;
+using MultiScaleTrajectories.Algorithm.ImaiIri.Simple;
+using MultiScaleTrajectories.Algorithm.ImaiIri.Wedges;
 using Newtonsoft.Json;
 
 namespace MultiScaleTrajectories.SingleTrajectory.View.Algorithm
@@ -13,12 +14,8 @@ namespace MultiScaleTrajectories.SingleTrajectory.View.Algorithm
     [JsonObject(MemberSerialization.OptIn)]
     partial class ImaiIriOptions : UserControl
     {
-
-        [JsonProperty]
-        public IFactory<ShortcutFinder> ShortcutFinderFactory;
-
-        [JsonProperty]
-        private readonly BindingList<IFactory<ShortcutFinder>> shortcutFinderFactories;
+        [JsonProperty] public IFactory<ShortcutFinder> ShortcutFinderFactory;
+        [JsonProperty] private readonly BindingList<IFactory<ShortcutFinder>> shortcutFinderFactories;
 
         [JsonConstructor]
         public ImaiIriOptions(BindingList<IFactory<ShortcutFinder>> shortcutFinderFactories)
@@ -35,8 +32,8 @@ namespace MultiScaleTrajectories.SingleTrajectory.View.Algorithm
 
             shortcutFinderFactories = new BindingList<IFactory<ShortcutFinder>>
             {
-                new BindableFactory<SlowShortcutFinder> { DisplayName = "Slow" },
-                new BindableFactory<FastShortcutFinder> { DisplayName = "Fast" }
+                new NameableFactory<SimpleShortcutFinder>(SimpleShortcutFinder.Name),
+                new NameableFactory<WedgesShortcutFinder>(WedgesShortcutFinder.Name),
             };
 
             PopulateControls();

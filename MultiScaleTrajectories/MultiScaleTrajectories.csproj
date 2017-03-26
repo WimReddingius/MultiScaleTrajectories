@@ -54,8 +54,12 @@
     <ApplicationIcon>Icon.ico</ApplicationIcon>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Newtonsoft.Json, Version=9.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
-      <HintPath>..\packages\Newtonsoft.Json.9.0.1\lib\net45\Newtonsoft.Json.dll</HintPath>
+    <Reference Include="Google.Maps, Version=0.14.51.34051, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\gmaps-api-net.0.14.51\lib\net\Google.Maps.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Newtonsoft.Json, Version=10.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\packages\Newtonsoft.Json.10.0.1\lib\net45\Newtonsoft.Json.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="OpenTK, Version=2.0.0.0, Culture=neutral, PublicKeyToken=bad199fe84eb3df4, processorArchitecture=MSIL">
@@ -84,17 +88,16 @@
     <Compile Include="Algorithm\Geometry\Line2D.cs" />
     <Compile Include="Algorithm\Geometry\Point2D.cs" />
     <Compile Include="Algorithm\Geometry\Trajectory2D.cs" />
-    <Compile Include="Algorithm\Geometry\TrajectoryPoint2D.cs" />
-    <Compile Include="Algorithm\ImaiIri\Fast\FastShortcutFinder.cs" />
-    <Compile Include="Algorithm\ImaiIri\Slow\MaxDistanceShortcut.cs" />
+    <Compile Include="Algorithm\ImaiIri\Wedges\WedgesShortcutFinder.cs" />
+    <Compile Include="Algorithm\ImaiIri\Simple\MaxDistanceShortcut.cs" />
     <Compile Include="Algorithm\ImaiIri\Shortcut.cs" />
     <Compile Include="Algorithm\ImaiIri\ShortcutFinder.cs" />
     <Compile Include="Algorithm\ImaiIri\ShortcutSet.cs" />
-    <Compile Include="Algorithm\ImaiIri\Slow\SlowShortcutFinder.cs" />
+    <Compile Include="Algorithm\ImaiIri\Simple\SimpleShortcutFinder.cs" />
     <Compile Include="SingleTrajectory\Algorithm\ImaiIri\ImaiIriAlgorithm.cs" />
     <Compile Include="SingleTrajectory\Algorithm\ImaiIri\ImaiIriGreedy.cs" />
     <Compile Include="SingleTrajectory\Algorithm\ImaiIri\ImaiIriNaive.cs" />
-    <Compile Include="Algorithm\ImaiIri\Fast\Wedge.cs" />
+    <Compile Include="Algorithm\ImaiIri\Wedges\Wedge.cs" />
     <Compile Include="SingleTrajectory\Controller\STInputEditor.cs" />
     <Compile Include="SingleTrajectory\View\Algorithm\ImaiIriOptions.cs">
       <SubType>UserControl</SubType>
@@ -112,7 +115,6 @@
     <Compile Include="SingleTrajectory\Algorithm\ImaiIri\ImaiIriHierarchical.cs" />
     <Compile Include="SingleTrajectory\Algorithm\STInput.cs" />
     <Compile Include="SingleTrajectory\Algorithm\STOutput.cs" />
-    <Compile Include="Algorithm\ImaiIri\ShortcutFinderOld.cs" />
     <Compile Include="Algorithm\DataStructures\Graph\DataEdge.cs" />
     <Compile Include="Algorithm\DataStructures\Graph\DataNode.cs" />
     <Compile Include="Algorithm\DataStructures\Graph\Edge.cs" />
@@ -136,6 +138,7 @@
       <SubType>UserControl</SubType>
     </Compile>
     <Compile Include="View\GLUtilTrajectory2D.cs" />
+    <Compile Include="Util\GoogleMaps.cs" />
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>

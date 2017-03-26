@@ -1,4 +1,5 @@
 ﻿using System;
+using OpenTK;
 
 namespace MultiScaleTrajectories.Algorithm.Geometry
 {
@@ -15,21 +16,25 @@ namespace MultiScaleTrajectories.Algorithm.Geometry
             return p1.X * p2.Y - p1.Y * p2.X;
         }
 
-        //angle between two lines in degrees
+        //angle between two lines in radians
         public static double Angle(Line2D line1, Line2D line2)
         {
             double angle1 = Math.Atan2(line1.Point1.Y - line1.Point2.Y, line1.Point1.X - line1.Point2.X);
             double angle2 = Math.Atan2(line2.Point1.Y - line2.Point2.Y, line2.Point1.X - line2.Point2.X);
-            return SimplifyAngle(angle1 - angle2);
+            return SimplifyRadians(angle1 - angle2);
         }
 
-        //in degrees
-        public static double SimplifyAngle(double angle)
+        public static int Orient2D(Vector2d start, Vector2d end, Vector2d point)
         {
-            var simplerAngle = angle % 360;
+            return Math.Sign((start.X - point.X) * (end.Y - point.Y) - (start.Y - point.Y) * (end.X - point.X));
+        }
+
+        public static double SimplifyRadians(double angle)
+        {
+            var simplerAngle = angle % (2*Math.PI);
 
             if (simplerAngle < 0)
-                simplerAngle += 360;
+                simplerAngle += (2*Math.PI);
 
             return simplerAngle;
         }

@@ -30,8 +30,8 @@ namespace AlgorithmVisualization.View
         /// </summary>
         private void InitializeComponent()
         {
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle3 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle4 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
             this.openInputDialog = new System.Windows.Forms.OpenFileDialog();
             this.saveInputDialog = new System.Windows.Forms.SaveFileDialog();
             this.inputTabPage = new System.Windows.Forms.TabPage();
@@ -51,10 +51,10 @@ namespace AlgorithmVisualization.View
             this.saveRunButton = new System.Windows.Forms.Button();
             this.openRunButton = new System.Windows.Forms.Button();
             this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
-            this.addWorkloadRunButton = new System.Windows.Forms.Button();
+            this.addRunButton = new System.Windows.Forms.Button();
             this.resetWorkloadButton = new System.Windows.Forms.Button();
             this.computeWorkloadButton = new System.Windows.Forms.Button();
-            this.removeWorkloadRunButton = new System.Windows.Forms.Button();
+            this.removeRunButton = new System.Windows.Forms.Button();
             this.workloadTable = new System.Windows.Forms.DataGridView();
             this.workloadTableRunColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.workloadTableInputColumn = new System.Windows.Forms.DataGridViewComboBoxColumn();
@@ -320,10 +320,10 @@ namespace AlgorithmVisualization.View
             this.tableLayoutPanel1.ColumnCount = 2;
             this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
             this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
-            this.tableLayoutPanel1.Controls.Add(this.addWorkloadRunButton, 0, 0);
+            this.tableLayoutPanel1.Controls.Add(this.addRunButton, 0, 0);
             this.tableLayoutPanel1.Controls.Add(this.resetWorkloadButton, 1, 1);
             this.tableLayoutPanel1.Controls.Add(this.computeWorkloadButton, 0, 1);
-            this.tableLayoutPanel1.Controls.Add(this.removeWorkloadRunButton, 1, 0);
+            this.tableLayoutPanel1.Controls.Add(this.removeRunButton, 1, 0);
             this.tableLayoutPanel1.Dock = System.Windows.Forms.DockStyle.Bottom;
             this.tableLayoutPanel1.Location = new System.Drawing.Point(3, 428);
             this.tableLayoutPanel1.Name = "tableLayoutPanel1";
@@ -333,17 +333,17 @@ namespace AlgorithmVisualization.View
             this.tableLayoutPanel1.Size = new System.Drawing.Size(256, 66);
             this.tableLayoutPanel1.TabIndex = 23;
             // 
-            // addWorkloadRunButton
+            // addRunButton
             // 
-            this.addWorkloadRunButton.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.addWorkloadRunButton.Location = new System.Drawing.Point(0, 3);
-            this.addWorkloadRunButton.Margin = new System.Windows.Forms.Padding(0, 3, 3, 3);
-            this.addWorkloadRunButton.Name = "addWorkloadRunButton";
-            this.addWorkloadRunButton.Size = new System.Drawing.Size(125, 27);
-            this.addWorkloadRunButton.TabIndex = 19;
-            this.addWorkloadRunButton.Text = "Add";
-            this.addWorkloadRunButton.UseVisualStyleBackColor = true;
-            this.addWorkloadRunButton.Click += new System.EventHandler(this.addWorkloadRunButton_Click);
+            this.addRunButton.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.addRunButton.Location = new System.Drawing.Point(0, 3);
+            this.addRunButton.Margin = new System.Windows.Forms.Padding(0, 3, 3, 3);
+            this.addRunButton.Name = "addRunButton";
+            this.addRunButton.Size = new System.Drawing.Size(125, 27);
+            this.addRunButton.TabIndex = 19;
+            this.addRunButton.Text = "Add";
+            this.addRunButton.UseVisualStyleBackColor = true;
+            this.addRunButton.Click += new System.EventHandler(this.addRunButton_Click);
             // 
             // resetWorkloadButton
             // 
@@ -371,18 +371,18 @@ namespace AlgorithmVisualization.View
             this.computeWorkloadButton.UseVisualStyleBackColor = true;
             this.computeWorkloadButton.Click += new System.EventHandler(this.computeWorkloadButton_Click);
             // 
-            // removeWorkloadRunButton
+            // removeRunButton
             // 
-            this.removeWorkloadRunButton.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.removeWorkloadRunButton.Enabled = false;
-            this.removeWorkloadRunButton.Location = new System.Drawing.Point(131, 3);
-            this.removeWorkloadRunButton.Margin = new System.Windows.Forms.Padding(3, 3, 0, 3);
-            this.removeWorkloadRunButton.Name = "removeWorkloadRunButton";
-            this.removeWorkloadRunButton.Size = new System.Drawing.Size(125, 27);
-            this.removeWorkloadRunButton.TabIndex = 22;
-            this.removeWorkloadRunButton.Text = "Remove";
-            this.removeWorkloadRunButton.UseVisualStyleBackColor = true;
-            this.removeWorkloadRunButton.Click += new System.EventHandler(this.removeWorkloadRunButton_Click);
+            this.removeRunButton.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.removeRunButton.Enabled = false;
+            this.removeRunButton.Location = new System.Drawing.Point(131, 3);
+            this.removeRunButton.Margin = new System.Windows.Forms.Padding(3, 3, 0, 3);
+            this.removeRunButton.Name = "removeRunButton";
+            this.removeRunButton.Size = new System.Drawing.Size(125, 27);
+            this.removeRunButton.TabIndex = 22;
+            this.removeRunButton.Text = "Remove";
+            this.removeRunButton.UseVisualStyleBackColor = true;
+            this.removeRunButton.Click += new System.EventHandler(this.removeRunButton_Click);
             // 
             // workloadTable
             // 
@@ -423,8 +423,8 @@ namespace AlgorithmVisualization.View
             // workloadTableInputColumn
             // 
             this.workloadTableInputColumn.AutoComplete = false;
-            dataGridViewCellStyle3.NullValue = null;
-            this.workloadTableInputColumn.DefaultCellStyle = dataGridViewCellStyle3;
+            dataGridViewCellStyle1.NullValue = null;
+            this.workloadTableInputColumn.DefaultCellStyle = dataGridViewCellStyle1;
             this.workloadTableInputColumn.FillWeight = 76F;
             this.workloadTableInputColumn.HeaderText = "Input";
             this.workloadTableInputColumn.Name = "workloadTableInputColumn";
@@ -441,9 +441,9 @@ namespace AlgorithmVisualization.View
             // 
             // workloadTableAmountColumn
             // 
-            dataGridViewCellStyle4.Format = "N0";
-            dataGridViewCellStyle4.NullValue = null;
-            this.workloadTableAmountColumn.DefaultCellStyle = dataGridViewCellStyle4;
+            dataGridViewCellStyle2.Format = "N0";
+            dataGridViewCellStyle2.NullValue = null;
+            this.workloadTableAmountColumn.DefaultCellStyle = dataGridViewCellStyle2;
             this.workloadTableAmountColumn.FillWeight = 50F;
             this.workloadTableAmountColumn.HeaderText = "Amount";
             this.workloadTableAmountColumn.Name = "workloadTableAmountColumn";
@@ -630,10 +630,10 @@ namespace AlgorithmVisualization.View
         private System.Windows.Forms.Button openInputButton;
         private System.Windows.Forms.TabPage runTabPage;
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel1;
-        private System.Windows.Forms.Button addWorkloadRunButton;
+        private System.Windows.Forms.Button addRunButton;
         private System.Windows.Forms.Button resetWorkloadButton;
         private System.Windows.Forms.Button computeWorkloadButton;
-        private System.Windows.Forms.Button removeWorkloadRunButton;
+        private System.Windows.Forms.Button removeRunButton;
         private System.Windows.Forms.DataGridView workloadTable;
         private System.Windows.Forms.TabControl tabControl;
         private System.Windows.Forms.DataGridViewTextBoxColumn workloadTableRunColumn;

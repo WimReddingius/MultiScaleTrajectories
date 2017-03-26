@@ -10,7 +10,7 @@ namespace AlgorithmVisualization.Controller.Explore
         protected abstract Action<AlgorithmRun<TIn, TOut>> BeforeStateReachedHandler { get;  }
         protected abstract Action<AlgorithmRun<TIn, TOut>> AfterStateReachedHandler { get;  }
 
-        public override void VisualizeRunSelection(params AlgorithmRun<TIn, TOut>[] runs)
+        public override void Visualize(params AlgorithmRun<TIn, TOut>[] runs)
         {
             var run = runs[0];
 

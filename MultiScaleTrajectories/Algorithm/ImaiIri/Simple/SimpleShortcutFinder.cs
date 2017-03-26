@@ -4,29 +4,34 @@ using System.Linq;
 using MultiScaleTrajectories.Algorithm.Geometry;
 using MultiScaleTrajectories.SingleTrajectory.Algorithm;
 
-namespace MultiScaleTrajectories.Algorithm.ImaiIri.Slow
+namespace MultiScaleTrajectories.Algorithm.ImaiIri.Simple
 {
     //preprocess: n^3
     //selection: k * n^2
-    class SlowShortcutFinder : ShortcutFinder
+    class SimpleShortcutFinder : ShortcutFinder
     {
-        public override string Name => "Slow";
+        public const string Name = "Simple";
 
         private readonly ShortcutSet<MaxDistanceShortcut> shortcutSet;
 
-        public SlowShortcutFinder(STInput input, STOutput output) : base(input, output)
+        public SimpleShortcutFinder(STInput input, STOutput output) : base(input, output)
         {
             shortcutSet = FindAllShortcuts(input.Trajectory);
             output.LogObject("Full number of shortcuts", shortcutSet.AllShortcuts.Count);
         }
 
+        //O(n^2)
         public override List<Shortcut> GetShortcuts(double epsilon)
         {
-            return shortcutSet.AllShortcuts.FindAll(s =>
+            var shortcuts = new List<Shortcut>();
+
+            foreach (var shortcut in shortcutSet.AllShortcuts)
             {
-                var x = shortcutSet.AllShortcuts.IndexOf(s);
-                return s.MaxDistance <= epsilon;
-            }).Cast<Shortcut>().ToList();
+                if (shortcut.MaxDistance <= epsilon)
+                    shortcuts.Add(shortcut);
+            }
+
+            return shortcuts;
         }
 
         public override void DontFindInTheFuture(Shortcut shortcut)
@@ -60,7 +65,7 @@ namespace MultiScaleTrajectories.Algorithm.ImaiIri.Slow
 
             for (var k = start + 1; k < end; k++)
             {
-                Point2D point = trajectory[k];
+                var point = trajectory[k];
                 maxDistance = Math.Max(maxDistance, Geometry2D.Distance(shortcut, point));
             }
             return maxDistance;

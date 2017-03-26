@@ -1,6 +1,5 @@
 ﻿using AlgorithmVisualization.Controller;
-using AlgorithmVisualization.Controller.Algorithm;
-using AlgorithmVisualization.Util.Factory;
+using AlgorithmVisualization.View.Util.Nameable;
 using MultiScaleTrajectories.SingleTrajectory.Algorithm;
 using MultiScaleTrajectories.SingleTrajectory.Algorithm.ImaiIri;
 using MultiScaleTrajectories.SingleTrajectory.View.Explore;
@@ -15,11 +14,12 @@ namespace MultiScaleTrajectories.SingleTrajectory.Controller
         public STController()
         {
             InputEditor = new STInputEditor();
-            RunExplorerFactories.Add(new Factory<STOutputExplorer>());
 
-            AlgorithmFactories.Add(new AlgorithmFactoryConcrete<STInput, STOutput, ImaiIriHierarchical>());
-            AlgorithmFactories.Add(new AlgorithmFactoryConcrete<STInput, STOutput, ImaiIriGreedy>());
-            AlgorithmFactories.Add(new AlgorithmFactoryConcrete<STInput, STOutput, ImaiIriNaive>());
+            AddRunExplorerType(typeof(STOutputExplorer));
+
+            AddAlgorithmType(typeof(ImaiIriHierarchical));
+            AddAlgorithmType(typeof(ImaiIriGreedy));
+            AddAlgorithmType(typeof(ImaiIriNaive));
         }
 
     }

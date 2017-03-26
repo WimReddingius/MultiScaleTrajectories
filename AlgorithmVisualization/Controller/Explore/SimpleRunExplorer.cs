@@ -22,9 +22,9 @@ namespace AlgorithmVisualization.Controller.Explore
             WrapVisualization(explorer);
         }
 
-        public override void VisualizeRunSelection(params AlgorithmRun<TIn, TOut>[] runs)
+        public override void Visualize(params AlgorithmRun<TIn, TOut>[] runs)
         {
-            explorer.VisualizeRunSelection(runs);
+            explorer.Visualize(runs);
         }
 
         public override void Dispose()

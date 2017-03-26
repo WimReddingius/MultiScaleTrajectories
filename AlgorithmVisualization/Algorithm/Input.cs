@@ -1,22 +1,18 @@
 ﻿using System.Runtime.Serialization;
 using AlgorithmVisualization.Algorithm.Statistics;
-using AlgorithmVisualization.View.Util;
+using AlgorithmVisualization.View.Util.Nameable;
 
 namespace AlgorithmVisualization.Algorithm
 {
-    public abstract class Input : PersistentBindable
+    public abstract class Input : NumberedNameable
     {
-        private static long nextId = 1;
-
         internal bool ReadOnly;
         public StatisticMap Statistics;
 
-        protected Input(string DisplayName = null)
+        protected Input()
         {
             Statistics = new StatisticMap();
-
-            this.DisplayName = DisplayName ?? "Input " + nextId++;
-
+            BaseName = "Input";
             InitStatistics();
         }
 

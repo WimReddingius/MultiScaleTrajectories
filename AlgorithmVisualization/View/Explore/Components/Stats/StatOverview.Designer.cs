@@ -2,7 +2,7 @@
 
 namespace AlgorithmVisualization.View.Explore.Components.Stats
 {
-    partial class StatTable<TIn, TOut>
+    partial class StatOverview<TIn, TOut>
     {
         /// <summary> 
         /// Required designer variable.
@@ -30,7 +30,7 @@ namespace AlgorithmVisualization.View.Explore.Components.Stats
         /// </summary>
         private void InitializeComponent()
         {
-            this.resizableTableLayoutPanel1 = new ResizableTableLayoutPanel();
+            this.resizableTableLayoutPanel1 = new AlgorithmVisualization.View.Util.Components.ResizableTableLayoutPanel();
             this.panel3 = new System.Windows.Forms.Panel();
             this.outputStatsTable = new System.Windows.Forms.DataGridView();
             this.label3 = new System.Windows.Forms.Label();
@@ -191,13 +191,13 @@ namespace AlgorithmVisualization.View.Explore.Components.Stats
             this.label2.TabIndex = 1;
             this.label2.Text = "Input Statistics";
             // 
-            // StatTable
+            // StatOverview
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.AutoValidate = System.Windows.Forms.AutoValidate.EnableAllowFocusChange;
             this.Controls.Add(this.resizableTableLayoutPanel1);
-            this.Name = "StatTable";
+            this.Name = "StatOverview";
             this.Size = new System.Drawing.Size(433, 482);
             this.resizableTableLayoutPanel1.ResumeLayout(false);
             this.panel3.ResumeLayout(false);

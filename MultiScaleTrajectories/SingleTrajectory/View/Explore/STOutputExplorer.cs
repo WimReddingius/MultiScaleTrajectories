@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Windows.Forms;
 using AlgorithmVisualization.Algorithm;
 using AlgorithmVisualization.Algorithm.Run;
 using AlgorithmVisualization.Controller.Explore;

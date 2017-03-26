@@ -8,11 +8,8 @@ namespace MultiScaleTrajectories.SingleTrajectory.Algorithm.ImaiIri
 {
     abstract class ImaiIriAlgorithm : Algorithm<STInput, STOutput>
     {
-        [JsonProperty]
-        private readonly ImaiIriOptions imaiIriOptions;
-
-        [JsonIgnore]
-        protected IFactory<ShortcutFinder> ShortcutFinderFactory => imaiIriOptions.ShortcutFinderFactory;
+        [JsonProperty] private readonly ImaiIriOptions imaiIriOptions;
+        [JsonIgnore] protected IFactory<ShortcutFinder> ShortcutFinderFactory => imaiIriOptions.ShortcutFinderFactory;
 
 
         protected ImaiIriAlgorithm(ImaiIriOptions imaiIriOptions)

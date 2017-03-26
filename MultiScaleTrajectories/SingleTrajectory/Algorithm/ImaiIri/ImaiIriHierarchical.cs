@@ -14,13 +14,11 @@ namespace MultiScaleTrajectories.SingleTrajectory.Algorithm.ImaiIri
 
         public ImaiIriHierarchical()
         {
-
         }
 
         [JsonConstructor]
         public ImaiIriHierarchical(ImaiIriOptions imaiIriOptions) : base(imaiIriOptions)
         {
-
         }
 
         public override void Compute(STInput input, STOutput output)

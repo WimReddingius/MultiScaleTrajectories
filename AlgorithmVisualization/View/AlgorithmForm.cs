@@ -8,8 +8,8 @@ namespace AlgorithmVisualization.View
 {
     public partial class AlgorithmForm : Form
     {
-        public readonly BindingList<Type> ProblemControllerTypes;
-        private readonly BindingList<IAlgorithmController> problemControllers;
+        public readonly BindingList<Type> AlgoControllerTypes;
+        private readonly BindingList<IAlgorithmController> algoControllers;
 
 
         public AlgorithmForm()
@@ -19,21 +19,21 @@ namespace AlgorithmVisualization.View
             OpenTK.Toolkit.Init();
             AlgorithmControllerConverter.Init();
 
-            ProblemControllerTypes = new BindingList<Type>();
-            problemControllers = new BindingList<IAlgorithmController>();
+            AlgoControllerTypes = new BindingList<Type>();
+            algoControllers = new BindingList<IAlgorithmController>();
 
-            ProblemControllerTypes.ListChanged += (o, e) =>
+            AlgoControllerTypes.ListChanged += (o, e) =>
             {
                 if (e.ListChangedType == ListChangedType.ItemAdded)
                 {
-                    problemControllers.Add(AlgorithmControllerConverter.GetController(ProblemControllerTypes[e.NewIndex]));
+                    algoControllers.Add(AlgorithmControllerConverter.GetController(AlgoControllerTypes[e.NewIndex]));
                 }
                 if (e.ListChangedType == ListChangedType.ItemDeleted)
                 {
-                    problemControllers.Remove(AlgorithmControllerConverter.GetController(ProblemControllerTypes[e.NewIndex]));
+                    algoControllers.Remove(AlgorithmControllerConverter.GetController(AlgoControllerTypes[e.NewIndex]));
                 }
 
-                algorithmProblemComboBox.DataSource = problemControllers;
+                algorithmProblemComboBox.DataSource = algoControllers;
                 algorithmProblemComboBox.DisplayMember = "Name";
             };
         }
@@ -51,5 +51,6 @@ namespace AlgorithmVisualization.View
         {
             AlgorithmControllerConverter.Save();
         }
+
     }
 }

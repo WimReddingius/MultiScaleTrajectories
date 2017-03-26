@@ -24,7 +24,7 @@ namespace AlgorithmVisualization.View.Util
         {
             if (control.InvokeRequired)
             {
-                control.Invoke(action);
+                control.BeginInvoke(action);
             }
             else
             {
@@ -48,6 +48,9 @@ namespace AlgorithmVisualization.View.Util
         {
             MessageBox.Show(str, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
         }
+
+
+
 
     }
 }

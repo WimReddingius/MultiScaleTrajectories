@@ -1,17 +1,16 @@
 ﻿using System.ComponentModel;
 using System.Threading;
-using System.Windows.Forms;
 using AlgorithmVisualization.Algorithm;
 using AlgorithmVisualization.Algorithm.Run;
 using AlgorithmVisualization.Util;
 using AlgorithmVisualization.View.Util;
+using AlgorithmVisualization.View.Util.Components;
 
 namespace AlgorithmVisualization.View.Explore.Components.Log
 {
-    partial class LogStream<TIn, TOut> : UserControl where TOut : Output, new() where TIn : Input, new()
+    partial class LogStream<TIn, TOut> : DoubleBufferedUserControl where TOut : Output, new() where TIn : Input, new()
     {
         private BackgroundWorker logPollingWorker;
-
 
         public LogStream()
         {
@@ -25,7 +24,7 @@ namespace AlgorithmVisualization.View.Explore.Components.Log
 
         public void AfterStarted(AlgorithmRun<TIn, TOut> run)
         {
-            TOut output = run.Output;
+            var output = run.Output;
 
             var newWorker = new BackgroundWorker {WorkerSupportsCancellation = true};
             newWorker.DoWork += (o, e) =>
@@ -45,11 +44,12 @@ namespace AlgorithmVisualization.View.Explore.Components.Log
                     {
                         AppendLoggedOutput(buffer.Flush());
                     });
-                    Thread.Sleep(300);
+                    Thread.Sleep(500);
                 }
             };
 
-            logPollingWorker.DoAfterCancel(newWorker.RunWorkerAsync);
+            logPollingWorker?.CancelAsync();
+            newWorker.RunWorkerAsync();
             logPollingWorker = newWorker;
         }
 

@@ -73,7 +73,7 @@ namespace MultiScaleTrajectories.Algorithm.DataStructures.Graph
             Nodes.Remove(node);
         }
 
-        //Uses Dijkstra
+        //Dijkstra
         public List<N> GetShortestPath(N source, N target)
         {
             List<N> shortestPath = null;

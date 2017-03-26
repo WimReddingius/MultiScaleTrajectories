@@ -18,7 +18,7 @@ namespace MultiScaleTrajectories
             Application.SetCompatibleTextRenderingDefault(false);
 
             var algoForm = new AlgorithmForm { Text = Resources.Program_Name };
-            algoForm.ProblemControllerTypes.Add(typeof(STController));
+            algoForm.AlgoControllerTypes.Add(typeof(STController));
             Application.Run(algoForm);
         }
     }

@@ -39,20 +39,14 @@ namespace AlgorithmVisualization.Controller.Explore
             control.BringToFront();
         }
 
-        public virtual void RunSelectionChanged(params AlgorithmRun<TIn, TOut>[] runs)
+        public virtual void LoadRuns(params AlgorithmRun<TIn, TOut>[] runs)
         {
             if (!ConsolidationSupported(runs.Length))
             {
                 throw new ArgumentOutOfRangeException(nameof(runs), "Consolidation not supported for " + runs.Length + " runs.");
             }
 
-            ResetStateReachedHandlers(runs);
-            VisualizeRunSelection(runs);
-        }
-
-        private void ResetStateReachedHandlers(AlgorithmRun<TIn, TOut>[] runs)
-        {
-            //remove all previous handlers
+            //remove previous handlers
             foreach (var run in stateChangedHandlers.Keys)
             {
                 foreach (var handler in stateChangedHandlers[run])
@@ -62,13 +56,17 @@ namespace AlgorithmVisualization.Controller.Explore
             }
 
             stateChangedHandlers.Clear();
+
+            //initialize new handlers
             foreach (var run in runs)
             {
                 stateChangedHandlers[run] = new List<RunStateChangedHandler<TIn, TOut>>();
             }
+
+            Visualize(runs);
         }
 
-        public abstract void VisualizeRunSelection(params AlgorithmRun<TIn, TOut>[] runs);
+        public abstract void Visualize(params AlgorithmRun<TIn, TOut>[] runs);
 
         protected void AddStateReachedHandler(AlgorithmRun<TIn, TOut> run, RunState state, Action<AlgorithmRun<TIn, TOut>> handler)
         {
@@ -84,7 +82,6 @@ namespace AlgorithmVisualization.Controller.Explore
             run.StateChanged += act;
             stateChangedHandlers[run].Add(act);
         }
-
 
         public virtual bool ConsolidationSupported(int numRuns)
         {

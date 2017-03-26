@@ -1,12 +1,13 @@
 ﻿using System.Windows.Forms;
+using AlgorithmVisualization.View.Util.Components;
 
 namespace AlgorithmVisualization.View
 {
 #if DEBUG
 
         //For showing in Visual Studio Designer
-        public class AlgorithmView : UserControl
-        {
+        public class AlgorithmView : DoubleBufferedUserControl
+    {
             public virtual Control VisualizationContainer { get; set; }
 
             public virtual void Reset() { }
@@ -14,7 +15,7 @@ namespace AlgorithmVisualization.View
 
 #else
 
-        abstract class AlgorithmViewBase : UserControl
+        abstract class AlgorithmViewBase : DoubleBufferedUserControl
         {
             public abstract Control VisualizationContainer { get; set; }
 

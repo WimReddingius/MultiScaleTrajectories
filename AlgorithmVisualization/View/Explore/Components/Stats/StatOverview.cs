@@ -11,10 +11,11 @@ using AlgorithmVisualization.Algorithm.Statistics;
 using AlgorithmVisualization.Controller.Explore;
 using AlgorithmVisualization.Util;
 using AlgorithmVisualization.View.Util;
+using AlgorithmVisualization.View.Util.Components;
 
 namespace AlgorithmVisualization.View.Explore.Components.Stats
 {
-    partial class StatTable<TIn, TOut> : UserControl, IRunExplorer<TIn, TOut> where TIn : Input, new() where TOut : Output, new()
+    partial class StatOverview<TIn, TOut> : DoubleBufferedUserControl, IRunExplorer<TIn, TOut> where TIn : Input, new() where TOut : Output, new()
     {
         public string DisplayName => "Statistics";
         public int MaxConsolidation => 10;
@@ -23,7 +24,7 @@ namespace AlgorithmVisualization.View.Explore.Components.Stats
 
         private BackgroundWorker statPollingWorker;
 
-        public StatTable()
+        public StatOverview()
         {
             InitializeComponent();
         }
@@ -39,7 +40,7 @@ namespace AlgorithmVisualization.View.Explore.Components.Stats
 
             foreach (var run in runs)
             {
-                var column = table.Columns.Add(run.DisplayName);
+                var column = table.Columns.Add(run.Name);
                 var columnIndex = table.Columns.IndexOf(column);
                 var currentlyTrackedStats = new List<string>();
 
@@ -103,7 +104,7 @@ namespace AlgorithmVisualization.View.Explore.Components.Stats
             }
         }
 
-        public void VisualizeRunSelection(params AlgorithmRun<TIn, TOut>[] runs)
+        public void Visualize(params AlgorithmRun<TIn, TOut>[] runs)
         {
             var columnFillTasks = new List<Action>();
 
@@ -120,11 +121,12 @@ namespace AlgorithmVisualization.View.Explore.Components.Stats
                     {
                         columnFillTasks.ForEach(task => task());
                     });
-                    Thread.Sleep(1000 / 10);
+                    Thread.Sleep(500);
                 }
             };
 
-            statPollingWorker.DoAfterCancel(newWorker.RunWorkerAsync);
+            statPollingWorker?.CancelAsync();
+            newWorker.RunWorkerAsync();
             statPollingWorker = newWorker;
         }
 

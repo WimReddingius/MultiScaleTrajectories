@@ -16,7 +16,7 @@ namespace MultiScaleTrajectories.SingleTrajectory.Algorithm
         
 
         [JsonConstructor]
-        public STInput(Trajectory2D Trajectory, List<double> Epsilons, string DisplayName) : base(DisplayName)
+        public STInput(Trajectory2D Trajectory, List<double> Epsilons)
         {
             Load(Trajectory, Epsilons);
         }

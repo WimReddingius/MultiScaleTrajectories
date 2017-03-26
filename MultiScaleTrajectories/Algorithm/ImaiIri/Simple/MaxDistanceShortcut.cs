@@ -1,6 +1,6 @@
 ﻿using MultiScaleTrajectories.Algorithm.Geometry;
 
-namespace MultiScaleTrajectories.Algorithm.ImaiIri.Slow
+namespace MultiScaleTrajectories.Algorithm.ImaiIri.Simple
 {
     class MaxDistanceShortcut : Shortcut
     {
@@ -10,6 +10,12 @@ namespace MultiScaleTrajectories.Algorithm.ImaiIri.Slow
         {
             MaxDistance = distance;
         }
+
+        public override string ToString()
+        {
+            return "From " + Start + " to " + End + ", max distance " + MaxDistance;
+        }
+
     }
 
 }

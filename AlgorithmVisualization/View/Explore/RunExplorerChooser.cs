@@ -26,6 +26,8 @@ namespace AlgorithmVisualization.View.Explore
 
         private readonly MouseMessageFilter mouseMessageFilter;
 
+        private BackgroundWorker explorerWorker;
+
         //whether or not this exploration view listens to changes in the run selection
         private bool UsingActiveSelection
         {
@@ -50,13 +52,14 @@ namespace AlgorithmVisualization.View.Explore
                 autoChooseRunsCheckBox.CheckedChanged -= autoChooseRunsCheckBox_CheckedChanged;
                 autoChooseRunsCheckBox.CheckState = value ? CheckState.Checked : CheckState.Unchecked;
                 autoChooseRunsCheckBox.CheckedChanged += autoChooseRunsCheckBox_CheckedChanged;
+
+                controller.Runs.ListChanged -= UpdateAutoSelection;
+
                 if (value)
                 {
                     controller.Runs.ListChanged += UpdateAutoSelection;
                     UpdateAutoSelection(null, null);
                 }
-                else
-                    controller.Runs.ListChanged -= UpdateAutoSelection;
             }
         }
 
@@ -113,19 +116,19 @@ namespace AlgorithmVisualization.View.Explore
 
         public void ActivateRunSelection()
         {
-            //loading last selected runs
-            activeSelection.Clear();
+            AutoSelect = false;
+            activeSelection.ListChanged -= RunSelectionChanged;
 
-            //removing runs that are now not present anymore
+            //finding last selected runs
             lastSelection
                 .FindAll(run => !controller.Runs.Contains(run))
                 .ForEach(run => lastSelection.Remove(run));
 
-            lastSelection.ForEach(run => { activeSelection.Add(run); });
-
+            //loading last selected runs into the active selection
+            activeSelection.Clear();
+            lastSelection.ForEach(run => activeSelection.Add(run));
+            
             activeSelection.ListChanged += RunSelectionChanged;
-
-            AutoSelect = false;
         }
 
         public void DeactivateRunSelection()
@@ -137,7 +140,7 @@ namespace AlgorithmVisualization.View.Explore
 
         private void RunSelectionChanged(object sender, ListChangedEventArgs listChangedEventArgs)
         {
-            LoadVisualization();
+            ExploreSelection();
         }
 
         private void runExplorerComboBox_SelectedIndexChanged(object sender, EventArgs e)
@@ -147,16 +150,18 @@ namespace AlgorithmVisualization.View.Explore
             if (AutoSelect)
                 SetMaximumRunSelection();
 
-            LoadVisualization();
+            ExploreSelection();
         }
 
         private void UpdateAutoSelection(object sender, ListChangedEventArgs listChangedEventArgs)
         {
-            SetMaximumRunSelection();
-            LoadVisualization();
+            if (runExplorerComboBox.SelectedItem == null) return;
+            
+            if (SetMaximumRunSelection())
+                ExploreSelection();
         }
 
-        private void LoadVisualization()
+        private void ExploreSelection()
         {
             var runExplorer = (RunExplorer<TIn, TOut>)runExplorerComboBox.SelectedItem;
 
@@ -168,7 +173,7 @@ namespace AlgorithmVisualization.View.Explore
             if (runExplorer.ConsolidationSupported(runSelection.Count))
             {
                 visualizationContainer.Fill(runExplorer);
-                runExplorer.RunSelectionChanged(runSelection.ToArray());
+                runExplorer.LoadRuns(runSelection.ToArray());
             }
             else
             {
@@ -184,37 +189,50 @@ namespace AlgorithmVisualization.View.Explore
             return lastSelection;
         }
 
-        private void SetMaximumRunSelection()
+        private bool SetMaximumRunSelection()
         {
             var runExplorer = (RunExplorer<TIn, TOut>)runExplorerComboBox.SelectedItem;
-
-            if (runExplorer == null)
-                return;
-
-            var runSelectionList = GetRunSelection();
+            var runSelection = GetRunSelection();
+            var oldRunSelection = runSelection.ToList();
 
             if (UsingActiveSelection)
                 activeSelection.ListChanged -= RunSelectionChanged;
 
-            //try to add the maximize the amount of visualized runs
-            runSelectionList.Clear();
-            while (runSelectionList.Count < runExplorer.MaxConsolidation && runSelectionList.Count < controller.Runs.Count)
+            //add the maximum amount of runs
+            runSelection.Clear();
+            while (runSelection.Count < runExplorer.MaxConsolidation && runSelection.Count < controller.Runs.Count)
             {
-                var nonSelectedRun = controller.Runs
+                var nonSelectedRuns = controller.Runs
                     .ToList()
-                    .Find(run => !runSelectionList.Contains(run));
+                    .FindAll(run => !runSelection.Contains(run))
+                    .OrderByDescending(r => r.State);
 
-                runSelectionList.Add(nonSelectedRun);
+                runSelection.Add(nonSelectedRuns.First());
             }
 
             if (UsingActiveSelection)
                 activeSelection.ListChanged += RunSelectionChanged;
+
+            var theSame = true;
+            foreach (var run in runSelection)
+            {
+                if (!oldRunSelection.Contains(run))
+                    theSame = false;
+            }
+            foreach (var run in oldRunSelection)
+            {
+                if (!runSelection.Contains(run))
+                    theSame = false;
+            }
+
+            //return whether the selection was changed
+            return !theSame;
         }
 
         private void autoChooseRunsCheckBox_CheckedChanged(object sender, EventArgs e)
         {
-            AutoSelect = autoChooseRunsCheckBox.CheckState == CheckState.Checked;
             UsingActiveSelection = false;
+            AutoSelect = autoChooseRunsCheckBox.CheckState == CheckState.Checked;
         }
 
         private void chooseRunSelectionCheckBox_CheckedChanged(object sender, EventArgs e)
@@ -245,7 +263,6 @@ namespace AlgorithmVisualization.View.Explore
 
             base.Dispose();
         }
-
 
     }
 }

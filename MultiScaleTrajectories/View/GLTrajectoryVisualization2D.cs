@@ -1,5 +1,11 @@
-﻿using System.Windows.Forms;
+﻿using System;
+using System.Drawing;
+using System.Drawing.Imaging;
+using System.Net;
+using System.Windows.Forms;
 using AlgorithmVisualization.View.GLVisualization;
+using Google.Maps;
+using Google.Maps.StaticMaps;
 using MultiScaleTrajectories.Algorithm.Geometry;
 using OpenTK;
 using OpenTK.Input;
@@ -36,9 +42,8 @@ namespace MultiScaleTrajectories.View
 
                 Vector2d newMouseLoc = GetWorldCoordinates(e.Location.X, e.Location.Y);
                 LastDraggingLocation = newMouseLoc;
-
-                Refresh();
             }
+            Refresh();
         }
 
         private void HandleMouseDown(object sender, MouseEventArgs e)
@@ -80,7 +85,29 @@ namespace MultiScaleTrajectories.View
             {
                 BoundingBox2D boundingBox = trajectory.GetBoundingBox();
                 LookAt(boundingBox.Center.X, boundingBox.Center.Y, 1.1 * boundingBox.Width, 1.1 * boundingBox.Height);
+
+                //var map = new StaticMapRequest
+                //{
+                //    Center = new LatLng(boundingBox.Center.Y, boundingBox.Center.X),
+                //    Size = new Size(ClientRectangle.Width, ClientRectangle.Height),
+                //    Zoom = 10,
+                //    Sensor = false
+                //};
+                //SaveImage(@"files\map.png", map.ToUri(), ImageFormat.Png);
             }
+        }
+
+        private void SaveImage(string filename, Uri uri, ImageFormat format)
+        {
+            var client = new WebClient();
+            var stream = client.OpenRead(uri);
+            var bitmap = new Bitmap(stream);
+
+            bitmap.Save(filename, format);
+
+            stream.Flush();
+            stream.Close();
+            client.Dispose();
         }
 
     }

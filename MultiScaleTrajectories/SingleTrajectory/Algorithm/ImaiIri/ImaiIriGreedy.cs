@@ -10,13 +10,11 @@ namespace MultiScaleTrajectories.SingleTrajectory.Algorithm.ImaiIri
 
         public ImaiIriGreedy()
         {
-            
         }
 
         [JsonConstructor]
         public ImaiIriGreedy(ImaiIriOptions imaiIriOptions) : base(imaiIriOptions)
         {
-            
         }
 
         public override void Compute(STInput input, STOutput output)
@@ -74,6 +72,7 @@ namespace MultiScaleTrajectories.SingleTrajectory.Algorithm.ImaiIri
                 {
                     var node = shortcutGraph.GetNode(trajectory[i]);
 
+                    //O(n)
                     if (!levelShortestPath.Contains(node))
                     {
                         //removing edges from shortcut graph
