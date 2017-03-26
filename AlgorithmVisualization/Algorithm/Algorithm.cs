@@ -1,5 +1,5 @@
 ﻿using System.Windows.Forms;
-using AlgorithmVisualization.View.Util.Nameable;
+using AlgorithmVisualization.Util.Nameable;
 using Newtonsoft.Json;
 
 namespace AlgorithmVisualization.Algorithm

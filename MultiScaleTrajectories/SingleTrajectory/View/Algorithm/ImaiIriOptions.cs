@@ -3,7 +3,7 @@ using System.Linq;
 using System.Runtime.Serialization;
 using System.Windows.Forms;
 using AlgorithmVisualization.Util.Factory;
-using AlgorithmVisualization.View.Util.Nameable;
+using AlgorithmVisualization.Util.Nameable;
 using MultiScaleTrajectories.Algorithm.ImaiIri;
 using MultiScaleTrajectories.Algorithm.ImaiIri.Simple;
 using MultiScaleTrajectories.Algorithm.ImaiIri.Wedges;

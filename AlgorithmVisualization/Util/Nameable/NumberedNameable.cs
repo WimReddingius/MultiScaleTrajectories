@@ -1,7 +1,7 @@
-﻿using System;
+using System;
 using Newtonsoft.Json;
 
-namespace AlgorithmVisualization.View.Util.Nameable
+namespace AlgorithmVisualization.Util.Nameable
 {
     public delegate void BaseNameChangedEventHandler(NumberedNameable nameable, string newBase);
 

@@ -5,11 +5,10 @@ using AlgorithmVisualization.Algorithm;
 using AlgorithmVisualization.Algorithm.Run;
 using AlgorithmVisualization.Controller.Edit;
 using AlgorithmVisualization.Controller.Explore;
-using AlgorithmVisualization.Util.Factory;
+using AlgorithmVisualization.Util.Nameable;
 using AlgorithmVisualization.View;
 using AlgorithmVisualization.View.Explore.Components.Log;
 using AlgorithmVisualization.View.Explore.Components.Stats;
-using AlgorithmVisualization.View.Util.Nameable;
 using Newtonsoft.Json;
 
 namespace AlgorithmVisualization.Controller
@@ -34,7 +33,6 @@ namespace AlgorithmVisualization.Controller
         protected AlgorithmController()
         {
             AlgorithmFactories = new BindingList<INameableFactory<Algorithm<TIn, TOut>>>();
-
             RunExplorerFactories = new BindingList<INameableFactory<RunExplorer<TIn, TOut>>>();
             AddSimpleRunExplorerType(typeof(StatOverview<TIn, TOut>));
             AddRunExplorerType(typeof(LogExplorer<TIn, TOut>));

@@ -3,7 +3,7 @@ using System.ComponentModel;
 using System.Linq;
 using System.Runtime.Serialization;
 
-namespace AlgorithmVisualization.View.Util.Nameable
+namespace AlgorithmVisualization.Util.Nameable
 {
     public class NamingList<T> : BindingList<T> where T : NumberedNameable
     {

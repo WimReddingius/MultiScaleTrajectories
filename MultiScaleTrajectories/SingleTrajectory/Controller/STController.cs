@@ -1,5 +1,4 @@
 ﻿using AlgorithmVisualization.Controller;
-using AlgorithmVisualization.View.Util.Nameable;
 using MultiScaleTrajectories.SingleTrajectory.Algorithm;
 using MultiScaleTrajectories.SingleTrajectory.Algorithm.ImaiIri;
 using MultiScaleTrajectories.SingleTrajectory.View.Explore;

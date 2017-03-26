@@ -1,6 +1,6 @@
-﻿using AlgorithmVisualization.Util.Factory;
+using AlgorithmVisualization.Util.Factory;
 
-namespace AlgorithmVisualization.View.Util.Nameable
+namespace AlgorithmVisualization.Util.Nameable
 {
     public sealed class NameableFactory<T> : Nameable, INameableFactory<T>
     {

@@ -66,13 +66,13 @@
     <Compile Include="View\Util\Components\DoubleBufferedUserControl.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="View\Util\Nameable\INameable.cs" />
-    <Compile Include="View\Util\Nameable\INameableFactory.cs" />
-    <Compile Include="View\Util\Nameable\NumberedNameable.cs" />
-    <Compile Include="View\Util\Nameable\NameableFactory.cs" />
+    <Compile Include="Util\Nameable\INameable.cs" />
+    <Compile Include="Util\Nameable\INameableFactory.cs" />
+    <Compile Include="Util\Nameable\NumberedNameable.cs" />
+    <Compile Include="Util\Nameable\NameableFactory.cs" />
     <Compile Include="Util\StringBuffer.cs" />
     <Compile Include="Util\TimeFormatter.cs" />
-    <Compile Include="View\Util\Nameable\Nameable.cs" />
+    <Compile Include="Util\Nameable\Nameable.cs" />
     <Compile Include="Algorithm\Run\AlgorithmRun.cs" />
     <Compile Include="Algorithm\Input.cs" />
     <Compile Include="Algorithm\Output.cs" />
@@ -164,7 +164,7 @@
     <Compile Include="View\GLVisualization\GLUtil\GLTextRenderer2D.cs" />
     <Compile Include="View\GLVisualization\GLUtil\GLUtil2D.cs" />
     <Compile Include="Controller\Edit\IInputLoader.cs" />
-    <Compile Include="View\Util\Nameable\NamingList.cs" />
+    <Compile Include="Util\Nameable\NamingList.cs" />
   </ItemGroup>
   <ItemGroup />
   <ItemGroup>

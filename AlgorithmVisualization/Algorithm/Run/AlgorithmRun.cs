@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel;
 using AlgorithmVisualization.Algorithm.Statistics;
-using AlgorithmVisualization.View.Util.Nameable;
+using AlgorithmVisualization.Util.Nameable;
 using Newtonsoft.Json;
 
 namespace AlgorithmVisualization.Algorithm.Run

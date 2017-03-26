@@ -1,4 +1,4 @@
-﻿namespace AlgorithmVisualization.View.Util.Nameable
+﻿namespace AlgorithmVisualization.Util.Nameable
 {
     public interface INameable
     {

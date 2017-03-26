@@ -1,6 +1,6 @@
 ﻿using AlgorithmVisualization.Util.Factory;
 
-namespace AlgorithmVisualization.View.Util.Nameable
+namespace AlgorithmVisualization.Util.Nameable
 {
     public interface INameableFactory<out T> : INameable, IFactory<T>
     {

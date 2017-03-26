@@ -1,6 +1,6 @@
 ﻿using Newtonsoft.Json;
 
-namespace AlgorithmVisualization.View.Util.Nameable
+namespace AlgorithmVisualization.Util.Nameable
 {
     public class Nameable : INameable
     {
