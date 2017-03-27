@@ -35,13 +35,7 @@ namespace MultiScaleTrajectories.Algorithm.ImaiIri.Wedges
             var BC = Geometry2D.Orient2D(new Vector2d(0, 0), B, C);
 
             //either orientation is opposite or on the line AB
-            return AC == -BC || AC == 0 || BC == 0;
-
-            //whether P is in between A and B
-            //var rotation1 = Geometry2D.Cross(A, P) * Geometry2D.Cross(A, B);
-            //var rotation2 = Geometry2D.Cross(B, P) * Geometry2D.Cross(B, A);
-            //return rotation1 >= 0 && rotation2 >= 0;
-            //AP POSSItive, BP negative
+            return (AC == 1 && BC == -1) || AC == 0 || BC == 0;
         }
 
         public Wedge Clone()

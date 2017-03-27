@@ -46,6 +46,19 @@ namespace AlgorithmVisualization.Controller.Explore
                 throw new ArgumentOutOfRangeException(nameof(runs), "Consolidation not supported for " + runs.Length + " runs.");
             }
 
+            ClearStateChangedHandlers();
+
+            //initialize new handlers
+            foreach (var run in runs)
+            {
+                stateChangedHandlers[run] = new List<RunStateChangedHandler<TIn, TOut>>();
+            }
+
+            Visualize(runs);
+        }
+
+        private void ClearStateChangedHandlers()
+        {
             //remove previous handlers
             foreach (var run in stateChangedHandlers.Keys)
             {
@@ -56,14 +69,6 @@ namespace AlgorithmVisualization.Controller.Explore
             }
 
             stateChangedHandlers.Clear();
-
-            //initialize new handlers
-            foreach (var run in runs)
-            {
-                stateChangedHandlers[run] = new List<RunStateChangedHandler<TIn, TOut>>();
-            }
-
-            Visualize(runs);
         }
 
         public abstract void Visualize(params AlgorithmRun<TIn, TOut>[] runs);
@@ -75,7 +80,7 @@ namespace AlgorithmVisualization.Controller.Explore
             {
                 if (s == state)
                 {
-                    this.InvokeIfRequired(() => handler(r));
+                    handler(r);
                 }
             };
 
@@ -88,14 +93,20 @@ namespace AlgorithmVisualization.Controller.Explore
             return MinConsolidation <= numRuns && numRuns <= MaxConsolidation;
         }
 
+        public new void Dispose()
+        {
+            ClearStateChangedHandlers();
+            Destroy();
+            base.Dispose();
+        }
+
+        public virtual void Destroy()
+        {
+        }
+
         public override string ToString()
         {
             return DisplayName;
-        }
-
-        public new virtual void Dispose()
-        {
-            base.Dispose();
         }
 
     }

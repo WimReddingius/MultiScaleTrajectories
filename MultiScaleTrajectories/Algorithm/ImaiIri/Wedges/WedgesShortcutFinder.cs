@@ -13,6 +13,7 @@ namespace MultiScaleTrajectories.Algorithm.ImaiIri.Wedges
 
         private Trajectory2D trajectory => Input.Trajectory;
 
+        private readonly Dictionary<Point2D, int> indexMap;
         private readonly Dictionary<Point2D, Dictionary<Point2D, Shortcut>> fullShortcutMap;
         private readonly HashSet<Shortcut> bannedShortcuts;
         private readonly HashSet<Point2D> bannedPoints;
@@ -23,10 +24,15 @@ namespace MultiScaleTrajectories.Algorithm.ImaiIri.Wedges
             bannedShortcuts = new HashSet<Shortcut>();
             bannedPoints = new HashSet<Point2D>();
             fullShortcutMap = new Dictionary<Point2D, Dictionary<Point2D, Shortcut>>();
+            indexMap = new Dictionary<Point2D, int>();
 
-            foreach (var p1 in input.Trajectory)
+            for (var i = 0; i < input.Trajectory.Count; i++)
             {
+                var p1 = input.Trajectory[i];
+
+                indexMap[p1] = i;
                 fullShortcutMap.Add(p1, new Dictionary<Point2D, Shortcut>());
+
                 foreach (var p2 in input.Trajectory)
                 {
                     fullShortcutMap[p1].Add(p2, new Shortcut(p1, p2));
@@ -53,7 +59,10 @@ namespace MultiScaleTrajectories.Algorithm.ImaiIri.Wedges
         {
             var forwardList = FindShortcutsInDirection(epsilon, true);
             var backwardList = FindShortcutsInDirection(epsilon, false);
-            var intersection = forwardList.Intersect(backwardList).ToList();
+            var intersection = forwardList.Intersect(backwardList)
+                //.OrderBy(s => indexMap[s.Start])
+                //.ThenBy(s => indexMap[s.End])
+                .ToList();
 
             //note that we don't need to check for illegal points here, because these are automatically filtered out by the intersection
             //forward shortcut finding: no illegal starts
@@ -99,7 +108,7 @@ namespace MultiScaleTrajectories.Algorithm.ImaiIri.Wedges
                 //this is because skipping iterations of j could make some previously invalid shortcuts valid
                 //O(1)
                 if (bannedPoints.Contains(pointI))
-                    break;
+                    continue;
 
                 for (var j = startJ(i); conditionJ(j); j = step(j))
                 {
@@ -126,11 +135,6 @@ namespace MultiScaleTrajectories.Algorithm.ImaiIri.Wedges
                     if (!conditionJ(step(j)))
                         break;
 
-                    //get angle of shortcut line with respect to the unit circle
-                    var shortcutLine = new Line2D(pointI, pointJ);
-                    var rightVector = new Line2D(pointI, new Point2D(pointI.X + 1, pointI.Y));
-                    var worldAngle = Geometry2D.Angle(shortcutLine, rightVector);
-
                     //angle between shortcut line and epsilon circles
                     var distance = Geometry2D.Distance(pointI, pointJ);
 
@@ -138,6 +142,8 @@ namespace MultiScaleTrajectories.Algorithm.ImaiIri.Wedges
                     if (distance <= epsilon)
                         continue;
 
+                    //get angle of shortcut line with respect to the unit circle
+                    var worldAngle = Geometry2D.Angle(pointI, pointJ);
                     var wedgeAngle = Math.Asin(epsilon / distance);
 
                     //build wedge

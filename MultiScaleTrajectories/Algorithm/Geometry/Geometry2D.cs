@@ -19,9 +19,15 @@ namespace MultiScaleTrajectories.Algorithm.Geometry
         //angle between two lines in radians
         public static double Angle(Line2D line1, Line2D line2)
         {
-            double angle1 = Math.Atan2(line1.Point1.Y - line1.Point2.Y, line1.Point1.X - line1.Point2.X);
-            double angle2 = Math.Atan2(line2.Point1.Y - line2.Point2.Y, line2.Point1.X - line2.Point2.X);
+            var angle1 = Math.Atan2(line1.Point2.Y - line1.Point1.Y, line1.Point2.X - line1.Point1.X);
+            var angle2 = Math.Atan2(line2.Point2.Y - line2.Point1.Y, line2.Point2.X - line2.Point1.X);
             return SimplifyRadians(angle1 - angle2);
+        }
+
+        public static double Angle(Point2D p1, Point2D p2)
+        {
+            var angle1 = Math.Atan2(p2.Y - p1.Y, p2.X - p1.X);
+            return SimplifyRadians(angle1);
         }
 
         public static int Orient2D(Vector2d start, Vector2d end, Vector2d point)
@@ -31,6 +37,7 @@ namespace MultiScaleTrajectories.Algorithm.Geometry
 
         public static double SimplifyRadians(double angle)
         {
+            //var simplerAngle = angle;
             var simplerAngle = angle % (2*Math.PI);
 
             if (simplerAngle < 0)

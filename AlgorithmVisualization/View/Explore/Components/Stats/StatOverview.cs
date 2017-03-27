@@ -140,9 +140,9 @@ namespace AlgorithmVisualization.View.Explore.Components.Stats
             ((DataGridView)sender).ClearSelection();
         }
 
-        public new void Dispose()
+        public void Destroy()
         {
-            statPollingWorker?.DoAfterCancel(base.Dispose);
+            statPollingWorker?.DoAfterCancel(Dispose);
         }
 
     }

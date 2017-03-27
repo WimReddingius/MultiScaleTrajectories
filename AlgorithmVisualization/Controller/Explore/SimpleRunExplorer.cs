@@ -27,10 +27,9 @@ namespace AlgorithmVisualization.Controller.Explore
             explorer.Visualize(runs);
         }
 
-        public override void Dispose()
+        public override void Destroy()
         {
-            ((IRunExplorer<TIn, TOut>) explorer).Dispose();
-            base.Dispose();
+            explorer.Destroy();
         }
 
         public override string ToString()

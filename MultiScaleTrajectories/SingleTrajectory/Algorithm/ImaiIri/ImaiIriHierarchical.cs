@@ -47,6 +47,7 @@ namespace MultiScaleTrajectories.SingleTrajectory.Algorithm.ImaiIri
 
                 //select correct shortcuts
                 var levelShortcuts = shortcutFinder.GetShortcuts(epsilon);
+                var weights = new Dictionary<Shortcut, int>();
 
                 output.LogObject("Number of shortcuts found for level " + level, () => levelShortcuts.Count());
 
@@ -64,10 +65,16 @@ namespace MultiScaleTrajectories.SingleTrajectory.Algorithm.ImaiIri
                     //output.LogObject("Shortcut Shortest Path weight", shortcutGraph.GetPathWeight(sourceNode, shortestPathShortcut));
                     //output.LogLine("");
 
-                    shortcutGraph.AddShortcut(shortcut, shortcutGraph.GetPathWeight(sourceNode, shortestPathShortcut));
+                    //shortcutGraph.AddShortcut(shortcut, shortcutGraph.GetPathWeight(sourceNode, shortestPathShortcut));
+                    weights[shortcut] = shortcutGraph.GetPathWeight(sourceNode, shortestPathShortcut);
 
                     //remove shortcut from set to prevent considering it again in a future iteration
                     shortcutFinder.DontFindInTheFuture(shortcut);
+                }
+
+                foreach (var shortcut in levelShortcuts)
+                {
+                    shortcutGraph.AddShortcut(shortcut, weights[shortcut]);
                 }
 
                 //increment weights of all edges by 1

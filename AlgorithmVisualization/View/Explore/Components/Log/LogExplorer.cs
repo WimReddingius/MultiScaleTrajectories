@@ -23,9 +23,9 @@ namespace AlgorithmVisualization.View.Explore.Components.Log
             WrapVisualization(logStream);
         }
 
-        public override void Dispose()
+        public override void Destroy()
         {
-            logStream.Dispose();
+            logStream.Destroy();
         }
 
     }

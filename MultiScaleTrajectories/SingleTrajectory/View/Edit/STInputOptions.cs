@@ -40,7 +40,11 @@ namespace MultiScaleTrajectories.SingleTrajectory.View.Edit
         {
             if (levelTable.RowCount > 1)
             {
-                RemoveLevel(levelTable.RowCount);
+                var removeAt = levelTable.Rows.Count;
+                if (levelTable.SelectedCells.Count > 0)
+                    removeAt = levelTable.SelectedCells[0].RowIndex + 1;
+
+                RemoveLevel(removeAt);
             }
         }
 

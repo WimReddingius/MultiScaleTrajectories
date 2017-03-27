@@ -26,7 +26,7 @@ namespace AlgorithmVisualization.View.Explore
 
         private readonly MouseMessageFilter mouseMessageFilter;
 
-        private BackgroundWorker explorerWorker;
+        private ICollection<AlgorithmRun<TIn, TOut>> RunSelection => UsingActiveSelection ? (ICollection<AlgorithmRun<TIn, TOut>>)activeSelection : lastSelection;
 
         //whether or not this exploration view listens to changes in the run selection
         private bool UsingActiveSelection
@@ -168,12 +168,10 @@ namespace AlgorithmVisualization.View.Explore
             if (runExplorer == null)
                 return;
 
-            var runSelection = GetRunSelection();
-
-            if (runExplorer.ConsolidationSupported(runSelection.Count))
+            if (runExplorer.ConsolidationSupported(RunSelection.Count))
             {
                 visualizationContainer.Fill(runExplorer);
-                runExplorer.LoadRuns(runSelection.ToArray());
+                runExplorer.LoadRuns(RunSelection.ToArray());
             }
             else
             {
@@ -181,47 +179,38 @@ namespace AlgorithmVisualization.View.Explore
             }
         }
 
-        private IList<AlgorithmRun<TIn, TOut>> GetRunSelection()
-        {
-            if (UsingActiveSelection)
-                return activeSelection;
-
-            return lastSelection;
-        }
-
         private bool SetMaximumRunSelection()
         {
             var runExplorer = (RunExplorer<TIn, TOut>)runExplorerComboBox.SelectedItem;
-            var runSelection = GetRunSelection();
-            var oldRunSelection = runSelection.ToList();
+            var oldRunSelection = RunSelection.ToList();
 
             if (UsingActiveSelection)
                 activeSelection.ListChanged -= RunSelectionChanged;
 
             //add the maximum amount of runs
-            runSelection.Clear();
-            while (runSelection.Count < runExplorer.MaxConsolidation && runSelection.Count < controller.Runs.Count)
+            RunSelection.Clear();
+            while (RunSelection.Count < runExplorer.MaxConsolidation && RunSelection.Count < controller.Runs.Count)
             {
                 var nonSelectedRuns = controller.Runs
                     .ToList()
-                    .FindAll(run => !runSelection.Contains(run))
+                    .FindAll(run => !RunSelection.Contains(run))
                     .OrderByDescending(r => r.State);
 
-                runSelection.Add(nonSelectedRuns.First());
+                RunSelection.Add(nonSelectedRuns.First());
             }
 
             if (UsingActiveSelection)
                 activeSelection.ListChanged += RunSelectionChanged;
 
             var theSame = true;
-            foreach (var run in runSelection)
+            foreach (var run in RunSelection)
             {
                 if (!oldRunSelection.Contains(run))
                     theSame = false;
             }
             foreach (var run in oldRunSelection)
             {
-                if (!runSelection.Contains(run))
+                if (!RunSelection.Contains(run))
                     theSame = false;
             }
 

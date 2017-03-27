@@ -55,54 +55,22 @@ namespace AlgorithmVisualization.Algorithm.Run
 
         public void Run()
         {
-            algorithmWorker = new BackgroundWorker {WorkerSupportsCancellation = true};
-            algorithmWorker.DoWork += (o, e) =>
+            algorithmWorker = new BackgroundWorker
             {
-                var numIterationsFinished = 0;
-                Statistics.Put("Number of iterations finished", () => numIterationsFinished + " / " + NumIterations);
+                WorkerSupportsCancellation = true,
+                WorkerReportsProgress = true
+            };
 
-                var overallRunTime = new RunTimeStatisticValue();
-                Statistics.Put("Running time (s)", overallRunTime);
+            algorithmWorker.DoWork += algorithmWorker_DoWork;
 
-                overallRunTime.Start();
+            algorithmWorker.ProgressChanged += (o, e) =>
+            {
+                var iterationFinished = (int) e.UserState;
 
-                for (var it = 1; it <= NumIterations; it++)
-                {
+                Statistics.Put("Number of iterations finished", iterationFinished + " / " + NumIterations);
 
-                    if (algorithmWorker.CancellationPending)
-                    {
-                        e.Cancel = true;
-                        return;
-                    }
-
-                    var output = it == 1 ? Output : new TOut { Logging = false };
-
-                    var iterationRunTime = new RunTimeStatisticValue();
-                    Statistics.Put("Running time (s) - Iteration " + it, iterationRunTime);
-
-                    iterationRunTime.Start();
-#if (DEBUG)
-                    Algorithm.Compute(Input, output);
-#else
-                    try
-                    {
-                        Algorithm.Compute(Input, output);
-                    }
-                    catch (Exception ex)
-                    {
-                        FormsUtil.ShowErrorMessage(ex.ToString());
-                        return;
-                    }
-#endif
-                    iterationRunTime.End();
-
-                    if (it == 1)
-                        SetState(RunState.OutputAvailable);
-
-                    numIterationsFinished++;
-                }
-
-                overallRunTime.End();
+                if (iterationFinished == 1)
+                    SetState(RunState.OutputAvailable);
             };
 
             algorithmWorker.RunWorkerCompleted += (o, e) =>
@@ -118,6 +86,47 @@ namespace AlgorithmVisualization.Algorithm.Run
 
             algorithmWorker.RunWorkerAsync();
             SetState(RunState.Started);
+        }
+
+        private void algorithmWorker_DoWork(object o, DoWorkEventArgs e)
+        {
+            algorithmWorker.ReportProgress(0, 0);
+
+            var fullRunTime = new RunTimeStatisticValue();
+            Statistics.Put("Running time", fullRunTime);
+            fullRunTime.Start();
+
+            for (var it = 1; it <= NumIterations; it++)
+            {
+                if (algorithmWorker.CancellationPending)
+                {
+                    e.Cancel = true;
+                    return;
+                }
+
+                var iterationRunTime = new RunTimeStatisticValue();
+                Statistics.Put("Running time - Iteration " + it, iterationRunTime);
+                iterationRunTime.Start();
+
+                var output = it == 1 ? Output : new TOut { Logging = false };
+#if (DEBUG)
+                Algorithm.Compute(Input, output);
+#else
+                    try
+                    {
+                        Algorithm.Compute(Input, output);
+                    }
+                    catch (Exception ex)
+                    {
+                        FormsUtil.ShowErrorMessage(ex.ToString());
+                        return;
+                    }
+#endif
+                iterationRunTime.End();
+                algorithmWorker.ReportProgress(it / NumIterations * 100, it);
+            }
+
+            fullRunTime.End();
         }
 
         public void Reset()

@@ -1,4 +1,5 @@
-﻿using MultiScaleTrajectories.Algorithm.ImaiIri;
+﻿using System.Collections.Generic;
+using MultiScaleTrajectories.Algorithm.ImaiIri;
 using MultiScaleTrajectories.SingleTrajectory.View.Algorithm;
 using Newtonsoft.Json;
 
@@ -30,6 +31,7 @@ namespace MultiScaleTrajectories.SingleTrajectory.Algorithm.ImaiIri
 
                 //select correct level shortcuts
                 var levelShortcuts = shortcutFinder.GetShortcuts(epsilon);
+                var weights = new Dictionary<Shortcut, int>();
 
                 output.LogObject("Number of shortcuts found for level " + level, () => levelShortcuts.Count);
 
@@ -42,15 +44,21 @@ namespace MultiScaleTrajectories.SingleTrajectory.Algorithm.ImaiIri
                     //dijkstra to get edge weight
                     var shortestPathShortcut = shortcutGraph.GetShortestPath(sourceNode, targetNode);
 
-                    output.LogObject("Shortcut", shortcut);
-                    output.LogObject("Shortcut Shortest Path", shortcutGraph.GetTrajectory(sourceNode, shortestPathShortcut));
+                    //output.LogObject("Shortcut", shortcut);
+                    //output.LogObject("Shortcut Shortest Path", shortcutGraph.GetTrajectory(sourceNode, shortestPathShortcut));
                     output.LogObject("Shortcut Shortest Path weight", shortcutGraph.GetPathWeight(sourceNode, shortestPathShortcut));
                     output.LogLine("");
 
-                    shortcutGraph.AddShortcut(shortcut, shortcutGraph.GetPathWeight(sourceNode, shortestPathShortcut));
+                    //shortcutGraph.AddShortcut(shortcut, shortcutGraph.GetPathWeight(sourceNode, shortestPathShortcut));
+                    weights[shortcut] = shortcutGraph.GetPathWeight(sourceNode, shortestPathShortcut);
 
                     //remove shortcut from set to prevent considering it again in a future iteration
                     shortcutFinder.DontFindInTheFuture(shortcut);
+                }
+
+                foreach (var shortcut in levelShortcuts)
+                {
+                    shortcutGraph.AddShortcut(shortcut, weights[shortcut]);
                 }
 
                 //increment weights of all edges by 1

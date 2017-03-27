@@ -166,7 +166,9 @@
     <Compile Include="Controller\Edit\IInputLoader.cs" />
     <Compile Include="Util\Nameable\NamingList.cs" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Content Include="Icon.ico" />
+  </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="View\AlgorithmViewConcrete.resx">
       <DependentUpon>AlgorithmViewConcrete.cs</DependentUpon>

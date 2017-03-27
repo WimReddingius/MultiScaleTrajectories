@@ -31,22 +31,19 @@ namespace AlgorithmVisualization.View
         public AlgorithmViewConcrete(AlgorithmController<TIn, TOut> controller)
         {
             InitializeComponent();
+            workloadTableAmountColumn.ValueType = typeof(int);
 
             this.controller = controller;
             VisualizationContainer = new Control();
-
-            workloadTableAmountColumn.ValueType = typeof(int);
+            selectedRuns = new BindingList<AlgorithmRun<TIn, TOut>>();
+            splittableExplorer = new SplittableExplorer<TIn, TOut>(controller, selectedRuns);
+            selectedRuns.ListChanged += OnSelectedRunsChanged;
 
             //populate controls
             PopulateControls();
 
             //set up default algo's, inputs, runs
             LoadDefaultConfiguration();
-
-            //set up exploration
-            selectedRuns = new BindingList<AlgorithmRun<TIn, TOut>>();
-            selectedRuns.ListChanged += OnSelectedRunsChanged;
-            splittableExplorer = new SplittableExplorer<TIn, TOut>(controller, selectedRuns);
 
             //initialize view
             inputOptionsPanel.Fill(controller.InputEditor.Options);
@@ -56,7 +53,7 @@ namespace AlgorithmVisualization.View
         public override void Reset()
         {
             controller.InputEditor.Reload();    //forces redraw of input editor
-            ReloadSplittableExplorer();         //forces reconfiguratino of splittable explorer
+            ReloadExplorationView();            //forces reconfiguratino of splittable explorer
         }
 
         private void LoadDefaultConfiguration()
@@ -96,7 +93,7 @@ namespace AlgorithmVisualization.View
             algorithmComboBox_SelectedIndexChanged(null, null);
         }
 
-        private void ReloadSplittableExplorer()
+        private void ReloadExplorationView()
         {
             splittableExplorer.Clear();
 
@@ -226,7 +223,6 @@ namespace AlgorithmVisualization.View
 
             resetWorkloadButton.Enabled = false;
             computeWorkloadButton.Enabled = true;
-            //TODO: abort running runs safely
         }
 
         private void tabControl_SelectedIndexChanged(object sender, EventArgs e)
@@ -299,6 +295,7 @@ namespace AlgorithmVisualization.View
 
                 multCell.Style.BackColor = color;
                 multCell.Style.SelectionBackColor = color;
+                RunsUpdated();
             };
 
             stateChanged(run, run.State);
@@ -419,7 +416,7 @@ namespace AlgorithmVisualization.View
                 }
             }
 
-            RunSelectionUpdated();
+            RunsUpdated();
 
             selectedRuns.ListChanged += OnSelectedRunsChanged;
         }
@@ -435,12 +432,12 @@ namespace AlgorithmVisualization.View
                 .FindAll(row => selectedRuns.Contains((AlgorithmRun<TIn, TOut>) row.Cells["workloadTableRunColumn"].Value))
                 .ForEach(row => row.Selected = true);
 
-            RunSelectionUpdated();
+            RunsUpdated();
 
             workloadTable.SelectionChanged += workloadTable_SelectionChanged;
         }
 
-        private void RunSelectionUpdated()
+        private void RunsUpdated()
         {
             var allFinishedOrIdle = true;
             var allIdle = true;

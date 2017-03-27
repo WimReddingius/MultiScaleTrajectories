@@ -62,9 +62,9 @@ namespace AlgorithmVisualization.View.Explore.Components.Log
             richTextBox.ScrollToCaret();
         }
 
-        public new void Dispose()
+        public void Destroy()
         {
-            logPollingWorker?.DoAfterCancel(base.Dispose);
+            logPollingWorker?.DoAfterCancel(Dispose);
         }
 
     }

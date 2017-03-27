@@ -24,23 +24,26 @@ namespace AlgorithmVisualization.Util.Nameable
 
         private void ValidateNameNumber(T item)
         {
-            var baseName = item.BaseName;
-            var maxNameNumber = MaxNameNumberConflictingWith(baseName);
+            var maxNameNumber = MaxNameNumberConflictingWith(item);
 
             if (maxNameNumber != -1)
             {
                 item.NameNumber = maxNameNumber + 1;
             }
+            else
+            {
+                item.NameNumber = 1;
+            }
         }
 
-        private List<T> GetConflicts(string baseName)
+        private List<T> GetConflicts(T item)
         {
-            return this.ToList().FindAll(bindable => bindable.BaseName == baseName);
+            return this.ToList().FindAll(bindable => bindable.BaseName == item.BaseName && bindable != item);
         }
 
-        private int MaxNameNumberConflictingWith(string baseName)
+        private int MaxNameNumberConflictingWith(T item)
         {
-            var conflicts = GetConflicts(baseName);
+            var conflicts = GetConflicts(item);
 
             if (conflicts.Count == 0)
                 return -1;
