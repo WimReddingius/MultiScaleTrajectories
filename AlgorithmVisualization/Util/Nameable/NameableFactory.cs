@@ -11,9 +11,8 @@ namespace AlgorithmVisualization.Util.Nameable
             factory = new Factory<T>();
         }
 
-        public NameableFactory(string name)
+        public NameableFactory(string name) : this()
         {
-            factory = new Factory<T>();
             Name = name;
         }
 
