@@ -16,17 +16,10 @@ namespace AlgorithmVisualization.Algorithm
 
         public StatisticMap Statistics;
 
-        [JsonIgnore]
-        public ThreadSafeStringBuilder LogStringBuilder;
-
-        [JsonIgnore]
-        public bool Logging;
-
-        [JsonIgnore]
-        public List<StringBuffer> LogBuffers;
-
-        [JsonProperty]
-        private string log;
+        [JsonIgnore] public ThreadSafeStringBuilder LogStringBuilder;
+        [JsonIgnore] public bool Logging;
+        [JsonIgnore] public List<StringBuffer> LogBuffers;
+        [JsonProperty] private string log;
 
 
         protected Output()

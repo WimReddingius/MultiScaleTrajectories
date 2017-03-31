@@ -1,11 +1,10 @@
 ﻿using System;
 using System.Windows.Forms;
-using AlgorithmVisualization.Controller.Edit;
 using MultiScaleTrajectories.SingleTrajectory.Algorithm;
 
 namespace MultiScaleTrajectories.SingleTrajectory.View.Edit
 {
-    partial class STInputOptions : UserControl, IInputLoader<STInput>
+    partial class STInputOptions : UserControl
     {
         private STInput Input;
 
@@ -13,13 +12,15 @@ namespace MultiScaleTrajectories.SingleTrajectory.View.Edit
         {
             InitializeComponent();
 
-            levelTable.Columns["Closeness"].ValueType = typeof(double);
+            Closeness.ValueType = typeof(double);
         }
 
         private void levelTable_UserDeletedRow(object sender, DataGridViewRowEventArgs e)
         {
             int level = (int)e.Row.Cells["Level"].Value;
+
             Input.RemoveLevel(level);
+            RevalidateLevelColumn();
         }
 
         private void addLevelButton_Click(object sender, EventArgs e)
@@ -58,14 +59,19 @@ namespace MultiScaleTrajectories.SingleTrajectory.View.Edit
         {
             if (level > 0)
             {
-                levelTable.Rows.RemoveAt(level - 1);
+                var rowIndex = level - 1;
+                levelTable.Rows.RemoveAt(rowIndex);
                 Input.RemoveLevel(level);
+                RevalidateLevelColumn();
             }
         }
 
-        private void PrependLevel(double epsilon)
+        private void RevalidateLevelColumn()
         {
-            InsertLevel(1, epsilon);
+            for (var row = 0; row < levelTable.Rows.Count; row++)
+            {
+                levelTable.Rows[row].Cells["Level"].Value = row + 1;
+            }
         }
 
         private void InsertLevel(int level, double epsilon)

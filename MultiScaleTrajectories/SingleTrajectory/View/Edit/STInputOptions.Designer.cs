@@ -28,7 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
             this.addLevelButton = new System.Windows.Forms.Button();
             this.removeLevelButton = new System.Windows.Forms.Button();
             this.levelTable = new System.Windows.Forms.DataGridView();
@@ -44,7 +44,7 @@
             this.addLevelButton.Dock = System.Windows.Forms.DockStyle.Fill;
             this.addLevelButton.Location = new System.Drawing.Point(3, 3);
             this.addLevelButton.Name = "addLevelButton";
-            this.addLevelButton.Size = new System.Drawing.Size(91, 27);
+            this.addLevelButton.Size = new System.Drawing.Size(85, 27);
             this.addLevelButton.TabIndex = 10;
             this.addLevelButton.Text = "Add";
             this.addLevelButton.UseVisualStyleBackColor = true;
@@ -53,9 +53,9 @@
             // removeLevelButton
             // 
             this.removeLevelButton.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.removeLevelButton.Location = new System.Drawing.Point(100, 3);
+            this.removeLevelButton.Location = new System.Drawing.Point(94, 3);
             this.removeLevelButton.Name = "removeLevelButton";
-            this.removeLevelButton.Size = new System.Drawing.Size(91, 27);
+            this.removeLevelButton.Size = new System.Drawing.Size(86, 27);
             this.removeLevelButton.TabIndex = 11;
             this.removeLevelButton.Text = "Remove";
             this.removeLevelButton.UseVisualStyleBackColor = true;
@@ -64,7 +64,6 @@
             // levelTable
             // 
             this.levelTable.AllowUserToAddRows = false;
-            this.levelTable.AllowUserToDeleteRows = false;
             this.levelTable.AllowUserToResizeColumns = false;
             this.levelTable.AllowUserToResizeRows = false;
             this.levelTable.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
@@ -82,9 +81,10 @@
             this.levelTable.Name = "levelTable";
             this.levelTable.RowHeadersVisible = false;
             this.levelTable.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
-            this.levelTable.Size = new System.Drawing.Size(194, 159);
+            this.levelTable.Size = new System.Drawing.Size(183, 235);
             this.levelTable.TabIndex = 12;
             this.levelTable.CellEndEdit += new System.Windows.Forms.DataGridViewCellEventHandler(this.levelTable_CellEndEdit);
+            this.levelTable.UserDeletedRow += new System.Windows.Forms.DataGridViewRowEventHandler(this.levelTable_UserDeletedRow);
             // 
             // Level
             // 
@@ -97,9 +97,9 @@
             // 
             // Closeness
             // 
-            dataGridViewCellStyle1.Format = "N2";
-            dataGridViewCellStyle1.NullValue = null;
-            this.Closeness.DefaultCellStyle = dataGridViewCellStyle1;
+            dataGridViewCellStyle2.Format = "N2";
+            dataGridViewCellStyle2.NullValue = null;
+            this.Closeness.DefaultCellStyle = dataGridViewCellStyle2;
             this.Closeness.HeaderText = "Closeness";
             this.Closeness.MinimumWidth = 150;
             this.Closeness.Name = "Closeness";
@@ -114,11 +114,11 @@
             this.tableLayoutPanel1.Controls.Add(this.addLevelButton, 0, 0);
             this.tableLayoutPanel1.Controls.Add(this.removeLevelButton, 1, 0);
             this.tableLayoutPanel1.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.tableLayoutPanel1.Location = new System.Drawing.Point(0, 165);
+            this.tableLayoutPanel1.Location = new System.Drawing.Point(0, 241);
             this.tableLayoutPanel1.Name = "tableLayoutPanel1";
             this.tableLayoutPanel1.RowCount = 1;
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
-            this.tableLayoutPanel1.Size = new System.Drawing.Size(194, 33);
+            this.tableLayoutPanel1.Size = new System.Drawing.Size(183, 33);
             this.tableLayoutPanel1.TabIndex = 13;
             // 
             // STInputOptions
@@ -128,7 +128,7 @@
             this.Controls.Add(this.tableLayoutPanel1);
             this.Controls.Add(this.levelTable);
             this.Name = "STInputOptions";
-            this.Size = new System.Drawing.Size(194, 198);
+            this.Size = new System.Drawing.Size(183, 274);
             ((System.ComponentModel.ISupportInitialize)(this.levelTable)).EndInit();
             this.tableLayoutPanel1.ResumeLayout(false);
             this.ResumeLayout(false);

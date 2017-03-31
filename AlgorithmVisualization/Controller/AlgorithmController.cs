@@ -17,7 +17,8 @@ namespace AlgorithmVisualization.Controller
     public abstract class AlgorithmController<TIn, TOut> : IAlgorithmController where TOut : Output, new() where TIn : Input, new()
     {
         public abstract string Name { get; }
-        
+        public bool CanImport;
+
         private AlgorithmView algorithmView;
         public AlgorithmView AlgorithmView => algorithmView ?? (algorithmView = new AlgorithmViewConcrete<TIn, TOut>(this));
 
@@ -25,21 +26,25 @@ namespace AlgorithmVisualization.Controller
         [JsonProperty] internal readonly NamingList<Algorithm<TIn, TOut>> Algorithms;
         [JsonProperty] internal readonly NamingList<TIn> Inputs;
 
-        internal BindingList<INameableFactory<Algorithm<TIn, TOut>>> AlgorithmFactories;
-        internal BindingList<INameableFactory<RunExplorer<TIn, TOut>>> RunExplorerFactories;
-        public InputEditor<TIn> InputEditor;
-
+        public BindingList<InputEditor<TIn>> InputEditors;
+        public BindingList<INameableFactory<Algorithm<TIn, TOut>>> AlgorithmFactories;
+        public BindingList<INameableFactory<RunExplorer<TIn, TOut>>> RunExplorerFactories;
+        
         
         protected AlgorithmController()
         {
+            InputEditors = new BindingList<InputEditor<TIn>>();
+
             AlgorithmFactories = new BindingList<INameableFactory<Algorithm<TIn, TOut>>>();
             RunExplorerFactories = new BindingList<INameableFactory<RunExplorer<TIn, TOut>>>();
-            AddSimpleRunExplorerType(typeof(StatOverview<TIn, TOut>));
+            AddSimpleRunExplorerType(typeof(Statistics<TIn, TOut>));
             AddRunExplorerType(typeof(LogExplorer<TIn, TOut>));
             
             Runs = new NamingList<AlgorithmRun<TIn, TOut>>();
             Algorithms = new NamingList<Algorithm<TIn, TOut>>();
             Inputs = new NamingList<TIn>();
+
+            CanImport = false;
         }
 
         //type has to implement IRunExplorer
@@ -50,7 +55,7 @@ namespace AlgorithmVisualization.Controller
 
             if (iControlType.IsAssignableFrom(type) && iRunExplorerType.IsAssignableFrom(type))
             {
-                var genericTypeWrapper = typeof(SimpleRunExplorer<,,>).MakeGenericType(typeof(TIn), typeof(TOut), type);
+                var genericTypeWrapper = typeof(RunExplorerWrapper<,,>).MakeGenericType(typeof(TIn), typeof(TOut), type);
                 var concrete = (RunExplorer<TIn, TOut>) Activator.CreateInstance(genericTypeWrapper);
 
                 AddRunExplorerType(concrete.GetType());
@@ -70,7 +75,7 @@ namespace AlgorithmVisualization.Controller
             {
                 var representativeExplorer = (RunExplorer<TIn, TOut>)Activator.CreateInstance(type);
                 var genericTypeFactory = typeof(NameableFactory<>).MakeGenericType(type);
-                var factory = (INameableFactory<RunExplorer<TIn, TOut>>)Activator.CreateInstance(genericTypeFactory, representativeExplorer.DisplayName);
+                var factory = (INameableFactory<RunExplorer<TIn, TOut>>)Activator.CreateInstance(genericTypeFactory, representativeExplorer.Name);
                 RunExplorerFactories.Add(factory);
             }
             else
@@ -95,6 +100,11 @@ namespace AlgorithmVisualization.Controller
             {
                 throw new ArgumentOutOfRangeException(nameof(type), "Type provided does not inherit from Algorithm");
             }
+        }
+
+        public virtual TIn ImportInput(string fileName)
+        {
+            throw new InvalidOperationException();
         }
 
     }

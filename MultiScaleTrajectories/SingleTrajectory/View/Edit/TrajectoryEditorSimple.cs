@@ -13,52 +13,53 @@ using MouseEventArgs = System.Windows.Forms.MouseEventArgs;
 
 namespace MultiScaleTrajectories.SingleTrajectory.View.Edit
 {
-    class STInputNodeLink : GLTrajectoryVisualization2D, IInputLoader<STInput>
+    class TrajectoryEditorSimple : TrajectoryGLVisualization, IInputEditor<STInput>
     {
-        private Point2D LastSelectedPoint;
-        private bool DraggingPoint;
+        private Point2D lastSelectedPoint;
+        private bool draggingPoint;
+        private STInput input;
 
-        private STInput Input;
 
-
-        public STInputNodeLink()
+        public TrajectoryEditorSimple()
         {
             MouseDown += HandleMouseDown;
             MouseUp += HandleMouseUp;
             MouseMove += HandleMouseMove;
 
             Visible = false;
-            DraggingPoint = false;
+            draggingPoint = false;
+
+            Name = "No Map";
         }
 
         protected override void RenderWorld()
         {
             Func<Point2D, Color> colorFunc = (p) =>
             {
-                if (p.Equals(LastSelectedPoint))
+                if (p.Equals(lastSelectedPoint))
                     return Color.Blue;
 
                 return Color.Red;
             };
 
-            GLUtilTrajectory2D.DrawEdges(Input.Trajectory, 2.5f, Color.Red);
-            GLUtilTrajectory2D.DrawPoints(Input.Trajectory, 4.5 / ZoomFactor, 6, colorFunc, (p) => PickManager.GetPickingId(p));
+            DrawTrajectoryEdges(input.Trajectory, 2.5f, Color.Red);
+            DrawTrajectoryPoints(input.Trajectory, 4.5 / ZoomFactor, 6, colorFunc, (p) => PickManager.GetPickingId(p));
         }
 
         protected override void RenderHud()
         {
             int padding = 5;
-            string text = "Editing " + Input.Name;
+            string text = "Editing " + input.Name;
             Color color = Color.Black;
             GLUtil2D.RenderText(padding, padding, text, color);
         }
 
         private void HandleMouseMove(object sender, MouseEventArgs e)
         {
-            if (Mouse.GetState().IsButtonDown(MouseButton.Left) && DraggingPoint)
+            if (Mouse.GetState().IsButtonDown(MouseButton.Left) && draggingPoint)
             {
                 Vector2d worldCoord = GetWorldCoordinates(e.X, e.Y);
-                LastSelectedPoint.SetPosition(worldCoord.X, worldCoord.Y);
+                lastSelectedPoint.SetPosition(worldCoord.X, worldCoord.Y);
             }
 
             Refresh();
@@ -72,26 +73,26 @@ namespace MultiScaleTrajectories.SingleTrajectory.View.Edit
             {
                 if (PickManager.PickingHit(pickId))
                 { //clicked on point
-                    LastSelectedPoint = (Point2D)PickManager.GetPickedObject(pickId);
+                    lastSelectedPoint = (Point2D)PickManager.GetPickedObject(pickId);
                 }
                 else
                 {  //clicked on empty space for new point
 
-                    int index = Input.Trajectory.IndexOf(LastSelectedPoint);
+                    int index = input.Trajectory.IndexOf(lastSelectedPoint);
 
-                    if (!Input.Trajectory.Any())     //fresh trajectory
+                    if (!input.Trajectory.Any())     //fresh trajectory
                         index = -1;
                     else if (index == -1)           //last selected point was removed
-                        index = Input.Trajectory.Count - 1;
+                        index = input.Trajectory.Count - 1;
 
                     Vector2d worldCoord = GetWorldCoordinates(e.X, e.Y);
-                    Point2D p = Input.Trajectory.InsertPoint(worldCoord.X, worldCoord.Y, index + 1);
+                    Point2D p = input.Trajectory.InsertPoint(worldCoord.X, worldCoord.Y, index + 1);
                     PickManager.AssignPickId(p);
 
-                    LastSelectedPoint = p;
+                    lastSelectedPoint = p;
                 }
 
-                DraggingPoint = true;
+                draggingPoint = true;
             }
             else if (e.Button == MouseButtons.Right)
             {
@@ -99,7 +100,7 @@ namespace MultiScaleTrajectories.SingleTrajectory.View.Edit
                 {
                     //clicked on point
                     Point2D pointToBeRemoved = (Point2D) PickManager.GetPickedObject(pickId);
-                    Input.Trajectory.Remove(pointToBeRemoved);
+                    input.Trajectory.Remove(pointToBeRemoved);
                 }
             }
             Refresh();
@@ -109,7 +110,7 @@ namespace MultiScaleTrajectories.SingleTrajectory.View.Edit
         {
             if (e.Button == MouseButtons.Left)
             {
-                DraggingPoint = false;
+                draggingPoint = false;
             }
             Refresh();
         }
@@ -118,10 +119,10 @@ namespace MultiScaleTrajectories.SingleTrajectory.View.Edit
         {
             Visible = false;
 
-            Input = input;
-            LookAtTrajectory(Input.Trajectory);
+            this.input = input;
+            LookAtTrajectory(this.input.Trajectory);
 
-            foreach (Point2D p in Input.Trajectory)
+            foreach (Point2D p in this.input.Trajectory)
             {
                 PickManager.AssignPickId(p);
             }

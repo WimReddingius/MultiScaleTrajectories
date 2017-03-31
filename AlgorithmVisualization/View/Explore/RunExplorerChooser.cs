@@ -7,6 +7,7 @@ using System.Linq;
 using AlgorithmVisualization.Algorithm;
 using AlgorithmVisualization.Algorithm.Run;
 using AlgorithmVisualization.Controller;
+using AlgorithmVisualization.Controller.Edit;
 using AlgorithmVisualization.Controller.Explore;
 using AlgorithmVisualization.View.Util;
 
@@ -72,7 +73,6 @@ namespace AlgorithmVisualization.View.Explore
             this.activeSelection = activeSelection;
 
             //bring options to front
-            tableLayoutPanel1.BackColor = Color.Transparent;
             tableLayoutPanel1.BringToFront();
             tableLayoutPanel1.Visible = false;
 
@@ -100,8 +100,9 @@ namespace AlgorithmVisualization.View.Explore
                 .OrderBy(ex => ex.Priority)
                 .ToArray();
 
-            runExplorerComboBox.Items.Clear();
-            runExplorerComboBox.Items.AddRange(availableRunExplorers);
+            runExplorerComboBox.DataSource = availableRunExplorers;
+            runExplorerComboBox.Format += (s, e) => { e.Value = ((RunExplorer<TIn, TOut>)e.Value).Name; };
+
             runExplorerComboBox.Enabled = (availableRunExplorers.Length > 0);
 
             if (availableRunExplorers.Length > 0)

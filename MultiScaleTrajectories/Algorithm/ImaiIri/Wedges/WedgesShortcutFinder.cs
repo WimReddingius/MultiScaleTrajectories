@@ -11,9 +11,8 @@ namespace MultiScaleTrajectories.Algorithm.ImaiIri.Wedges
     {
         public const string Name = "Wedges";
 
-        private Trajectory2D trajectory => Input.Trajectory;
+        private Trajectory2D Trajectory => Input.Trajectory;
 
-        private readonly Dictionary<Point2D, int> indexMap;
         private readonly Dictionary<Point2D, Dictionary<Point2D, Shortcut>> fullShortcutMap;
         private readonly HashSet<Shortcut> bannedShortcuts;
         private readonly HashSet<Point2D> bannedPoints;
@@ -24,13 +23,9 @@ namespace MultiScaleTrajectories.Algorithm.ImaiIri.Wedges
             bannedShortcuts = new HashSet<Shortcut>();
             bannedPoints = new HashSet<Point2D>();
             fullShortcutMap = new Dictionary<Point2D, Dictionary<Point2D, Shortcut>>();
-            indexMap = new Dictionary<Point2D, int>();
 
-            for (var i = 0; i < input.Trajectory.Count; i++)
+            foreach (var p1 in input.Trajectory)
             {
-                var p1 = input.Trajectory[i];
-
-                indexMap[p1] = i;
                 fullShortcutMap.Add(p1, new Dictionary<Point2D, Shortcut>());
 
                 foreach (var p2 in input.Trajectory)
@@ -59,10 +54,7 @@ namespace MultiScaleTrajectories.Algorithm.ImaiIri.Wedges
         {
             var forwardList = FindShortcutsInDirection(epsilon, true);
             var backwardList = FindShortcutsInDirection(epsilon, false);
-            var intersection = forwardList.Intersect(backwardList)
-                //.OrderBy(s => indexMap[s.Start])
-                //.ThenBy(s => indexMap[s.End])
-                .ToList();
+            var intersection = forwardList.Intersect(backwardList).ToList();
 
             //note that we don't need to check for illegal points here, because these are automatically filtered out by the intersection
             //forward shortcut finding: no illegal starts
@@ -76,32 +68,27 @@ namespace MultiScaleTrajectories.Algorithm.ImaiIri.Wedges
 
             Func<int, int> step;
             int startI;
-            Func<int, int> startJ;
             Func<int, bool> conditionI;
             Func<int, bool> conditionJ;
 
             if (forward)
             {
                 step = i => i + 1;
-                startJ = i => i + 1;
-
                 startI = 0;
-                conditionI = i => i < trajectory.Count - 2;                
-                conditionJ = j => j < trajectory.Count;
+                conditionI = i => i < Trajectory.Count - 2;                
+                conditionJ = j => j < Trajectory.Count;
             }
             else
             {
                 step = i => i - 1;
-                startJ = i => i - 1;
-
-                startI = trajectory.Count - 1;
+                startI = Trajectory.Count - 1;
                 conditionI = i => i >= 2;
                 conditionJ = j => j >= 0;
             }
 
             for (var i = startI; conditionI(i); i = step(i))
             {
-                var pointI = trajectory[i];
+                var pointI = Trajectory[i];
                 Wedge wedge = null;
 
                 //note that we can prune the search with banned points for the iterations of i, but not for the end
@@ -110,9 +97,9 @@ namespace MultiScaleTrajectories.Algorithm.ImaiIri.Wedges
                 if (bannedPoints.Contains(pointI))
                     continue;
 
-                for (var j = startJ(i); conditionJ(j); j = step(j))
+                for (var j = step(i); conditionJ(j); j = step(j))
                 {
-                    var pointJ = trajectory[j];
+                    var pointJ = Trajectory[j];
 
                     //check if shortcut actually skips a node and therefore actually resembles a shortcut
                     if (Math.Abs(j - i) > 1)
@@ -121,8 +108,8 @@ namespace MultiScaleTrajectories.Algorithm.ImaiIri.Wedges
                         //a null wedge means the full plane
                         if (wedge?.Contains(pointJ) ?? true)
                         {
-                            var shortcutStart = trajectory[Math.Min(i, j)];
-                            var shortcutEnd = trajectory[Math.Max(i, j)];
+                            var shortcutStart = Trajectory[Math.Min(i, j)];
+                            var shortcutEnd = Trajectory[Math.Max(i, j)];
                             var shortcut = fullShortcutMap[shortcutStart][shortcutEnd];
 
                             //O(1)

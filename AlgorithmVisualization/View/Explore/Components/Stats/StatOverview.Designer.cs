@@ -2,7 +2,7 @@
 
 namespace AlgorithmVisualization.View.Explore.Components.Stats
 {
-    partial class StatOverview<TIn, TOut>
+    partial class Statistics<TIn, TOut>
     {
         /// <summary> 
         /// Required designer variable.
@@ -191,13 +191,13 @@ namespace AlgorithmVisualization.View.Explore.Components.Stats
             this.label2.TabIndex = 1;
             this.label2.Text = "Input Statistics";
             // 
-            // StatOverview
+            // Statistics
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.AutoValidate = System.Windows.Forms.AutoValidate.EnableAllowFocusChange;
             this.Controls.Add(this.resizableTableLayoutPanel1);
-            this.Name = "StatOverview";
+            this.Name = "Statistics";
             this.Size = new System.Drawing.Size(433, 482);
             this.resizableTableLayoutPanel1.ResumeLayout(false);
             this.panel3.ResumeLayout(false);

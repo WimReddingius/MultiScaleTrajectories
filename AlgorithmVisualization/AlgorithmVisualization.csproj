@@ -63,6 +63,22 @@
     <Compile Include="Algorithm\Statistics\StatisticValue.cs" />
     <Compile Include="Algorithm\Statistics\DynamicStatisticValue.cs" />
     <Compile Include="Algorithm\Statistics\StatisticValueConverter.cs" />
+    <Compile Include="Controller\Edit\IInputEditor.cs" />
+    <Compile Include="Controller\Edit\InputEditor.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Controller\Edit\InputEditorWrapper.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="View\Edit\InputEditorChooser.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="View\Edit\InputEditorChooser.Designer.cs">
+      <DependentUpon>InputEditorChooser.cs</DependentUpon>
+    </Compile>
+    <Compile Include="View\Explore\SplittableExplorer.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
     <Compile Include="View\Util\Components\DoubleBufferedUserControl.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -83,18 +99,14 @@
     <Compile Include="Controller\Explore\RunExplorer.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="Controller\Explore\SimpleRunExplorer.cs">
+    <Compile Include="Controller\Explore\RunExplorerWrapper.cs">
       <SubType>UserControl</SubType>
     </Compile>
     <Compile Include="Controller\Explore\IRunExplorer.cs" />
-    <Compile Include="Controller\Explore\SingularRunExplorer.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
-    <Compile Include="Controller\Explore\SingularRunExplorerSingleState.cs">
+    <Compile Include="Controller\Explore\SingleStateRunExplorer.cs">
       <SubType>UserControl</SubType>
     </Compile>
     <Compile Include="Controller\IAlgorithmController.cs" />
-    <Compile Include="Controller\Edit\InputEditor.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Properties\Settings.Designer.cs">
       <AutoGen>True</AutoGen>
@@ -131,11 +143,8 @@
     <Compile Include="View\Explore\Components\Stats\StatOverview.Designer.cs">
       <DependentUpon>StatOverview.cs</DependentUpon>
     </Compile>
-    <Compile Include="View\Explore\SplittableExplorer.cs">
+    <Compile Include="View\Util\Components\SplittableView.cs">
       <SubType>UserControl</SubType>
-    </Compile>
-    <Compile Include="View\Explore\SplittableExplorer.Designer.cs">
-      <DependentUpon>SplittableExplorer.cs</DependentUpon>
     </Compile>
     <Compile Include="View\Util\FormsUtil.cs" />
     <Compile Include="View\AlgorithmView.cs">
@@ -146,9 +155,6 @@
     </Compile>
     <Compile Include="View\AlgorithmForm.Designer.cs">
       <DependentUpon>AlgorithmForm.cs</DependentUpon>
-    </Compile>
-    <Compile Include="View\Explore\TabularExplorer.cs">
-      <SubType>Component</SubType>
     </Compile>
     <Compile Include="View\Util\MouseMessageFilter.cs" />
     <Compile Include="View\Util\Components\ResizableTableLayoutPanel.cs">
@@ -163,7 +169,6 @@
     <Compile Include="View\GLVisualization\GLUtil\PickNameManager.cs" />
     <Compile Include="View\GLVisualization\GLUtil\GLTextRenderer2D.cs" />
     <Compile Include="View\GLVisualization\GLUtil\GLUtil2D.cs" />
-    <Compile Include="Controller\Edit\IInputLoader.cs" />
     <Compile Include="Util\Nameable\NamingList.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -176,6 +181,9 @@
     <EmbeddedResource Include="View\AlgorithmForm.resx">
       <DependentUpon>AlgorithmForm.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="View\Edit\InputEditorChooser.resx">
+      <DependentUpon>InputEditorChooser.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="View\Explore\RunExplorerChooser.resx">
       <DependentUpon>RunExplorerChooser.cs</DependentUpon>
     </EmbeddedResource>
@@ -184,9 +192,6 @@
     </EmbeddedResource>
     <EmbeddedResource Include="View\Explore\Components\Stats\StatOverview.resx">
       <DependentUpon>StatOverview.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="View\Explore\SplittableExplorer.resx">
-      <DependentUpon>SplittableExplorer.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>

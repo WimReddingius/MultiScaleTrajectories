@@ -11,20 +11,19 @@ using AlgorithmVisualization.Algorithm.Statistics;
 using AlgorithmVisualization.Controller.Explore;
 using AlgorithmVisualization.Util;
 using AlgorithmVisualization.View.Util;
-using AlgorithmVisualization.View.Util.Components;
 
 namespace AlgorithmVisualization.View.Explore.Components.Stats
 {
-    partial class StatOverview<TIn, TOut> : DoubleBufferedUserControl, IRunExplorer<TIn, TOut> where TIn : Input, new() where TOut : Output, new()
+    partial class Statistics<TIn, TOut> : UserControl, IRunExplorer<TIn, TOut> where TIn : Input, new() where TOut : Output, new()
     {
         public string DisplayName => "Statistics";
-        public int MaxConsolidation => 10;
+        public int MaxConsolidation => 30;
         public int MinConsolidation => 1;
         public int Priority => 100;
 
         private BackgroundWorker statPollingWorker;
 
-        public StatOverview()
+        public Statistics()
         {
             InitializeComponent();
         }

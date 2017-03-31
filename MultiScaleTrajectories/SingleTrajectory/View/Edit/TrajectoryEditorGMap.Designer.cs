@@ -1,6 +1,6 @@
-﻿namespace AlgorithmVisualization.View.Explore
+﻿namespace MultiScaleTrajectories.SingleTrajectory.View.Edit
 {
-    partial class SplittableExplorer<TIn, TOut>
+    partial class TrajectoryEditorGMap
     {
         /// <summary> 
         /// Required designer variable.
@@ -28,15 +28,8 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.SuspendLayout();
-            // 
-            // SplittableExplorationView
-            // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
+            components = new System.ComponentModel.Container();
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.Name = "SplittableExplorer";
-            this.ResumeLayout(false);
-
         }
 
         #endregion

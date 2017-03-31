@@ -3,7 +3,7 @@ using System.Windows.Forms;
 
 namespace AlgorithmVisualization.View.Util
 {
-    static class FormsUtil
+    public static class FormsUtil
     {
         public static void Fill(this Control container, Control control, bool clear = true)
         {

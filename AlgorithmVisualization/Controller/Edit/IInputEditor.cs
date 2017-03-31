@@ -2,8 +2,10 @@
 
 namespace AlgorithmVisualization.Controller.Edit
 {
-    public interface IInputLoader<in TIn> where TIn : Input, new()
+    public interface IInputEditor<in TIn> where TIn : Input
     {
+        string Name { get; }
+
         void LoadInput(TIn input);
     }
 }

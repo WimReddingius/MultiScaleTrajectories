@@ -24,13 +24,13 @@ namespace AlgorithmVisualization.View
 
             AlgoControllerTypes.ListChanged += (o, e) =>
             {
-                if (e.ListChangedType == ListChangedType.ItemAdded)
-                {
-                    algoControllers.Add(AlgorithmControllerConverter.GetController(AlgoControllerTypes[e.NewIndex]));
-                }
-                if (e.ListChangedType == ListChangedType.ItemDeleted)
-                {
-                    algoControllers.Remove(AlgorithmControllerConverter.GetController(AlgoControllerTypes[e.NewIndex]));
+                switch(e.ListChangedType) {
+                    case ListChangedType.ItemAdded:
+                        algoControllers.Add(AlgorithmControllerConverter.GetController(AlgoControllerTypes[e.NewIndex]));
+                        break;
+                    case ListChangedType.ItemDeleted:
+                        algoControllers.Remove(AlgorithmControllerConverter.GetController(AlgoControllerTypes[e.NewIndex]));
+                        break;
                 }
 
                 algorithmProblemComboBox.DataSource = algoControllers;
@@ -44,7 +44,6 @@ namespace AlgorithmVisualization.View
 
             baseSplitContainer.Panel1.Fill(algoView.VisualizationContainer);
             configurationSplitContainer.Panel2.Fill(algoView);
-            algoView.Reset();
         }
 
         private void AlgorithmForm_FormClosed(object sender, FormClosedEventArgs e)

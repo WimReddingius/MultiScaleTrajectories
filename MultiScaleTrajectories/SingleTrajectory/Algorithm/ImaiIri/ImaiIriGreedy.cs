@@ -47,7 +47,7 @@ namespace MultiScaleTrajectories.SingleTrajectory.Algorithm.ImaiIri
                     //output.LogObject("Shortcut", shortcut);
                     //output.LogObject("Shortcut Shortest Path", shortcutGraph.GetTrajectory(sourceNode, shortestPathShortcut));
                     output.LogObject("Shortcut Shortest Path weight", shortcutGraph.GetPathWeight(sourceNode, shortestPathShortcut));
-                    output.LogLine("");
+                    //output.LogLine("");
 
                     //shortcutGraph.AddShortcut(shortcut, shortcutGraph.GetPathWeight(sourceNode, shortestPathShortcut));
                     weights[shortcut] = shortcutGraph.GetPathWeight(sourceNode, shortestPathShortcut);

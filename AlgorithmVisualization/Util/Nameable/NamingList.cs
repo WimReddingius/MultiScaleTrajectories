@@ -51,29 +51,6 @@ namespace AlgorithmVisualization.Util.Nameable
             return conflicts.Max(i => i.NameNumber);
         }
 
-        private static string GetBaseName(T namedBindable)
-        {
-            var name = namedBindable.Name;
-            var lastIndex = name.LastIndexOf('_');
-
-            return lastIndex == -1 ? name : name.Substring(0, lastIndex);
-        }
-
-        private static int GetSuffixNumber(T namedBindable)
-        {
-            var name = namedBindable.Name;
-            var lastIndex = name.LastIndexOf('_');
-            var numDigits = name.Length - (lastIndex + 1);
-
-            var suffixNumber = -1;
-            if (lastIndex != -1 && numDigits > 0)
-            {
-                suffixNumber = int.Parse(name.Substring(lastIndex + 1, numDigits));
-            }
-
-            return suffixNumber;
-        }
-
         [OnDeserialized]
         internal void OnDeserialized(StreamingContext context)
         {

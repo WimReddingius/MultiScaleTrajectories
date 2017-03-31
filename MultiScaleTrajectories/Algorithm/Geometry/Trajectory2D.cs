@@ -26,7 +26,7 @@ namespace MultiScaleTrajectories.Algorithm.Geometry
             RemoveAt(index);
         }
 
-        public BoundingBox2D GetBoundingBox()
+        public BoundingBox2D BuildBoundingBox()
         {
             BoundingBox2D bb = new BoundingBox2D();
             ForEach(p => bb.Update(p.X, p.Y));

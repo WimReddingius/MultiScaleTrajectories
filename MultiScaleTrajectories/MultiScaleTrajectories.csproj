@@ -54,12 +54,12 @@
     <ApplicationIcon>Icon.ico</ApplicationIcon>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Google.Maps, Version=0.14.51.34051, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\gmaps-api-net.0.14.51\lib\net\Google.Maps.dll</HintPath>
+    <Reference Include="GMap.NET.Core, Version=1.7.5.0, Culture=neutral, PublicKeyToken=b85b9027b614afef, processorArchitecture=MSIL">
+      <HintPath>..\packages\GMap.NET.WindowsForms.1.7.5\lib\net40\GMap.NET.Core.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="Newtonsoft.Json, Version=10.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
-      <HintPath>..\packages\Newtonsoft.Json.10.0.1\lib\net45\Newtonsoft.Json.dll</HintPath>
+    <Reference Include="GMap.NET.WindowsForms, Version=1.7.5.0, Culture=neutral, PublicKeyToken=b85b9027b614afef, processorArchitecture=MSIL">
+      <HintPath>..\packages\GMap.NET.WindowsForms.1.7.5\lib\net40\GMap.NET.WindowsForms.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="OpenTK, Version=2.0.0.0, Culture=neutral, PublicKeyToken=bad199fe84eb3df4, processorArchitecture=MSIL">
@@ -98,14 +98,31 @@
     <Compile Include="SingleTrajectory\Algorithm\ImaiIri\ImaiIriGreedy.cs" />
     <Compile Include="SingleTrajectory\Algorithm\ImaiIri\ImaiIriNaive.cs" />
     <Compile Include="Algorithm\ImaiIri\Wedges\Wedge.cs" />
-    <Compile Include="SingleTrajectory\Controller\STInputEditor.cs" />
     <Compile Include="SingleTrajectory\View\Algorithm\ImaiIriOptions.cs">
       <SubType>UserControl</SubType>
     </Compile>
     <Compile Include="SingleTrajectory\View\Algorithm\ImaiIriOptions.Designer.cs">
       <DependentUpon>ImaiIriOptions.cs</DependentUpon>
     </Compile>
-    <Compile Include="SingleTrajectory\View\Explore\STOutputExplorer.cs">
+    <Compile Include="SingleTrajectory\View\Edit\STInputEditor.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="SingleTrajectory\View\Edit\STInputEditor.Designer.cs">
+      <DependentUpon>STInputEditor.cs</DependentUpon>
+    </Compile>
+    <Compile Include="SingleTrajectory\View\Edit\TrajectoryEditorGMap.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="SingleTrajectory\View\Edit\TrajectoryEditorGMap.Designer.cs">
+      <DependentUpon>TrajectoryEditorGMap.cs</DependentUpon>
+    </Compile>
+    <Compile Include="SingleTrajectory\View\Explore\Map\STOutputGMapExplorer.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="SingleTrajectory\View\Explore\Map\STOutputGMapExplorer.Designer.cs">
+      <DependentUpon>STOutputGMapExplorer.cs</DependentUpon>
+    </Compile>
+    <Compile Include="SingleTrajectory\View\Explore\Simple\STOutputSimpleExplorer.cs">
       <SubType>UserControl</SubType>
     </Compile>
     <Compile Include="Util\MoveBank.cs" />
@@ -128,17 +145,21 @@
     <Compile Include="SingleTrajectory\View\Edit\STInputOptions.Designer.cs">
       <DependentUpon>STInputOptions.cs</DependentUpon>
     </Compile>
-    <Compile Include="SingleTrajectory\View\Edit\STInputNodeLink.cs">
+    <Compile Include="SingleTrajectory\View\Edit\TrajectoryEditorSimple.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="SingleTrajectory\View\Explore\STOutputNodeLink.cs">
+    <Compile Include="SingleTrajectory\View\Explore\Simple\STOutputSimple.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="View\GLTrajectoryVisualization2D.cs">
+    <Compile Include="View\TrajectoryGLVisualization.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="View\GLUtilTrajectory2D.cs" />
-    <Compile Include="Util\GoogleMaps.cs" />
+    <Compile Include="View\TrajectoryGMap.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="View\TrajectoryGMap.Designer.cs">
+      <DependentUpon>TrajectoryGMap.cs</DependentUpon>
+    </Compile>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
@@ -152,8 +173,17 @@
     <EmbeddedResource Include="SingleTrajectory\View\Algorithm\ImaiIriOptions.resx">
       <DependentUpon>ImaiIriOptions.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="SingleTrajectory\View\Edit\STInputEditor.resx">
+      <DependentUpon>STInputEditor.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="SingleTrajectory\View\Edit\STInputOptions.resx">
       <DependentUpon>STInputOptions.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="SingleTrajectory\View\Explore\Map\STOutputGMapExplorer.resx">
+      <DependentUpon>STOutputGMapExplorer.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="View\TrajectoryGMap.resx">
+      <DependentUpon>TrajectoryGMap.cs</DependentUpon>
     </EmbeddedResource>
     <None Include="OpenTK.dll.config" />
     <None Include="packages.config" />

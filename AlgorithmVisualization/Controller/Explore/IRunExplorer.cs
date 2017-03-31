@@ -1,13 +1,12 @@
 ﻿using AlgorithmVisualization.Algorithm;
 using AlgorithmVisualization.Algorithm.Run;
+using AlgorithmVisualization.Util.Nameable;
 
 namespace AlgorithmVisualization.Controller.Explore
 {
-    public interface IRunExplorer<TIn, TOut> where TIn : Input, new() where TOut : Output, new()
+    public interface IRunExplorer<TIn, TOut> : INameable where TIn : Input, new() where TOut : Output, new()
     {
         int Priority { get; }
-
-        string DisplayName { get; }
 
         int MinConsolidation { get; }
 

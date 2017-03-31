@@ -6,17 +6,17 @@ using MultiScaleTrajectories.Algorithm.Geometry;
 using MultiScaleTrajectories.SingleTrajectory.Algorithm;
 using MultiScaleTrajectories.View;
 
-namespace MultiScaleTrajectories.SingleTrajectory.View.Explore
+namespace MultiScaleTrajectories.SingleTrajectory.View.Explore.Simple
 {
-    class STOutputNodeLink : GLTrajectoryVisualization2D
+    class STOutputSimple : TrajectoryGLVisualization
     {
-        private AlgorithmRun<STInput, STOutput> Run;
-        private STOutput Output;
+        private AlgorithmRun<STInput, STOutput> run;
+        private STOutput output;
 
         private int currentLevel;
 
 
-        public STOutputNodeLink()
+        public STOutputSimple()
         {
             KeyDown += HandleArrowKeys;
             Visible = false;
@@ -24,15 +24,15 @@ namespace MultiScaleTrajectories.SingleTrajectory.View.Explore
 
         protected override void RenderWorld()
         {
-            Trajectory2D trajectory = Output.GetTrajectoryAtLevel(currentLevel);
-            GLUtilTrajectory2D.DrawEdges(trajectory, 2.5f, Color.Red);
+            Trajectory2D trajectory = output.GetTrajectoryAtLevel(currentLevel);
+            DrawTrajectoryEdges(trajectory, 2.5f, Color.Red);
         }
 
         protected override void RenderHud()
         {
             int padding = 5;
-            Color color = Color.Black;
-            GLUtil2D.RenderText(padding, padding, Run.Name, color);
+            var color = Color.Black;
+            GLUtil2D.RenderText(padding, padding, run.Name, color);
             GLUtil2D.RenderText(padding, 20 + padding, "Level " + currentLevel, color);
         }
 
@@ -46,7 +46,7 @@ namespace MultiScaleTrajectories.SingleTrajectory.View.Explore
                 currentLevel--;
             }
 
-            if (levelUp && currentLevel < Output.NumLevels)
+            if (levelUp && currentLevel < output.NumLevels)
             {  // here down
                 currentLevel++;
             }
@@ -73,12 +73,12 @@ namespace MultiScaleTrajectories.SingleTrajectory.View.Explore
 
         public void AfterOutputAvailable(AlgorithmRun<STInput, STOutput> run)
         {
-            Run = run;
-            Output = run.Output;
+            this.run = run;
+            output = run.Output;
 
             Visible = true;
             currentLevel = 1;
-            LookAtTrajectory(Output.GetTrajectoryAtLevel(1));
+            LookAtTrajectory(output.GetTrajectoryAtLevel(1));
         }
 
     }

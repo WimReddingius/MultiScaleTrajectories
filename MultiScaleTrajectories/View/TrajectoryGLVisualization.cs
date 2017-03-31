@@ -1,25 +1,23 @@
 ﻿using System;
 using System.Drawing;
-using System.Drawing.Imaging;
-using System.Net;
 using System.Windows.Forms;
 using AlgorithmVisualization.View.GLVisualization;
-using Google.Maps;
-using Google.Maps.StaticMaps;
+using AlgorithmVisualization.View.GLVisualization.GLUtil;
 using MultiScaleTrajectories.Algorithm.Geometry;
 using OpenTK;
+using OpenTK.Graphics.OpenGL;
 using OpenTK.Input;
 using MouseEventArgs = System.Windows.Forms.MouseEventArgs;
 
 namespace MultiScaleTrajectories.View
 {
-    abstract class GLTrajectoryVisualization2D : GLVisualization2D
+    abstract class TrajectoryGLVisualization : GLVisualization2D
     {
         private bool DraggingWorld;
         private Vector2d LastDraggingLocation;
 
 
-        protected GLTrajectoryVisualization2D()
+        protected TrajectoryGLVisualization()
         {
             MouseDown += HandleMouseDown;
             MouseUp += HandleMouseUp;
@@ -83,32 +81,44 @@ namespace MultiScaleTrajectories.View
         {
             if (trajectory.Count > 0)
             {
-                BoundingBox2D boundingBox = trajectory.GetBoundingBox();
+                BoundingBox2D boundingBox = trajectory.BuildBoundingBox();
                 LookAt(boundingBox.Center.X, boundingBox.Center.Y, 1.1 * boundingBox.Width, 1.1 * boundingBox.Height);
-
-                //var map = new StaticMapRequest
-                //{
-                //    Center = new LatLng(boundingBox.Center.Y, boundingBox.Center.X),
-                //    Size = new Size(ClientRectangle.Width, ClientRectangle.Height),
-                //    Zoom = 10,
-                //    Sensor = false
-                //};
-                //SaveImage(@"files\map.png", map.ToUri(), ImageFormat.Png);
             }
         }
 
-        private void SaveImage(string filename, Uri uri, ImageFormat format)
+        protected void DrawPoint(Point2D point, double radius, int numSegments, Color color, int? name = null)
         {
-            var client = new WebClient();
-            var stream = client.OpenRead(uri);
-            var bitmap = new Bitmap(stream);
+            GL.PushMatrix();
+            GL.Color3(color);
 
-            bitmap.Save(filename, format);
+            GL.Translate(point.X, point.Y, 1f);
 
-            stream.Flush();
-            stream.Close();
-            client.Dispose();
+            if (name != null)
+                GL.LoadName((int)name);
+
+            GLUtil2D.DrawCircle(radius, numSegments);
+
+            GL.PopMatrix();
         }
 
+        protected void DrawTrajectoryEdges(Trajectory2D trajectory, float lineWidth, Color color)
+        {
+            GL.LineWidth(lineWidth);
+            GL.Color3(color);
+            GL.Begin(PrimitiveType.LineStrip);
+            foreach (Point2D p in trajectory)
+            {
+                GL.Vertex3(p.X, p.Y, -1f);
+            }
+            GL.End();
+        }
+
+        protected void DrawTrajectoryPoints(Trajectory2D trajectory, double radius, int numSegments, Func<Point2D, Color> colorFunc, Func<Point2D, int> nameFunc = null)
+        {
+            foreach (Point2D p in trajectory)
+            {
+                DrawPoint(p, radius, numSegments, colorFunc(p), nameFunc(p));
+            }
+        }
     }
 }

@@ -2,8 +2,6 @@
 {
     public interface INameable
     {
-        object Self { get; }
-
         string Name { get; }
     }
 }

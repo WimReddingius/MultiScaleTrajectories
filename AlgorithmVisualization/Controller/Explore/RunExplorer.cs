@@ -8,14 +8,11 @@ using AlgorithmVisualization.View.Util;
 
 namespace AlgorithmVisualization.Controller.Explore
 {
-    public abstract class RunExplorer<TIn, TOut> : UserControl, IRunExplorer<TIn, TOut> where TIn : Input, new() where TOut : Output, new()
+    public class RunExplorer<TIn, TOut> : UserControl, IRunExplorer<TIn, TOut> where TIn : Input, new() where TOut : Output, new()
     {
-        public abstract string DisplayName { get; }
-        public abstract int MinConsolidation { get; }
-        public abstract int MaxConsolidation { get; }
-        public abstract int Priority { get; }
-
-        protected AlgorithmRun<TIn, TOut>[] previousRuns;
+        public int MinConsolidation { get; protected set; }
+        public int MaxConsolidation { get; protected set; }
+        public int Priority { get; protected set; }
 
         private readonly Dictionary<AlgorithmRun<TIn, TOut>, List<RunStateChangedHandler<TIn, TOut>>> stateChangedHandlers;
 
@@ -31,15 +28,20 @@ namespace AlgorithmVisualization.Controller.Explore
             };
 
             this.Fill(visUnavailableLabel);
+            ControlAdded += (o, e) => { visUnavailableLabel.SendToBack(); };
+
+            MinConsolidation = 1;
+            MaxConsolidation = 1;
+            Priority = 100;
         }
 
-        protected void WrapVisualization(Control control)
+        protected void WrapControl(Control control)
         {
             this.Fill(control, false);
             control.BringToFront();
         }
 
-        public virtual void LoadRuns(params AlgorithmRun<TIn, TOut>[] runs)
+        public void LoadRuns(params AlgorithmRun<TIn, TOut>[] runs)
         {
             if (!ConsolidationSupported(runs.Length))
             {
@@ -71,8 +73,6 @@ namespace AlgorithmVisualization.Controller.Explore
             stateChangedHandlers.Clear();
         }
 
-        public abstract void Visualize(params AlgorithmRun<TIn, TOut>[] runs);
-
         protected void AddStateReachedHandler(AlgorithmRun<TIn, TOut> run, RunState state, Action<AlgorithmRun<TIn, TOut>> handler)
         {
             //wrap the handler
@@ -86,6 +86,11 @@ namespace AlgorithmVisualization.Controller.Explore
 
             run.StateChanged += act;
             stateChangedHandlers[run].Add(act);
+        }
+
+        public virtual void Visualize(params AlgorithmRun<TIn, TOut>[] runs)
+        {
+            throw new NotImplementedException();
         }
 
         public virtual bool ConsolidationSupported(int numRuns)
@@ -102,11 +107,6 @@ namespace AlgorithmVisualization.Controller.Explore
 
         public virtual void Destroy()
         {
-        }
-
-        public override string ToString()
-        {
-            return DisplayName;
         }
 
     }

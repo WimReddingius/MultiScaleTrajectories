@@ -10,13 +10,11 @@ namespace MultiScaleTrajectories.SingleTrajectory.Algorithm.ImaiIri
 
         public ImaiIriNaive()
         {
-
         }
 
         [JsonConstructor]
         public ImaiIriNaive(ImaiIriOptions imaiIriOptions) : base(imaiIriOptions)
         {
-
         }
 
         public override void Compute(STInput input, STOutput output)

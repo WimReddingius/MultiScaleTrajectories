@@ -4,11 +4,11 @@ using AlgorithmVisualization.Algorithm.Run;
 
 namespace AlgorithmVisualization.Controller.Explore
 {
-    public abstract class SingularRunExplorerSingleState<TIn, TOut> : SingularRunExplorer<TIn, TOut> where TIn : Input, new() where TOut : Output, new()
+    public class SingleStateRunExplorer<TIn, TOut> : RunExplorer<TIn, TOut> where TIn : Input, new() where TOut : Output, new()
     {
-        protected abstract RunState VisualizableState { get; }
-        protected abstract Action<AlgorithmRun<TIn, TOut>> BeforeStateReachedHandler { get;  }
-        protected abstract Action<AlgorithmRun<TIn, TOut>> AfterStateReachedHandler { get;  }
+        protected RunState VisualizableState;
+        protected Action<AlgorithmRun<TIn, TOut>> BeforeStateReachedHandler;
+        protected Action<AlgorithmRun<TIn, TOut>> AfterStateReachedHandler;
 
         public override void Visualize(params AlgorithmRun<TIn, TOut>[] runs)
         {

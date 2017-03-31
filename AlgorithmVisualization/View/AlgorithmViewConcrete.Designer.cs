@@ -35,7 +35,6 @@ namespace AlgorithmVisualization.View
             this.openInputDialog = new System.Windows.Forms.OpenFileDialog();
             this.saveInputDialog = new System.Windows.Forms.SaveFileDialog();
             this.inputTabPage = new System.Windows.Forms.TabPage();
-            this.inputOptionsPanel = new System.Windows.Forms.Panel();
             this.inputSplitContainer = new System.Windows.Forms.SplitContainer();
             this.tableLayoutPanel2 = new System.Windows.Forms.TableLayoutPanel();
             this.addInputButton = new System.Windows.Forms.Button();
@@ -110,7 +109,6 @@ namespace AlgorithmVisualization.View
             // 
             // inputTabPage
             // 
-            this.inputTabPage.Controls.Add(this.inputOptionsPanel);
             this.inputTabPage.Controls.Add(this.inputSplitContainer);
             this.inputTabPage.Location = new System.Drawing.Point(4, 22);
             this.inputTabPage.Name = "inputTabPage";
@@ -119,16 +117,6 @@ namespace AlgorithmVisualization.View
             this.inputTabPage.TabIndex = 0;
             this.inputTabPage.Text = "Input";
             this.inputTabPage.UseVisualStyleBackColor = true;
-            // 
-            // inputOptionsPanel
-            // 
-            this.inputOptionsPanel.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.inputOptionsPanel.Location = new System.Drawing.Point(6, 112);
-            this.inputOptionsPanel.Name = "inputOptionsPanel";
-            this.inputOptionsPanel.Size = new System.Drawing.Size(250, 382);
-            this.inputOptionsPanel.TabIndex = 14;
             // 
             // inputSplitContainer
             // 
@@ -194,6 +182,7 @@ namespace AlgorithmVisualization.View
             this.inputComboBox.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.inputComboBox.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.inputComboBox.FormattingEnabled = true;
             this.inputComboBox.Location = new System.Drawing.Point(3, 3);
             this.inputComboBox.Name = "inputComboBox";
             this.inputComboBox.Size = new System.Drawing.Size(250, 21);
@@ -490,7 +479,7 @@ namespace AlgorithmVisualization.View
             // 
             this.splitContainer2.Panel2.Controls.Add(this.removeAlgorithmButton);
             this.splitContainer2.Size = new System.Drawing.Size(261, 22);
-            this.splitContainer2.SplitterDistance = 180;
+            this.splitContainer2.SplitterDistance = 179;
             this.splitContainer2.TabIndex = 4;
             // 
             // algorithmComboBox
@@ -500,7 +489,7 @@ namespace AlgorithmVisualization.View
             this.algorithmComboBox.FormattingEnabled = true;
             this.algorithmComboBox.Location = new System.Drawing.Point(0, 0);
             this.algorithmComboBox.Name = "algorithmComboBox";
-            this.algorithmComboBox.Size = new System.Drawing.Size(180, 21);
+            this.algorithmComboBox.Size = new System.Drawing.Size(179, 21);
             this.algorithmComboBox.TabIndex = 1;
             this.algorithmComboBox.SelectedIndexChanged += new System.EventHandler(this.algorithmComboBox_SelectedIndexChanged);
             // 
@@ -510,7 +499,7 @@ namespace AlgorithmVisualization.View
             this.removeAlgorithmButton.Enabled = false;
             this.removeAlgorithmButton.Location = new System.Drawing.Point(0, 0);
             this.removeAlgorithmButton.Name = "removeAlgorithmButton";
-            this.removeAlgorithmButton.Size = new System.Drawing.Size(77, 22);
+            this.removeAlgorithmButton.Size = new System.Drawing.Size(78, 22);
             this.removeAlgorithmButton.TabIndex = 2;
             this.removeAlgorithmButton.Text = "Remove";
             this.removeAlgorithmButton.UseVisualStyleBackColor = true;
@@ -542,7 +531,7 @@ namespace AlgorithmVisualization.View
             // 
             this.splitContainer1.Panel2.Controls.Add(this.addAlgorithmButton);
             this.splitContainer1.Size = new System.Drawing.Size(261, 22);
-            this.splitContainer1.SplitterDistance = 180;
+            this.splitContainer1.SplitterDistance = 179;
             this.splitContainer1.TabIndex = 3;
             // 
             // algorithmFactoryComboBox
@@ -552,7 +541,7 @@ namespace AlgorithmVisualization.View
             this.algorithmFactoryComboBox.FormattingEnabled = true;
             this.algorithmFactoryComboBox.Location = new System.Drawing.Point(0, 0);
             this.algorithmFactoryComboBox.Name = "algorithmFactoryComboBox";
-            this.algorithmFactoryComboBox.Size = new System.Drawing.Size(180, 21);
+            this.algorithmFactoryComboBox.Size = new System.Drawing.Size(179, 21);
             this.algorithmFactoryComboBox.TabIndex = 0;
             // 
             // addAlgorithmButton
@@ -560,7 +549,7 @@ namespace AlgorithmVisualization.View
             this.addAlgorithmButton.Dock = System.Windows.Forms.DockStyle.Fill;
             this.addAlgorithmButton.Location = new System.Drawing.Point(0, 0);
             this.addAlgorithmButton.Name = "addAlgorithmButton";
-            this.addAlgorithmButton.Size = new System.Drawing.Size(77, 22);
+            this.addAlgorithmButton.Size = new System.Drawing.Size(78, 22);
             this.addAlgorithmButton.TabIndex = 2;
             this.addAlgorithmButton.Text = "Add";
             this.addAlgorithmButton.UseVisualStyleBackColor = true;
@@ -618,7 +607,6 @@ namespace AlgorithmVisualization.View
         private System.Windows.Forms.OpenFileDialog openInputDialog;
         private System.Windows.Forms.SaveFileDialog saveInputDialog;
         private System.Windows.Forms.TabPage inputTabPage;
-        private System.Windows.Forms.Panel inputOptionsPanel;
         private System.Windows.Forms.SplitContainer inputSplitContainer;
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel2;
         private System.Windows.Forms.Button addInputButton;

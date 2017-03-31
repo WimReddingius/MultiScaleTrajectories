@@ -49,7 +49,9 @@
             // 
             this.runExplorerComboBox.Dock = System.Windows.Forms.DockStyle.Fill;
             this.runExplorerComboBox.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.runExplorerComboBox.Location = new System.Drawing.Point(3, 3);
+            this.runExplorerComboBox.FormattingEnabled = true;
+            this.runExplorerComboBox.Location = new System.Drawing.Point(3, 4);
+            this.runExplorerComboBox.Margin = new System.Windows.Forms.Padding(3, 4, 3, 3);
             this.runExplorerComboBox.Name = "runExplorerComboBox";
             this.runExplorerComboBox.Size = new System.Drawing.Size(171, 21);
             this.runExplorerComboBox.TabIndex = 0;
@@ -166,7 +168,7 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.Controls.Add(this.tableLayoutPanel1);
             this.Controls.Add(this.visualizationContainer);
-            this.Margin = new System.Windows.Forms.Padding(2);
+            this.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.Name = "RunExplorerChooser";
             this.Size = new System.Drawing.Size(443, 424);
             this.visualizationContainer.ResumeLayout(false);

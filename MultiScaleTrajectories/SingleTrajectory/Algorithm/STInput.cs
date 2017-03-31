@@ -5,7 +5,6 @@ using Newtonsoft.Json;
 
 namespace MultiScaleTrajectories.SingleTrajectory.Algorithm
 {
-
     class STInput : Input
     {
         public int NumLevels => Epsilons.Count;
