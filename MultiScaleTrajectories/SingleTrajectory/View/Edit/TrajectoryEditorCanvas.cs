@@ -13,14 +13,14 @@ using MouseEventArgs = System.Windows.Forms.MouseEventArgs;
 
 namespace MultiScaleTrajectories.SingleTrajectory.View.Edit
 {
-    class TrajectoryEditorPlain : TrajectoryGLVisualization, IInputEditor<STInput>
+    class TrajectoryEditorCanvas : TrajectoryCanvas, IInputEditor<STInput>
     {
         private Point2D lastSelectedPoint;
         private bool draggingPoint;
         private STInput input;
 
 
-        public TrajectoryEditorPlain()
+        public TrajectoryEditorCanvas()
         {
             MouseDown += HandleMouseDown;
             MouseUp += HandleMouseUp;
@@ -29,7 +29,7 @@ namespace MultiScaleTrajectories.SingleTrajectory.View.Edit
             Visible = false;
             draggingPoint = false;
 
-            Name = "No Map";
+            Name = "Canvas";
         }
 
         protected override void RenderWorld()

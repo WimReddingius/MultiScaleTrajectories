@@ -114,13 +114,19 @@
     <Compile Include="SingleTrajectory\View\Edit\STInputEditor.Designer.cs">
       <DependentUpon>STInputEditor.cs</DependentUpon>
     </Compile>
+    <Compile Include="SingleTrajectory\View\STMoveBankDialog.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="SingleTrajectory\View\STMoveBankDialog.Designer.cs">
+      <DependentUpon>STMoveBankDialog.cs</DependentUpon>
+    </Compile>
     <Compile Include="SingleTrajectory\View\Edit\TrajectoryEditorGeo.cs">
       <SubType>UserControl</SubType>
     </Compile>
     <Compile Include="SingleTrajectory\View\Edit\TrajectoryEditorGeo.Designer.cs">
       <DependentUpon>TrajectoryEditorGeo.cs</DependentUpon>
     </Compile>
-    <Compile Include="SingleTrajectory\View\Explore\Geo\LevelTrajectoryGeo.cs">
+    <Compile Include="SingleTrajectory\View\Explore\Geo\LevelTrajectoryGeoExplorer.cs">
       <SubType>UserControl</SubType>
     </Compile>
     <Compile Include="SingleTrajectory\View\Explore\Geo\LevelTrajectoryGMap.cs">
@@ -129,7 +135,7 @@
     <Compile Include="SingleTrajectory\View\Explore\Geo\LevelTrajectoryGMap.Designer.cs">
       <DependentUpon>LevelTrajectoryGMap.cs</DependentUpon>
     </Compile>
-    <Compile Include="SingleTrajectory\View\Explore\Plain\LevelTrajectoryPlain.cs">
+    <Compile Include="SingleTrajectory\View\Explore\Canvas\LevelTrajectoryCanvasExplorer.cs">
       <SubType>UserControl</SubType>
     </Compile>
     <Compile Include="Util\MoveBank.cs" />
@@ -152,13 +158,13 @@
     <Compile Include="SingleTrajectory\View\Edit\EpsilonEditor.Designer.cs">
       <DependentUpon>EpsilonEditor.cs</DependentUpon>
     </Compile>
-    <Compile Include="SingleTrajectory\View\Edit\TrajectoryEditorPlain.cs">
+    <Compile Include="SingleTrajectory\View\Edit\TrajectoryEditorCanvas.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="SingleTrajectory\View\Explore\Plain\LevelTrajectoryPlainGL.cs">
+    <Compile Include="SingleTrajectory\View\Explore\Canvas\LevelTrajectoryCanvas.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="View\TrajectoryGLVisualization.cs">
+    <Compile Include="View\TrajectoryCanvas.cs">
       <SubType>UserControl</SubType>
     </Compile>
     <Compile Include="View\TrajectoryGMap.cs">
@@ -182,6 +188,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="SingleTrajectory\View\Edit\EpsilonEditor.resx">
       <DependentUpon>EpsilonEditor.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="SingleTrajectory\View\STMoveBankDialog.resx">
+      <DependentUpon>STMoveBankDialog.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="SingleTrajectory\View\Edit\TrajectoryEditorGeo.resx">
       <DependentUpon>TrajectoryEditorGeo.cs</DependentUpon>

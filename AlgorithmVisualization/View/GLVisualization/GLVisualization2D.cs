@@ -7,11 +7,32 @@ namespace AlgorithmVisualization.View.GLVisualization
 {
     public abstract class GLVisualization2D : GLVisualization
     {
+        public event Action WorldOriginChanged;
+        public event Action ZoomFactorChanged;
 
         protected PickNameManager PickManager;
+        
+        private double zoomFactor;
+        protected double ZoomFactor
+        {
+            get { return zoomFactor; }
+            set
+            {
+                zoomFactor = value;
+                ZoomFactorChanged?.Invoke();
+            }
+        }
 
-        protected double ZoomFactor;
-        protected Vector2d WorldOrigin;
+        private Vector2d worldOrigin;
+        protected Vector2d WorldOrigin
+        {
+            get { return worldOrigin; }
+            set
+            {
+                worldOrigin = value;
+                WorldOriginChanged?.Invoke();
+            }
+        }
 
 
         protected GLVisualization2D()

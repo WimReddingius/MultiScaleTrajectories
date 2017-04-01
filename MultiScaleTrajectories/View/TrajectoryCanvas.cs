@@ -11,23 +11,36 @@ using MouseEventArgs = System.Windows.Forms.MouseEventArgs;
 
 namespace MultiScaleTrajectories.View
 {
-    abstract class TrajectoryGLVisualization : GLVisualization2D
+    abstract class TrajectoryCanvas : GLVisualization2D
     {
         private bool DraggingWorld;
         private Vector2d LastDraggingLocation;
 
+        private Trajectory2D focusedTrajectory;
 
-        protected TrajectoryGLVisualization()
+
+        protected TrajectoryCanvas()
         {
             MouseDown += HandleMouseDown;
             MouseUp += HandleMouseUp;
             MouseMove += HandleMouseMove;
             MouseWheel += HandleMouseWheel;
 
+            WorldOriginChanged += () => focusedTrajectory = null;
+            ZoomFactorChanged += () => focusedTrajectory = null;
+
             DraggingWorld = false;
         }
 
         protected abstract override void RenderWorld();
+
+        protected override void OnResize(EventArgs e)
+        {
+            if (focusedTrajectory != null)
+                LookAtTrajectory(focusedTrajectory);
+
+            base.OnResize(e);
+        }
 
         private void HandleMouseMove(object sender, MouseEventArgs e)
         {
@@ -83,6 +96,11 @@ namespace MultiScaleTrajectories.View
             {
                 BoundingBox2D boundingBox = trajectory.BuildBoundingBox();
                 LookAt(boundingBox.Center.X, boundingBox.Center.Y, 1.1 * boundingBox.Width, 1.1 * boundingBox.Height);
+                focusedTrajectory = trajectory;
+            }
+            else
+            {
+                focusedTrajectory = null;
             }
         }
 

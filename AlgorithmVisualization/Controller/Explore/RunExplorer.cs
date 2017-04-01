@@ -110,32 +110,26 @@ namespace AlgorithmVisualization.Controller.Explore
         //type has to inherit from Control and IRunExplorer
         public static INameableFactory<RunExplorer<TIn, TOut>> CreateFactorySimple(Type type)
         {
-            Type iRunExplorerType = typeof(IRunExplorer<TIn, TOut>);
-            Type iControlType = typeof(Control);
+            var iRunExplorerType = typeof(IRunExplorer<TIn, TOut>);
+            var iControlType = typeof(Control);
+            if (!iControlType.IsAssignableFrom(type) || !iRunExplorerType.IsAssignableFrom(type))
+                throw new ArgumentOutOfRangeException(nameof(type),
+                    "Type provided does not inherit from both Control and IRunExplorer");
 
-            if (iControlType.IsAssignableFrom(type) && iRunExplorerType.IsAssignableFrom(type))
-            {
-                var genericTypeWrapper = typeof(RunExplorerWrapper<,,>).MakeGenericType(typeof(TIn), typeof(TOut), type);
-                return CreateFactory(genericTypeWrapper);
-            }
-
-            throw new ArgumentOutOfRangeException(nameof(type), "Type provided does not inherit from both Control and IRunExplorer");
+            var genericTypeWrapper = typeof(RunExplorerWrapper<,,>).MakeGenericType(typeof(TIn), typeof(TOut), type);
+            return CreateFactory(genericTypeWrapper);
         }
 
         //type has to implement RunExplorer
         public static INameableFactory<RunExplorer<TIn, TOut>> CreateFactory(Type type)
         {
-            Type RunExplorerType = typeof(RunExplorer<TIn, TOut>);
+            var RunExplorerType = typeof(RunExplorer<TIn, TOut>);
+            if (!RunExplorerType.IsAssignableFrom(type))
+                throw new ArgumentOutOfRangeException(nameof(type), "Type provided does not inherit from RunExplorer");
 
-            if (RunExplorerType.IsAssignableFrom(type))
-            {
-                var representativeExplorer = (RunExplorer<TIn, TOut>)Activator.CreateInstance(type);
-                var genericTypeFactory = typeof(NameableFactory<>).MakeGenericType(type);
-                var factory = (INameableFactory<RunExplorer<TIn, TOut>>)Activator.CreateInstance(genericTypeFactory, representativeExplorer.Name);
-                return factory;
-            }
-
-            throw new ArgumentOutOfRangeException(nameof(type), "Type provided does not inherit from RunExplorer");
+            var representativeExplorer = (RunExplorer<TIn, TOut>)Activator.CreateInstance(type);
+            var genericTypeFactory = typeof(NameableFactory<>).MakeGenericType(type);
+            return (INameableFactory<RunExplorer<TIn, TOut>>)Activator.CreateInstance(genericTypeFactory, representativeExplorer.Name);
         }
 
     }

@@ -10,13 +10,13 @@ namespace MultiScaleTrajectories.SingleTrajectory.View.Edit
         {
             InitializeComponent();
 
-            Name = "Map";
+            Name = "Geo";
         }
 
         public void LoadInput(STInput input)
         {
             LookAtTrajectory(input.Trajectory);
-            ShowSingleTrajectory(input.Trajectory);
+            DrawTrajectory(input.Trajectory);
         }
     }
 }

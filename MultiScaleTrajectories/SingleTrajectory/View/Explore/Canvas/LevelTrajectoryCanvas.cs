@@ -6,9 +6,9 @@ using MultiScaleTrajectories.Algorithm.Geometry;
 using MultiScaleTrajectories.SingleTrajectory.Algorithm;
 using MultiScaleTrajectories.View;
 
-namespace MultiScaleTrajectories.SingleTrajectory.View.Explore.Plain
+namespace MultiScaleTrajectories.SingleTrajectory.View.Explore.Canvas
 {
-    class LevelTrajectoryPlainGL : TrajectoryGLVisualization
+    class LevelTrajectoryCanvas : TrajectoryCanvas
     {
         private AlgorithmRun<STInput, STOutput> run;
         private STOutput output;
@@ -16,7 +16,7 @@ namespace MultiScaleTrajectories.SingleTrajectory.View.Explore.Plain
         private int currentLevel;
 
 
-        public LevelTrajectoryPlainGL()
+        public LevelTrajectoryCanvas()
         {
             KeyDown += HandleArrowKeys;
             Visible = false;

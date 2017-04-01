@@ -2,16 +2,16 @@
 using AlgorithmVisualization.Controller.Explore;
 using MultiScaleTrajectories.SingleTrajectory.Algorithm;
 
-namespace MultiScaleTrajectories.SingleTrajectory.View.Explore.Plain
+namespace MultiScaleTrajectories.SingleTrajectory.View.Explore.Canvas
 {
-    class LevelTrajectoryPlain : SingleStateRunExplorer<STInput, STOutput>
+    class LevelTrajectoryCanvasExplorer : SingleStateRunExplorer<STInput, STOutput>
     {
-        public LevelTrajectoryPlain()
+        public LevelTrajectoryCanvasExplorer()
         {
-            var plainVis = new LevelTrajectoryPlainGL();
+            var plainVis = new LevelTrajectoryCanvas();
             WrapControl(plainVis);
 
-            Name = "Level Trajectory - No Map";
+            Name = "Level Trajectory - Canvas";
             Priority = 1;
 
             VisualizableState = RunState.OutputAvailable;

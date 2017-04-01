@@ -67,7 +67,7 @@ namespace AlgorithmVisualization.Controller
             AlgorithmFactories.Add(Algorithm<TIn, TOut>.CreateAlgorithmFactory(type));
         }
 
-        public virtual TIn ImportInput(string fileName)
+        public virtual TIn ImportInput(string fileName, out bool customName)
         {
             throw new InvalidOperationException();
         }

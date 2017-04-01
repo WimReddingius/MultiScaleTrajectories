@@ -4,14 +4,14 @@ using MultiScaleTrajectories.SingleTrajectory.Algorithm;
 
 namespace MultiScaleTrajectories.SingleTrajectory.View.Explore.Geo
 {
-    class LevelTrajectoryGeo : SingleStateRunExplorer<STInput, STOutput>
+    class LevelTrajectoryGeoExplorer : SingleStateRunExplorer<STInput, STOutput>
     {
-        public LevelTrajectoryGeo()
+        public LevelTrajectoryGeoExplorer()
         {
             var gMap = new LevelTrajectoryGMap();
             WrapControl(gMap);
 
-            Name = "Level Trajectory - Map";
+            Name = "Level Trajectory - Geo";
             Priority = 2;
 
             VisualizableState = RunState.OutputAvailable;

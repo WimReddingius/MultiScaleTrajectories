@@ -22,7 +22,7 @@ namespace MultiScaleTrajectories.View
 
             gMap.MapProvider = GoogleMapProvider.Instance;
             gMap.ShowCenter = false;
-            gMap.DragButton = MouseButtons.Left;
+            gMap.DragButton = MouseButtons.Right;
 
             routesOverlay = new GMapOverlay("routes");
             gMap.Overlays.Add(routesOverlay);
@@ -34,7 +34,7 @@ namespace MultiScaleTrajectories.View
             gMap.SetZoomToFitRect(new RectLatLng(bb.MaxY, bb.MinX, bb.Width, bb.Height));
         }
 
-        public void ShowSingleTrajectory(Trajectory2D trajectory)
+        public void DrawTrajectory(Trajectory2D trajectory)
         {
             var points = trajectory.Select(point => new PointLatLng(point.Y, point.X)).ToList();
             var route = new GMapRoute(points, "points")
@@ -42,8 +42,19 @@ namespace MultiScaleTrajectories.View
                 Stroke = { Width = 2 }
             };
 
-            routesOverlay.Routes.Clear();
             routesOverlay.Routes.Add(route);
         }
+
+        public void DrawSingleTrajectory(Trajectory2D trajectory)
+        {
+            ClearTrajectories();
+            DrawTrajectory(trajectory);
+        }
+
+        public void ClearTrajectories()
+        {
+            routesOverlay.Routes.Clear();
+        }
+
     }
 }

@@ -169,18 +169,24 @@ namespace AlgorithmVisualization.View
             {
                 string fileName = importRunDialog.FileName;
 
-                try
-                {
-                    var input = controller.ImportInput(fileName);
+                //try
+                //{
+                    bool customName;
+                    var input = controller.ImportInput(fileName, out customName);
 
-                    input.Name = Path.GetFileNameWithoutExtension(fileName);
-                    AddAndSelectInput(input);
-                    inputComboBox.SelectedItem = input;
-                }
-                catch (Exception err)
-                {
-                    FormsUtil.ShowErrorMessage(err.ToString());
-                }
+                    if (input != null)
+                    {
+                        if (!customName)
+                            input.Name = Path.GetFileNameWithoutExtension(fileName);
+
+                        AddAndSelectInput(input);
+                        inputComboBox.SelectedItem = input;
+                    }
+                //}
+                //catch (Exception err)
+                //{
+                    //FormsUtil.ShowErrorMessage(err.ToString());
+                //}
             }
         }
 

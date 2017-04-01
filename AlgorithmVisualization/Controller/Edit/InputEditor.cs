@@ -15,16 +15,11 @@ namespace AlgorithmVisualization.Controller.Edit
             var type = inputEditor.GetType();
             var iInputEditorType = typeof(IInputEditor<TIn>);
             var iControlType = typeof(Control);
+            if (!iControlType.IsAssignableFrom(type) || !iInputEditorType.IsAssignableFrom(type))
+                throw new ArgumentOutOfRangeException(nameof(type), "Type provided does not inherit from both Control and IInputEditor");
 
-            if (iControlType.IsAssignableFrom(type) && iInputEditorType.IsAssignableFrom(type))
-            {
-                var inputEditorWrapperType = typeof(InputEditorWrapper<,>).MakeGenericType(typeof(TIn), type);
-                var concrete = (InputEditor<TIn>) Activator.CreateInstance(inputEditorWrapperType, inputEditor);
-
-                return concrete;
-            }
-
-            throw new ArgumentOutOfRangeException(nameof(type), "Type provided does not inherit from both Control and IInputEditor");
+            var inputEditorWrapperType = typeof(InputEditorWrapper<,>).MakeGenericType(typeof(TIn), type);
+            return (InputEditor<TIn>)Activator.CreateInstance(inputEditorWrapperType, inputEditor);
         }
 
     }

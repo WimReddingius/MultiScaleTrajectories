@@ -29,7 +29,7 @@
         private void InitializeComponent()
         {
             this.panel1 = new System.Windows.Forms.Panel();
-            this.gMap = new MultiScaleTrajectories.View.TrajectoryGMap();
+            this.trajectoryGMap = new MultiScaleTrajectories.View.TrajectoryGMap();
             this.SuspendLayout();
             // 
             // panel1
@@ -40,21 +40,21 @@
             this.panel1.Size = new System.Drawing.Size(343, 30);
             this.panel1.TabIndex = 2;
             // 
-            // gMap
+            // trajectoryGMap
             // 
-            this.gMap.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.gMap.Location = new System.Drawing.Point(0, 0);
-            this.gMap.Margin = new System.Windows.Forms.Padding(1);
-            this.gMap.Name = "gMap";
-            this.gMap.Size = new System.Drawing.Size(343, 220);
-            this.gMap.TabIndex = 1;
+            this.trajectoryGMap.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.trajectoryGMap.Location = new System.Drawing.Point(0, 0);
+            this.trajectoryGMap.Margin = new System.Windows.Forms.Padding(1);
+            this.trajectoryGMap.Name = "trajectoryGMap";
+            this.trajectoryGMap.Size = new System.Drawing.Size(343, 220);
+            this.trajectoryGMap.TabIndex = 1;
             // 
             // STOutputGMapExplorer
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.Controls.Add(this.panel1);
-            this.Controls.Add(this.gMap);
+            this.Controls.Add(this.trajectoryGMap);
             this.Margin = new System.Windows.Forms.Padding(2);
             this.Name = "STOutputGMapExplorer";
             this.Size = new System.Drawing.Size(343, 220);
@@ -64,7 +64,7 @@
 
         #endregion
 
-        private MultiScaleTrajectories.View.TrajectoryGMap gMap;
+        private MultiScaleTrajectories.View.TrajectoryGMap trajectoryGMap;
         private System.Windows.Forms.Panel panel1;
     }
 }

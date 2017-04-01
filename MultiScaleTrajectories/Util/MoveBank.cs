@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Diagnostics;
 using System.Globalization;
 using System.IO;
 using System.Linq;
@@ -6,7 +8,7 @@ using MultiScaleTrajectories.Algorithm.Geometry;
 
 namespace MultiScaleTrajectories.Util
 {
-    class MoveBank
+    static class MoveBank
     {
         public static bool IsMoveBankFile(string fileName)
         {
@@ -22,9 +24,15 @@ namespace MultiScaleTrajectories.Util
             return firstWord == "event-id";
         }
 
-        public static Trajectory2D ReadSingleTrajectory(string fileName)
+        public static Dictionary<string, Trajectory2D> ReadTrajectories(string fileName, bool findOnlyOne = false)
         {
-            Trajectory2D trajectory = new Trajectory2D();
+            var trajectories = new Dictionary<string, Trajectory2D>();
+
+            if (!IsMoveBankFile(fileName))
+            {
+                throw new ArgumentOutOfRangeException(nameof(fileName), @"File is no MoveBank file.");
+            }
+
             using (StreamReader reader = new StreamReader(fileName))
             {
                 //pass past column headers
@@ -43,20 +51,30 @@ namespace MultiScaleTrajectories.Util
                     return null;
 
                 //id of first trajectory in the data
-                string trajectoryId = null;
+                string lastTrajectoryId = null;
 
                 while (!reader.EndOfStream)
                 {
                     var line = reader.ReadLine();
-                    var newPointTrajectoryId = line.Split(',')[trajectoryIdCol];
 
-                    //first point: initialize trajectory id
-                    if (trajectoryId == null)
-                        trajectoryId = newPointTrajectoryId;
+                    //end of stream reached
+                    if (line == null)
+                        break;
+
+                    var trajectoryId = line.Split(',')[trajectoryIdCol];
+                    Debug.Assert(trajectoryId != null, "trajectoryId != null");
 
                     //new trajectory reached
-                    if (newPointTrajectoryId != trajectoryId)
-                        break;
+                    if (trajectoryId != lastTrajectoryId)
+                    {
+                        trajectories[trajectoryId] = new Trajectory2D();
+
+                        //first trajectory has been processed fully
+                        if (findOnlyOne && lastTrajectoryId != null)
+                            break;
+
+                        lastTrajectoryId = trajectoryId;
+                    }
 
                     var longitudeStr = line.Split(',')[longitudeCol].Replace(',', '.');
                     var latitudeStr = line.Split(',')[latitudeCol].Replace(',', '.');
@@ -69,12 +87,11 @@ namespace MultiScaleTrajectories.Util
                     var latitude = Convert.ToSingle(latitudeStr, CultureInfo.InvariantCulture);
 
                     //longitude as x, latitude as y
-                    trajectory.AppendPoint(longitude, latitude);
+                    trajectories[trajectoryId].AppendPoint(longitude, latitude);
                 }
             }
-            return trajectory;
+
+            return trajectories;
         }
-
-
     }
 }

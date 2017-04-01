@@ -13,8 +13,8 @@ namespace MultiScaleTrajectories.SingleTrajectory.View.Explore.Geo
         {
             InitializeComponent();
 
-            gMap.MapControl.PreviewKeyDown += HandlePreviewKeyDown;
-            gMap.MapControl.KeyDown += HandleArrowKeys;
+            trajectoryGMap.MapControl.PreviewKeyDown += HandlePreviewKeyDown;
+            trajectoryGMap.MapControl.KeyDown += HandleArrowKeys;
         }
 
         private void HandlePreviewKeyDown(object sender, PreviewKeyDownEventArgs e)
@@ -41,7 +41,7 @@ namespace MultiScaleTrajectories.SingleTrajectory.View.Explore.Geo
             }
 
             var trajectory = output.GetTrajectoryAtLevel(currentLevel);
-            gMap.ShowSingleTrajectory(trajectory);
+            trajectoryGMap.DrawSingleTrajectory(trajectory);
         }
 
         public void BeforeOutputAvailable(AlgorithmRun<STInput, STOutput> run)
@@ -57,8 +57,9 @@ namespace MultiScaleTrajectories.SingleTrajectory.View.Explore.Geo
             currentLevel = 1;
 
             var trajectory = output.GetTrajectoryAtLevel(currentLevel);
-            gMap.LookAtTrajectory(trajectory);
-            gMap.ShowSingleTrajectory(trajectory);
+
+            trajectoryGMap.DrawSingleTrajectory(trajectory);
+            trajectoryGMap.LookAtTrajectory(trajectory);
         }
 
     }
