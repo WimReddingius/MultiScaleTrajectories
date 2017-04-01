@@ -4,11 +4,12 @@ using System.Drawing;
 using System.Windows.Forms;
 using AlgorithmVisualization.Algorithm;
 using AlgorithmVisualization.Algorithm.Run;
+using AlgorithmVisualization.Util.Nameable;
 using AlgorithmVisualization.View.Util;
 
 namespace AlgorithmVisualization.Controller.Explore
 {
-    public class RunExplorer<TIn, TOut> : UserControl, IRunExplorer<TIn, TOut> where TIn : Input, new() where TOut : Output, new()
+    public abstract class RunExplorer<TIn, TOut> : UserControl, IRunExplorer<TIn, TOut> where TIn : Input, new() where TOut : Output, new()
     {
         public int MinConsolidation { get; protected set; }
         public int MaxConsolidation { get; protected set; }
@@ -88,10 +89,7 @@ namespace AlgorithmVisualization.Controller.Explore
             stateChangedHandlers[run].Add(act);
         }
 
-        public virtual void Visualize(params AlgorithmRun<TIn, TOut>[] runs)
-        {
-            throw new NotImplementedException();
-        }
+        public abstract void Visualize(params AlgorithmRun<TIn, TOut>[] runs);
 
         public virtual bool ConsolidationSupported(int numRuns)
         {
@@ -107,6 +105,37 @@ namespace AlgorithmVisualization.Controller.Explore
 
         public virtual void Destroy()
         {
+        }
+
+        //type has to inherit from Control and IRunExplorer
+        public static INameableFactory<RunExplorer<TIn, TOut>> CreateFactorySimple(Type type)
+        {
+            Type iRunExplorerType = typeof(IRunExplorer<TIn, TOut>);
+            Type iControlType = typeof(Control);
+
+            if (iControlType.IsAssignableFrom(type) && iRunExplorerType.IsAssignableFrom(type))
+            {
+                var genericTypeWrapper = typeof(RunExplorerWrapper<,,>).MakeGenericType(typeof(TIn), typeof(TOut), type);
+                return CreateFactory(genericTypeWrapper);
+            }
+
+            throw new ArgumentOutOfRangeException(nameof(type), "Type provided does not inherit from both Control and IRunExplorer");
+        }
+
+        //type has to implement RunExplorer
+        public static INameableFactory<RunExplorer<TIn, TOut>> CreateFactory(Type type)
+        {
+            Type RunExplorerType = typeof(RunExplorer<TIn, TOut>);
+
+            if (RunExplorerType.IsAssignableFrom(type))
+            {
+                var representativeExplorer = (RunExplorer<TIn, TOut>)Activator.CreateInstance(type);
+                var genericTypeFactory = typeof(NameableFactory<>).MakeGenericType(type);
+                var factory = (INameableFactory<RunExplorer<TIn, TOut>>)Activator.CreateInstance(genericTypeFactory, representativeExplorer.Name);
+                return factory;
+            }
+
+            throw new ArgumentOutOfRangeException(nameof(type), "Type provided does not inherit from RunExplorer");
         }
 
     }

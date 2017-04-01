@@ -8,7 +8,7 @@ namespace AlgorithmVisualization.Algorithm.Run
     public delegate void RunStateChangedHandler<TIn, TOut>(AlgorithmRun<TIn, TOut> run, RunState runState)
         where TIn : Input, new() where TOut : Output, new();
 
-    public class AlgorithmRun<TIn, TOut> : NumberedNameable where TIn : Input, new() where TOut : Output, new()
+    public class AlgorithmRun<TIn, TOut> : Nameable where TIn : Input, new() where TOut : Output, new()
     {
         public event RunStateChangedHandler<TIn, TOut> StateChanged;
 
@@ -33,7 +33,7 @@ namespace AlgorithmVisualization.Algorithm.Run
             Algorithm = algorithm;
             Input = input;
             NumIterations = 1;
-            BaseName = "Run";
+            Name = "Run";
 
             SetState(RunState.Idle);
         }

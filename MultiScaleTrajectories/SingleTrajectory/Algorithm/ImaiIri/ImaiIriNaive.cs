@@ -8,7 +8,7 @@ namespace MultiScaleTrajectories.SingleTrajectory.Algorithm.ImaiIri
     {
         public override string AlgoName => "ImaiIri - Naive";
 
-        public ImaiIriNaive()
+        public ImaiIriNaive() : base()
         {
         }
 

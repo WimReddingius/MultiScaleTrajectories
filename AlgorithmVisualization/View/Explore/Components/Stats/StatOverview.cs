@@ -16,7 +16,6 @@ namespace AlgorithmVisualization.View.Explore.Components.Stats
 {
     partial class Statistics<TIn, TOut> : UserControl, IRunExplorer<TIn, TOut> where TIn : Input, new() where TOut : Output, new()
     {
-        public string DisplayName => "Statistics";
         public int MaxConsolidation => 30;
         public int MinConsolidation => 1;
         public int Priority => 100;

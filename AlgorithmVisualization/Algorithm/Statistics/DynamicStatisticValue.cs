@@ -11,7 +11,6 @@ namespace AlgorithmVisualization.Algorithm.Statistics
 
         public override object Value => ValueFunc();
 
-
         public DynamicStatisticValue(Func<object> valueFunc)
         {
             ValueFunc = valueFunc;
@@ -19,7 +18,6 @@ namespace AlgorithmVisualization.Algorithm.Statistics
 
         public DynamicStatisticValue()
         {
-            
         }
 
     }

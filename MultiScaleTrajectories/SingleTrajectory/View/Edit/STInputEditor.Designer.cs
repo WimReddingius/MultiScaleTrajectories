@@ -28,7 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.STInputOptions1 = new MultiScaleTrajectories.SingleTrajectory.View.Edit.STInputOptions();
+            this.STInputOptions1 = new MultiScaleTrajectories.SingleTrajectory.View.Edit.EpsilonEditor();
             this.splitContainer1 = new System.Windows.Forms.SplitContainer();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
             this.splitContainer1.Panel1.SuspendLayout();
@@ -74,7 +74,7 @@
 
         #endregion
 
-        private STInputOptions STInputOptions1;
+        private EpsilonEditor STInputOptions1;
         private System.Windows.Forms.SplitContainer splitContainer1;
     }
 }

@@ -1,9 +1,10 @@
 ﻿using AlgorithmVisualization.Controller;
+using AlgorithmVisualization.Controller.Edit;
 using MultiScaleTrajectories.SingleTrajectory.Algorithm;
 using MultiScaleTrajectories.SingleTrajectory.Algorithm.ImaiIri;
 using MultiScaleTrajectories.SingleTrajectory.View.Edit;
-using MultiScaleTrajectories.SingleTrajectory.View.Explore.Map;
-using MultiScaleTrajectories.SingleTrajectory.View.Explore.Simple;
+using MultiScaleTrajectories.SingleTrajectory.View.Explore.Geo;
+using MultiScaleTrajectories.SingleTrajectory.View.Explore.Plain;
 using MultiScaleTrajectories.Util;
 
 namespace MultiScaleTrajectories.SingleTrajectory.Controller
@@ -17,11 +18,11 @@ namespace MultiScaleTrajectories.SingleTrajectory.Controller
         {
             CanImport = true;
 
-            InputEditors.Add(new STInputEditor(new TrajectoryEditorSimple()));
-            InputEditors.Add(new STInputEditor(new TrajectoryEditorGMap()));
+            AddSimpleInputEditor(new STInputEditor(new TrajectoryEditorPlain()));
+            AddSimpleInputEditor(new STInputEditor(new TrajectoryEditorGeo()));
 
-            AddRunExplorerType(typeof(STOutputGMapExplorer));
-            AddRunExplorerType(typeof(STOutputSimpleExplorer));
+            AddRunExplorerType(typeof(LevelTrajectoryPlain));
+            AddRunExplorerType(typeof(LevelTrajectoryGeo));
 
             AddAlgorithmType(typeof(ImaiIriHierarchical));
             AddAlgorithmType(typeof(ImaiIriGreedy));

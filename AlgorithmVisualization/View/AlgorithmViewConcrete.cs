@@ -24,9 +24,8 @@ namespace AlgorithmVisualization.View
         public sealed override Control VisualizationContainer { get; set; }
 
         private readonly AlgorithmController<TIn, TOut> controller;
-
         private readonly InputEditorChooser<TIn> inputView;
-        private readonly SplittableExplorer<TIn, TOut> explorationView;
+        private readonly SplittableRunExplorer<TIn, TOut> explorationView;
 
         private readonly BindingList<AlgorithmRun<TIn, TOut>> selectedRuns;
         private TIn CurrentInput => (TIn) inputComboBox.SelectedItem;
@@ -42,7 +41,7 @@ namespace AlgorithmVisualization.View
 
             //exploration
             selectedRuns = new BindingList<AlgorithmRun<TIn, TOut>>();
-            explorationView = new SplittableExplorer<TIn, TOut>(controller, selectedRuns);
+            explorationView = new SplittableRunExplorer<TIn, TOut>(controller, selectedRuns);
             selectedRuns.ListChanged += OnSelectedRunsChanged;
             InitializeExplorationView();
 
@@ -50,7 +49,8 @@ namespace AlgorithmVisualization.View
             inputView = new InputEditorChooser<TIn>(controller.InputEditors);
 
             //populate controls
-            PopulateControls();
+            InitializeBindings();
+            RebindControls();
 
             //set up default algo's, inputs, runs
             LoadDefaultConfiguration();
@@ -91,6 +91,11 @@ namespace AlgorithmVisualization.View
             AlgorithmsUpdated();
             InputsUpdated();
 
+            //redrawing controls when some name is updated
+            controller.Inputs.ItemNameChanged += (o, s) => RebindControls();
+            controller.Algorithms.ItemNameChanged += (o, s) => RebindControls();
+            controller.Runs.ItemNameChanged += (o, s) => RebindControls();
+
             //force loading currently selected data
             inputComboBox_SelectedIndexChanged(null, null);
             algorithmComboBox_SelectedIndexChanged(null, null);
@@ -128,9 +133,7 @@ namespace AlgorithmVisualization.View
                 var str = File.ReadAllText(fileName);
                 var input = JsonConvert.DeserializeObject<TIn>(str);
 
-                input.BaseName = Path.GetFileNameWithoutExtension(fileName);
-                //PopulateControls();
-
+                input.Name = Path.GetFileNameWithoutExtension(fileName);
                 AddAndSelectInput(input);
             }
             catch (Exception err)
@@ -150,8 +153,7 @@ namespace AlgorithmVisualization.View
                     string str = JsonConvert.SerializeObject(CurrentInput, Formatting.Indented);
                     File.WriteAllText(fileName, str);
 
-                    CurrentInput.BaseName = Path.GetFileNameWithoutExtension(fileName);
-                    //PopulateControls();
+                    CurrentInput.Name = Path.GetFileNameWithoutExtension(fileName);
                 }
                 catch (Exception err)
                 {
@@ -171,9 +173,7 @@ namespace AlgorithmVisualization.View
                 {
                     var input = controller.ImportInput(fileName);
 
-                    input.BaseName = Path.GetFileNameWithoutExtension(fileName);
-                    //PopulateControls();
-
+                    input.Name = Path.GetFileNameWithoutExtension(fileName);
                     AddAndSelectInput(input);
                     inputComboBox.SelectedItem = input;
                 }
@@ -374,7 +374,7 @@ namespace AlgorithmVisualization.View
                 inputComboBox_SelectedIndexChanged(null, null);
 
             if (controller.Inputs.Count == 0)
-                inputView.LoadInput(new TIn {BaseName = "nothing"});
+                inputView.LoadInput(new TIn { Name = "nothing"});
         }
 
         private void RemoveRun(AlgorithmRun<TIn, TOut> run)
@@ -560,12 +560,11 @@ namespace AlgorithmVisualization.View
                         var runStr = JsonConvert.SerializeObject(run, new JsonSerializerSettings
                         {
                             Formatting = Formatting.Indented,
-                            TypeNameHandling = TypeNameHandling.All
+                            TypeNameHandling = TypeNameHandling.All,
                         });
                         File.WriteAllText(fileName, runStr);
 
-                        run.BaseName = Path.GetFileNameWithoutExtension(fileName);
-                        //PopulateControls();
+                        run.Name = Path.GetFileNameWithoutExtension(fileName);
                     }
                     catch (Exception err)
                     {
@@ -582,23 +581,21 @@ namespace AlgorithmVisualization.View
                 var runStr = File.ReadAllText(fileName);
                 var run = JsonConvert.DeserializeObject<AlgorithmRun<TIn, TOut>>(runStr, new JsonSerializerSettings
                 {
-                    TypeNameHandling = TypeNameHandling.All
+                    TypeNameHandling = TypeNameHandling.All,
                 });
 
                 var pathName = Path.GetFileNameWithoutExtension(fileName);
                 var runName = pathName;
 
-                run.BaseName = runName;
-                run.Input.BaseName = runName + "_input";
-                run.Algorithm.BaseName = runName + "_algo";
+                run.Name = runName;
+                //run.Input.Name = runName + "_input";
+                //run.Algorithm.Name = runName + "_algo";
 
                 controller.Inputs.Add(run.Input);
                 controller.Algorithms.Add(run.Algorithm);
                 controller.Runs.Add(run);
 
                 AddRunToTable(run);
-
-                //PopulateControls();
             }
             catch (Exception err)
             {
@@ -606,43 +603,47 @@ namespace AlgorithmVisualization.View
             }
         }
 
-        private void PopulateControls()
+        private void RebindControls()
         {
             inputComboBox.SelectedIndexChanged -= inputComboBox_SelectedIndexChanged;
             algorithmComboBox.SelectedIndexChanged -= algorithmComboBox_SelectedIndexChanged;
 
-            ListControlConvertEventHandler nameableFormatter = (s, e) =>
-            {
-                e.Value = ((INameable) e.Value).Name;
-            };
-
-            //force redraw
-            workloadTableInputColumn.DisplayMember = "";
-            workloadTableAlgoColumn.DisplayMember = "";
-            inputComboBox.DisplayMember = "";
-            algorithmComboBox.DisplayMember = "";
-            algorithmFactoryComboBox.DisplayMember = "";
-
-            //actual loading
+            workloadTableInputColumn.DataSource = null;
             workloadTableInputColumn.DataSource = controller.Inputs;
-            workloadTableInputColumn.DisplayMember = "Name";
-            workloadTableInputColumn.ValueMember = "Self";
 
+            workloadTableAlgoColumn.DataSource = null;
             workloadTableAlgoColumn.DataSource = controller.Algorithms;
-            workloadTableAlgoColumn.DisplayMember = "Name";
-            workloadTableAlgoColumn.ValueMember = "Self";
 
+            inputComboBox.DataSource = null;
             inputComboBox.DataSource = controller.Inputs;
-            inputComboBox.Format += nameableFormatter;
 
+            algorithmComboBox.DataSource = null;
             algorithmComboBox.DataSource = controller.Algorithms;
-            algorithmComboBox.Format += nameableFormatter;
 
+            algorithmFactoryComboBox.DataSource = null;
             algorithmFactoryComboBox.DataSource = controller.AlgorithmFactories;
-            algorithmFactoryComboBox.Format += nameableFormatter;
+
+            workloadTable.Refresh();
 
             inputComboBox.SelectedIndexChanged += inputComboBox_SelectedIndexChanged;
             algorithmComboBox.SelectedIndexChanged += algorithmComboBox_SelectedIndexChanged;
+        }
+
+        private void InitializeBindings()
+        {
+            ListControlConvertEventHandler nameableFormatter = (s, e) =>
+            {
+                e.Value = ((INameable)e.Value).Name;
+            };
+
+            workloadTableInputColumn.DisplayMember = "Name";
+            workloadTableInputColumn.ValueMember = "Self";
+            workloadTableAlgoColumn.DisplayMember = "Name";
+            workloadTableAlgoColumn.ValueMember = "Self";
+
+            inputComboBox.Format += nameableFormatter;
+            algorithmComboBox.Format += nameableFormatter;
+            algorithmFactoryComboBox.Format += nameableFormatter;
         }
 
     }

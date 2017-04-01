@@ -41,9 +41,10 @@
             this.gMap.HelperLineOption = GMap.NET.WindowsForms.HelperLineOptions.DontShow;
             this.gMap.LevelsKeepInMemmory = 5;
             this.gMap.Location = new System.Drawing.Point(0, 0);
+            this.gMap.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.gMap.MarkersEnabled = true;
             this.gMap.MaxZoom = 18;
-            this.gMap.MinZoom = 0;
+            this.gMap.MinZoom = 2;
             this.gMap.MouseWheelZoomEnabled = true;
             this.gMap.MouseWheelZoomType = GMap.NET.MouseWheelZoomType.MousePositionWithoutCenter;
             this.gMap.Name = "gMap";
@@ -54,17 +55,18 @@
             this.gMap.ScaleMode = GMap.NET.WindowsForms.ScaleModes.Integer;
             this.gMap.SelectedAreaFillColor = System.Drawing.Color.FromArgb(((int)(((byte)(33)))), ((int)(((byte)(65)))), ((int)(((byte)(105)))), ((int)(((byte)(225)))));
             this.gMap.ShowTileGridLines = false;
-            this.gMap.Size = new System.Drawing.Size(187, 183);
+            this.gMap.Size = new System.Drawing.Size(125, 119);
             this.gMap.TabIndex = 0;
             this.gMap.Zoom = 0D;
             // 
             // TrajectoryGMap
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 20F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.Controls.Add(this.gMap);
+            this.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.Name = "TrajectoryGMap";
-            this.Size = new System.Drawing.Size(187, 183);
+            this.Size = new System.Drawing.Size(125, 119);
             this.ResumeLayout(false);
 
         }

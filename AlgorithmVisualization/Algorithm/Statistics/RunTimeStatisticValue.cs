@@ -25,7 +25,6 @@ namespace AlgorithmVisualization.Algorithm.Statistics
             StartTime = DateTime.Now;
         }
 
-
         public void End()
         {
             EndTime = DateTime.Now;
@@ -39,8 +38,8 @@ namespace AlgorithmVisualization.Algorithm.Statistics
             if (EndTime == null && StartTime != null)
                 return DateTime.Now.Subtract((DateTime)StartTime);
 
-            Debug.Assert(EndTime != null, "EndTime != null");
             Debug.Assert(StartTime != null, "StartTime != null");
+            Debug.Assert(EndTime != null, "EndTime != null");
             return ((DateTime)EndTime).Subtract((DateTime)StartTime);
         }
 

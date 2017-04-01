@@ -1,16 +1,15 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using MultiScaleTrajectories.Algorithm.Geometry;
 using MultiScaleTrajectories.SingleTrajectory.Algorithm;
 
-namespace MultiScaleTrajectories.Algorithm.ImaiIri.Simple
+namespace MultiScaleTrajectories.Algorithm.ImaiIri.BruteForce
 {
     //preprocess: n^3
     //selection: k * n^2
     class SimpleShortcutFinder : ShortcutFinder
     {
-        public const string Name = "Simple";
+        public const string Name = "Brute-force";
 
         private readonly ShortcutSet<MaxDistanceShortcut> shortcutSet;
 

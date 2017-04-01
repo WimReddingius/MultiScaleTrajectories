@@ -1,6 +1,6 @@
 ﻿namespace MultiScaleTrajectories.SingleTrajectory.View.Edit
 {
-    partial class STInputOptions
+    partial class EpsilonEditor
     {
         /// <summary> 
         /// Required designer variable.

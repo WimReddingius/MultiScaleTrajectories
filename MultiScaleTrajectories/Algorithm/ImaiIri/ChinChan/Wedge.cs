@@ -2,7 +2,7 @@
 using MultiScaleTrajectories.Algorithm.Geometry;
 using OpenTK;
 
-namespace MultiScaleTrajectories.Algorithm.ImaiIri.Wedges
+namespace MultiScaleTrajectories.Algorithm.ImaiIri.ChinChan
 {
     class Wedge
     {

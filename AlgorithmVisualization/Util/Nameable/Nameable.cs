@@ -2,12 +2,24 @@
 
 namespace AlgorithmVisualization.Util.Nameable
 {
+    public delegate void NameChangedEventHandler(Nameable nameable, string newName);
+
     public class Nameable : INameable
     {
         //used for data binding
         [JsonIgnore] public object Self => this;
 
-        public virtual string Name { get; set; }
+        public event NameChangedEventHandler NameChanged;
+
+        private string _name;
+        public string Name
+        {
+            get { return _name; }
+            set {
+                _name = value;
+                NameChanged?.Invoke(this, value);
+            }
+        }
 
         public override string ToString()
         {

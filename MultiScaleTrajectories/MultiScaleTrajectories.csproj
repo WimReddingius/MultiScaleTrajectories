@@ -62,6 +62,10 @@
       <HintPath>..\packages\GMap.NET.WindowsForms.1.7.5\lib\net40\GMap.NET.WindowsForms.dll</HintPath>
       <Private>True</Private>
     </Reference>
+    <Reference Include="Newtonsoft.Json, Version=10.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\Newtonsoft.Json.10.0.1\lib\net45\Newtonsoft.Json.dll</HintPath>
+    </Reference>
     <Reference Include="OpenTK, Version=2.0.0.0, Culture=neutral, PublicKeyToken=bad199fe84eb3df4, processorArchitecture=MSIL">
       <HintPath>..\packages\OpenTK.2.0.0\lib\net20\OpenTK.dll</HintPath>
       <Private>True</Private>
@@ -88,16 +92,16 @@
     <Compile Include="Algorithm\Geometry\Line2D.cs" />
     <Compile Include="Algorithm\Geometry\Point2D.cs" />
     <Compile Include="Algorithm\Geometry\Trajectory2D.cs" />
-    <Compile Include="Algorithm\ImaiIri\Wedges\WedgesShortcutFinder.cs" />
-    <Compile Include="Algorithm\ImaiIri\Simple\MaxDistanceShortcut.cs" />
+    <Compile Include="Algorithm\ImaiIri\ChinChan\ChinChanShortcutFinder.cs" />
+    <Compile Include="Algorithm\ImaiIri\BruteForce\MaxDistanceShortcut.cs" />
     <Compile Include="Algorithm\ImaiIri\Shortcut.cs" />
     <Compile Include="Algorithm\ImaiIri\ShortcutFinder.cs" />
     <Compile Include="Algorithm\ImaiIri\ShortcutSet.cs" />
-    <Compile Include="Algorithm\ImaiIri\Simple\SimpleShortcutFinder.cs" />
+    <Compile Include="Algorithm\ImaiIri\BruteForce\BruteForceShortcutFinder.cs" />
     <Compile Include="SingleTrajectory\Algorithm\ImaiIri\ImaiIriAlgorithm.cs" />
     <Compile Include="SingleTrajectory\Algorithm\ImaiIri\ImaiIriGreedy.cs" />
     <Compile Include="SingleTrajectory\Algorithm\ImaiIri\ImaiIriNaive.cs" />
-    <Compile Include="Algorithm\ImaiIri\Wedges\Wedge.cs" />
+    <Compile Include="Algorithm\ImaiIri\ChinChan\Wedge.cs" />
     <Compile Include="SingleTrajectory\View\Algorithm\ImaiIriOptions.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -110,19 +114,22 @@
     <Compile Include="SingleTrajectory\View\Edit\STInputEditor.Designer.cs">
       <DependentUpon>STInputEditor.cs</DependentUpon>
     </Compile>
-    <Compile Include="SingleTrajectory\View\Edit\TrajectoryEditorGMap.cs">
+    <Compile Include="SingleTrajectory\View\Edit\TrajectoryEditorGeo.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="SingleTrajectory\View\Edit\TrajectoryEditorGMap.Designer.cs">
-      <DependentUpon>TrajectoryEditorGMap.cs</DependentUpon>
+    <Compile Include="SingleTrajectory\View\Edit\TrajectoryEditorGeo.Designer.cs">
+      <DependentUpon>TrajectoryEditorGeo.cs</DependentUpon>
     </Compile>
-    <Compile Include="SingleTrajectory\View\Explore\Map\STOutputGMapExplorer.cs">
+    <Compile Include="SingleTrajectory\View\Explore\Geo\LevelTrajectoryGeo.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="SingleTrajectory\View\Explore\Map\STOutputGMapExplorer.Designer.cs">
-      <DependentUpon>STOutputGMapExplorer.cs</DependentUpon>
+    <Compile Include="SingleTrajectory\View\Explore\Geo\LevelTrajectoryGMap.cs">
+      <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="SingleTrajectory\View\Explore\Simple\STOutputSimpleExplorer.cs">
+    <Compile Include="SingleTrajectory\View\Explore\Geo\LevelTrajectoryGMap.Designer.cs">
+      <DependentUpon>LevelTrajectoryGMap.cs</DependentUpon>
+    </Compile>
+    <Compile Include="SingleTrajectory\View\Explore\Plain\LevelTrajectoryPlain.cs">
       <SubType>UserControl</SubType>
     </Compile>
     <Compile Include="Util\MoveBank.cs" />
@@ -139,16 +146,16 @@
     <Compile Include="Algorithm\DataStructures\Graph\Node.cs" />
     <Compile Include="Algorithm\DataStructures\Graph\WeightedEdge.cs" />
     <Compile Include="SingleTrajectory\Controller\STController.cs" />
-    <Compile Include="SingleTrajectory\View\Edit\STInputOptions.cs">
+    <Compile Include="SingleTrajectory\View\Edit\EpsilonEditor.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="SingleTrajectory\View\Edit\STInputOptions.Designer.cs">
-      <DependentUpon>STInputOptions.cs</DependentUpon>
+    <Compile Include="SingleTrajectory\View\Edit\EpsilonEditor.Designer.cs">
+      <DependentUpon>EpsilonEditor.cs</DependentUpon>
     </Compile>
-    <Compile Include="SingleTrajectory\View\Edit\TrajectoryEditorSimple.cs">
+    <Compile Include="SingleTrajectory\View\Edit\TrajectoryEditorPlain.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="SingleTrajectory\View\Explore\Simple\STOutputSimple.cs">
+    <Compile Include="SingleTrajectory\View\Explore\Plain\LevelTrajectoryPlainGL.cs">
       <SubType>UserControl</SubType>
     </Compile>
     <Compile Include="View\TrajectoryGLVisualization.cs">
@@ -173,14 +180,14 @@
     <EmbeddedResource Include="SingleTrajectory\View\Algorithm\ImaiIriOptions.resx">
       <DependentUpon>ImaiIriOptions.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="SingleTrajectory\View\Edit\STInputEditor.resx">
-      <DependentUpon>STInputEditor.cs</DependentUpon>
+    <EmbeddedResource Include="SingleTrajectory\View\Edit\EpsilonEditor.resx">
+      <DependentUpon>EpsilonEditor.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="SingleTrajectory\View\Edit\STInputOptions.resx">
-      <DependentUpon>STInputOptions.cs</DependentUpon>
+    <EmbeddedResource Include="SingleTrajectory\View\Edit\TrajectoryEditorGeo.resx">
+      <DependentUpon>TrajectoryEditorGeo.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="SingleTrajectory\View\Explore\Map\STOutputGMapExplorer.resx">
-      <DependentUpon>STOutputGMapExplorer.cs</DependentUpon>
+    <EmbeddedResource Include="SingleTrajectory\View\Explore\Geo\LevelTrajectoryGMap.resx">
+      <DependentUpon>LevelTrajectoryGMap.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="View\TrajectoryGMap.resx">
       <DependentUpon>TrajectoryGMap.cs</DependentUpon>
@@ -204,6 +211,8 @@
     <ProjectReference Include="..\AlgorithmVisualization\AlgorithmVisualization.csproj">
       <Project>{0918d7d3-890b-4c5e-b0d4-e75afb3ef81f}</Project>
       <Name>AlgorithmVisualization</Name>
+      <Private>True</Private>
+      <EmbedInteropTypes>False</EmbedInteropTypes>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

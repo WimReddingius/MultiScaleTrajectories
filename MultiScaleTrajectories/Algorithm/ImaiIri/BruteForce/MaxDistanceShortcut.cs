@@ -1,6 +1,6 @@
 ﻿using MultiScaleTrajectories.Algorithm.Geometry;
 
-namespace MultiScaleTrajectories.Algorithm.ImaiIri.Simple
+namespace MultiScaleTrajectories.Algorithm.ImaiIri.BruteForce
 {
     class MaxDistanceShortcut : Shortcut
     {

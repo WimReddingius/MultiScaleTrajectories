@@ -1,19 +1,27 @@
 ﻿using System.Windows.Forms;
 using AlgorithmVisualization.Algorithm;
+using AlgorithmVisualization.Util.Factory;
 using AlgorithmVisualization.View.Util;
 
 namespace AlgorithmVisualization.Controller.Edit
 {
     public class InputEditorWrapper<TIn, TEdit> : InputEditor<TIn>
         where TIn : Input, new() 
-        where TEdit : Control, IInputEditor<TIn>, new()
+        where TEdit : Control, IInputEditor<TIn>
     {
         private readonly TEdit editor;
 
-        public InputEditorWrapper()
+        public InputEditorWrapper() : this(new object[] {})
         {
-            editor = new TEdit();
+        }
 
+        public InputEditorWrapper(params object[] args) : this(new Factory<TEdit>().Create(args))
+        {
+        }
+
+        public InputEditorWrapper(TEdit editor)
+        {
+            this.editor = editor;
             this.Fill(editor);
             Name = editor.Name;
         }

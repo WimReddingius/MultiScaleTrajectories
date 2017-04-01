@@ -1,25 +1,17 @@
 ﻿using System.Windows.Forms;
 using AlgorithmVisualization.Algorithm.Run;
-using AlgorithmVisualization.Controller.Explore;
 using MultiScaleTrajectories.SingleTrajectory.Algorithm;
 
-namespace MultiScaleTrajectories.SingleTrajectory.View.Explore.Map
+namespace MultiScaleTrajectories.SingleTrajectory.View.Explore.Geo
 {
-    partial class STOutputGMapExplorer : SingleStateRunExplorer<STInput, STOutput>
+    partial class LevelTrajectoryGMap : UserControl
     {
         private STOutput output;
         private int currentLevel;
 
-        public STOutputGMapExplorer()
+        public LevelTrajectoryGMap()
         {
             InitializeComponent();
-
-            Name = "Level Visualization - Map";
-            Priority = 1;
-
-            VisualizableState = RunState.OutputAvailable;
-            BeforeStateReachedHandler = BeforeOutputAvailable;
-            AfterStateReachedHandler = AfterOutputAvailable;
 
             gMap.MapControl.PreviewKeyDown += HandlePreviewKeyDown;
             gMap.MapControl.KeyDown += HandleArrowKeys;

@@ -47,59 +47,24 @@ namespace AlgorithmVisualization.Controller
             CanImport = false;
         }
 
-        //type has to implement IRunExplorer
+        protected void AddSimpleInputEditor(object inputEditor)
+        {
+            InputEditors.Add(InputEditor<TIn>.CreateSimple(inputEditor));
+        }
+
         protected void AddSimpleRunExplorerType(Type type)
         {
-            Type iRunExplorerType = typeof(IRunExplorer<TIn, TOut>);
-            Type iControlType = typeof(Control);
-
-            if (iControlType.IsAssignableFrom(type) && iRunExplorerType.IsAssignableFrom(type))
-            {
-                var genericTypeWrapper = typeof(RunExplorerWrapper<,,>).MakeGenericType(typeof(TIn), typeof(TOut), type);
-                var concrete = (RunExplorer<TIn, TOut>) Activator.CreateInstance(genericTypeWrapper);
-
-                AddRunExplorerType(concrete.GetType());
-            }
-            else
-            {
-                throw new ArgumentOutOfRangeException(nameof(type), "Type provided does not inherit from both Control and IRunExplorer");
-            }
+            RunExplorerFactories.Add(RunExplorer<TIn, TOut>.CreateFactorySimple(type));
         }
 
-        //type has to implement RunExplorer
         protected void AddRunExplorerType(Type type)
         {
-            Type RunExplorerType = typeof(RunExplorer<TIn, TOut>);
-
-            if (RunExplorerType.IsAssignableFrom(type))
-            {
-                var representativeExplorer = (RunExplorer<TIn, TOut>)Activator.CreateInstance(type);
-                var genericTypeFactory = typeof(NameableFactory<>).MakeGenericType(type);
-                var factory = (INameableFactory<RunExplorer<TIn, TOut>>)Activator.CreateInstance(genericTypeFactory, representativeExplorer.Name);
-                RunExplorerFactories.Add(factory);
-            }
-            else
-            {
-                throw new ArgumentOutOfRangeException(nameof(type), "Type provided does not inherit from RunExplorer");
-            }
+            RunExplorerFactories.Add(RunExplorer<TIn, TOut>.CreateFactory(type));
         }
 
-        //type has to inherit from Algorithm
         protected void AddAlgorithmType(Type type)
         {
-            Type AlgoType = typeof(Algorithm<TIn, TOut>);
-
-            if (AlgoType.IsAssignableFrom(type))
-            {
-                var representativeAlgo = (Algorithm<TIn, TOut>)Activator.CreateInstance(type);
-                var genericTypeFactory = typeof(NameableFactory<>).MakeGenericType(type);
-                var factory = (INameableFactory<Algorithm<TIn, TOut>>)Activator.CreateInstance(genericTypeFactory, representativeAlgo.AlgoName);
-                AlgorithmFactories.Add(factory);
-            }
-            else
-            {
-                throw new ArgumentOutOfRangeException(nameof(type), "Type provided does not inherit from Algorithm");
-            }
+            AlgorithmFactories.Add(Algorithm<TIn, TOut>.CreateAlgorithmFactory(type));
         }
 
         public virtual TIn ImportInput(string fileName)

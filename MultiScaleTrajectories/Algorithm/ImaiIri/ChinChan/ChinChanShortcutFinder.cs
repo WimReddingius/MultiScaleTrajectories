@@ -4,12 +4,12 @@ using System.Linq;
 using MultiScaleTrajectories.Algorithm.Geometry;
 using MultiScaleTrajectories.SingleTrajectory.Algorithm;
 
-namespace MultiScaleTrajectories.Algorithm.ImaiIri.Wedges
+namespace MultiScaleTrajectories.Algorithm.ImaiIri.ChinChan
 {
     //selection: k * n^2
-    class WedgesShortcutFinder : ShortcutFinder
+    class ChinChanShortcutFinder : ShortcutFinder
     {
-        public const string Name = "Wedges";
+        public const string Name = "Chin-Chan";
 
         private Trajectory2D Trajectory => Input.Trajectory;
 
@@ -18,7 +18,7 @@ namespace MultiScaleTrajectories.Algorithm.ImaiIri.Wedges
         private readonly HashSet<Point2D> bannedPoints;
 
 
-        public WedgesShortcutFinder(STInput input, STOutput output) : base(input, output)
+        public ChinChanShortcutFinder(STInput input, STOutput output) : base(input, output)
         {
             bannedShortcuts = new HashSet<Shortcut>();
             bannedPoints = new HashSet<Point2D>();

@@ -9,7 +9,7 @@ namespace MultiScaleTrajectories.SingleTrajectory.Algorithm.ImaiIri
     {
         public override string AlgoName => "ImaiIri - Greedy";
 
-        public ImaiIriGreedy()
+        public ImaiIriGreedy() : base()
         {
         }
 

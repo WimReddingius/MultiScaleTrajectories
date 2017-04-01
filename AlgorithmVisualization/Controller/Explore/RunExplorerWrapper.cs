@@ -1,18 +1,28 @@
 ﻿using System.Windows.Forms;
 using AlgorithmVisualization.Algorithm;
 using AlgorithmVisualization.Algorithm.Run;
+using AlgorithmVisualization.Util.Factory;
 
 namespace AlgorithmVisualization.Controller.Explore
 {
     public class RunExplorerWrapper<TIn, TOut, TExplore> : RunExplorer<TIn, TOut>
-        where TIn : Input, new() where TOut : Output, new()
-        where TExplore : Control, IRunExplorer<TIn, TOut>, new()
+        where TIn : Input, new() 
+        where TOut : Output, new()
+        where TExplore : Control, IRunExplorer<TIn, TOut>
     {
         private readonly TExplore explorer;
 
-        public RunExplorerWrapper()
+        public RunExplorerWrapper() : this(new object[] {})
         {
-            explorer = new TExplore();
+        }
+
+        public RunExplorerWrapper(params object[] args) : this(new Factory<TExplore>().Create(args))
+        {
+        }
+
+        public RunExplorerWrapper(TExplore explorer)
+        {
+            this.explorer = explorer;
             MinConsolidation = explorer.MinConsolidation;
             MaxConsolidation = explorer.MaxConsolidation;
             Priority = explorer.Priority;
@@ -30,7 +40,6 @@ namespace AlgorithmVisualization.Controller.Explore
         {
             explorer.Destroy();
         }
-
     }
 
 }

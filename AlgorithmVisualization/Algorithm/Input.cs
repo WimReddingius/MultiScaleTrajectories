@@ -4,7 +4,7 @@ using AlgorithmVisualization.Util.Nameable;
 
 namespace AlgorithmVisualization.Algorithm
 {
-    public abstract class Input : NumberedNameable
+    public abstract class Input : Nameable
     {
         internal bool ReadOnly;
         public StatisticMap Statistics;
@@ -12,7 +12,7 @@ namespace AlgorithmVisualization.Algorithm
         protected Input()
         {
             Statistics = new StatisticMap();
-            BaseName = "Input";
+            Name = "Input";
             InitStatistics();
         }
 

@@ -37,7 +37,7 @@
             this.inputEditorComboBox.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.inputEditorComboBox.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.inputEditorComboBox.FormattingEnabled = true;
-            this.inputEditorComboBox.Location = new System.Drawing.Point(111, 0);
+            this.inputEditorComboBox.Location = new System.Drawing.Point(42, 0);
             this.inputEditorComboBox.Name = "inputEditorComboBox";
             this.inputEditorComboBox.Size = new System.Drawing.Size(143, 21);
             this.inputEditorComboBox.TabIndex = 0;
@@ -47,9 +47,9 @@
             // 
             this.inputEditorContainer.Dock = System.Windows.Forms.DockStyle.Fill;
             this.inputEditorContainer.Location = new System.Drawing.Point(0, 0);
-            this.inputEditorContainer.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.inputEditorContainer.Margin = new System.Windows.Forms.Padding(2);
             this.inputEditorContainer.Name = "inputEditorContainer";
-            this.inputEditorContainer.Size = new System.Drawing.Size(253, 109);
+            this.inputEditorContainer.Size = new System.Drawing.Size(184, 126);
             this.inputEditorContainer.TabIndex = 1;
             // 
             // InputEditorChooser
@@ -58,9 +58,9 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.Controls.Add(this.inputEditorContainer);
             this.Controls.Add(this.inputEditorComboBox);
-            this.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.Margin = new System.Windows.Forms.Padding(2);
             this.Name = "InputEditorChooser";
-            this.Size = new System.Drawing.Size(253, 109);
+            this.Size = new System.Drawing.Size(184, 126);
             this.ResumeLayout(false);
 
         }

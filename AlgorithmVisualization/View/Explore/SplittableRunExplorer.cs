@@ -8,13 +8,13 @@ using AlgorithmVisualization.View.Util.Components;
 
 namespace AlgorithmVisualization.View.Explore
 {
-    internal class SplittableExplorer<TIn, TOut> : SplittableView where TIn : Input, new() where TOut : Output, new()
+    internal class SplittableRunExplorer<TIn, TOut> : SplittableView where TIn : Input, new() where TOut : Output, new()
     {
         private readonly AlgorithmController<TIn, TOut> controller;
         private readonly BindingList<AlgorithmRun<TIn, TOut>> selectedRuns;
 
 
-        public SplittableExplorer(AlgorithmController<TIn, TOut> controller, BindingList<AlgorithmRun<TIn, TOut>> selectedRuns)
+        public SplittableRunExplorer(AlgorithmController<TIn, TOut> controller, BindingList<AlgorithmRun<TIn, TOut>> selectedRuns)
         {
             this.selectedRuns = selectedRuns;
             this.controller = controller;

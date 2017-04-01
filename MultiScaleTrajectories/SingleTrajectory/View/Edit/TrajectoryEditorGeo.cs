@@ -4,9 +4,9 @@ using MultiScaleTrajectories.View;
 
 namespace MultiScaleTrajectories.SingleTrajectory.View.Edit
 {
-    partial class TrajectoryEditorGMap : TrajectoryGMap, IInputEditor<STInput>
+    partial class TrajectoryEditorGeo : TrajectoryGMap, IInputEditor<STInput>
     {
-        public TrajectoryEditorGMap()
+        public TrajectoryEditorGeo()
         {
             InitializeComponent();
 

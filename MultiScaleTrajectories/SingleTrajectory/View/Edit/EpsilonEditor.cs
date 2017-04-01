@@ -4,11 +4,11 @@ using MultiScaleTrajectories.SingleTrajectory.Algorithm;
 
 namespace MultiScaleTrajectories.SingleTrajectory.View.Edit
 {
-    partial class STInputOptions : UserControl
+    partial class EpsilonEditor : UserControl
     {
         private STInput Input;
 
-        public STInputOptions()
+        public EpsilonEditor()
         {
             InitializeComponent();
 

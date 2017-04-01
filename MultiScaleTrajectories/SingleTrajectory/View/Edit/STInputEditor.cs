@@ -1,34 +1,21 @@
-﻿using System;
-using System.Windows.Forms;
+﻿using System.Windows.Forms;
 using AlgorithmVisualization.Controller.Edit;
 using AlgorithmVisualization.View.Util;
 using MultiScaleTrajectories.SingleTrajectory.Algorithm;
 
 namespace MultiScaleTrajectories.SingleTrajectory.View.Edit
 {
-    partial class STInputEditor : InputEditor<STInput>
+    partial class STInputEditor : UserControl, IInputEditor<STInput>
     {
-        private readonly IInputEditor<STInput> trajectoryEditor;
+        private readonly InputEditor<STInput> trajectoryEditor;
 
-        private STInputEditor()
+        public STInputEditor(object editor)
         {
             InitializeComponent();
-        }
 
-        public STInputEditor(InputEditor<STInput> trajectoryEditor) : this()
-        {
-            this.trajectoryEditor = trajectoryEditor;
+            trajectoryEditor = InputEditor<STInput>.CreateSimple(editor);
+
             SetTrajectoryEditorControl(trajectoryEditor);
-        }
-
-        public STInputEditor(IInputEditor<STInput> trajectoryEditor) : this()
-        {
-            if (!(trajectoryEditor is Control))
-                throw new ArgumentOutOfRangeException();
-
-            this.trajectoryEditor = trajectoryEditor;
-
-            SetTrajectoryEditorControl((Control) trajectoryEditor);
         }
 
         private void SetTrajectoryEditorControl(Control ctrl)
@@ -37,11 +24,10 @@ namespace MultiScaleTrajectories.SingleTrajectory.View.Edit
             Name = ctrl.Name;
         }
 
-        public override void LoadInput(STInput input)
+        public void LoadInput(STInput input)
         {
             STInputOptions1.LoadInput(input);
             trajectoryEditor?.LoadInput(input);
         }
-
     }
 }

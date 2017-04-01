@@ -7,7 +7,6 @@ using System.Linq;
 using AlgorithmVisualization.Algorithm;
 using AlgorithmVisualization.Algorithm.Run;
 using AlgorithmVisualization.Controller;
-using AlgorithmVisualization.Controller.Edit;
 using AlgorithmVisualization.Controller.Explore;
 using AlgorithmVisualization.View.Util;
 
@@ -26,6 +25,8 @@ namespace AlgorithmVisualization.View.Explore
         private List<AlgorithmRun<TIn, TOut>> lastSelection;
 
         private readonly MouseMessageFilter mouseMessageFilter;
+
+        private RunExplorer<TIn, TOut> RunExplorer => (RunExplorer<TIn, TOut>) runExplorerComboBox.SelectedItem;
 
         private ICollection<AlgorithmRun<TIn, TOut>> RunSelection => UsingActiveSelection ? (ICollection<AlgorithmRun<TIn, TOut>>)activeSelection : lastSelection;
 
@@ -146,7 +147,7 @@ namespace AlgorithmVisualization.View.Explore
 
         private void runExplorerComboBox_SelectedIndexChanged(object sender, EventArgs e)
         {
-            if (runExplorerComboBox.SelectedItem == null) return;
+            if (RunExplorer == null) return;
 
             if (AutoSelect)
                 SetMaximumRunSelection();
@@ -156,7 +157,7 @@ namespace AlgorithmVisualization.View.Explore
 
         private void UpdateAutoSelection(object sender, ListChangedEventArgs listChangedEventArgs)
         {
-            if (runExplorerComboBox.SelectedItem == null) return;
+            if (RunExplorer == null) return;
             
             if (SetMaximumRunSelection())
                 ExploreSelection();
@@ -164,15 +165,13 @@ namespace AlgorithmVisualization.View.Explore
 
         private void ExploreSelection()
         {
-            var runExplorer = (RunExplorer<TIn, TOut>)runExplorerComboBox.SelectedItem;
-
-            if (runExplorer == null)
+            if (RunExplorer == null)
                 return;
 
-            if (runExplorer.ConsolidationSupported(RunSelection.Count))
+            if (RunExplorer.ConsolidationSupported(RunSelection.Count))
             {
-                visualizationContainer.Fill(runExplorer);
-                runExplorer.LoadRuns(RunSelection.ToArray());
+                visualizationContainer.Fill(RunExplorer);
+                RunExplorer.LoadRuns(RunSelection.ToArray());
             }
             else
             {
@@ -182,7 +181,6 @@ namespace AlgorithmVisualization.View.Explore
 
         private bool SetMaximumRunSelection()
         {
-            var runExplorer = (RunExplorer<TIn, TOut>)runExplorerComboBox.SelectedItem;
             var oldRunSelection = RunSelection.ToList();
 
             if (UsingActiveSelection)
@@ -190,7 +188,7 @@ namespace AlgorithmVisualization.View.Explore
 
             //add the maximum amount of runs
             RunSelection.Clear();
-            while (RunSelection.Count < runExplorer.MaxConsolidation && RunSelection.Count < controller.Runs.Count)
+            while (RunSelection.Count < RunExplorer.MaxConsolidation && RunSelection.Count < controller.Runs.Count)
             {
                 var nonSelectedRuns = controller.Runs
                     .ToList()
@@ -244,9 +242,7 @@ namespace AlgorithmVisualization.View.Explore
         public new void Dispose()
         {
             Application.RemoveMessageFilter(mouseMessageFilter);
-
-            var runExplorer = (RunExplorer<TIn, TOut>)runExplorerComboBox.SelectedItem;
-            runExplorer?.Dispose();
+            RunExplorer?.Dispose();
 
             AutoSelect = false;
             UsingActiveSelection = false;

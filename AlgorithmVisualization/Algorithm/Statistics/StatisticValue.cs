@@ -1,17 +1,19 @@
-﻿namespace AlgorithmVisualization.Algorithm.Statistics
+﻿using Newtonsoft.Json;
+
+namespace AlgorithmVisualization.Algorithm.Statistics
 {
     public class StatisticValue
     {
-        public virtual object Value { get; set; }
+        public virtual object Value { get; }
 
-        public StatisticValue(object value)
+        [JsonConstructor]
+        public StatisticValue(object Value)
         {
-            Value = value;
+            this.Value = Value;
         }
 
         public StatisticValue()
         {
-            
         }
 
     }

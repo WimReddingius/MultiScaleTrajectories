@@ -13,14 +13,14 @@ using MouseEventArgs = System.Windows.Forms.MouseEventArgs;
 
 namespace MultiScaleTrajectories.SingleTrajectory.View.Edit
 {
-    class TrajectoryEditorSimple : TrajectoryGLVisualization, IInputEditor<STInput>
+    class TrajectoryEditorPlain : TrajectoryGLVisualization, IInputEditor<STInput>
     {
         private Point2D lastSelectedPoint;
         private bool draggingPoint;
         private STInput input;
 
 
-        public TrajectoryEditorSimple()
+        public TrajectoryEditorPlain()
         {
             MouseDown += HandleMouseDown;
             MouseUp += HandleMouseUp;

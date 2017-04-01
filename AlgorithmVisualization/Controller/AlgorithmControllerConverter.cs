@@ -22,7 +22,7 @@ namespace AlgorithmVisualization.Controller
 
         public static void Init()
         {
-            var settingsStr = Properties.Settings.Default.ProblemControllers;
+            var settingsStr = Properties.Settings.Default.AlgorithmControllers;
 
             //if (true)
             if (string.IsNullOrEmpty(settingsStr))
@@ -49,7 +49,7 @@ namespace AlgorithmVisualization.Controller
                 SerializationBinder = new TypeNameSerializationBinder()
             });
 
-            Properties.Settings.Default.ProblemControllers = str;
+            Properties.Settings.Default.AlgorithmControllers = str;
             Properties.Settings.Default.Save();
         }
 

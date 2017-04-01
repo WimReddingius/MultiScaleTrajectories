@@ -18,12 +18,11 @@ namespace AlgorithmVisualization.Algorithm.Statistics
             throw new NotImplementedException();
         }
 
-        public override void WriteJson(JsonWriter writer, object value, JsonSerializer serializer)
+        public override void WriteJson(JsonWriter writer, object obj, JsonSerializer serializer)
         {
-            JObject jo = new JObject();
-
-            var dynamicStatisticValue = value as DynamicStatisticValue;
-            var statisticValue = dynamicStatisticValue != null ? dynamicStatisticValue.Value : ((StatisticValue)value).Value;
+            var jo = new JObject();
+            var dynamicStatisticValue = obj as DynamicStatisticValue;
+            var statisticValue = dynamicStatisticValue != null ? dynamicStatisticValue.Value : ((StatisticValue)obj).Value;
 
             jo.Add("Value", JToken.FromObject(statisticValue, serializer));
             jo.WriteTo(writer);
