@@ -4,7 +4,7 @@ using System.Drawing;
 using System.Windows.Forms;
 using AlgorithmVisualization.Algorithm;
 using AlgorithmVisualization.Algorithm.Run;
-using AlgorithmVisualization.Util.Nameable;
+using AlgorithmVisualization.Util.Naming;
 using AlgorithmVisualization.View.Util;
 
 namespace AlgorithmVisualization.Controller.Explore
@@ -117,19 +117,7 @@ namespace AlgorithmVisualization.Controller.Explore
                     "Type provided does not inherit from both Control and IRunExplorer");
 
             var genericTypeWrapper = typeof(RunExplorerWrapper<,,>).MakeGenericType(typeof(TIn), typeof(TOut), type);
-            return CreateFactory(genericTypeWrapper);
-        }
-
-        //type has to implement RunExplorer
-        public static INameableFactory<RunExplorer<TIn, TOut>> CreateFactory(Type type)
-        {
-            var RunExplorerType = typeof(RunExplorer<TIn, TOut>);
-            if (!RunExplorerType.IsAssignableFrom(type))
-                throw new ArgumentOutOfRangeException(nameof(type), "Type provided does not inherit from RunExplorer");
-
-            var representativeExplorer = (RunExplorer<TIn, TOut>)Activator.CreateInstance(type);
-            var genericTypeFactory = typeof(NameableFactory<>).MakeGenericType(type);
-            return (INameableFactory<RunExplorer<TIn, TOut>>)Activator.CreateInstance(genericTypeFactory, representativeExplorer.Name);
+            return NameableFactory<RunExplorer<TIn, TOut>>.Create(genericTypeWrapper);
         }
 
     }

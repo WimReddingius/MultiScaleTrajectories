@@ -1,11 +1,10 @@
 ﻿using System;
 using System.ComponentModel;
-using System.Windows.Forms;
 using AlgorithmVisualization.Algorithm;
 using AlgorithmVisualization.Algorithm.Run;
 using AlgorithmVisualization.Controller.Edit;
 using AlgorithmVisualization.Controller.Explore;
-using AlgorithmVisualization.Util.Nameable;
+using AlgorithmVisualization.Util.Naming;
 using AlgorithmVisualization.View;
 using AlgorithmVisualization.View.Explore.Components.Log;
 using AlgorithmVisualization.View.Explore.Components.Stats;
@@ -59,12 +58,14 @@ namespace AlgorithmVisualization.Controller
 
         protected void AddRunExplorerType(Type type)
         {
-            RunExplorerFactories.Add(RunExplorer<TIn, TOut>.CreateFactory(type));
+            RunExplorerFactories.Add(NameableFactory<RunExplorer<TIn, TOut>>.Create(type));
         }
 
         protected void AddAlgorithmType(Type type)
         {
-            AlgorithmFactories.Add(Algorithm<TIn, TOut>.CreateAlgorithmFactory(type));
+            var factory = NameableFactory<Algorithm<TIn, TOut>>.Create(type);
+            factory.Name = ((Algorithm<TIn, TOut>) Activator.CreateInstance(type)).AlgoName;
+            AlgorithmFactories.Add(factory);
         }
 
         public virtual TIn ImportInput(string fileName, out bool customName)

@@ -16,15 +16,16 @@ namespace AlgorithmVisualization.Algorithm
 
         public StatisticMap Statistics;
 
-        [JsonIgnore] public ThreadSafeStringBuilder LogStringBuilder;
+        [JsonIgnore] public string LogString => logStringBuilder.ToString();
         [JsonIgnore] public bool Logging;
         [JsonIgnore] public List<StringBuffer> LogBuffers;
-        [JsonProperty] private string log;
 
+        [JsonProperty] private string log;
+        [JsonIgnore] private readonly ThreadSafeStringBuilder logStringBuilder;
 
         protected Output()
         {
-            LogStringBuilder = new ThreadSafeStringBuilder();
+            logStringBuilder = new ThreadSafeStringBuilder();
             Statistics = new StatisticMap();
             LogBuffers = new List<StringBuffer>();
             Logging = true;
@@ -42,9 +43,9 @@ namespace AlgorithmVisualization.Algorithm
             if (Logging)
             {
                 var line = str + "\n";
-                LogStringBuilder.Append(line);
+                logStringBuilder.Append(line);
                 LogBuffers.ForEach(b => b.Append(line));
-                //Logged?.Invoke(line);
+                Logged?.Invoke(line);
             }
         }
 
@@ -75,13 +76,13 @@ namespace AlgorithmVisualization.Algorithm
         [OnSerializing]
         internal void OnSerializingMethod(StreamingContext context)
         {
-            log = LogStringBuilder.ToString();
+            log = logStringBuilder.ToString();
         }
 
         [OnDeserialized]
         internal void OnDeserializedMethod(StreamingContext context)
         {
-            LogStringBuilder.Append(log);
+            logStringBuilder.Append(log);
             InitStatistics();
         }
 

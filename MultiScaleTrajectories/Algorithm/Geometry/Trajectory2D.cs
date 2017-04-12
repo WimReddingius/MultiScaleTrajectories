@@ -1,10 +1,7 @@
 ﻿using System.Collections.Generic;
-using System.Linq;
-using OpenTK.Graphics.ES20;
 
 namespace MultiScaleTrajectories.Algorithm.Geometry
 {
-
     class Trajectory2D : List<Point2D>
     {
 
@@ -15,7 +12,7 @@ namespace MultiScaleTrajectories.Algorithm.Geometry
 
         public Point2D InsertPoint(double x, double y, int index)
         {
-            Point2D p = new Point2D(x, y);
+            var p = new Point2D(x, y);
             Insert(index, p);
             
             return p;
@@ -28,7 +25,7 @@ namespace MultiScaleTrajectories.Algorithm.Geometry
 
         public BoundingBox2D BuildBoundingBox()
         {
-            BoundingBox2D bb = new BoundingBox2D();
+            var bb = new BoundingBox2D();
             ForEach(p => bb.Update(p.X, p.Y));
             return bb;
         }

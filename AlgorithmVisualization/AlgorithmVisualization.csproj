@@ -59,10 +59,10 @@
   <ItemGroup>
     <Compile Include="Algorithm\Algorithm.cs" />
     <Compile Include="Algorithm\Run\RunState.cs" />
-    <Compile Include="Algorithm\Statistics\RunTimeStatisticValue.cs" />
-    <Compile Include="Algorithm\Statistics\StatisticValue.cs" />
-    <Compile Include="Algorithm\Statistics\DynamicStatisticValue.cs" />
-    <Compile Include="Algorithm\Statistics\StatisticValueConverter.cs" />
+    <Compile Include="Algorithm\Statistics\RunTimeStatistic.cs" />
+    <Compile Include="Algorithm\Statistics\Statistic.cs" />
+    <Compile Include="Algorithm\Statistics\DynamicStatistic.cs" />
+    <Compile Include="Algorithm\Statistics\StatisticConverter.cs" />
     <Compile Include="Controller\Edit\IInputEditor.cs" />
     <Compile Include="Controller\Edit\InputEditor.cs">
       <SubType>UserControl</SubType>
@@ -87,12 +87,12 @@
     <Compile Include="View\Util\Components\DoubleBufferedUserControl.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="Util\Nameable\INameable.cs" />
-    <Compile Include="Util\Nameable\INameableFactory.cs" />
-    <Compile Include="Util\Nameable\NameableFactory.cs" />
+    <Compile Include="Util\Naming\INameable.cs" />
+    <Compile Include="Util\Naming\INameableFactory.cs" />
+    <Compile Include="Util\Naming\NameableFactory.cs" />
     <Compile Include="Util\StringBuffer.cs" />
-    <Compile Include="Util\TimeFormatter.cs" />
-    <Compile Include="Util\Nameable\Nameable.cs" />
+    <Compile Include="View\Util\TimeFormatter.cs" />
+    <Compile Include="Util\Naming\Nameable.cs" />
     <Compile Include="Algorithm\Run\AlgorithmRun.cs" />
     <Compile Include="Algorithm\Input.cs" />
     <Compile Include="Algorithm\Output.cs" />
@@ -168,7 +168,7 @@
     <Compile Include="View\GLVisualization\GLUtil\PickNameManager.cs" />
     <Compile Include="View\GLVisualization\GLUtil\GLTextRenderer2D.cs" />
     <Compile Include="View\GLVisualization\GLUtil\GLUtil2D.cs" />
-    <Compile Include="Util\Nameable\NamingList.cs" />
+    <Compile Include="Util\Naming\NamingList.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Icon.ico" />

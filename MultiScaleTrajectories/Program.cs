@@ -2,7 +2,7 @@
 using System.Windows.Forms;
 using AlgorithmVisualization.View;
 using MultiScaleTrajectories.Properties;
-using MultiScaleTrajectories.SingleTrajectory.Controller;
+using MultiScaleTrajectories.MultiScale.Controller;
 
 namespace MultiScaleTrajectories
 {
@@ -18,7 +18,7 @@ namespace MultiScaleTrajectories
             Application.SetCompatibleTextRenderingDefault(false);
 
             var algoForm = new AlgorithmForm { Text = Resources.Program_Name };
-            algoForm.AlgoControllerTypes.Add(typeof(STController));
+            algoForm.AlgoControllerTypes.Add(typeof(MSController));
             Application.Run(algoForm);
         }
     }

@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel;
 using AlgorithmVisualization.Algorithm.Statistics;
-using AlgorithmVisualization.Util.Nameable;
+using AlgorithmVisualization.Util.Naming;
 using Newtonsoft.Json;
 
 namespace AlgorithmVisualization.Algorithm.Run
@@ -92,7 +92,7 @@ namespace AlgorithmVisualization.Algorithm.Run
         {
             algorithmWorker.ReportProgress(0, 0);
 
-            var fullRunTime = new RunTimeStatisticValue();
+            var fullRunTime = new RunTimeStatistic();
             Statistics.Put("Running time", fullRunTime);
             fullRunTime.Start();
 
@@ -104,24 +104,13 @@ namespace AlgorithmVisualization.Algorithm.Run
                     return;
                 }
 
-                var iterationRunTime = new RunTimeStatisticValue();
+                var iterationRunTime = new RunTimeStatistic();
                 Statistics.Put("Running time - Iteration " + it, iterationRunTime);
                 iterationRunTime.Start();
 
                 var output = it == 1 ? Output : new TOut { Logging = false };
-#if (DEBUG)
                 Algorithm.Compute(Input, output);
-#else
-                    try
-                    {
-                        Algorithm.Compute(Input, output);
-                    }
-                    catch (Exception ex)
-                    {
-                        FormsUtil.ShowErrorMessage(ex.ToString());
-                        return;
-                    }
-#endif
+
                 iterationRunTime.End();
                 algorithmWorker.ReportProgress(it / NumIterations * 100, it);
             }

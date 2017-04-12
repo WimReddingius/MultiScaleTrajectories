@@ -1,6 +1,6 @@
 ﻿using System.Runtime.Serialization;
 using AlgorithmVisualization.Algorithm.Statistics;
-using AlgorithmVisualization.Util.Nameable;
+using AlgorithmVisualization.Util.Naming;
 
 namespace AlgorithmVisualization.Algorithm
 {

@@ -9,7 +9,7 @@ using AlgorithmVisualization.Algorithm.Run;
 using AlgorithmVisualization.Controller;
 using AlgorithmVisualization.Controller.Explore;
 using AlgorithmVisualization.Util.Factory;
-using AlgorithmVisualization.Util.Nameable;
+using AlgorithmVisualization.Util.Naming;
 using AlgorithmVisualization.View.Edit;
 using AlgorithmVisualization.View.Explore;
 using AlgorithmVisualization.View.Explore.Components.Log;
@@ -50,7 +50,6 @@ namespace AlgorithmVisualization.View
 
             //populate controls
             InitializeBindings();
-            RebindControls();
 
             //set up default algo's, inputs, runs
             LoadDefaultConfiguration();
@@ -92,9 +91,9 @@ namespace AlgorithmVisualization.View
             InputsUpdated();
 
             //redrawing controls when some name is updated
-            controller.Inputs.ItemNameChanged += (o, s) => RebindControls();
-            controller.Algorithms.ItemNameChanged += (o, s) => RebindControls();
-            controller.Runs.ItemNameChanged += (o, s) => RebindControls();
+            controller.Inputs.ItemNameChanged += (o, s) => RedrawControls();
+            controller.Algorithms.ItemNameChanged += (o, s) => RedrawControls();
+            controller.Runs.ItemNameChanged += (o, s) => RedrawControls();
 
             //force loading currently selected data
             inputComboBox_SelectedIndexChanged(null, null);
@@ -169,8 +168,8 @@ namespace AlgorithmVisualization.View
             {
                 string fileName = importRunDialog.FileName;
 
-                //try
-                //{
+                try
+                {
                     bool customName;
                     var input = controller.ImportInput(fileName, out customName);
 
@@ -182,11 +181,11 @@ namespace AlgorithmVisualization.View
                         AddAndSelectInput(input);
                         inputComboBox.SelectedItem = input;
                     }
-                //}
-                //catch (Exception err)
-                //{
-                    //FormsUtil.ShowErrorMessage(err.ToString());
-                //}
+                }
+                catch (Exception err)
+                {
+                    FormsUtil.ShowErrorMessage(err.ToString());
+                }
             }
         }
 
@@ -331,8 +330,8 @@ namespace AlgorithmVisualization.View
             var algorithm = (Algorithm<TIn, TOut>)workloadTable[2, e.RowIndex].Value;
             run.Algorithm = algorithm;
 
-            var multiplicity = (int)workloadTable[3, e.RowIndex].Value;
-            run.NumIterations = multiplicity;
+            var numIterations = (int)workloadTable[3, e.RowIndex].Value;
+            run.NumIterations = numIterations;
         }
 
         private void inputComboBox_SelectedIndexChanged(object sender, EventArgs e)
@@ -495,10 +494,10 @@ namespace AlgorithmVisualization.View
         {
             var algorithmFactory = (IFactory<Algorithm<TIn, TOut>>)algorithmFactoryComboBox.SelectedItem;
             var algo = algorithmFactory.Create();
-            AddAndSelectedAlgorithm(algo);
+            AddAndSelectAlgorithm(algo);
         }
 
-        private void AddAndSelectedAlgorithm(Algorithm<TIn, TOut> algorithm)
+        private void AddAndSelectAlgorithm(Algorithm<TIn, TOut> algorithm)
         {
             var oldIndex = algorithmComboBox.SelectedIndex;
 
@@ -609,23 +608,15 @@ namespace AlgorithmVisualization.View
             }
         }
 
-        private void RebindControls()
+        private void RedrawControls()
         {
             inputComboBox.SelectedIndexChanged -= inputComboBox_SelectedIndexChanged;
             algorithmComboBox.SelectedIndexChanged -= algorithmComboBox_SelectedIndexChanged;
 
-            workloadTableInputColumn.DataSource = null;
-            workloadTableInputColumn.DataSource = controller.Inputs;
-
-            workloadTableAlgoColumn.DataSource = null;
-            workloadTableAlgoColumn.DataSource = controller.Algorithms;
-
             inputComboBox.DataSource = null;
             inputComboBox.DataSource = controller.Inputs;
-
             algorithmComboBox.DataSource = null;
             algorithmComboBox.DataSource = controller.Algorithms;
-
             algorithmFactoryComboBox.DataSource = null;
             algorithmFactoryComboBox.DataSource = controller.AlgorithmFactories;
 
@@ -646,7 +637,12 @@ namespace AlgorithmVisualization.View
             workloadTableInputColumn.ValueMember = "Self";
             workloadTableAlgoColumn.DisplayMember = "Name";
             workloadTableAlgoColumn.ValueMember = "Self";
+            workloadTableInputColumn.DataSource = controller.Inputs;
+            workloadTableAlgoColumn.DataSource = controller.Algorithms;
 
+            inputComboBox.DataSource = controller.Inputs;
+            algorithmComboBox.DataSource = controller.Algorithms;
+            algorithmFactoryComboBox.DataSource = controller.AlgorithmFactories;
             inputComboBox.Format += nameableFormatter;
             algorithmComboBox.Format += nameableFormatter;
             algorithmFactoryComboBox.Format += nameableFormatter;

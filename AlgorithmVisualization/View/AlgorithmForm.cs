@@ -24,12 +24,14 @@ namespace AlgorithmVisualization.View
 
             AlgoControllerTypes.ListChanged += (o, e) =>
             {
-                switch(e.ListChangedType) {
+                var controller = AlgorithmControllerConverter.GetController(AlgoControllerTypes[e.NewIndex]);
+                switch (e.ListChangedType)
+                {
                     case ListChangedType.ItemAdded:
-                        algoControllers.Add(AlgorithmControllerConverter.GetController(AlgoControllerTypes[e.NewIndex]));
+                        algoControllers.Add(controller);
                         break;
                     case ListChangedType.ItemDeleted:
-                        algoControllers.Remove(AlgorithmControllerConverter.GetController(AlgoControllerTypes[e.NewIndex]));
+                        algoControllers.Remove(controller);
                         break;
                 }
 

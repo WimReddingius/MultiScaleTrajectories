@@ -34,7 +34,7 @@ namespace AlgorithmVisualization.View.Explore.Components.Log
                 this.InvokeIfRequired(() =>
                 {
                     output.LogBuffers.Add(buffer);
-                    richTextBox.Text = output.LogStringBuilder.ToString();
+                    richTextBox.Text = output.LogString;
                     Visible = true;
                 });
 
@@ -64,7 +64,7 @@ namespace AlgorithmVisualization.View.Explore.Components.Log
 
         public void Destroy()
         {
-            logPollingWorker?.DoAfterCancel(Dispose);
+            logPollingWorker?.CancelAsync();
         }
 
     }

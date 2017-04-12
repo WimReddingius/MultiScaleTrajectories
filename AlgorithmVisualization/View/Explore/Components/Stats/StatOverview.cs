@@ -9,7 +9,6 @@ using AlgorithmVisualization.Algorithm;
 using AlgorithmVisualization.Algorithm.Run;
 using AlgorithmVisualization.Algorithm.Statistics;
 using AlgorithmVisualization.Controller.Explore;
-using AlgorithmVisualization.Util;
 using AlgorithmVisualization.View.Util;
 
 namespace AlgorithmVisualization.View.Explore.Components.Stats
@@ -140,7 +139,7 @@ namespace AlgorithmVisualization.View.Explore.Components.Stats
 
         public void Destroy()
         {
-            statPollingWorker?.DoAfterCancel(Dispose);
+            statPollingWorker?.CancelAsync();
         }
 
     }

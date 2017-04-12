@@ -1,6 +1,6 @@
 ﻿using AlgorithmVisualization.Algorithm;
 using AlgorithmVisualization.Algorithm.Run;
-using AlgorithmVisualization.Util.Nameable;
+using AlgorithmVisualization.Util.Naming;
 
 namespace AlgorithmVisualization.Controller.Explore
 {

@@ -11,7 +11,6 @@ namespace AlgorithmVisualization.Controller
 
         public static IAlgorithmController GetController(Type controllerType)
         {
-            //var name = controllerType.Name;
             if (!controllerMap.ContainsKey(controllerType))
             {
                 controllerMap[controllerType] = (IAlgorithmController) Activator.CreateInstance(controllerType);

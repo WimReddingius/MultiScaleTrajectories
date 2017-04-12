@@ -30,9 +30,20 @@ namespace MultiScaleTrajectories.Algorithm.Geometry
             return SimplifyRadians(angle1);
         }
 
+        public static double Angle(Vector2d vector)
+        {
+            var angle1 = Math.Atan2(vector.Y, vector.X);
+            return SimplifyRadians(angle1);
+        }
+
         public static int Orient2D(Vector2d start, Vector2d end, Vector2d point)
         {
             return Math.Sign((start.X - point.X) * (end.Y - point.Y) - (start.Y - point.Y) * (end.X - point.X));
+        }
+
+        public static int Orient2D(Point2D start, Point2D end, Point2D point)
+        {
+            return Orient2D(start.AsVector(), end.AsVector(), point.AsVector());
         }
 
         public static double SimplifyRadians(double angle)
@@ -46,9 +57,24 @@ namespace MultiScaleTrajectories.Algorithm.Geometry
             return simplerAngle;
         }
 
+        public static double SumRadians(double a1, double a2)
+        {
+            return SimplifyRadians(a1 + a2);
+        }
+
+        public static double SubtractRadians(double a1, double a2)
+        {
+            return SimplifyRadians(a1 - a2);
+        }
+
         public static double Distance(Point2D p1, Point2D p2)
         {
             return Math.Sqrt(Math.Pow(p1.Y - p2.Y, 2) + Math.Pow(p1.X - p2.X, 2));
+        }
+
+        public static double Distance(Point2D start, Point2D end, Point2D p)
+        {
+            return Distance(new Trajectory2D {start, end}, p);
         }
 
         //shortest distance from point to trajectory
@@ -58,23 +84,22 @@ namespace MultiScaleTrajectories.Algorithm.Geometry
 
             for (var i = 0; i < trajectory.Count - 1; i++)
             {
-                Point2D p1 = trajectory[i];
-                Point2D p2 = trajectory[i + 1];
+                var p1 = trajectory[i];
+                var p2 = trajectory[i + 1];
 
-                double A = p.X - p1.X;
-                double B = p.Y - p1.Y;
-                double C = p2.X - p1.X;
-                double D = p2.Y - p1.Y;
+                var A = p.X - p1.X;
+                var B = p.Y - p1.Y;
+                var C = p2.X - p1.X;
+                var D = p2.Y - p1.Y;
 
-                double dot = A * C + B * D;
-                double distanceSquared = C * C + D * D;
+                var dot = A * C + B * D;
+                var distanceSquared = C * C + D * D;
 
                 double param = -1;
                 if (distanceSquared != 0.0) //in case of 0 length line
                     param = dot / distanceSquared;
 
                 Point2D closestPoint;
-
                 if (param < 0)
                 {
                     closestPoint = p1;
@@ -88,8 +113,7 @@ namespace MultiScaleTrajectories.Algorithm.Geometry
                     closestPoint = new Point2D(p1.X + param * C, p1.Y + param * D);
                 }
 
-                double lineDistance = Distance(p, closestPoint);
-
+                var lineDistance = Distance(p, closestPoint);
                 if (lineDistance < minDistance)
                     minDistance = lineDistance;
             }

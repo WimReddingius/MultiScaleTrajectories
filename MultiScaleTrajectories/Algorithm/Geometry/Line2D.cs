@@ -2,7 +2,6 @@
 {
     struct Line2D
     {
-
         public Point2D Point1;
         public Point2D Point2;
 
@@ -11,6 +10,5 @@
             Point1 = point1;
             Point2 = point2;
         }
-
     }
 }
