@@ -31,9 +31,12 @@ namespace MultiScaleTrajectories.MultiScale.Algorithm.ImaiIri
                 output.LogObject("Number of shortcuts found on level " + level, levelShortcuts.Count);
                 //output.LogObject("shortcuts level " + level, levelShortcuts);
 
-                levelShortcuts.ForEach(s => shortcutGraph.AddShortcut(s));
+                foreach (var shortcut in levelShortcuts)
+                {
+                    shortcutGraph.AddShortcut(shortcut);
+                }
 
-                var shortestPath = shortcutGraph.GetShortestPath(shortcutGraph.FirstNode, shortcutGraph.LastNode);
+                var shortestPath = ShortestPathProvider.FindShortestPath(shortcutGraph, shortcutGraph.FirstNode, shortcutGraph.LastNode);
                 var shortestPathTrajectory = shortcutGraph.GetTrajectory(shortcutGraph.FirstNode, shortestPath);
 
                 //output.LogObject("Level Shortest Path", shortestPathTrajectory);

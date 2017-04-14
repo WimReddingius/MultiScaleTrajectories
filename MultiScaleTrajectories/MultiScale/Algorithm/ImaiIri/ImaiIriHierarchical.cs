@@ -58,7 +58,7 @@ namespace MultiScaleTrajectories.MultiScale.Algorithm.ImaiIri
                     var targetNode = shortcutGraph.GetNode(shortcut.End);
 
                     //dijkstra to get edge weight
-                    var shortestPathShortcut = shortcutGraph.GetShortestPath(sourceNode, targetNode);
+                    var shortestPathShortcut = ShortestPathProvider.FindShortestPath(shortcutGraph, sourceNode, targetNode);
 
                     //output.LogObject("Shortcut", shortcut);
                     //output.LogObject("Shortcut Shortest Path", () => shortcutGraph.GetTrajectory(sourceNode, shortestPathShortcut));
@@ -110,7 +110,7 @@ namespace MultiScaleTrajectories.MultiScale.Algorithm.ImaiIri
                     var nodePoint = oldNode.Data;
                     var newNode = shortcutGraph.GetNode(nodePoint);
 
-                    var shortestPath = shortcutGraph.GetShortestPath(prevNode, newNode);
+                    var shortestPath = ShortestPathProvider.FindShortestPath(shortcutGraph, prevNode, newNode);
                     newShortestPath.AddRange(shortestPath);
 
                     prevNode = newNode;

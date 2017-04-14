@@ -17,7 +17,7 @@ namespace MultiScaleTrajectories.MultiScale.Algorithm.ImaiIri.ShortcutProvision
             Output = output;
         }
 
-        public abstract List<Shortcut> GetShortcuts(double epsilon);
+        public abstract HashSet<Shortcut> GetShortcuts(double epsilon);
 
         public abstract void DoNotProvide(Shortcut shortcut);
 

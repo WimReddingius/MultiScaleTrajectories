@@ -28,7 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.epsilonEditor = new MSEpsilonEditor();
+            this.epsilonEditor = new EpsilonListEditor();
             this.splitContainer1 = new System.Windows.Forms.SplitContainer();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
             this.splitContainer1.Panel1.SuspendLayout();
@@ -74,7 +74,7 @@
 
         #endregion
 
-        private MSEpsilonEditor epsilonEditor;
+        private EpsilonListEditor epsilonEditor;
         private System.Windows.Forms.SplitContainer splitContainer1;
     }
 }

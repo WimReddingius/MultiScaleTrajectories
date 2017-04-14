@@ -1,7 +1,8 @@
 ﻿using System.Collections.Generic;
 using MultiScaleTrajectories.Algorithm.Geometry;
 using MultiScaleTrajectories.ImaiIri;
-using MultiScaleTrajectories.ImaiIri.EpsilonFinding;
+using MultiScaleTrajectories.ImaiIri.EpsilonFinding.Algorithm;
+using MultiScaleTrajectories.Trajectory.Single;
 
 namespace MultiScaleTrajectories.MultiScale.Algorithm.ImaiIri.ShortcutProvision
 {
@@ -20,19 +21,19 @@ namespace MultiScaleTrajectories.MultiScale.Algorithm.ImaiIri.ShortcutProvision
         {
             base.Init(input, output);
 
-            var mefInput = new EpsilonFinderInput(input.Trajectory);
+            var mefInput = new SingleTrajectoryInput(input.Trajectory);
             var mefOutput = new EpsilonFinderOutput();
             algorithm.Compute(mefInput, mefOutput);
 
-            shortcutSet = mefOutput.Shortcuts;
+            shortcutSet = mefOutput.ShortcutSet;
             Output.LogLine(mefOutput.LogString);
             Output.LogObject("Total number of shortcuts", shortcutSet.AllShortcuts.Count);
         }
 
         //O(n^2)
-        public override List<Shortcut> GetShortcuts(double epsilon)
+        public override HashSet<Shortcut> GetShortcuts(double epsilon)
         {
-            return shortcutSet.FilterByEpsilon(epsilon);
+            return shortcutSet.FilterByEpsilon(epsilon).AllShortcuts;
         }
 
         public override void DoNotProvide(Shortcut shortcut)

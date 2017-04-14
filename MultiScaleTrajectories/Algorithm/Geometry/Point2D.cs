@@ -2,7 +2,6 @@
 
 namespace MultiScaleTrajectories.Algorithm.Geometry
 {
-
     class Point2D
     {
         public double X;

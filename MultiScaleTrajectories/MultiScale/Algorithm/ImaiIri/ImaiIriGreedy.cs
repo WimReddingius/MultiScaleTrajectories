@@ -42,8 +42,10 @@ namespace MultiScaleTrajectories.MultiScale.Algorithm.ImaiIri
 
                 //output.LogObject("Shortcut Graph", shortcutGraph);
 
-                var levelShortestPath = shortcutGraph.GetShortestPath(shortcutGraph.FirstNode, shortcutGraph.LastNode);
+                var levelShortestPath = ShortestPathProvider.FindShortestPath(shortcutGraph, shortcutGraph.FirstNode, shortcutGraph.LastNode);
                 var levelShortestPathTrajectory = shortcutGraph.GetTrajectory(shortcutGraph.FirstNode, levelShortestPath);
+
+                //O(n)
                 var levelShortestPathSet = new HashSet<DataNode<Point2D>>(levelShortestPath);
 
                 //report level trajectory
@@ -56,9 +58,6 @@ namespace MultiScaleTrajectories.MultiScale.Algorithm.ImaiIri
                 for (var i = 1; i < trajectory.Count - 1; i++)
                 {
                     var node = shortcutGraph.GetNode(trajectory[i]);
-
-                    //O(n)
-                    //if (!levelShortestPath.Contains(node))
 
                     //O(1)
                     if (!levelShortestPathSet.Contains(node))

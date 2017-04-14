@@ -1,29 +1,22 @@
 ﻿using System.Collections.Generic;
-using AlgorithmVisualization.Algorithm;
 using MultiScaleTrajectories.Algorithm.Geometry;
+using MultiScaleTrajectories.Trajectory.Single;
 using Newtonsoft.Json;
 
 namespace MultiScaleTrajectories.MultiScale.Algorithm
 {
-    sealed class MSInput : Input
+    sealed class MSInput : SingleTrajectoryInput
     {
         public int NumLevels => Epsilons.Count;
-        public Trajectory2D Trajectory;
 
         [JsonProperty]
         private List<double> Epsilons;
         
 
         [JsonConstructor]
-        public MSInput(Trajectory2D Trajectory, List<double> Epsilons)
+        public MSInput(Trajectory2D Trajectory, List<double> Epsilons) : base(Trajectory)
         {
-            Load(Trajectory, Epsilons);
-        }
-
-        public MSInput(Trajectory2D trajectory)
-        {
-            Clear();
-            Trajectory = trajectory;
+            this.Epsilons = Epsilons;
         }
 
         public MSInput()
@@ -33,8 +26,8 @@ namespace MultiScaleTrajectories.MultiScale.Algorithm
 
         protected override void InitStatistics()
         {
+            base.InitStatistics();
             Statistics.Put("Levels", () => Epsilons.Count);
-            Statistics.Put("Points", () => Trajectory.Count);
         }
 
         public void AppendLevel(double epsilon)
@@ -64,13 +57,13 @@ namespace MultiScaleTrajectories.MultiScale.Algorithm
 
         public override void Clear()
         {
-            Load(new Trajectory2D(), new List<double> { 0.0 });
+            base.Clear();
+            ClearEpsilons();
         }
 
-        private void Load(Trajectory2D trajectory, List<double> epsilons)
+        private void ClearEpsilons()
         {
-            Trajectory = trajectory;
-            Epsilons = epsilons;
+            Epsilons = new List<double> { 0.0 };
         }
 
     }

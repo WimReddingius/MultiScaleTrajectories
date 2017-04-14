@@ -75,6 +75,7 @@
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
       <DependentUpon>Settings.settings</DependentUpon>
     </Compile>
+    <Compile Include="Util\SerializableDictionary.cs" />
     <Compile Include="View\Edit\InputEditorChooser.cs">
       <SubType>UserControl</SubType>
     </Compile>

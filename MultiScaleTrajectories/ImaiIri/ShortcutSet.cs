@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using AlgorithmVisualization.Util;
 using MultiScaleTrajectories.Algorithm.Geometry;
 
 namespace MultiScaleTrajectories.ImaiIri
@@ -7,14 +8,22 @@ namespace MultiScaleTrajectories.ImaiIri
     class ShortcutSet<TShortcut> where TShortcut : Shortcut
     {
         public HashSet<TShortcut> AllShortcuts;
-        public Dictionary<Point2D, Dictionary<Point2D, TShortcut>> ShortcutMap;
-        public Dictionary<Point2D, Dictionary<Point2D, TShortcut>> ReverseShortcutMap;
+        public SerializableDictionary<Point2D, SerializableDictionary<Point2D, TShortcut>> ShortcutMap;
+        public SerializableDictionary<Point2D, SerializableDictionary<Point2D, TShortcut>> ReverseShortcutMap;
 
         public ShortcutSet()
         {
             AllShortcuts = new HashSet<TShortcut>();
-            ShortcutMap = new Dictionary<Point2D, Dictionary<Point2D, TShortcut>>();
-            ReverseShortcutMap = new Dictionary<Point2D, Dictionary<Point2D, TShortcut>>();
+            ShortcutMap = new SerializableDictionary<Point2D, SerializableDictionary<Point2D, TShortcut>>();
+            ReverseShortcutMap = new SerializableDictionary<Point2D, SerializableDictionary<Point2D, TShortcut>>();
+        }
+
+        public ShortcutSet(IEnumerable<TShortcut> shortcuts) : this()
+        {
+            foreach (var shortcut in shortcuts)
+            {
+                Add(shortcut);
+            }
         }
 
         public void Add(TShortcut shortcut)
@@ -22,10 +31,10 @@ namespace MultiScaleTrajectories.ImaiIri
             AllShortcuts.Add(shortcut);
 
             if (!ShortcutMap.ContainsKey(shortcut.Start))
-                ShortcutMap.Add(shortcut.Start, new Dictionary<Point2D, TShortcut>());
+                ShortcutMap.Add(shortcut.Start, new SerializableDictionary<Point2D, TShortcut>());
 
             if (!ReverseShortcutMap.ContainsKey(shortcut.End))
-                ReverseShortcutMap.Add(shortcut.End, new Dictionary<Point2D, TShortcut>());
+                ReverseShortcutMap.Add(shortcut.End, new SerializableDictionary<Point2D, TShortcut>());
 
             ShortcutMap[shortcut.Start].Add(shortcut.End, shortcut);
             ReverseShortcutMap[shortcut.End].Add(shortcut.Start, shortcut);
@@ -64,5 +73,16 @@ namespace MultiScaleTrajectories.ImaiIri
             }
         }
 
+        public bool Contains(Point2D start, Point2D end)
+        {
+            return ShortcutMap.ContainsKey(start) && ShortcutMap[start].ContainsKey(end);
+        }
+
+        public void Clear()
+        {
+            AllShortcuts.Clear();
+            ShortcutMap.Clear();
+            ReverseShortcutMap.Clear();
+        }
     }
 }
