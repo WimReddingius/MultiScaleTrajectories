@@ -1,21 +1,23 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.Serialization;
 using AlgorithmVisualization.Util;
 using MultiScaleTrajectories.Algorithm.Geometry;
+using Newtonsoft.Json;
 
 namespace MultiScaleTrajectories.ImaiIri
 {
     class ShortcutSet<TShortcut> where TShortcut : Shortcut
     {
         public HashSet<TShortcut> AllShortcuts;
-        public SerializableDictionary<Point2D, SerializableDictionary<Point2D, TShortcut>> ShortcutMap;
-        public SerializableDictionary<Point2D, SerializableDictionary<Point2D, TShortcut>> ReverseShortcutMap;
+        [JsonIgnore] public Dictionary<Point2D, Dictionary<Point2D, TShortcut>> ShortcutMap;
+        [JsonIgnore] public Dictionary<Point2D, Dictionary<Point2D, TShortcut>> ReverseShortcutMap;
 
         public ShortcutSet()
         {
             AllShortcuts = new HashSet<TShortcut>();
-            ShortcutMap = new SerializableDictionary<Point2D, SerializableDictionary<Point2D, TShortcut>>();
-            ReverseShortcutMap = new SerializableDictionary<Point2D, SerializableDictionary<Point2D, TShortcut>>();
+            ShortcutMap = new Dictionary<Point2D, Dictionary<Point2D, TShortcut>>();
+            ReverseShortcutMap = new Dictionary<Point2D, Dictionary<Point2D, TShortcut>>();
         }
 
         public ShortcutSet(IEnumerable<TShortcut> shortcuts) : this()
@@ -83,6 +85,15 @@ namespace MultiScaleTrajectories.ImaiIri
             AllShortcuts.Clear();
             ShortcutMap.Clear();
             ReverseShortcutMap.Clear();
+        }
+
+        [OnDeserialized]
+        internal void OnDeserialized(StreamingContext context)
+        {
+            foreach (var shortcut in AllShortcuts)
+            {
+                Add(shortcut);
+            }
         }
     }
 }

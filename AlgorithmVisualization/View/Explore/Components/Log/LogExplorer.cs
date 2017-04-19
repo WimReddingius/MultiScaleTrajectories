@@ -23,6 +23,7 @@ namespace AlgorithmVisualization.View.Explore.Components.Log
 
         public override void Destroy()
         {
+            base.Destroy();
             logStream.Destroy();
         }
 

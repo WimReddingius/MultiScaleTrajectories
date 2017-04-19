@@ -10,14 +10,8 @@ namespace MultiScaleTrajectories.MultiScale.Algorithm.ImaiIri
 {
     class ImaiIriHierarchical : ImaiIriAlgorithm
     {
-        public override string AlgoName => "ImaiIri - Hierarchical";
-
-        public ImaiIriHierarchical()
-        {
-        }
-
         [JsonConstructor]
-        public ImaiIriHierarchical(ImaiIriOptions imaiIriOptions) : base(imaiIriOptions)
+        public ImaiIriHierarchical(ImaiIriOptions imaiIriOptions = null) : base("ImaiIri - Hierarchical", imaiIriOptions)
         {
         }
 

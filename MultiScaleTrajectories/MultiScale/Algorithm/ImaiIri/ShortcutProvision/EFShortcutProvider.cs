@@ -3,18 +3,21 @@ using MultiScaleTrajectories.Algorithm.Geometry;
 using MultiScaleTrajectories.ImaiIri;
 using MultiScaleTrajectories.ImaiIri.EpsilonFinding.Algorithm;
 using MultiScaleTrajectories.Trajectory.Single;
+using Newtonsoft.Json;
 
 namespace MultiScaleTrajectories.MultiScale.Algorithm.ImaiIri.ShortcutProvision
 {
-    class EFShortcutProvider<TAlgo> : ShortcutProvider where TAlgo : EpsilonFinder, new()
+    class EFShortcutProvider : ShortcutProvider
     {
         private ArbitraryShortcutSet shortcutSet;
-        private readonly TAlgo algorithm;
 
-        public EFShortcutProvider()
+        [JsonProperty]
+        private readonly EpsilonFinder algorithm;
+
+
+        public EFShortcutProvider(EpsilonFinder algorithm) : base(algorithm.Name)
         {
-            algorithm = new TAlgo();
-            Name = algorithm.Name;
+            this.algorithm = algorithm;
         }
 
         public override void Init(MSInput input, MSOutput output)
@@ -30,7 +33,6 @@ namespace MultiScaleTrajectories.MultiScale.Algorithm.ImaiIri.ShortcutProvision
             Output.LogObject("Total number of shortcuts", shortcutSet.AllShortcuts.Count);
         }
 
-        //O(n^2)
         public override HashSet<Shortcut> GetShortcuts(double epsilon)
         {
             return shortcutSet.FilterByEpsilon(epsilon).AllShortcuts;

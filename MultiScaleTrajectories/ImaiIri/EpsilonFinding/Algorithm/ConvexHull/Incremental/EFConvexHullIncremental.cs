@@ -7,7 +7,9 @@ namespace MultiScaleTrajectories.ImaiIri.EpsilonFinding.Algorithm.ConvexHull.Inc
 {
     class EFConvexHullIncremental : EpsilonFinder
     {
-        public override string AlgoName => "Convex Hulls - Incremental";
+        public EFConvexHullIncremental() : base("Convex Hulls - Incremental")
+        {
+        }
 
         public override void Compute(SingleTrajectoryInput input, EpsilonFinderOutput output)
         {

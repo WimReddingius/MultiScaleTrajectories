@@ -46,8 +46,6 @@ namespace AlgorithmVisualization.Algorithm.Run
             {
                 Output = new TOut();
                 Statistics.Clear();
-                Statistics.Put("Algorithm name", () => Algorithm.Name);
-                Statistics.Put("Input name", () => Input.Name);
             }
 
             StateChanged?.Invoke(this, state);
@@ -61,7 +59,7 @@ namespace AlgorithmVisualization.Algorithm.Run
                 WorkerReportsProgress = true
             };
 
-            algorithmWorker.DoWork += algorithmWorker_DoWork;
+            algorithmWorker.DoWork += DoWork;
 
             algorithmWorker.ProgressChanged += (o, e) =>
             {
@@ -88,7 +86,7 @@ namespace AlgorithmVisualization.Algorithm.Run
             SetState(RunState.Started);
         }
 
-        private void algorithmWorker_DoWork(object o, DoWorkEventArgs e)
+        private void DoWork(object o, DoWorkEventArgs e)
         {
             algorithmWorker.ReportProgress(0, 0);
 

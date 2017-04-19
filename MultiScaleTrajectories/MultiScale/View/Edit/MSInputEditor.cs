@@ -10,11 +10,11 @@ namespace MultiScaleTrajectories.MultiScale.View.Edit
     {
         private readonly InputEditor<SingleTrajectoryInput> trajectoryEditor;
 
-        public MSInputEditor(object editor)
+        public MSInputEditor(IInputEditor<SingleTrajectoryInput> editor)
         {
             InitializeComponent();
 
-            trajectoryEditor = InputEditor<SingleTrajectoryInput>.CreateSimple(editor);
+            trajectoryEditor = new SimpleInputEditor<SingleTrajectoryInput>(editor);
 
             splitContainer1.Panel2.Fill(trajectoryEditor);
             Name = trajectoryEditor.Name;

@@ -17,6 +17,8 @@ namespace MultiScaleTrajectories.Trajectory
         private readonly GMapOverlay routesOverlay;
         public GMapControl MapControl => gMap;
 
+        public double LonPerPixel => MapControl.ViewArea.WidthLng / Width;
+
         public TrajectoryGeo()
         {
             InitializeComponent();
@@ -34,8 +36,11 @@ namespace MultiScaleTrajectories.Trajectory
 
         public void LookAtTrajectory(Trajectory2D trajectory)
         {
-            var bb = trajectory.BuildBoundingBox();
-            gMap.SetZoomToFitRect(new RectLatLng(bb.MaxY, bb.MinX, bb.Width, bb.Height));
+            if (trajectory.Count > 0)
+            {
+                var bb = trajectory.BuildBoundingBox();
+                gMap.SetZoomToFitRect(new RectLatLng(bb.MaxY, bb.MinX, bb.Width, bb.Height));
+            }
         }
 
         public void DrawTrajectory(Trajectory2D trajectory)
@@ -69,11 +74,9 @@ namespace MultiScaleTrajectories.Trajectory
             g.TextRenderingHint = TextRenderingHint.AntiAlias;
             g.SmoothingMode = SmoothingMode.AntiAlias;
 
-            var lon1 = gMap.FromLocalToLatLng(ClientRectangle.Width / 2, ClientRectangle.Height / 2).Lng;
-            var lon2 = gMap.FromLocalToLatLng(ClientRectangle.Width / 2 + 1, ClientRectangle.Height / 2).Lng;
-            var longPer100Pixels = 100 * (lon2 - lon1);
+            var lonPer100Pixels = 100 * LonPerPixel;
             var font = new Font(FontFamily.GenericSansSerif, 12, FontStyle.Bold);
-            var str = string.Format(CultureInfo.InvariantCulture, "{0:N4}", longPer100Pixels);
+            var str = string.Format(CultureInfo.InvariantCulture, "{0:N4}", lonPer100Pixels);
 
             g.DrawString(str, font, brush, ClientRectangle.Width - 95, ClientRectangle.Height - 25);
             g.DrawLine(pen, ClientRectangle.Width - 110, ClientRectangle.Height - 5, ClientRectangle.Width - 10, ClientRectangle.Height - 5);

@@ -2,17 +2,17 @@
 using MultiScaleTrajectories.Algorithm.Geometry;
 using MultiScaleTrajectories.ImaiIri;
 using MultiScaleTrajectories.ImaiIri.ShortcutFinding.Algorithm;
+using Newtonsoft.Json;
 
 namespace MultiScaleTrajectories.MultiScale.Algorithm.ImaiIri.ShortcutProvision
 {
-    class SFShortcutProvider<TAlgo> : ShortcutProvider where TAlgo : ShortcutFinder, new()
+    class SFShortcutProvider : ShortcutProvider
     {
-        private readonly TAlgo algorithm;
+        [JsonProperty] private readonly ShortcutFinder algorithm;
 
-        public SFShortcutProvider()
+        public SFShortcutProvider(ShortcutFinder algorithm) : base(algorithm.Name)
         {
-            algorithm = new TAlgo();
-            Name = algorithm.Name;
+            this.algorithm = algorithm;
         }
 
         public override void Init(MSInput input, MSOutput output)
@@ -26,7 +26,7 @@ namespace MultiScaleTrajectories.MultiScale.Algorithm.ImaiIri.ShortcutProvision
             var input = new ShortcutFinderInput(Input.Trajectory, epsilon);
             var output = new ShortcutFinderOutput();
             algorithm.Compute(input, output);
-            Output.LogLine(output.LogString);
+            //Output.LogLine(output.LogString);
             return output.Shortcuts.AllShortcuts;
         }
 

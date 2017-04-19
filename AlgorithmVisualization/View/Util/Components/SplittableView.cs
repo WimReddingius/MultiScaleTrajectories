@@ -1,5 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Windows.Forms;
+using AlgorithmVisualization.Util;
+using AlgorithmVisualization.View.Explore;
 
 namespace AlgorithmVisualization.View.Util.Components
 {
@@ -64,24 +66,23 @@ namespace AlgorithmVisualization.View.Util.Components
                 var splitterPanel = view.Parent;
                 var splitContainer = (SplitContainer) splitterPanel.Parent;
                 splitContainer.Parent.Fill(view);
-                DisposeSplitterPanel(splitContainer.Panel1 == splitterPanel ? splitContainer.Panel2 : splitContainer.Panel1);
+                DestroySplitterPanel(splitContainer.Panel1 == splitterPanel ? splitContainer.Panel2 : splitContainer.Panel1);
             }
         }
 
-        private void DisposeSplitterPanel(SplitterPanel panel)
+        private void DestroySplitterPanel(SplitterPanel panel)
         {
             var child = panel.Controls[0];
 
             if (child is SplitContainer)
             {
                 var container = child as SplitContainer;
-                DisposeSplitterPanel(container.Panel1);
-                DisposeSplitterPanel(container.Panel2);
-                container.Dispose();
+                DestroySplitterPanel(container.Panel1);
+                DestroySplitterPanel(container.Panel2);
             }
             else 
             {
-                child.Dispose();
+                (child as IDestroyable)?.Destroy();
                 Views.Remove(child);
             }
         }

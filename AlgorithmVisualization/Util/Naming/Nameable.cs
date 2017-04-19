@@ -12,13 +12,12 @@ namespace AlgorithmVisualization.Util.Naming
         public event NameChangedEventHandler NameChanged;
 
         private string _name;
+
+        [JsonProperty]
         public string Name
         {
             get { return _name; }
-            set {
-                _name = value;
-                NameChanged?.Invoke(this, value);
-            }
+            set { _name = value; NameChanged?.Invoke(this, value); }
         }
 
         public override string ToString()

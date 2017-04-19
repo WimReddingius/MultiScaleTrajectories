@@ -6,19 +6,19 @@ namespace AlgorithmVisualization.Algorithm
 {
     public abstract class Input : Nameable
     {
-        internal bool ReadOnly;
         public StatisticMap Statistics;
 
         protected Input()
         {
             Statistics = new StatisticMap();
             Name = "Input";
-            InitStatistics();
+            RegisterStatistics();
         }
 
         //overrides may not use instance members
-        protected virtual void InitStatistics()
+        protected virtual void RegisterStatistics()
         {
+            Statistics.Put("Name", () => Name);
         }
 
         public abstract void Clear();
@@ -26,7 +26,7 @@ namespace AlgorithmVisualization.Algorithm
         [OnDeserialized]
         internal void OnDeserialized(StreamingContext context)
         {
-            InitStatistics();
+            RegisterStatistics();
         }
 
     }

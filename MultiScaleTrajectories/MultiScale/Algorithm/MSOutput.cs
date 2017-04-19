@@ -18,8 +18,9 @@ namespace MultiScaleTrajectories.MultiScale.Algorithm
             Levels = new Dictionary<int, Trajectory2D>();
         }
 
-        protected override void InitStatistics()
+        protected override void RegisterStatistics()
         {
+            base.RegisterStatistics();
             Statistics.Put("Points", () =>
             {
                 if (Levels.Count == 0)

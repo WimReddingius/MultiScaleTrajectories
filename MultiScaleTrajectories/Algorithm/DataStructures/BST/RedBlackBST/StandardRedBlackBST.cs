@@ -3,13 +3,13 @@ using System.Collections.Generic;
 
 namespace MultiScaleTrajectories.Algorithm.DataStructures.BST.RedBlackBST
 {
-    class StandardRedBlackBST<T> : RedBlackBST<T, StandardRedBlackNode<T>>
+    class StandardRedBlackBST<TEl> : RedBlackBST<TEl, StandardRedBlackNode<TEl>> where TEl : class
     {
-        public StandardRedBlackBST(Comparer<T> comparer) : base(comparer)
+        public StandardRedBlackBST(Comparer<TEl> comparer) : base(comparer)
         {
         }
 
-        public StandardRedBlackBST(Comparison<T> comparison) : base(comparison)
+        public StandardRedBlackBST(Comparison<TEl> comparison) : base(comparison)
         {
         }
     }

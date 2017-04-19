@@ -6,14 +6,8 @@ namespace MultiScaleTrajectories.MultiScale.Algorithm.ImaiIri
 {
     class ImaiIriNaive : ImaiIriAlgorithm
     {
-        public override string AlgoName => "ImaiIri - Naive";
-
-        public ImaiIriNaive()
-        {
-        }
-
         [JsonConstructor]
-        public ImaiIriNaive(ImaiIriOptions imaiIriOptions) : base(imaiIriOptions)
+        public ImaiIriNaive(ImaiIriOptions imaiIriOptions = null) : base("ImaiIri - Naive", imaiIriOptions)
         {
         }
 

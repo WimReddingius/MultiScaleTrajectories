@@ -1,14 +1,14 @@
 ﻿using System.ComponentModel;
 using System.Threading;
+using System.Windows.Forms;
 using AlgorithmVisualization.Algorithm;
 using AlgorithmVisualization.Algorithm.Run;
 using AlgorithmVisualization.Util;
 using AlgorithmVisualization.View.Util;
-using AlgorithmVisualization.View.Util.Components;
 
 namespace AlgorithmVisualization.View.Explore.Components.Log
 {
-    partial class LogStream<TIn, TOut> : DoubleBufferedUserControl where TOut : Output, new() where TIn : Input, new()
+    partial class LogStream<TIn, TOut> : UserControl where TOut : Output, new() where TIn : Input, new()
     {
         private BackgroundWorker logPollingWorker;
 

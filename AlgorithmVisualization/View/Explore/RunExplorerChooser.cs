@@ -8,11 +8,12 @@ using AlgorithmVisualization.Algorithm;
 using AlgorithmVisualization.Algorithm.Run;
 using AlgorithmVisualization.Controller;
 using AlgorithmVisualization.Controller.Explore;
+using AlgorithmVisualization.Util;
 using AlgorithmVisualization.View.Util;
 
 namespace AlgorithmVisualization.View.Explore
 {
-    partial class RunExplorerChooser<TIn, TOut> : UserControl where TIn : Input, new() where TOut : Output, new()
+    partial class RunExplorerChooser<TIn, TOut> : UserControl, IDestroyable where TIn : Input, new() where TOut : Output, new()
     {
         public readonly BindingList<RunExplorer<TIn, TOut>> RunExplorers;
 
@@ -74,8 +75,8 @@ namespace AlgorithmVisualization.View.Explore
             this.activeSelection = activeSelection;
 
             //bring options to front
-            tableLayoutPanel1.BringToFront();
-            tableLayoutPanel1.Visible = false;
+            optionsContainer.BringToFront();
+            optionsContainer.Visible = false;
 
             //set to auto selection by default
             autoChooseRunsCheckBox.CheckState = CheckState.Checked;;
@@ -235,19 +236,18 @@ namespace AlgorithmVisualization.View.Explore
 
         private void HandleMouseMove(object sender, MouseEventArgs mouseEventArgs)
         {
-            var mouseInside = Bounds.Contains(PointToClient(MousePosition));
-            tableLayoutPanel1.Visible = mouseInside;
+            var bounds = new Rectangle(Bounds.X, Bounds.Y, Bounds.Width, 30);
+            var mouseInside = bounds.Contains(PointToClient(MousePosition));
+            optionsContainer.Visible = mouseInside;
         }
 
-        public new void Dispose()
+        public void Destroy()
         {
             Application.RemoveMessageFilter(mouseMessageFilter);
-            RunExplorer?.Dispose();
+            RunExplorer?.Destroy();
 
             AutoSelect = false;
             UsingActiveSelection = false;
-
-            base.Dispose();
         }
 
     }

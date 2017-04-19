@@ -59,13 +59,13 @@
             this.gMap.TabIndex = 0;
             this.gMap.Zoom = 0D;
             // 
-            // TrajectoryGMap
+            // TrajectoryGeo
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.Controls.Add(this.gMap);
             this.Margin = new System.Windows.Forms.Padding(2);
-            this.Name = "TrajectoryGMap";
+            this.Name = "TrajectoryGeo";
             this.Size = new System.Drawing.Size(125, 119);
             this.ResumeLayout(false);
 

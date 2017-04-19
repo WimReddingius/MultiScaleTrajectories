@@ -5,5 +5,8 @@ namespace MultiScaleTrajectories.ImaiIri.EpsilonFinding.Algorithm
 {
     abstract class EpsilonFinder : Algorithm<SingleTrajectoryInput, EpsilonFinderOutput>
     {
+        protected EpsilonFinder(string name) : base(name)
+        {
+        }
     }
 }

@@ -54,6 +54,10 @@
     <ApplicationIcon>Icon.ico</ApplicationIcon>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="AlgoKit, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\AlgoKit.0.0.47\lib\AlgoKit.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="GMap.NET.Core, Version=1.7.5.0, Culture=neutral, PublicKeyToken=b85b9027b614afef, processorArchitecture=MSIL">
       <HintPath>..\packages\GMap.NET.WindowsForms.1.7.5\lib\net40\GMap.NET.Core.dll</HintPath>
       <Private>True</Private>
@@ -93,16 +97,16 @@
     <Compile Include="Algorithm\DataStructures\BST\IBinarySearchTree.cs" />
     <Compile Include="Algorithm\DataStructures\BST\RedBlackBST\StandardRedBlackBST.cs" />
     <Compile Include="Algorithm\DataStructures\BST\RedBlackBST\StandardRedBlackNode.cs" />
-    <Compile Include="ImaiIri\EpsilonFinding\View\Grid\EFGridExplorer.cs">
+    <Compile Include="ImaiIri\EpsilonFinding\Controller\EFGridExplorer.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="ImaiIri\ShortcutFinding\View\Edit\SFInputEditor.cs">
+    <Compile Include="ImaiIri\ShortcutFinding\View\SFInputEditor.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="ImaiIri\ShortcutFinding\View\Edit\SFInputEditor.Designer.cs">
+    <Compile Include="ImaiIri\ShortcutFinding\View\SFInputEditor.Designer.cs">
       <DependentUpon>SFInputEditor.cs</DependentUpon>
     </Compile>
-    <Compile Include="ImaiIri\ShortcutFinding\View\Explore\Grid\SFGridExplorer.cs">
+    <Compile Include="ImaiIri\ShortcutFinding\Controller\SFGridExplorer.cs">
       <SubType>UserControl</SubType>
     </Compile>
     <Compile Include="ImaiIri\View\ColorableGrid.cs">
@@ -111,14 +115,27 @@
     <Compile Include="ImaiIri\View\ColorableGrid.Designer.cs">
       <DependentUpon>ColorableGrid.cs</DependentUpon>
     </Compile>
-    <Compile Include="MultiScale\Algorithm\ImaiIri\ShortestPathProvision\ShortcutShortestPathConcrete.cs" />
-    <Compile Include="PathFinding\SingleSource\Algorithm\Concrete\DijkstraFibonacciHeap.cs" />
-    <Compile Include="PathFinding\SingleSource\Algorithm\Concrete\DijkstraSimple.cs" />
+    <Compile Include="MultiScale\Algorithm\ImaiIri\ShortestPathProvision\ShortcutShortestPathSimple.cs" />
+    <Compile Include="MultiScale\View\Explore\LevelTrajectoryGeoAuto.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="MultiScale\View\Explore\LevelTrajectoryGeoAuto.Designer.cs">
+      <DependentUpon>LevelTrajectoryGeoAuto.cs</DependentUpon>
+    </Compile>
+    <Compile Include="MultiScale\Controller\Explore\LevelTrajectoryGeoAutoExplorer.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="PathFinding\SingleSource\Algorithm\Dijkstra\DijkstraBinomialHeap.cs" />
+    <Compile Include="PathFinding\SingleSource\Algorithm\Dijkstra\DijkstraDAryHeap.cs" />
+    <Compile Include="PathFinding\SingleSource\Algorithm\Dijkstra\DijkstraFibonacciHeap.cs" />
+    <Compile Include="PathFinding\SingleSource\Algorithm\Dijkstra\DijkstraHeap.cs" />
+    <Compile Include="PathFinding\SingleSource\Algorithm\Dijkstra\DijkstraHeapless.cs" />
+    <Compile Include="PathFinding\SingleSource\Algorithm\Dijkstra\DijkstraPairingHeap.cs" />
     <Compile Include="PathFinding\SingleSource\Algorithm\SingleSourceShortestPath.cs" />
     <Compile Include="PathFinding\SingleSource\Algorithm\SSSPInput.cs" />
     <Compile Include="PathFinding\SingleSource\Algorithm\SSSPOutput.cs" />
-    <Compile Include="Algorithm\DataStructures\MinPriorityQueue\FibonacciHeap.cs" />
-    <Compile Include="Algorithm\DataStructures\MinPriorityQueue\FibonacciHeapNode.cs" />
+    <Compile Include="Algorithm\DataStructures\Heap\FibonacciHeap.cs" />
+    <Compile Include="Algorithm\DataStructures\Heap\FibonacciHeapNode.cs" />
     <Compile Include="Algorithm\Geometry\BoundingBox2D.cs" />
     <Compile Include="Algorithm\Geometry\Geometry2D.cs" />
     <Compile Include="Algorithm\Geometry\Line2D.cs" />
@@ -138,8 +155,8 @@
     <Compile Include="ImaiIri\ShortcutFinding\Algorithm\ShortcutFinderOutput.cs" />
     <Compile Include="ImaiIri\ShortcutFinding\Algorithm\EpsilonFinderWrapper.cs" />
     <Compile Include="ImaiIri\EpsilonFinding\Algorithm\ArbitraryShortcutSet.cs" />
-    <Compile Include="ImaiIri\EpsilonFinding\EpsilonFindingController.cs" />
-    <Compile Include="ImaiIri\ShortcutFinding\ShortcutFindingController.cs" />
+    <Compile Include="ImaiIri\EpsilonFinding\Controller\EpsilonFindingController.cs" />
+    <Compile Include="ImaiIri\ShortcutFinding\Controller\ShortcutFindingController.cs" />
     <Compile Include="MultiScale\Algorithm\ImaiIri\ShortcutProvision\EFShortcutProvider.cs" />
     <Compile Include="ImaiIri\EpsilonFinding\Algorithm\ArbitraryShortcut.cs" />
     <Compile Include="ImaiIri\Shortcut.cs" />
@@ -164,7 +181,7 @@
     <Compile Include="MultiScale\View\Edit\MSInputEditor.Designer.cs">
       <DependentUpon>MSInputEditor.cs</DependentUpon>
     </Compile>
-    <Compile Include="PathFinding\SingleSource\SingleSourceShortestPathController.cs" />
+    <Compile Include="PathFinding\SingleSource\SSSPController.cs" />
     <Compile Include="Trajectory\MoveBankTrajectoryChooser.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -177,16 +194,16 @@
     <Compile Include="Trajectory\Single\SingleTrajectoryEditorGeo.Designer.cs">
       <DependentUpon>SingleTrajectoryEditorGeo.cs</DependentUpon>
     </Compile>
-    <Compile Include="MultiScale\View\Explore\Geo\LevelTrajectoryGeoExplorer.cs">
+    <Compile Include="MultiScale\Controller\Explore\LevelTrajectoryGeoExplorer.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="MultiScale\View\Explore\Geo\LevelTrajectoryGeo.cs">
+    <Compile Include="MultiScale\View\Explore\LevelTrajectoryGeo.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="MultiScale\View\Explore\Geo\LevelTrajectoryGeo.Designer.cs">
+    <Compile Include="MultiScale\View\Explore\LevelTrajectoryGeo.Designer.cs">
       <DependentUpon>LevelTrajectoryGeo.cs</DependentUpon>
     </Compile>
-    <Compile Include="MultiScale\View\Explore\Canvas\LevelTrajectoryCanvasExplorer.cs">
+    <Compile Include="MultiScale\Controller\Explore\LevelTrajectoryCanvasExplorer.cs">
       <SubType>UserControl</SubType>
     </Compile>
     <Compile Include="Trajectory\MoveBank.cs" />
@@ -202,7 +219,7 @@
     <Compile Include="Algorithm\DataStructures\Graph\Graph.cs" />
     <Compile Include="Algorithm\DataStructures\Graph\Node.cs" />
     <Compile Include="Algorithm\DataStructures\Graph\WeightedEdge.cs" />
-    <Compile Include="MultiScale\MSController.cs" />
+    <Compile Include="MultiScale\Controller\MSController.cs" />
     <Compile Include="MultiScale\View\Edit\EpsilonListEditor.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -212,7 +229,7 @@
     <Compile Include="Trajectory\Single\SingleTrajectoryEditorCanvas.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="MultiScale\View\Explore\Canvas\LevelTrajectoryCanvas.cs">
+    <Compile Include="MultiScale\View\Explore\LevelTrajectoryCanvas.cs">
       <SubType>UserControl</SubType>
     </Compile>
     <Compile Include="Trajectory\Single\SingleTrajectoryAlgorithmController.cs" />
@@ -226,11 +243,14 @@
     <Compile Include="Trajectory\TrajectoryGeo.Designer.cs">
       <DependentUpon>TrajectoryGeo.cs</DependentUpon>
     </Compile>
-    <EmbeddedResource Include="ImaiIri\ShortcutFinding\View\Edit\SFInputEditor.resx">
+    <EmbeddedResource Include="ImaiIri\ShortcutFinding\View\SFInputEditor.resx">
       <DependentUpon>SFInputEditor.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="ImaiIri\View\ColorableGrid.resx">
       <DependentUpon>ColorableGrid.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="MultiScale\View\Explore\LevelTrajectoryGeoAuto.resx">
+      <DependentUpon>LevelTrajectoryGeoAuto.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
@@ -254,7 +274,7 @@
     <EmbeddedResource Include="Trajectory\Single\SingleTrajectoryEditorGeo.resx">
       <DependentUpon>SingleTrajectoryEditorGeo.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="MultiScale\View\Explore\Geo\LevelTrajectoryGeo.resx">
+    <EmbeddedResource Include="MultiScale\View\Explore\LevelTrajectoryGeo.resx">
       <DependentUpon>LevelTrajectoryGeo.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Trajectory\TrajectoryGeo.resx">

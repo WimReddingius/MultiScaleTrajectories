@@ -13,13 +13,9 @@ using Newtonsoft.Json;
 namespace AlgorithmVisualization.Controller
 {
     [JsonObject(MemberSerialization.OptIn)]
-    public abstract class AlgorithmController<TIn, TOut> : IAlgorithmController where TOut : Output, new() where TIn : Input, new()
+    public abstract class AlgorithmController<TIn, TOut> : AlgorithmControllerBase where TOut : Output, new() where TIn : Input, new()
     {
-        public abstract string Name { get; }
         public bool CanImport;
-
-        private AlgorithmView algorithmView;
-        public AlgorithmView AlgorithmView => algorithmView ?? (algorithmView = new AlgorithmViewConcrete<TIn, TOut>(this));
 
         [JsonProperty] internal readonly NamingList<AlgorithmRun<TIn, TOut>> Runs;
         [JsonProperty] internal readonly NamingList<Algorithm<TIn, TOut>> Algorithms;
@@ -29,15 +25,16 @@ namespace AlgorithmVisualization.Controller
         public BindingList<INameableFactory<Algorithm<TIn, TOut>>> AlgorithmFactories;
         public BindingList<INameableFactory<RunExplorer<TIn, TOut>>> RunExplorerFactories;
         
-        
-        protected AlgorithmController()
+        protected AlgorithmController(string Name)
         {
-            InputEditors = new BindingList<InputEditor<TIn>>();
+            this.Name = Name;
 
+            InputEditors = new BindingList<InputEditor<TIn>>();
             AlgorithmFactories = new BindingList<INameableFactory<Algorithm<TIn, TOut>>>();
             RunExplorerFactories = new BindingList<INameableFactory<RunExplorer<TIn, TOut>>>();
-            AddSimpleRunExplorerType(typeof(Statistics<TIn, TOut>));
-            AddRunExplorerType(typeof(LogExplorer<TIn, TOut>));
+
+            AddRunExplorer(() => new SimpleRunExplorer<TIn, TOut>(new StatOverview<TIn, TOut>()));
+            AddRunExplorer(() => new LogExplorer<TIn, TOut>());
             
             Runs = new NamingList<AlgorithmRun<TIn, TOut>>();
             Algorithms = new NamingList<Algorithm<TIn, TOut>>();
@@ -46,31 +43,29 @@ namespace AlgorithmVisualization.Controller
             CanImport = false;
         }
 
-        protected void AddSimpleInputEditor(object inputEditor)
+        protected void AddSimpleInputEditor(IInputEditor<TIn> inputEditor)
         {
-            InputEditors.Add(InputEditor<TIn>.CreateSimple(inputEditor));
+            InputEditors.Add(new SimpleInputEditor<TIn>(inputEditor));
         }
 
-        protected void AddSimpleRunExplorerType(Type type)
+        protected void AddRunExplorer<T>(Func<T> func) where T : RunExplorer<TIn, TOut>
         {
-            RunExplorerFactories.Add(RunExplorer<TIn, TOut>.CreateFactorySimple(type));
+            RunExplorerFactories.Add(new NameableFactory<T>(func, func().Name));
         }
 
-        protected void AddRunExplorerType(Type type)
+        protected void AddAlgorithm<T>(Func<T> func) where T : Algorithm<TIn, TOut>
         {
-            RunExplorerFactories.Add(NameableFactory<RunExplorer<TIn, TOut>>.Create(type));
-        }
-
-        protected void AddAlgorithmType(Type type)
-        {
-            var factory = NameableFactory<Algorithm<TIn, TOut>>.Create(type);
-            factory.Name = ((Algorithm<TIn, TOut>) Activator.CreateInstance(type)).AlgoName;
-            AlgorithmFactories.Add(factory);
+            AlgorithmFactories.Add(new NameableFactory<T>(func, func().Name));
         }
 
         public virtual TIn ImportInput(string fileName, out bool customName)
         {
             throw new InvalidOperationException();
+        }
+
+        protected internal override AlgorithmViewBase CreateView()
+        {
+            return new AlgorithmView<TIn, TOut>(this);
         }
 
     }

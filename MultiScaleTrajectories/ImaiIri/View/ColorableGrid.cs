@@ -1,81 +1,69 @@
 ﻿using System;
 using System.Drawing;
+using System.Drawing.Drawing2D;
 using System.Windows.Forms;
-using AlgorithmVisualization.View.Util.Components;
 
 namespace MultiScaleTrajectories.ImaiIri.View
 {
-    public partial class ColorableGrid : DoubleBufferedUserControl
+    public partial class ColorableGrid : UserControl
     {
         private Color[,] colors;
+        private Bitmap grid;
 
-        public ColorableGrid(int numRows = 1, int numColumns = 1)
+        private int numRows;
+        private int numColumns;
+
+        public ColorableGrid(int numRows = 0, int numColumns = 0)
         {
             InitializeComponent();
             SetDimensions(numRows, numColumns);
-
-            Resize += (o, e) => RecalculateCellDimensions();
+            Resize += (o, e) => ScaleGridImage();
         }
 
-        private void RecalculateCellDimensions()
+        public void DrawGrid()
         {
-            var cellWidth = (double) Width / grid.ColumnCount;
-            var cellWidthPixels = (int) Math.Floor(cellWidth);
-            var widthRemainder = Width % grid.ColumnCount;
-            for (var i = 0; i < grid.ColumnCount - 1; i++)
+            if (numRows == 0 || numColumns == 0)
+                return;
+
+            var bmp = new Bitmap(numColumns, numRows);
+            for (var i = 0; i < numColumns; i++)
             {
-                var columnStyle = grid.ColumnStyles[i];
-                if (i + 1 <= widthRemainder)
-                    columnStyle.Width = cellWidthPixels + 1;
-                else
-                    columnStyle.Width = cellWidthPixels;
+                for (var j = 0; j < numRows; j++)
+                {
+                    bmp.SetPixel(j, i, colors[i, j]);
+                }
             }
 
-            var cellHeight = (double)Height / grid.RowCount;
-            var cellHeightPixels = (int)Math.Floor(cellHeight);
-            var heightRemainder = Height % grid.RowCount;
-            for (var i = 0; i < grid.RowCount - 1; i++)
+            grid = bmp;
+            ScaleGridImage();
+        }
+
+        private void ScaleGridImage()
+        {
+            if (grid == null)
+                return;
+
+            var scaledImage = new Bitmap(Width, Height);
+            using (var g = Graphics.FromImage(scaledImage))
             {
-                var rowStyle = grid.RowStyles[i];
-                if (i + 1 <= heightRemainder)
-                    rowStyle.Height = cellHeightPixels + 1;
-                else
-                    rowStyle.Height = cellHeightPixels;
+                g.InterpolationMode = InterpolationMode.NearestNeighbor;
+                g.DrawImage(grid, 0, 0, Width, Height);
             }
+
+            BackgroundImage = scaledImage;
         }
 
         public void SetDimensions(int numRows, int numColumns)
         {
-            grid.RowCount = numRows;
-            grid.ColumnCount = numColumns;
-
-            grid.RowStyles.Clear();
-            for (var row = 0; row < grid.RowCount; row++)
-            {
-                grid.RowStyles.Add(new RowStyle(SizeType.Absolute));
-            }
-
-            grid.ColumnStyles.Clear();
-            for (var row = 0; row < grid.RowCount; row++)
-            {
-                grid.ColumnStyles.Add(new ColumnStyle(SizeType.Absolute));
-            }
-
-            RecalculateCellDimensions();
-            colors = new Color[grid.RowCount, grid.ColumnCount];
+            this.numRows = numRows;
+            this.numColumns = numColumns;
+            colors = new Color[numColumns, numRows];
         }
 
         public void ColorCell(int row, int column, Color color)
         {
-            colors[row, column] = color;
+            colors[column, row] = color;
         }
 
-        private void grid_CellPaint(object sender, TableLayoutCellPaintEventArgs e)
-        {
-            e.Graphics.FillRectangle(new SolidBrush(colors[e.Row, e.Column]), e.CellBounds);
-
-            var pen = new Pen(new SolidBrush(Color.Black));
-            e.Graphics.DrawRectangle(pen, e.CellBounds);
-        }
     }
 }

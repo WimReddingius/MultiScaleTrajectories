@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
 
@@ -7,49 +8,60 @@ namespace AlgorithmVisualization.Controller
 {
     static class AlgorithmControllerConverter
     {
-        private static Dictionary<Type, IAlgorithmController> controllerMap;
+        private const string DEFAULT_LIST_FILENAME = "default_config.json";
 
-        public static IAlgorithmController GetController(Type controllerType)
+        private static readonly JsonSerializerSettings SERIALIZATION_SETTINGS = new JsonSerializerSettings
         {
-            if (!controllerMap.ContainsKey(controllerType))
+            Formatting = Formatting.Indented,
+            TypeNameHandling = TypeNameHandling.Auto,
+            PreserveReferencesHandling = PreserveReferencesHandling.All,
+            SerializationBinder = new TypeNameSerializationBinder()
+        };
+
+        public static void SaveToFile(AlgorithmControllerBase controller, string fileName)
+        {
+            if (string.IsNullOrEmpty(fileName))
             {
-                controllerMap[controllerType] = (IAlgorithmController) Activator.CreateInstance(controllerType);
+                return;
             }
 
-            return controllerMap[controllerType];
+            var str = JsonConvert.SerializeObject(controller, typeof(AlgorithmControllerBase), SERIALIZATION_SETTINGS);
+            File.WriteAllText(fileName, str);
         }
 
-        public static void Init()
+        public static AlgorithmControllerBase LoadFromFile(string fileName)
         {
-            var settingsStr = Properties.Settings.Default.AlgorithmControllers;
+            var fileStr = File.Exists(fileName) ? File.ReadAllText(fileName) : null;
 
-            //if (true)
+            if (string.IsNullOrEmpty(fileStr))
+            {
+                return null;
+            }
+
+            return JsonConvert.DeserializeObject<AlgorithmControllerBase>(fileStr, SERIALIZATION_SETTINGS);
+        }
+
+        public static IList<AlgorithmControllerBase> LoadDefaultList()
+        {
+            //string settingsStr = null;
+            //var settingsStr = Properties.Settings.Default.AlgorithmControllers;
+            var settingsStr = File.Exists(DEFAULT_LIST_FILENAME) ? File.ReadAllText(DEFAULT_LIST_FILENAME) : null;
+
             if (string.IsNullOrEmpty(settingsStr))
             {
-                controllerMap = new Dictionary<Type, IAlgorithmController>();
+                return null;
             }
-            else
-            {
-                controllerMap = JsonConvert.DeserializeObject<Dictionary<Type, IAlgorithmController>>(settingsStr, new JsonSerializerSettings
-                {
-                    TypeNameHandling = TypeNameHandling.Auto,
-                    PreserveReferencesHandling = PreserveReferencesHandling.All,
-                    SerializationBinder = new TypeNameSerializationBinder()
-                });
-            }
+
+            return JsonConvert.DeserializeObject<IList<AlgorithmControllerBase>>(settingsStr, SERIALIZATION_SETTINGS);
         }
 
-        public static void Save()
+        public static void SaveAsDefaultList(IList<AlgorithmControllerBase> controllers)
         {
-            var str = JsonConvert.SerializeObject(controllerMap, typeof(Dictionary<Type, IAlgorithmController>), new JsonSerializerSettings
-            {
-                TypeNameHandling = TypeNameHandling.Auto,
-                PreserveReferencesHandling = PreserveReferencesHandling.All,
-                SerializationBinder = new TypeNameSerializationBinder()
-            });
+            var str = JsonConvert.SerializeObject(controllers, typeof(IList<AlgorithmControllerBase>), SERIALIZATION_SETTINGS);
 
-            Properties.Settings.Default.AlgorithmControllers = str;
-            Properties.Settings.Default.Save();
+            //Properties.Settings.Default.AlgorithmControllers = str;
+            //Properties.Settings.Default.Save();
+            File.WriteAllText(DEFAULT_LIST_FILENAME, str);
         }
 
         private class TypeNameSerializationBinder : ISerializationBinder

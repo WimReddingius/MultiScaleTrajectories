@@ -36,13 +36,13 @@
             this.verticalSplitContextMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.horizontalSplitContextMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.unsplitContextMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
+            this.optionsContainer = new System.Windows.Forms.TableLayoutPanel();
             this.splitButton = new System.Windows.Forms.Button();
             this.autoChooseRunsCheckBox = new System.Windows.Forms.CheckBox();
             this.chooseRunSelectionCheckBox = new System.Windows.Forms.CheckBox();
             this.visualizationContainer.SuspendLayout();
             this.splitContextMenu.SuspendLayout();
-            this.tableLayoutPanel1.SuspendLayout();
+            this.optionsContainer.SuspendLayout();
             this.SuspendLayout();
             // 
             // runExplorerComboBox
@@ -104,24 +104,24 @@
             this.unsplitContextMenuItem.Size = new System.Drawing.Size(138, 22);
             this.unsplitContextMenuItem.Text = "Unsplit";
             // 
-            // tableLayoutPanel1
+            // optionsContainer
             // 
-            this.tableLayoutPanel1.ColumnCount = 4;
-            this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 40F));
-            this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 20F));
-            this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 20F));
-            this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 20F));
-            this.tableLayoutPanel1.Controls.Add(this.runExplorerComboBox, 0, 0);
-            this.tableLayoutPanel1.Controls.Add(this.splitButton, 3, 0);
-            this.tableLayoutPanel1.Controls.Add(this.autoChooseRunsCheckBox, 2, 0);
-            this.tableLayoutPanel1.Controls.Add(this.chooseRunSelectionCheckBox, 1, 0);
-            this.tableLayoutPanel1.Dock = System.Windows.Forms.DockStyle.Top;
-            this.tableLayoutPanel1.Location = new System.Drawing.Point(0, 0);
-            this.tableLayoutPanel1.Name = "tableLayoutPanel1";
-            this.tableLayoutPanel1.RowCount = 1;
-            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tableLayoutPanel1.Size = new System.Drawing.Size(443, 29);
-            this.tableLayoutPanel1.TabIndex = 3;
+            this.optionsContainer.ColumnCount = 4;
+            this.optionsContainer.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 40F));
+            this.optionsContainer.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 20F));
+            this.optionsContainer.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 20F));
+            this.optionsContainer.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 20F));
+            this.optionsContainer.Controls.Add(this.runExplorerComboBox, 0, 0);
+            this.optionsContainer.Controls.Add(this.splitButton, 3, 0);
+            this.optionsContainer.Controls.Add(this.autoChooseRunsCheckBox, 2, 0);
+            this.optionsContainer.Controls.Add(this.chooseRunSelectionCheckBox, 1, 0);
+            this.optionsContainer.Dock = System.Windows.Forms.DockStyle.Top;
+            this.optionsContainer.Location = new System.Drawing.Point(0, 0);
+            this.optionsContainer.Name = "optionsContainer";
+            this.optionsContainer.RowCount = 1;
+            this.optionsContainer.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
+            this.optionsContainer.Size = new System.Drawing.Size(443, 29);
+            this.optionsContainer.TabIndex = 3;
             // 
             // splitButton
             // 
@@ -166,15 +166,15 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.Controls.Add(this.tableLayoutPanel1);
+            this.Controls.Add(this.optionsContainer);
             this.Controls.Add(this.visualizationContainer);
             this.Margin = new System.Windows.Forms.Padding(2);
             this.Name = "RunExplorerChooser";
             this.Size = new System.Drawing.Size(443, 424);
             this.visualizationContainer.ResumeLayout(false);
             this.splitContextMenu.ResumeLayout(false);
-            this.tableLayoutPanel1.ResumeLayout(false);
-            this.tableLayoutPanel1.PerformLayout();
+            this.optionsContainer.ResumeLayout(false);
+            this.optionsContainer.PerformLayout();
             this.ResumeLayout(false);
 
         }
@@ -188,7 +188,7 @@
         public System.Windows.Forms.ToolStripMenuItem verticalSplitContextMenuItem;
         public System.Windows.Forms.ToolStripMenuItem horizontalSplitContextMenuItem;
         public System.Windows.Forms.ToolStripMenuItem unsplitContextMenuItem;
-        private System.Windows.Forms.TableLayoutPanel tableLayoutPanel1;
+        private System.Windows.Forms.TableLayoutPanel optionsContainer;
         public System.Windows.Forms.Button splitButton;
         private System.Windows.Forms.CheckBox chooseRunSelectionCheckBox;
         private System.Windows.Forms.CheckBox autoChooseRunsCheckBox;

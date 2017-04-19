@@ -6,7 +6,9 @@ namespace MultiScaleTrajectories.ImaiIri.EpsilonFinding.Algorithm.BruteForce
 {
     class EFBruteForce : EpsilonFinder
     {
-        public override string AlgoName => "Brute Force";
+        public EFBruteForce() : base("Brute Force")
+        {
+        }
 
         public override void Compute(SingleTrajectoryInput input, EpsilonFinderOutput output)
         {

@@ -5,7 +5,9 @@ namespace MultiScaleTrajectories.ImaiIri.ShortcutFinding.Algorithm.ChinChan
 {
     class SFChinChan : ShortcutFinder
     {
-        public override string AlgoName => "Chin-Chan";
+        public SFChinChan() : base("Chin-Chan")
+        {
+        }
 
         public override void Compute(ShortcutFinderInput input, ShortcutFinderOutput output)
         {

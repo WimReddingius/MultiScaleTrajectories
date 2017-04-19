@@ -96,28 +96,9 @@ namespace AlgorithmVisualization.Controller.Explore
             return MinConsolidation <= numRuns && numRuns <= MaxConsolidation;
         }
 
-        public new void Dispose()
-        {
-            ClearStateChangedHandlers();
-            Destroy();
-            base.Dispose();
-        }
-
         public virtual void Destroy()
         {
-        }
-
-        //type has to inherit from Control and IRunExplorer
-        public static INameableFactory<RunExplorer<TIn, TOut>> CreateFactorySimple(Type type)
-        {
-            var iRunExplorerType = typeof(IRunExplorer<TIn, TOut>);
-            var iControlType = typeof(Control);
-            if (!iControlType.IsAssignableFrom(type) || !iRunExplorerType.IsAssignableFrom(type))
-                throw new ArgumentOutOfRangeException(nameof(type),
-                    "Type provided does not inherit from both Control and IRunExplorer");
-
-            var genericTypeWrapper = typeof(RunExplorerWrapper<,,>).MakeGenericType(typeof(TIn), typeof(TOut), type);
-            return NameableFactory<RunExplorer<TIn, TOut>>.Create(genericTypeWrapper);
+            ClearStateChangedHandlers();
         }
 
     }

@@ -24,9 +24,9 @@ namespace MultiScaleTrajectories.MultiScale.Algorithm
             Clear();
         }
 
-        protected override void InitStatistics()
+        protected override void RegisterStatistics()
         {
-            base.InitStatistics();
+            base.RegisterStatistics();
             Statistics.Put("Levels", () => Epsilons.Count);
         }
 

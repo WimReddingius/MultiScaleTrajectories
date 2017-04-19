@@ -26,16 +26,14 @@ namespace MultiScaleTrajectories.ImaiIri.ShortcutFinding.Algorithm.ChinChan
 
         public bool Contains(Point2D point)
         {
-            var A = new Vector2d(Math.Cos(StartAngle), Math.Sin(StartAngle));
-            var B = new Vector2d(Math.Cos(EndAngle), Math.Sin(EndAngle));
-            var C = Vector2d.Subtract(point.AsVector(), Origin.AsVector()).Normalized();
+            var A = Vector2d.Add(Origin.AsVector(), new Vector2d(Math.Cos(StartAngle), Math.Sin(StartAngle)));
+            var B = Vector2d.Add(Origin.AsVector(), new Vector2d(Math.Cos(EndAngle), Math.Sin(EndAngle)));
 
-            //translation to origin not strictly necessary
-            var AC = Geometry2D.Orient2D(new Vector2d(0, 0), A, C);
-            var BC = Geometry2D.Orient2D(new Vector2d(0, 0), B, C);
+            var AC = Geometry2D.Orient2D(Origin.AsVector(), A, point.AsVector());
+            var BC = Geometry2D.Orient2D(Origin.AsVector(), B, point.AsVector());
 
             //either orientation is opposite or on the line AB
-            return (AC == 1 && BC == -1) || AC == 0 || BC == 0;
+            return AC == 1 && BC == -1 || AC == 0 || BC == 0;
         }
 
         public Wedge Clone()

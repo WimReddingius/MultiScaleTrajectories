@@ -2,7 +2,8 @@
 
 namespace MultiScaleTrajectories.Algorithm.DataStructures.BST
 {
-    interface IBinarySearchTree<TEl>
+    //BST using reference types
+    interface IBinarySearchTree<TEl> where TEl : class
     {
         TEl Min { get; }
         TEl Max { get; }

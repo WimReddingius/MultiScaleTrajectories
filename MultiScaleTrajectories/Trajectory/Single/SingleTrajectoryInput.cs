@@ -19,8 +19,7 @@ namespace MultiScaleTrajectories.Trajectory.Single
             this.Trajectory = Trajectory;
         }
 
-
-        protected override void InitStatistics()
+        protected override void RegisterStatistics()
         {
             Statistics.Put("Points", () => Trajectory.Count);
         }

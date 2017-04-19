@@ -1,6 +1,4 @@
-﻿using System;
-using AlgorithmVisualization.Algorithm;
-using AlgorithmVisualization.Util.Naming;
+﻿using AlgorithmVisualization.Algorithm;
 using MultiScaleTrajectories.MultiScale.Algorithm.ImaiIri.ShortcutProvision;
 using MultiScaleTrajectories.MultiScale.Algorithm.ImaiIri.ShortestPathProvision;
 using MultiScaleTrajectories.MultiScale.View.Algorithm;
@@ -15,18 +13,17 @@ namespace MultiScaleTrajectories.MultiScale.Algorithm.ImaiIri
         [JsonIgnore] protected ShortcutShortestPath ShortestPathProvider => imaiIriOptions.ChosenShortestPathProvider;
 
 
-        protected ImaiIriAlgorithm(ImaiIriOptions imaiIriOptions)
+        protected ImaiIriAlgorithm(string name, ImaiIriOptions options) : base(name)
         {
-            this.imaiIriOptions = imaiIriOptions;
+            imaiIriOptions = options ?? new ImaiIriOptions();
             OptionsControl = imaiIriOptions;
-
-            //Action providerChanged = () => Name = AlgoName + " - " + ShortcutProvider.Name;
-            //imaiIriOptions.ShortcutProviderChanged += providerChanged;
-            //providerChanged();
         }
 
-        protected ImaiIriAlgorithm() : this(new ImaiIriOptions())
+        protected override void RegisterStatistics()
         {
+            base.RegisterStatistics();
+            Statistics.Put("Shortcut Provider", () => ShortcutProvider.Name);
+            Statistics.Put("Shortest Path Provider", () => ShortestPathProvider.Name);
         }
 
     }

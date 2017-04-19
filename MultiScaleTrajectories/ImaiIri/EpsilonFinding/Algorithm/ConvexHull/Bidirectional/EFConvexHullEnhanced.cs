@@ -7,9 +7,11 @@ namespace MultiScaleTrajectories.ImaiIri.EpsilonFinding.Algorithm.ConvexHull.Bid
 {
     class EFConvexHullEnhanced : EpsilonFinder
     {
-        public override string AlgoName => "Convex Hulls - Bidirectional";
-
         private EpsilonFinderOutput output;
+
+        public EFConvexHullEnhanced() : base("Convex Hulls - Bidirectional")
+        {
+        }        
 
         public override void Compute(SingleTrajectoryInput input, EpsilonFinderOutput output)
         {
@@ -36,7 +38,7 @@ namespace MultiScaleTrajectories.ImaiIri.EpsilonFinding.Algorithm.ConvexHull.Bid
             var trajectory = input.Trajectory;
             var shortcuts = new ShortcutSet<ArbitraryShortcut>();
 
-            output.LogLine("Starting calculations of shortcuts, forward: " + (forward ? "yes" : "no"));
+            output.LogLine("Starting calculations of shortcuts, " + (forward ? "forward" : "backwards"));
 
             Func<int, int> step;
             int startI;

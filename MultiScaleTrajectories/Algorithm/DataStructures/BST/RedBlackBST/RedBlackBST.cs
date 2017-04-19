@@ -1,10 +1,13 @@
 using System;
+using System.Collections;
 using System.Collections.Generic;
 
 namespace MultiScaleTrajectories.Algorithm.DataStructures.BST.RedBlackBST
 {
-    //left leaning red black binary search tree with no duplicates and not utilizing parent references in nodes
-    class RedBlackBST<TEl, TNode> : IBinarySearchTree<TEl> where TNode : RedBlackNode<TEl, TNode>, new()
+    //left leaning red black binary search tree with no duplicates
+    class RedBlackBST<TEl, TNode> : IBinarySearchTree<TEl>, IEnumerable<TEl> 
+        where TEl : class 
+        where TNode : RedBlackNode<TEl, TNode>, new()
     {
         private const bool RED = true;
         private const bool BLACK = false;
@@ -17,15 +20,15 @@ namespace MultiScaleTrajectories.Algorithm.DataStructures.BST.RedBlackBST
 
         protected TNode Root;
         private readonly Comparer<TEl> Comparer;
-        private readonly Dictionary<TEl, TEl> successorMap;
-        private readonly Dictionary<TEl, TEl> predecessorMap;
+        private readonly Dictionary<TEl, TEl> successors;
+        private readonly Dictionary<TEl, TEl> predecessors;
 
 
         public RedBlackBST(Comparer<TEl> comparer)
         {
             Comparer = comparer;
-            successorMap = new Dictionary<TEl, TEl>();
-            predecessorMap = new Dictionary<TEl, TEl>();
+            successors = new Dictionary<TEl, TEl>();
+            predecessors = new Dictionary<TEl, TEl>();
         }
 
         public RedBlackBST(Comparison<TEl> comparison) : this(Comparer<TEl>.Create(comparison))
@@ -84,7 +87,7 @@ namespace MultiScaleTrajectories.Algorithm.DataStructures.BST.RedBlackBST
 
         protected TEl ElementAt(TNode t)
         {
-            return t == null ? default(TEl) : t.Element;
+            return t?.Element;
         }
 
         protected List<TEl> AllElementsRootedAt(TNode t)
@@ -108,41 +111,44 @@ namespace MultiScaleTrajectories.Algorithm.DataStructures.BST.RedBlackBST
 
         // insert the element-value pair; overwrite the old value with the new value
         // if the element is already present
-        //O(3logn)
+        //O(logn)
         public void Insert(TEl element, Func<TEl, TEl, bool> overwriteFunc = null)
         {
-            //O(logn)
             Root = Insert(Root, element, overwriteFunc);
             Root.Color = BLACK;
             // assert Check();
-
-            //update predecessors/successors
-            //O(2logn)
-            var predecessor = FindPredecessor(element);
-            var successor = FindSuccessor(element);
-            if (predecessor != null)
-            {
-                SetPredecessor(element, predecessor);
-                SetSuccessor(predecessor, element);
-            }
-            if (successor != null)
-            {
-                SetSuccessor(element, successor);
-                SetPredecessor(successor, element);
-            }
         }
 
         // insert the element-value pair in the subtree rooted at t
-        private TNode Insert(TNode t, TEl element, Func<TEl, TEl, bool> overwriteFunc)
+        private TNode Insert(TNode t, TEl element, Func<TEl, TEl, bool> overwriteFunc, TEl bestSucc = null, TEl bestPred = null)
         {
             if (t == null)
+            {
+                successors[element] = bestSucc;
+
+                if (bestPred != null)
+                {
+                    predecessors[element] = bestPred;
+                    successors[bestPred] = element;
+                }
+                if (bestSucc != null)
+                {
+                    successors[element] = bestSucc;
+                    predecessors[bestSucc] = element;
+                }
+
                 return CreateNode(element, RED, 1);
+            }
 
             var cmp = Comparer.Compare(element, t.Element);
             if (cmp < 0)
-                t.Left = Insert(t.Left, element, overwriteFunc);
+            {
+                t.Left = Insert(t.Left, element, overwriteFunc, t.Element, bestPred);
+            }
             else if (cmp > 0)
-                t.Right = Insert(t.Right, element, overwriteFunc);
+            {
+                t.Right = Insert(t.Right, element, overwriteFunc, bestSucc, t.Element);
+            }
             else
             {
                 if (overwriteFunc == null || overwriteFunc(element, t.Element))
@@ -181,7 +187,7 @@ namespace MultiScaleTrajectories.Algorithm.DataStructures.BST.RedBlackBST
         {
             if (IsEmpty) throw new InvalidOperationException("BST underflow");
 
-            SetPredecessor(GetSuccessor(Min), default(TEl));
+            predecessors[GetSuccessor(Min)] = null;
 
             // if both children of root are black, set root to red
             if (!IsRed(Root.Left) && !IsRed(Root.Right))
@@ -210,7 +216,7 @@ namespace MultiScaleTrajectories.Algorithm.DataStructures.BST.RedBlackBST
         {
             if (IsEmpty) throw new InvalidOperationException("BST underflow");
 
-            SetSuccessor(GetPredecessor(Max), default(TEl));
+            successors[GetPredecessor(Max)] = null;
 
             // if both children of root are black, set root to red
             if (!IsRed(Root.Left) && !IsRed(Root.Right))
@@ -240,14 +246,22 @@ namespace MultiScaleTrajectories.Algorithm.DataStructures.BST.RedBlackBST
             return Balance(t);
         }
 
-        // delete the element-value pair with the given element
-        //O(2logn)
+        //O(log n), not safe
         public bool Delete(TEl element)
         {
-            //O(logn)
-            if (!Contains(element))
+            return Delete(element, false);
+        }
+
+        // delete the element-value pair with the given element
+        //O(log n) if safe = false
+        //O(2log n) if safe = true
+        public bool Delete(TEl element, bool safe)
+        {
+            if (safe)
             {
-                return false;
+                //O(logn)
+                if (!Contains(element))
+                    return false;
             }
 
             // if both children of root are black, set root to red
@@ -261,10 +275,10 @@ namespace MultiScaleTrajectories.Algorithm.DataStructures.BST.RedBlackBST
 
             //update predecessors/successors
             if (GetSuccessor(element) != null)
-                SetPredecessor(GetSuccessor(element), GetPredecessor(element));
+                predecessors[GetSuccessor(element)] = GetPredecessor(element);
 
             if (GetPredecessor(element) != null)
-                SetSuccessor(GetPredecessor(element), GetSuccessor(element));
+                successors[GetPredecessor(element)] = GetSuccessor(element);
 
             return true;
         }
@@ -272,7 +286,8 @@ namespace MultiScaleTrajectories.Algorithm.DataStructures.BST.RedBlackBST
         // delete the element-value pair with the given element rooted at h
         private TNode Delete(TNode t, TEl element)
         {
-            // assert get(t, element) != null;
+            if (t == null)
+                throw new InvalidOperationException("Trying to delete element that is not present");
 
             if (Comparer.Compare(element, t.Element) < 0)
             {
@@ -284,10 +299,13 @@ namespace MultiScaleTrajectories.Algorithm.DataStructures.BST.RedBlackBST
             {
                 if (IsRed(t.Left))
                     t = RotateRight(t);
-                if (Comparer.Compare(element, t.Element) == 0 && (t.Right == null))
+
+                if (Comparer.Compare(element, t.Element) == 0 && t.Right == null)
                     return null;
+
                 if (!IsRed(t.Right) && !IsRed(t.Right.Left))
                     t = MoveRedRight(t);
+
                 if (Comparer.Compare(element, t.Element) == 0)
                 {
                     //TNode x = FindMinNode(t.Right);
@@ -297,7 +315,8 @@ namespace MultiScaleTrajectories.Algorithm.DataStructures.BST.RedBlackBST
                     // t.element = FindMinNode(t.right).element;
                     t.Right = DeleteMin(t.Right);
                 }
-                else t.Right = Delete(t.Right, element);
+                else
+                    t.Right = Delete(t.Right, element);
             }
             return Balance(t);
         }
@@ -411,25 +430,15 @@ namespace MultiScaleTrajectories.Algorithm.DataStructures.BST.RedBlackBST
         public TEl GetSuccessor(TEl element)
         {
             TEl succ;
-            successorMap.TryGetValue(element, out succ);
+            successors.TryGetValue(element, out succ);
             return succ;
         }
 
         public TEl GetPredecessor(TEl element)
         {
             TEl pred;
-            predecessorMap.TryGetValue(element, out pred);
+            predecessors.TryGetValue(element, out pred);
             return pred;
-        }
-
-        private void SetPredecessor(TEl el, TEl pred)
-        {
-            predecessorMap[el] = pred;
-        }
-
-        private void SetSuccessor(TEl el, TEl succ)
-        {
-            successorMap[el] = succ;
         }
 
         private TEl FindSuccessor(TEl element)
@@ -467,7 +476,7 @@ namespace MultiScaleTrajectories.Algorithm.DataStructures.BST.RedBlackBST
         // the smallest element; null if no such element
         private TEl FindMin()
         {
-            return IsEmpty ? default(TEl) : FindMinNode(Root).Element;
+            return IsEmpty ? null : FindMinNode(Root).Element;
         }
 
         // the smallest element in subtree rooted at x; null if no such element
@@ -480,7 +489,7 @@ namespace MultiScaleTrajectories.Algorithm.DataStructures.BST.RedBlackBST
         // the largest element; null if no such element
         private TEl FindMax()
         {
-            return IsEmpty ? default(TEl) : FindMaxNode(Root).Element;
+            return IsEmpty ? null : FindMaxNode(Root).Element;
         }
 
         // the largest element in the subtree rooted at x; null if no such element
@@ -494,7 +503,7 @@ namespace MultiScaleTrajectories.Algorithm.DataStructures.BST.RedBlackBST
         public TEl Floor(TEl element)
         {
             var x = Floor(Root, element);
-            return x == null ? default(TEl) : x.Element;
+            return x?.Element;
         }
 
         // the largest element in the subtree rooted at x less than or equal to the given element
@@ -513,7 +522,7 @@ namespace MultiScaleTrajectories.Algorithm.DataStructures.BST.RedBlackBST
         public TEl Ceil(TEl element)
         {
             var x = Ceil(Root, element);
-            return x == null ? default(TEl) : x.Element;
+            return x?.Element;
         }
 
         // the smallest element in the subtree rooted at x greater than or equal to the given element
@@ -532,7 +541,7 @@ namespace MultiScaleTrajectories.Algorithm.DataStructures.BST.RedBlackBST
         public TEl Select(int k)
         {
             if (k < 0 || k >= Size)
-                return default(TEl);
+                return null;
             TNode x = Select(Root, k);
             return x.Element;
         }
@@ -570,11 +579,6 @@ namespace MultiScaleTrajectories.Algorithm.DataStructures.BST.RedBlackBST
         /***********************************************************************
          *  Range count and range search.
          ***********************************************************************/
-
-        public IEnumerable<TEl> GetAll()
-        {
-            return GetAll(Min, Max);
-        }
 
         // the elements between lo and hi, as an Iterable
         public IEnumerable<TEl> GetAll(TEl lo, TEl hi)
@@ -619,7 +623,7 @@ namespace MultiScaleTrajectories.Algorithm.DataStructures.BST.RedBlackBST
         // Note: this test also ensures that data structure is a binary tree since order is strict
         private bool IsBST()
         {
-            return IsBST(Root, default(TEl), default(TEl));
+            return IsBST(Root, null, null);
         }
 
         // is the tree rooted at x a BST with all elements strictly between Min and max
@@ -652,7 +656,7 @@ namespace MultiScaleTrajectories.Algorithm.DataStructures.BST.RedBlackBST
             for (var i = 0; i < Size; i++)
                 if (i != Rank(Select(i))) return false;
 
-            foreach (var element in GetAll())
+            foreach (var element in this)
             {
                 if (Comparer.Compare(element, Select(Rank(element))) != 0) return false;
             }
@@ -699,12 +703,19 @@ namespace MultiScaleTrajectories.Algorithm.DataStructures.BST.RedBlackBST
         public override string ToString()
         {
             var str = "";
-            foreach (var TEl in GetAll())
+            foreach (var TEl in this)
             {
                 str += TEl + " ";
             }
 
             return str;
+        }
+
+        IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
+
+        public IEnumerator<TEl> GetEnumerator()
+        {
+            return GetAll(Min, Max).GetEnumerator();
         }
     }
 }

@@ -30,11 +30,11 @@ namespace AlgorithmVisualization.Algorithm
             LogBuffers = new List<StringBuffer>();
             Logging = true;
 
-            InitStatistics();
+            RegisterStatistics();
         }
 
         //overrides may not use instance members
-        protected virtual void InitStatistics()
+        protected virtual void RegisterStatistics()
         {
         }
 
@@ -74,16 +74,16 @@ namespace AlgorithmVisualization.Algorithm
         }
 
         [OnSerializing]
-        internal void OnSerializingMethod(StreamingContext context)
+        internal void OnDeserializing(StreamingContext context)
         {
             log = logStringBuilder.ToString();
         }
 
         [OnDeserialized]
-        internal void OnDeserializedMethod(StreamingContext context)
+        internal void OnDeserialized(StreamingContext context)
         {
             logStringBuilder.Append(log);
-            InitStatistics();
+            RegisterStatistics();
         }
 
     }

@@ -63,18 +63,21 @@
     <Compile Include="Algorithm\Statistics\Statistic.cs" />
     <Compile Include="Algorithm\Statistics\DynamicStatistic.cs" />
     <Compile Include="Algorithm\Statistics\StatisticConverter.cs" />
+    <Compile Include="Controller\AlgorithmControllerConverter.cs" />
     <Compile Include="Controller\Edit\IInputEditor.cs" />
     <Compile Include="Controller\Edit\InputEditor.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="Controller\Edit\InputEditorWrapper.cs">
+    <Compile Include="Controller\Edit\SimpleInputEditor.cs">
       <SubType>UserControl</SubType>
     </Compile>
+    <Compile Include="Controller\Explore\ISingleStateRunExplorer.cs" />
     <Compile Include="Properties\Settings.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
       <DependentUpon>Settings.settings</DependentUpon>
     </Compile>
+    <Compile Include="Util\IDestroyable.cs" />
     <Compile Include="Util\SerializableDictionary.cs" />
     <Compile Include="View\Edit\InputEditorChooser.cs">
       <SubType>UserControl</SubType>
@@ -99,19 +102,18 @@
     <Compile Include="Algorithm\Output.cs" />
     <Compile Include="Algorithm\Statistics\StatisticMap.cs" />
     <Compile Include="Util\ThreadSafeStringBuilder.cs" />
-    <Compile Include="Controller\AlgorithmControllerConverter.cs" />
     <Compile Include="Controller\AlgorithmController.cs" />
     <Compile Include="Controller\Explore\RunExplorer.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="Controller\Explore\RunExplorerWrapper.cs">
+    <Compile Include="Controller\Explore\SimpleRunExplorer.cs">
       <SubType>UserControl</SubType>
     </Compile>
     <Compile Include="Controller\Explore\IRunExplorer.cs" />
     <Compile Include="Controller\Explore\SingleStateRunExplorer.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="Controller\IAlgorithmController.cs" />
+    <Compile Include="Controller\AlgorithmControllerBase.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Util\Factory\Factory.cs" />
     <Compile Include="Util\Factory\IFactory.cs" />
@@ -119,11 +121,11 @@
       <SubType>UserControl</SubType>
     </Compile>
     <Compile Include="Util\WorkerUtil.cs" />
-    <Compile Include="View\AlgorithmViewConcrete.cs">
+    <Compile Include="View\AlgorithmView.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="View\AlgorithmViewConcrete.Designer.cs">
-      <DependentUpon>AlgorithmViewConcrete.cs</DependentUpon>
+    <Compile Include="View\AlgorithmView.Designer.cs">
+      <DependentUpon>AlgorithmView.cs</DependentUpon>
     </Compile>
     <Compile Include="View\Explore\RunExplorerChooser.cs">
       <SubType>UserControl</SubType>
@@ -147,7 +149,7 @@
       <SubType>UserControl</SubType>
     </Compile>
     <Compile Include="View\Util\FormsUtil.cs" />
-    <Compile Include="View\AlgorithmView.cs">
+    <Compile Include="View\AlgorithmViewBase.cs">
       <SubType>UserControl</SubType>
     </Compile>
     <Compile Include="View\AlgorithmForm.cs">
@@ -175,8 +177,8 @@
     <Content Include="Icon.ico" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="View\AlgorithmViewConcrete.resx">
-      <DependentUpon>AlgorithmViewConcrete.cs</DependentUpon>
+    <EmbeddedResource Include="View\AlgorithmView.resx">
+      <DependentUpon>AlgorithmView.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="View\AlgorithmForm.resx">
       <DependentUpon>AlgorithmForm.cs</DependentUpon>

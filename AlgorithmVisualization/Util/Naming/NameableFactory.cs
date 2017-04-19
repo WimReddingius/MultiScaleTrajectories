@@ -7,6 +7,16 @@ namespace AlgorithmVisualization.Util.Naming
     {
         private readonly Factory<T> factory;
 
+        public NameableFactory(CreationFunc<T> func, string name = null) : this(name)
+        {
+            factory = new Factory<T>(func);
+        }
+
+        public NameableFactory(Func<T> func, string name = null) : this(name)
+        {
+            factory = new Factory<T>(func);
+        }
+
         public NameableFactory()
         {
             factory = new Factory<T>();
@@ -20,21 +30,6 @@ namespace AlgorithmVisualization.Util.Naming
         public T Create(params object[] args)
         {
             return factory.Create(args);
-        }
-
-        public static INameableFactory<T> Create(Type type)
-        {
-            Type baseType = typeof(T);
-
-            if (baseType.IsAssignableFrom(type) && typeof(INameable).IsAssignableFrom(type))
-            {
-                var representativeNameable = (INameable)Activator.CreateInstance(type);
-                var genericTypeFactory = typeof(NameableFactory<>).MakeGenericType(type);
-                var factory = (INameableFactory<T>)Activator.CreateInstance(genericTypeFactory, representativeNameable.Name);
-                return factory;
-            }
-
-            throw new ArgumentOutOfRangeException(nameof(type), "Type provided does not inherit from either T, or INameable, or both.");
         }
 
     }

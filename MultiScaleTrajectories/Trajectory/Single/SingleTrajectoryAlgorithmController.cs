@@ -2,13 +2,12 @@
 using System.Windows.Forms;
 using AlgorithmVisualization.Algorithm;
 using AlgorithmVisualization.Controller;
-using MultiScaleTrajectories.MultiScale.Algorithm;
 
 namespace MultiScaleTrajectories.Trajectory.Single
 {
     abstract class SingleTrajectoryAlgorithmController<TIn, TOut> : AlgorithmController<TIn, TOut> where TIn : SingleTrajectoryInput, new() where TOut : Output, new()
     {
-        protected SingleTrajectoryAlgorithmController()
+        protected SingleTrajectoryAlgorithmController(string name) : base(name)
         {
             CanImport = true;
         }

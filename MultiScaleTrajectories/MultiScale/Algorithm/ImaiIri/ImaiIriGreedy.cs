@@ -9,14 +9,9 @@ namespace MultiScaleTrajectories.MultiScale.Algorithm.ImaiIri
 {
     class ImaiIriGreedy : ImaiIriAlgorithm
     {
-        public override string AlgoName => "ImaiIri - Greedy";
-
-        public ImaiIriGreedy()
-        {
-        }
 
         [JsonConstructor]
-        public ImaiIriGreedy(ImaiIriOptions imaiIriOptions) : base(imaiIriOptions)
+        public ImaiIriGreedy(ImaiIriOptions imaiIriOptions = null) : base("ImaiIri - Greedy", imaiIriOptions)
         {
         }
 

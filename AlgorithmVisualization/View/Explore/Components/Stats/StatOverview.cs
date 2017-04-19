@@ -13,7 +13,7 @@ using AlgorithmVisualization.View.Util;
 
 namespace AlgorithmVisualization.View.Explore.Components.Stats
 {
-    partial class Statistics<TIn, TOut> : UserControl, IRunExplorer<TIn, TOut> where TIn : Input, new() where TOut : Output, new()
+    partial class StatOverview<TIn, TOut> : UserControl, IRunExplorer<TIn, TOut> where TIn : Input, new() where TOut : Output, new()
     {
         public int MaxConsolidation => 30;
         public int MinConsolidation => 1;
@@ -21,16 +21,17 @@ namespace AlgorithmVisualization.View.Explore.Components.Stats
 
         private BackgroundWorker statPollingWorker;
 
-        public Statistics()
+        public StatOverview()
         {
             InitializeComponent();
         }
 
-        private static List<Action> GetColumnFillTasks(DataGridView gridView, AlgorithmRun<TIn, TOut>[] runs, Func<AlgorithmRun<TIn, TOut>, StatisticMap> statFunc)
+        private static Action GetTableFillTask(DataGridView gridView, AlgorithmRun<TIn, TOut>[] runs, Func<AlgorithmRun<TIn, TOut>, StatisticMap> statFunc)
         {
             var table = new DataTable();
-            var columnFillActions = new List<Action>();
             var statToRow = new Dictionary<string, DataRow>();
+            var runToColumn = new Dictionary<AlgorithmRun<TIn, TOut>, int>();
+            var runToTrackedStats = new Dictionary<AlgorithmRun<TIn, TOut>, List<string>>();
 
             table.Clear();
             table.Columns.Add("Statistic");
@@ -39,14 +40,19 @@ namespace AlgorithmVisualization.View.Explore.Components.Stats
             {
                 var column = table.Columns.Add(run.Name);
                 var columnIndex = table.Columns.IndexOf(column);
-                var currentlyTrackedStats = new List<string>();
-
-                columnFillActions.Add(() => FillColumn(table, columnIndex, statFunc(run), statToRow, currentlyTrackedStats));
+                runToColumn.Add(run, columnIndex);
+                runToTrackedStats.Add(run, new List<string>());
             }
 
             gridView.DataSource = table;
-            gridView.ClearSelection();
-            return columnFillActions;
+
+            return () =>
+            {
+                foreach (var run in runs)
+                {
+                    FillColumn(table, runToColumn[run], statFunc(run), statToRow, runToTrackedStats[run]);
+                }
+            };
         }
 
         private static void FillColumn(DataTable table, int column, StatisticMap statistics, Dictionary<string, DataRow> statToRow, List<string> currentlyTrackedStats)
@@ -103,11 +109,13 @@ namespace AlgorithmVisualization.View.Explore.Components.Stats
 
         public void Visualize(params AlgorithmRun<TIn, TOut>[] runs)
         {
-            var columnFillTasks = new List<Action>();
-
-            columnFillTasks.AddRange(GetColumnFillTasks(runStatsTable, runs, run => run.Statistics));
-            columnFillTasks.AddRange(GetColumnFillTasks(inputStatsTable, runs, run => run.Input.Statistics));
-            columnFillTasks.AddRange(GetColumnFillTasks(outputStatsTable, runs, run => run.Output.Statistics));
+            var tableFillTasks = new List<Action>
+            {
+                GetTableFillTask(runStatsTable, runs, run => run.Statistics),
+                GetTableFillTask(algorithmStatsTable, runs, run => run.Algorithm.Statistics),
+                GetTableFillTask(inputStatsTable, runs, run => run.Input.Statistics),
+                GetTableFillTask(outputStatsTable, runs, run => run.Output.Statistics)
+            };
 
             var newWorker = new BackgroundWorker { WorkerSupportsCancellation = true };
             newWorker.DoWork += (o, e) =>
@@ -116,7 +124,7 @@ namespace AlgorithmVisualization.View.Explore.Components.Stats
                 {
                     this.InvokeIfRequired(() =>
                     {
-                        columnFillTasks.ForEach(task => task());
+                        tableFillTasks.ForEach(task => task());
                     });
                     Thread.Sleep(500);
                 }

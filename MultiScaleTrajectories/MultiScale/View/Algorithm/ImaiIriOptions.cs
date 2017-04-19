@@ -1,16 +1,14 @@
 ﻿using System;
 using System.ComponentModel;
-using System.Linq;
 using System.Windows.Forms;
 using MultiScaleTrajectories.Algorithm.DataStructures.Graph;
 using MultiScaleTrajectories.Algorithm.Geometry;
 using MultiScaleTrajectories.ImaiIri.EpsilonFinding.Algorithm.BruteForce;
 using MultiScaleTrajectories.ImaiIri.EpsilonFinding.Algorithm.ConvexHull.Bidirectional;
-using MultiScaleTrajectories.ImaiIri.EpsilonFinding.Algorithm.ConvexHull.Incremental;
 using MultiScaleTrajectories.ImaiIri.ShortcutFinding.Algorithm.ChinChan;
 using MultiScaleTrajectories.MultiScale.Algorithm.ImaiIri.ShortcutProvision;
 using MultiScaleTrajectories.MultiScale.Algorithm.ImaiIri.ShortestPathProvision;
-using MultiScaleTrajectories.PathFinding.SingleSource.Algorithm.Concrete;
+using MultiScaleTrajectories.PathFinding.SingleSource.Algorithm.Dijkstra;
 using Newtonsoft.Json;
 
 namespace MultiScaleTrajectories.MultiScale.View.Algorithm
@@ -18,29 +16,25 @@ namespace MultiScaleTrajectories.MultiScale.View.Algorithm
     [JsonObject(MemberSerialization.OptIn)]
     partial class ImaiIriOptions : UserControl
     {
-        public event Action ShortcutProviderChanged;
-
-        [JsonProperty] private Type shortcutFinderType => chosenShortcutProvider.GetType();
-        [JsonProperty] private Type shortestPathProviderType => ChosenShortestPathProvider.GetType();
-
-        private readonly BindingList<ShortcutProvider> shortcutProviders;
-        private readonly BindingList<ShortcutShortestPath> shortestPathProviders;
-
-        private ShortcutProvider chosenShortcutProvider;
-        public ShortcutProvider ChosenShortcutProvider
-        {
-            get { return chosenShortcutProvider; }
-            set { chosenShortcutProvider = value; ShortcutProviderChanged?.Invoke(); }
-        }     
-        public ShortcutShortestPath ChosenShortestPathProvider;
-
+        [JsonProperty] private readonly BindingList<ShortcutProvider> shortcutProviders;
+        [JsonProperty] private readonly BindingList<ShortcutShortestPath> shortestPathProviders;
+        [JsonProperty] public ShortcutProvider ChosenShortcutProvider;
+        [JsonProperty] public ShortcutShortestPath ChosenShortestPathProvider;
 
 
         [JsonConstructor]
-        public ImaiIriOptions(Type shortcutFinderType, Type shortestPathProviderType) : this()
+        public ImaiIriOptions(BindingList<ShortcutProvider> shortcutProviders, BindingList<ShortcutShortestPath> shortestPathProviders, 
+            ShortcutProvider ChosenShortcutProvider, ShortcutShortestPath ChosenShortestPathProvider)
         {
-            shortcutFinderComboBox.SelectedItem = shortcutProviders.ToList().Find(s => s.GetType() == shortcutFinderType);
-            shortestPathProviderComboBox.SelectedItem = shortestPathProviders.ToList().Find(s => s.GetType() == shortestPathProviderType);
+            InitializeComponent();
+
+            this.shortcutProviders = shortcutProviders;
+            this.shortestPathProviders = shortestPathProviders;
+
+            PopulateControls();
+
+            shortcutFinderComboBox.SelectedItem = ChosenShortcutProvider;
+            shortestPathProviderComboBox.SelectedItem = ChosenShortestPathProvider;
         }
 
         public ImaiIriOptions()
@@ -49,16 +43,19 @@ namespace MultiScaleTrajectories.MultiScale.View.Algorithm
 
             shortcutProviders = new BindingList<ShortcutProvider>
             {
-                new EFShortcutProvider<EFBruteForce>(),
-                new SFShortcutProvider<SFChinChan>(),
-                new EFShortcutProvider<EFConvexHullIncremental>(),
-                new EFShortcutProvider<EFConvexHullEnhanced>(),
+                new EFShortcutProvider(new EFBruteForce()),
+                new SFShortcutProvider(new SFChinChan()),
+                new EFShortcutProvider(new EFConvexHullEnhanced()),
+                //new EFShortcutProvider(new EFConvexHullIncremental()),
             };
 
             shortestPathProviders = new BindingList<ShortcutShortestPath>
             {
-                new ShortcutShortestPathConcrete<DijkstraSimple<DataNode<Point2D>, WeightedEdge>>(),
-                new ShortcutShortestPathConcrete<DijkstraFibonacciHeap<DataNode<Point2D>, WeightedEdge>>()
+                new ShortcutShortestPathSimple(new DijkstraHeapless<DataNode<Point2D>, WeightedEdge>()),
+                new ShortcutShortestPathSimple(new DijkstraFibonacciHeap<DataNode<Point2D>, WeightedEdge>()),
+                new ShortcutShortestPathSimple(new DijkstraBinomialHeap<DataNode<Point2D>, WeightedEdge>()),
+                new ShortcutShortestPathSimple(new DijkstraDAryHeap<DataNode<Point2D>, WeightedEdge>()),
+                new ShortcutShortestPathSimple(new DijkstraPairingHeap<DataNode<Point2D>, WeightedEdge>())
             };
 
             PopulateControls();

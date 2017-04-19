@@ -10,6 +10,10 @@ namespace MultiScaleTrajectories.MultiScale.Algorithm.ImaiIri.ShortcutProvision
         protected MSInput Input;
         protected MSOutput Output;
 
+        protected ShortcutProvider(string name)
+        {
+            Name = name;
+        }
 
         public virtual void Init(MSInput input, MSOutput output)
         {

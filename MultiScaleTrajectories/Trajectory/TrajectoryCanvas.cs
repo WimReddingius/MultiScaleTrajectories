@@ -46,8 +46,8 @@ namespace MultiScaleTrajectories.Trajectory
         {
             if (Mouse.GetState().IsButtonDown(MouseButton.Right) && DraggingWorld)
             {
-                Vector2d mouseLoc = GetWorldCoordinates(e.Location.X, e.Location.Y);
-                Vector2d displacement = Vector2d.Subtract(LastDraggingLocation, mouseLoc);
+                var mouseLoc = GetWorldCoordinates(e.Location.X, e.Location.Y);
+                var displacement = Vector2d.Subtract(LastDraggingLocation, mouseLoc);
 
                 WorldOrigin = Vector2d.Add(WorldOrigin, displacement);
 
@@ -133,7 +133,7 @@ namespace MultiScaleTrajectories.Trajectory
 
         protected void DrawTrajectoryPoints(Trajectory2D trajectory, double radius, int numSegments, Func<Point2D, Color> colorFunc, Func<Point2D, int> nameFunc = null)
         {
-            foreach (Point2D p in trajectory)
+            foreach (var p in trajectory)
             {
                 DrawPoint(p, radius, numSegments, colorFunc(p), nameFunc(p));
             }

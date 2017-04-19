@@ -1,5 +1,6 @@
-﻿using System;
+﻿using System.Runtime.Serialization;
 using System.Windows.Forms;
+using AlgorithmVisualization.Algorithm.Statistics;
 using AlgorithmVisualization.Util.Naming;
 using Newtonsoft.Json;
 
@@ -10,17 +11,30 @@ namespace AlgorithmVisualization.Algorithm
         [JsonIgnore]
         public Control OptionsControl { get; set; }
 
-        //has to be directly bound
-        public abstract string AlgoName { get; }
+        public StatisticMap Statistics;
 
-
-        protected Algorithm()
+        protected Algorithm(string name)
         {
             OptionsControl = null;
-            Name = AlgoName;
+            Statistics = new StatisticMap();
+
+            Name = name ?? "Unknown";
+
+            RegisterStatistics();
+        }
+
+        protected virtual void RegisterStatistics()
+        {
+            Statistics.Put("Name", () => Name);
         }
 
         public abstract void Compute(TIn input, TOut output);
+
+        [OnDeserialized]
+        internal void OnDeserialized(StreamingContext context)
+        {
+            RegisterStatistics();
+        }
 
     }
 }
