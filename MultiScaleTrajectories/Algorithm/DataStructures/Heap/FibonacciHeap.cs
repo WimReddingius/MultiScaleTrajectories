@@ -34,6 +34,7 @@ namespace MultiScaleTrajectories.Algorithm.DataStructures.Heap
         /// Initializes the new instance of the Heap.
         /// </summary>
         /// <param name="minKeyValue">Minimum value of the key - to be used for comparing.</param>
+        /// <param name="comparer"></param>
         public FibonacciHeap(TKey minKeyValue, Comparer<TKey> comparer)
         {
             this.minKeyValue = minKeyValue;
@@ -136,26 +137,26 @@ namespace MultiScaleTrajectories.Algorithm.DataStructures.Heap
         /// <returns></returns>
         public override FibonacciHeapNode<TKey, TValue> Pop()
         {
-            FibonacciHeapNode<TKey, TValue> minNode = this.minNode;
+            var oldMin = minNode;
 
             if (minNode != null)
             {
-                int numKids = minNode.Degree;
-                FibonacciHeapNode<TKey, TValue> oldMinChild = minNode.Child;
+                var numKids = minNode.Degree;
+                var oldMinChild = minNode.Child;
 
                 // for each child of minNode do...
                 while (numKids > 0)
                 {
-                    FibonacciHeapNode<TKey, TValue> tempRight = oldMinChild.Right;
+                    var tempRight = oldMinChild.Right;
 
                     // remove oldMinChild from child list
                     oldMinChild.Left.Right = oldMinChild.Right;
                     oldMinChild.Right.Left = oldMinChild.Left;
 
                     // add oldMinChild to root list of heap
-                    oldMinChild.Left = this.minNode;
-                    oldMinChild.Right = this.minNode.Right;
-                    this.minNode.Right = oldMinChild;
+                    oldMinChild.Left = minNode;
+                    oldMinChild.Right = minNode.Right;
+                    minNode.Right = oldMinChild;
                     oldMinChild.Right.Left = oldMinChild;
 
                     // set parent[oldMinChild] to null
@@ -170,11 +171,11 @@ namespace MultiScaleTrajectories.Algorithm.DataStructures.Heap
 
                 if (minNode == minNode.Right)
                 {
-                    this.minNode = null;
+                    minNode = null;
                 }
                 else
                 {
-                    this.minNode = minNode.Right;
+                    minNode = minNode.Right;
                     Consolidate();
                 }
 
@@ -182,7 +183,7 @@ namespace MultiScaleTrajectories.Algorithm.DataStructures.Heap
                 numNodes--;
             }
 
-            return minNode;
+            return oldMin;
         }
 
         /// <summary>

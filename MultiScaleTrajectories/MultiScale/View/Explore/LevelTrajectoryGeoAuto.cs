@@ -4,7 +4,6 @@ using System.Drawing.Drawing2D;
 using System.Drawing.Text;
 using System.Windows.Forms;
 using AlgorithmVisualization.Algorithm.Run;
-using GMap.NET;
 using GMap.NET.WindowsForms;
 using MultiScaleTrajectories.MultiScale.Algorithm;
 
@@ -79,7 +78,7 @@ namespace MultiScaleTrajectories.MultiScale.View.Explore
             g.DrawString("Level " + currentLevel, font, brush, 5, 25);
         }
 
-        private void detailNumericUpDown_ValueChanged(object sender, System.EventArgs e)
+        private void detailNumericUpDown_ValueChanged(object sender, EventArgs e)
         {
             FitLevelToDesiredDetail();
         }

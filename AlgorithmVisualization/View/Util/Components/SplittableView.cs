@@ -1,7 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Windows.Forms;
 using AlgorithmVisualization.Util;
-using AlgorithmVisualization.View.Explore;
 
 namespace AlgorithmVisualization.View.Util.Components
 {

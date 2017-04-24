@@ -7,7 +7,6 @@ using AlgorithmVisualization.Controller;
 using AlgorithmVisualization.Util.Factory;
 using AlgorithmVisualization.Util.Naming;
 using AlgorithmVisualization.View.Util;
-using Newtonsoft.Json;
 
 namespace AlgorithmVisualization.View
 {

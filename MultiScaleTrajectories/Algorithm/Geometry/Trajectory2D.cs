@@ -7,20 +7,37 @@ namespace MultiScaleTrajectories.Algorithm.Geometry
 
         public Point2D AppendPoint(double x, double y)
         {
-            return InsertPoint(x, y, Count);
+            var p = new Point2D(x, y, Count);
+
+            Add(p);
+
+            return p;
         }
 
         public Point2D InsertPoint(double x, double y, int index)
         {
-            var p = new Point2D(x, y);
+            var p = new Point2D(x, y, index);
+
+            for (var i = index; i < Count; i++)
+            {
+                this[i].Index++;
+            }
+
             Insert(index, p);
             
             return p;
         }
 
-        public void RemovePoint(int index)
+        public void RemovePoint(Point2D point)
         {
-            RemoveAt(index);
+            var index = IndexOf(point);
+
+            for (var i = index; i < Count; i++)
+            {
+                this[i].Index--;
+            }
+
+            Remove(point);
         }
 
         public BoundingBox2D BuildBoundingBox()

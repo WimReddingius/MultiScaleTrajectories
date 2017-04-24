@@ -62,8 +62,17 @@ namespace AlgorithmVisualization.Util.Naming
         {
             var name = namedBindable.Name;
             var lastIndex = name.LastIndexOf('_');
+            var numDigits = name.Length - (lastIndex + 1);
 
-            return lastIndex == -1 ? name : name.Substring(0, lastIndex);
+            if (lastIndex != -1 && numDigits > 0)
+            {
+                var numberStr = name.Substring(lastIndex + 1, numDigits);
+                int number;
+                if (int.TryParse(numberStr, out number))
+                    return name.Substring(0, lastIndex);
+            }
+
+            return name;
         }
 
         private static int GetNameNumber(T namedBindable)
@@ -72,13 +81,15 @@ namespace AlgorithmVisualization.Util.Naming
             var lastIndex = name.LastIndexOf('_');
             var numDigits = name.Length - (lastIndex + 1);
 
-            var suffixNumber = 1;
             if (lastIndex != -1 && numDigits > 0)
             {
-                suffixNumber = int.Parse(name.Substring(lastIndex + 1, numDigits));
+                int nameNumber;
+                var numberStr = name.Substring(lastIndex + 1, numDigits);
+                if (int.TryParse(numberStr, out nameNumber))
+                    return nameNumber;
             }
 
-            return suffixNumber;
+            return 1;
         }
 
         [OnDeserialized]

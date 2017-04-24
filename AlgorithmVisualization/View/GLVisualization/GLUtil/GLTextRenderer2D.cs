@@ -36,8 +36,7 @@ namespace AlgorithmVisualization.View.GLVisualization.GLUtil
 
             using (Bitmap bitmap = new Bitmap(bitmapWidth, bitmapHeight, PixelFormat.Format32bppArgb))
             {
-                Font font;
-                font = new Font(new FontFamily(FontName), FontSize);
+                var font = new Font(new FontFamily(FontName), FontSize);
 
                 using (var g = Graphics.FromImage(bitmap))
                 {
@@ -89,9 +88,8 @@ namespace AlgorithmVisualization.View.GLVisualization.GLUtil
             float u_step = GlyphWidth / (float)TextureWidth;
             float v_step = GlyphHeight / (float)TextureHeight;
 
-            for (int n = 0; n < text.Length; n++)
+            foreach (char idx in text)
             {
-                char idx = text[n];
                 float u = idx % GlyphsPerLine * u_step;
                 float v = idx / GlyphsPerLine * v_step;
 

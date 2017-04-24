@@ -2,10 +2,12 @@
 using System.Windows.Forms;
 using AlgorithmVisualization.Algorithm;
 using AlgorithmVisualization.Controller;
+using MultiScaleTrajectories.Trajectory.View;
 
 namespace MultiScaleTrajectories.Trajectory.Single
 {
-    abstract class SingleTrajectoryAlgorithmController<TIn, TOut> : AlgorithmController<TIn, TOut> where TIn : SingleTrajectoryInput, new() where TOut : Output, new()
+    abstract class SingleTrajectoryAlgorithmController<TIn, TOut> : AlgorithmController<TIn, TOut> 
+        where TIn : SingleTrajectoryInput, new() where TOut : Output, new()
     {
         protected SingleTrajectoryAlgorithmController(string name) : base(name)
         {

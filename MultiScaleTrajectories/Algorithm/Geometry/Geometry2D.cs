@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Drawing;
 using OpenTK;
 
 namespace MultiScaleTrajectories.Algorithm.Geometry
@@ -16,7 +17,6 @@ namespace MultiScaleTrajectories.Algorithm.Geometry
             return p1.X * p2.Y - p1.Y * p2.X;
         }
 
-        //angle between two lines in radians
         public static double Angle(Line2D line1, Line2D line2)
         {
             var angle1 = Math.Atan2(line1.Point2.Y - line1.Point1.Y, line1.Point2.X - line1.Point1.X);
@@ -30,9 +30,20 @@ namespace MultiScaleTrajectories.Algorithm.Geometry
             return SimplifyRadians(angle1);
         }
 
+        public static double Angle(Vector2d v1, Vector2d v2)
+        {
+            var angle1 = Math.Atan2(v2.Y - v1.Y, v2.X - v1.X);
+            return SimplifyRadians(angle1);
+        }
+
         public static double Angle(Vector2d vector)
         {
-            var angle1 = Math.Atan2(vector.Y, vector.X);
+            return Angle(vector.X, vector.Y);
+        }
+
+        public static double Angle(double x, double y)
+        {
+            var angle1 = Math.Atan2(y, x);
             return SimplifyRadians(angle1);
         }
 
@@ -69,7 +80,12 @@ namespace MultiScaleTrajectories.Algorithm.Geometry
 
         public static double Distance(Point2D p1, Point2D p2)
         {
-            return Math.Sqrt(Math.Pow(p1.Y - p2.Y, 2) + Math.Pow(p1.X - p2.X, 2));
+            return Distance(p1.X, p1.Y, p2.X, p2.Y);
+        }
+
+        public static double Distance(double x1, double y1, double x2, double y2)
+        {
+            return Math.Sqrt(Math.Pow(y1 - y2, 2) + Math.Pow(x1 - x2, 2));
         }
 
         public static double Distance(Point2D start, Point2D end, Point2D p)
@@ -99,21 +115,25 @@ namespace MultiScaleTrajectories.Algorithm.Geometry
                 if (distanceSquared != 0.0) //in case of 0 length line
                     param = dot / distanceSquared;
 
-                Point2D closestPoint;
+                double closestX;
+                double closestY;
                 if (param < 0)
                 {
-                    closestPoint = p1;
+                    closestX = p1.X;
+                    closestY = p1.Y;
                 }
                 else if (param > 1)
                 {
-                    closestPoint = p2;
+                    closestX = p2.X;
+                    closestY = p2.Y;
                 }
                 else
                 {
-                    closestPoint = new Point2D(p1.X + param * C, p1.Y + param * D);
+                    closestX = p1.X + param * C;
+                    closestY = p1.Y + param * D;
                 }
 
-                var lineDistance = Distance(p, closestPoint);
+                var lineDistance = Distance(p.X, p.Y, closestX, closestY);
                 if (lineDistance < minDistance)
                     minDistance = lineDistance;
             }

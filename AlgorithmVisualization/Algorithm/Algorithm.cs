@@ -20,12 +20,17 @@ namespace AlgorithmVisualization.Algorithm
 
             Name = name ?? "Unknown";
 
+            RegisterAllStatistics();
+        }
+
+        protected void RegisterAllStatistics()
+        {
+            Statistics.Put("Name", () => Name);
             RegisterStatistics();
         }
 
         protected virtual void RegisterStatistics()
         {
-            Statistics.Put("Name", () => Name);
         }
 
         public abstract void Compute(TIn input, TOut output);
@@ -33,7 +38,7 @@ namespace AlgorithmVisualization.Algorithm
         [OnDeserialized]
         internal void OnDeserialized(StreamingContext context)
         {
-            RegisterStatistics();
+            RegisterAllStatistics();
         }
 
     }

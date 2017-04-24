@@ -30,7 +30,8 @@ namespace MultiScaleTrajectories.MultiScale.Algorithm.ImaiIri.ShortcutProvision
 
             shortcutSet = mefOutput.ShortcutSet;
             Output.LogLine(mefOutput.LogString);
-            Output.LogObject("Total number of shortcuts", shortcutSet.AllShortcuts.Count);
+            Output.LogObject("Total number of shortcuts", () => shortcutSet.AllShortcuts.Count);
+            Output.LogEnumerable("Shortcuts", () => shortcutSet.AllShortcuts);
         }
 
         public override HashSet<Shortcut> GetShortcuts(double epsilon)

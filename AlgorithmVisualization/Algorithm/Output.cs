@@ -49,6 +49,14 @@ namespace AlgorithmVisualization.Algorithm
             }
         }
 
+        public void LogObject(object obj)
+        {
+            if (Logging)
+            {
+                LogLine(obj.ToString());
+            }
+        }
+
         public void LogObject(string name, object obj)
         {
             if (Logging)
@@ -65,11 +73,33 @@ namespace AlgorithmVisualization.Algorithm
             }
         }
 
-        public void LogObject<T>(string name, List<T> obj)
+        public void LogEnumerable<T>(IEnumerable<T> obj)
         {
             if (Logging)
             {
-                LogObject(name, string.Join(",", obj));
+                LogLine("");
+                foreach (var item in obj)
+                {
+                    LogObject(item);
+                }
+                LogLine("");
+            }
+        }
+
+        public void LogEnumerable<T>(string name, IEnumerable<T> obj)
+        {
+            if (Logging)
+            {
+                LogLine("\n" + name);
+                LogEnumerable(obj);
+            }
+        }
+
+        public void LogEnumerable<T>(string name, Func<IEnumerable<T>> func)
+        {
+            if (Logging)
+            {
+                LogEnumerable(name, func());
             }
         }
 

@@ -36,22 +36,22 @@ namespace MultiScaleTrajectories.Algorithm.DataStructures.Graph
 
         }
 
-        public void RemoveEdge(E edge)
-        {
-            //if (!edge.Source.InEdges.Any() && !edge.Source.OutEdges.Any())
-            //    Nodes.Remove((N)edge.Source);
+        //public void RemoveEdge(E edge)
+        //{
+        //    //if (!edge.Source.InEdges.Any() && !edge.Source.OutEdges.Any())
+        //    //    Nodes.Remove((N)edge.Source);
 
-            //if (!edge.Target.InEdges.Any() && !edge.Target.OutEdges.Any())
-            //    Nodes.Remove((N)edge.Target);
+        //    //if (!edge.Target.InEdges.Any() && !edge.Target.OutEdges.Any())
+        //    //    Nodes.Remove((N)edge.Target);
 
-            N source = (N)edge.Source;
-            N target = (N)edge.Target;
+        //    N source = (N)edge.Source;
+        //    N target = (N)edge.Target;
 
-            source.OutEdges.Remove(target);
-            target.InEdges.Remove(source);
+        //    source.OutEdges.Remove(target);
+        //    target.InEdges.Remove(source);
 
-            Edges.Remove(edge);
-        }
+        //    Edges.Remove(edge);
+        //}
 
         public void RemoveNode(N node)
         {

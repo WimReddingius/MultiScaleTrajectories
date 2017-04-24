@@ -79,7 +79,7 @@ namespace AlgorithmVisualization.View.Explore
             optionsContainer.Visible = false;
 
             //set to auto selection by default
-            autoChooseRunsCheckBox.CheckState = CheckState.Checked;;
+            autoChooseRunsCheckBox.CheckState = CheckState.Checked;
 
             //default run selection
             lastSelection = new List<AlgorithmRun<TIn, TOut>>();

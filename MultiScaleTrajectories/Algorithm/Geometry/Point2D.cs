@@ -6,11 +6,13 @@ namespace MultiScaleTrajectories.Algorithm.Geometry
     {
         public double X;
         public double Y;
+        public int Index;
 
-        public Point2D(double x, double y)
+        public Point2D(double x, double y, int index)
         {
             X = x;
             Y = y;
+            Index = index;
         }
 
         public void SetPosition(double x, double y)
@@ -22,11 +24,6 @@ namespace MultiScaleTrajectories.Algorithm.Geometry
         public override string ToString()
         {
             return "(" + X + ", " + Y + ")" ;
-        }
-
-        public Point2D Clone()
-        {
-            return new Point2D(X, Y);
         }
 
         public Vector2d AsVector()

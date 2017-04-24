@@ -27,6 +27,7 @@ namespace MultiScaleTrajectories.MultiScale.Algorithm.ImaiIri.ShortcutProvision
             var output = new ShortcutFinderOutput();
             algorithm.Compute(input, output);
             //Output.LogLine(output.LogString);
+            Output.LogEnumerable("Shortcuts for epsilon " + epsilon, () => output.Shortcuts.AllShortcuts);
             return output.Shortcuts.AllShortcuts;
         }
 

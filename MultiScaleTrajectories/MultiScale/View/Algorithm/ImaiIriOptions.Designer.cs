@@ -32,6 +32,7 @@
             this.label1 = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
             this.shortestPathProviderComboBox = new System.Windows.Forms.ComboBox();
+            this.shortcutShortestPathOptions = new System.Windows.Forms.Panel();
             this.SuspendLayout();
             // 
             // shortcutFinderComboBox
@@ -76,16 +77,27 @@
             this.shortestPathProviderComboBox.TabIndex = 2;
             this.shortestPathProviderComboBox.SelectedIndexChanged += new System.EventHandler(this.shortestPathProviderComboBox_SelectedIndexChanged);
             // 
+            // shortcutShortestPathOptions
+            // 
+            this.shortcutShortestPathOptions.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.shortcutShortestPathOptions.Location = new System.Drawing.Point(0, 96);
+            this.shortcutShortestPathOptions.Name = "shortcutShortestPathOptions";
+            this.shortcutShortestPathOptions.Size = new System.Drawing.Size(162, 110);
+            this.shortcutShortestPathOptions.TabIndex = 4;
+            // 
             // ImaiIriOptions
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.Controls.Add(this.shortcutShortestPathOptions);
             this.Controls.Add(this.label2);
             this.Controls.Add(this.shortestPathProviderComboBox);
             this.Controls.Add(this.label1);
             this.Controls.Add(this.shortcutFinderComboBox);
             this.Name = "ImaiIriOptions";
-            this.Size = new System.Drawing.Size(162, 106);
+            this.Size = new System.Drawing.Size(162, 206);
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -97,5 +109,6 @@
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.ComboBox shortestPathProviderComboBox;
+        private System.Windows.Forms.Panel shortcutShortestPathOptions;
     }
 }

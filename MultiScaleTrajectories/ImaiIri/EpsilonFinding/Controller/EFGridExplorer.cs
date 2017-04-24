@@ -81,9 +81,9 @@ namespace MultiScaleTrajectories.ImaiIri.EpsilonFinding.Controller
             var colorList = new List<Color>();
             for (int i = 0; i < size; i++)
             {
-                var rAverage = rMin + (int)((rMax - rMin) * i / size);
-                var gAverage = gMin + (int)((gMax - gMin) * i / size);
-                var bAverage = bMin + (int)((bMax - bMin) * i / size);
+                var rAverage = rMin + (rMax - rMin) * i / size;
+                var gAverage = gMin + (gMax - gMin) * i / size;
+                var bAverage = bMin + (bMax - bMin) * i / size;
                 colorList.Add(Color.FromArgb(rAverage, gAverage, bAverage));
             }
             return colorList;

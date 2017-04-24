@@ -2,7 +2,6 @@
 using AlgorithmVisualization.Util.Naming;
 using MultiScaleTrajectories.Algorithm.DataStructures.Graph;
 using MultiScaleTrajectories.Algorithm.Geometry;
-using MultiScaleTrajectories.ImaiIri;
 
 namespace MultiScaleTrajectories.MultiScale.Algorithm.ImaiIri.ShortestPathProvision
 {

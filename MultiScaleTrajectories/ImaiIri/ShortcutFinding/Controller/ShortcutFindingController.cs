@@ -4,6 +4,7 @@ using MultiScaleTrajectories.ImaiIri.ShortcutFinding.Algorithm;
 using MultiScaleTrajectories.ImaiIri.ShortcutFinding.Algorithm.ChinChan;
 using MultiScaleTrajectories.ImaiIri.ShortcutFinding.View;
 using MultiScaleTrajectories.Trajectory.Single;
+using MultiScaleTrajectories.Trajectory.Single.View;
 
 namespace MultiScaleTrajectories.ImaiIri.ShortcutFinding.Controller
 {

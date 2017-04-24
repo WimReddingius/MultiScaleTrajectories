@@ -9,11 +9,8 @@ namespace MultiScaleTrajectories.PathFinding.SingleSource
     {
         public SSSPController() : base("Single-Source Shortest Path")
         {
-            AddAlgorithm(() => new DijkstraHeapless<Node, Edge>());
-            AddAlgorithm(() => new DijkstraBinomialHeap<Node, Edge>());
-            AddAlgorithm(() => new DijkstraFibonacciHeap<Node, Edge>());
-            AddAlgorithm(() => new DijkstraDAryHeap<Node, Edge>());
-            AddAlgorithm(() => new DijkstraPairingHeap<Node, Edge>());
+            AddAlgorithm(() => new DijkstraHeapFast<Node, Edge>());
+            AddAlgorithm(() => new DijkstraHeapSlow<Node, Edge>());
 
             //TODO: input editing
         }

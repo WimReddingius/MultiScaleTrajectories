@@ -1,6 +1,4 @@
-﻿using System.Collections.Generic;
-
-namespace MultiScaleTrajectories.ImaiIri.EpsilonFinding.Algorithm
+﻿namespace MultiScaleTrajectories.ImaiIri.EpsilonFinding.Algorithm
 {
     class ArbitraryShortcutSet : ShortcutSet<ArbitraryShortcut>
     {

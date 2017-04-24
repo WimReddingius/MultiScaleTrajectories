@@ -53,8 +53,8 @@ namespace AlgorithmVisualization.View.Util.Components
 
         void SplitTablePanel_MouseMove(object sender, MouseEventArgs e)
         {
-            bool r = rowMove(sender, e);
-            bool c = colMove(sender, e);
+            bool r = rowMove(e);
+            bool c = colMove(e);
 
             if (r && !c)
                 Cursor = Cursors.SizeNS;
@@ -66,7 +66,7 @@ namespace AlgorithmVisualization.View.Util.Components
                 Cursor = Cursors.Default;
         }
 
-        bool rowMove(object sender, MouseEventArgs e)
+        bool rowMove(MouseEventArgs e)
         {
             bool isMove = false;
             if (!isNormalRow) nomalizeRowStyles();
@@ -77,7 +77,7 @@ namespace AlgorithmVisualization.View.Util.Components
             {
                 if (sizingRow < 0) return false;
                 int newHeight = oldHeight + e.Y - mdown.Y;
-                sizeRow(sizingRow, newHeight);
+                sizeRow(newHeight);
                 isMove = true;
             }
             else
@@ -94,7 +94,7 @@ namespace AlgorithmVisualization.View.Util.Components
             return isMove;
         }
 
-        bool colMove(object sender, MouseEventArgs e)
+        bool colMove(MouseEventArgs e)
         {
             bool isMove = false;
             if (!isNormalCol) nomalizeColStyles();
@@ -105,7 +105,7 @@ namespace AlgorithmVisualization.View.Util.Components
             {
                 if (sizingCol < 0) return false;
                 int newWidth = oldWidth + e.X - mdown.X;
-                sizeCol(sizingCol, newWidth);
+                sizeCol(newWidth);
                 isMove = true;
             }
             else
@@ -179,7 +179,7 @@ namespace AlgorithmVisualization.View.Util.Components
 
         }
 
-        void sizeRow(int row, int newHeight)
+        void sizeRow(int newHeight)
         {   // change the height of one row
             if (newHeight == 0) return;
             if (sizingRow < 0) return;
@@ -194,7 +194,7 @@ namespace AlgorithmVisualization.View.Util.Components
             getRowRectangles(SplitterSize);
         }
 
-        void sizeCol(int col, int newWidth)
+        void sizeCol(int newWidth)
         {   // change the height of one row
             if (newWidth == 0) return;
             if (sizingCol < 0) return;

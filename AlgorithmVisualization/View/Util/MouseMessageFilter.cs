@@ -15,7 +15,7 @@ namespace AlgorithmVisualization.View.Util
             {
                 Point mousePosition = Control.MousePosition;
 
-                MouseMoved ?.Invoke(null, new MouseEventArgs(MouseButtons.None, 0, mousePosition.X, mousePosition.Y, 0));;
+                MouseMoved ?.Invoke(null, new MouseEventArgs(MouseButtons.None, 0, mousePosition.X, mousePosition.Y, 0));
             }
 
             // Always allow message to continue to the next filter control

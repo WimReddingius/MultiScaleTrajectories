@@ -1,5 +1,4 @@
-﻿using System;
-using AlgorithmVisualization.Algorithm;
+﻿using AlgorithmVisualization.Algorithm;
 using AlgorithmVisualization.Algorithm.Run;
 using AlgorithmVisualization.Controller.Explore;
 

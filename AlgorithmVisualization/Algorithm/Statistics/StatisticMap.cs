@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace AlgorithmVisualization.Algorithm.Statistics
 {
@@ -21,5 +22,18 @@ namespace AlgorithmVisualization.Algorithm.Statistics
             this[name] = value;
         }
 
+        public override string ToString()
+        {
+            var str = "";
+
+            foreach (var pair in this)
+            {
+                str += pair.Key + ": " + pair.Value.Value;
+                if (!this.Last().Equals(pair))
+                    str += ", ";
+            }
+
+            return str;
+        }
     }
 }

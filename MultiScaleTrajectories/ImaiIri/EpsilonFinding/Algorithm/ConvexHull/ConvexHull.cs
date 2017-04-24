@@ -1,6 +1,6 @@
 ﻿using System;
-using MultiScaleTrajectories.Algorithm.DataStructures.BST;
-using MultiScaleTrajectories.Algorithm.DataStructures.BST.RedBlackBST;
+using MultiScaleTrajectories.Algorithm.DataStructures.Search;
+using MultiScaleTrajectories.Algorithm.DataStructures.Search.RedBlack;
 using MultiScaleTrajectories.Algorithm.Geometry;
 using OpenTK;
 
@@ -8,20 +8,20 @@ namespace MultiScaleTrajectories.ImaiIri.EpsilonFinding.Algorithm.ConvexHull
 {
     class ConvexHull
     {
-        public Point2D LeftMost => points.Min;
-        public Point2D RightMost => points.Max;
+        public Point2D LeftMost => Points.Min;
+        public Point2D RightMost => Points.Max;
         public Point2D ShortcutStart;
         public bool IsUpper;
 
-        protected IBinarySearchTree<Point2D> points;
+        protected ISearchTree<Point2D> Points;
 
-        public ConvexHull(Point2D shortcutStart, bool upper, IBinarySearchTree<Point2D> points)
+        public ConvexHull(Point2D shortcutStart, bool upper, ISearchTree<Point2D> points)
         {
             IsUpper = upper;
             ShortcutStart = shortcutStart;
             if (points != null)
             {
-                this.points = points;
+                Points = points;
                 InitializePoints();
             }
         }
@@ -32,12 +32,12 @@ namespace MultiScaleTrajectories.ImaiIri.EpsilonFinding.Algorithm.ConvexHull
 
         protected void InitializePoints()
         {
-            points.Insert(ShortcutStart);
+            Points.Insert(ShortcutStart);
         }
 
         public void Insert(Point2D point)
         {
-            var count = points.Size;
+            var count = Points.Size;
 
             //always insert first two points
             if (count != 1)
@@ -55,15 +55,16 @@ namespace MultiScaleTrajectories.ImaiIri.EpsilonFinding.Algorithm.ConvexHull
                         return;
                 }
 
-                var startPoint = points.Find(UpdatePredicator(point, true));
-                var endPoint = points.Find(UpdatePredicator(point, false));
+                Point2D startPoint, endPoint;
+                Points.TryFind(p => UpdatePredicate(point, p, true), out startPoint);
+                Points.TryFind(p => UpdatePredicate(point, p, false), out endPoint);
 
                 //point outside of hull
                 if (startPoint != null || endPoint != null)
                 {
                     if (startPoint != RightMost && endPoint != LeftMost)
                     {
-                        var inRangePredicate = new BSTPredicator<Point2D>(p =>
+                        SearchPredicate<Point2D> inRangePredicate = p =>
                         {
                             if (startPoint != null && p.X <= startPoint.X)
                                 return 1;
@@ -72,14 +73,15 @@ namespace MultiScaleTrajectories.ImaiIri.EpsilonFinding.Algorithm.ConvexHull
                                 return -1;
 
                             return 0;
-                        });
+                        };
 
                         //delete everything after start up to end
-                        var element = points.Find(inRangePredicate);
+                        Point2D element;
+                        Points.TryFind(inRangePredicate, out element);
                         while (element != null)
                         {
-                            points.Delete(element);
-                            element = points.Find(inRangePredicate);
+                            Points.Delete(element);
+                            Points.TryFind(inRangePredicate, out element);
                         }
                     }
                 }
@@ -90,33 +92,30 @@ namespace MultiScaleTrajectories.ImaiIri.EpsilonFinding.Algorithm.ConvexHull
                 }
             }
 
-            points.Insert(point, (pNew, pOld) =>
+            Points.Insert(point, pointWithSameX =>
             {
                 if (IsUpper)
-                    return pNew.Y > pOld.Y;
+                    return point.Y > pointWithSameX.Y;
 
-                return pNew.Y < pOld.Y;
+                return point.Y < pointWithSameX.Y;
             });
         }
 
         //used to find which points to remove when updating convex hull
-        private BSTPredicator<Point2D> UpdatePredicator(Point2D newPoint, bool start)
+        private int UpdatePredicate(Point2D newPoint, Point2D point, bool start)
         {
-            return new BSTPredicator<Point2D>(point =>
-            {
-                var leftOfPoint = newPoint.X < point.X;
-                var rightOfPoint = newPoint.X > point.X;
+            var leftOfPoint = newPoint.X < point.X;
+            var rightOfPoint = newPoint.X > point.X;
 
-                if (start && leftOfPoint)
-                    return -1;
+            if (start && leftOfPoint)
+                return -1;
 
-                if (!start && rightOfPoint)
-                    return 1;
+            if (!start && rightOfPoint)
+                return 1;
 
-                var normalOnTheLeft = IsUpper && start || !IsUpper && !start;
-                var normal = Normal(point, newPoint, normalOnTheLeft);
-                return NormalBSTPredicate(point, normal);
-            });
+            var normalOnTheLeft = IsUpper && start || !IsUpper && !start;
+            var normal = Normal(point, newPoint, normalOnTheLeft);
+            return NormalBSTPredicate(point, normal);
         }
 
         //returns whether to go left or right in the BST, given a certain point and certain target normal
@@ -124,8 +123,9 @@ namespace MultiScaleTrajectories.ImaiIri.EpsilonFinding.Algorithm.ConvexHull
         //n1 <= normal <= n2
         protected int NormalBSTPredicate(Point2D point, double normal)
         {
-            var leftNeighbor = points.GetPredecessor(point);
-            var rightNeighbor = points.GetSuccessor(point);
+            Point2D leftNeighbor, rightNeighbor;
+            Points.TryGetPredecessor(point, out leftNeighbor);
+            Points.TryGetSuccessor(point, out rightNeighbor);
 
             //when at the start, pick left normal to point straight left
             var leftNormal = leftNeighbor != null ? Normal(leftNeighbor, point, IsUpper) : ConvertToHullAngle(Math.PI);
@@ -192,13 +192,14 @@ namespace MultiScaleTrajectories.ImaiIri.EpsilonFinding.Algorithm.ConvexHull
             var shortcutNormal = ShortcutNormal(shortcutEnd);
             
             //get furthest point
-            var predicator = new BSTPredicator<Point2D>(point => NormalBSTPredicate(point, shortcutNormal));            
-            return points.Find(predicator);
+            Point2D point;
+            Points.TryFind(p => NormalBSTPredicate(p, shortcutNormal), out point);
+            return point;
         }
 
         public override string ToString()
         {
-            return points.ToString();
+            return Points.ToString();
         }
 
         public static int BSTPointComparison(Point2D p1, Point2D p2)

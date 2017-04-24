@@ -1,4 +1,6 @@
-﻿namespace MultiScaleTrajectories.MultiScale.View.Explore
+﻿using MultiScaleTrajectories.Trajectory.View;
+
+namespace MultiScaleTrajectories.MultiScale.View.Explore
 {
     partial class LevelTrajectoryGeoAuto
     {
@@ -28,7 +30,7 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.trajectoryGMap = new MultiScaleTrajectories.Trajectory.TrajectoryGeo();
+            this.trajectoryGMap = new TrajectoryGeo();
             this.panel1 = new System.Windows.Forms.Panel();
             this.label1 = new System.Windows.Forms.Label();
             this.detailNumericUpDown = new System.Windows.Forms.NumericUpDown();
@@ -101,7 +103,7 @@
 
         #endregion
 
-        private MultiScaleTrajectories.Trajectory.TrajectoryGeo trajectoryGMap;
+        private TrajectoryGeo trajectoryGMap;
         private System.Windows.Forms.Panel panel1;
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.NumericUpDown detailNumericUpDown;

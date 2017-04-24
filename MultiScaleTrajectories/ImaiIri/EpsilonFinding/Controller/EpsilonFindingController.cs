@@ -2,6 +2,7 @@
 using MultiScaleTrajectories.ImaiIri.EpsilonFinding.Algorithm.BruteForce;
 using MultiScaleTrajectories.ImaiIri.EpsilonFinding.Algorithm.ConvexHull.Bidirectional;
 using MultiScaleTrajectories.Trajectory.Single;
+using MultiScaleTrajectories.Trajectory.Single.View;
 
 namespace MultiScaleTrajectories.ImaiIri.EpsilonFinding.Controller
 {

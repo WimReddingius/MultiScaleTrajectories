@@ -3,6 +3,7 @@ using MultiScaleTrajectories.MultiScale.Algorithm.ImaiIri;
 using MultiScaleTrajectories.MultiScale.Controller.Explore;
 using MultiScaleTrajectories.MultiScale.View.Edit;
 using MultiScaleTrajectories.Trajectory.Single;
+using MultiScaleTrajectories.Trajectory.Single.View;
 
 namespace MultiScaleTrajectories.MultiScale.Controller
 {

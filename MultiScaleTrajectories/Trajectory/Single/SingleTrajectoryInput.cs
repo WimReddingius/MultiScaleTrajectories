@@ -10,7 +10,7 @@ namespace MultiScaleTrajectories.Trajectory.Single
 
         public SingleTrajectoryInput()
         {
-            Clear();
+            Trajectory = new Trajectory2D();
         }
 
         [JsonConstructor]

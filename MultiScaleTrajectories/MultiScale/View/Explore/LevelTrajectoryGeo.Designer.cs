@@ -1,4 +1,6 @@
-﻿namespace MultiScaleTrajectories.MultiScale.View.Explore
+﻿using MultiScaleTrajectories.Trajectory.View;
+
+namespace MultiScaleTrajectories.MultiScale.View.Explore
 {
     partial class LevelTrajectoryGeo
     {
@@ -28,7 +30,7 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.trajectoryGMap = new MultiScaleTrajectories.Trajectory.TrajectoryGeo();
+            this.trajectoryGMap = new TrajectoryGeo();
             this.SuspendLayout();
             // 
             // trajectoryGMap
@@ -54,6 +56,6 @@
 
         #endregion
 
-        private MultiScaleTrajectories.Trajectory.TrajectoryGeo trajectoryGMap;
+        private TrajectoryGeo trajectoryGMap;
     }
 }

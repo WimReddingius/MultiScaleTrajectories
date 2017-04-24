@@ -4,7 +4,6 @@ using System.Drawing;
 using System.Windows.Forms;
 using AlgorithmVisualization.Algorithm;
 using AlgorithmVisualization.Algorithm.Run;
-using AlgorithmVisualization.Util.Naming;
 using AlgorithmVisualization.View.Util;
 
 namespace AlgorithmVisualization.Controller.Explore

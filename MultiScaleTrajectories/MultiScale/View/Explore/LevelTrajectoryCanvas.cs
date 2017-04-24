@@ -4,7 +4,7 @@ using AlgorithmVisualization.Algorithm.Run;
 using AlgorithmVisualization.View.GLVisualization.GLUtil;
 using MultiScaleTrajectories.Algorithm.Geometry;
 using MultiScaleTrajectories.MultiScale.Algorithm;
-using MultiScaleTrajectories.Trajectory;
+using MultiScaleTrajectories.Trajectory.View;
 
 namespace MultiScaleTrajectories.MultiScale.View.Explore
 {

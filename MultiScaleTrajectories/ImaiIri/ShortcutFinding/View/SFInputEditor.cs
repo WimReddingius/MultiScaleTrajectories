@@ -32,7 +32,7 @@ namespace MultiScaleTrajectories.ImaiIri.ShortcutFinding.View
             trajectoryEditor.LoadInput(input);
         }
 
-        private void epsilonTextBox_TextChanged(object sender, System.EventArgs e)
+        private void epsilonTextBox_TextChanged(object sender, EventArgs e)
         {
             if (epsilonTextBox.Text != "")
             {
