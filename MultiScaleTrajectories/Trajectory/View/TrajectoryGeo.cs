@@ -7,7 +7,7 @@ using System.Windows.Forms;
 using GMap.NET;
 using GMap.NET.MapProviders;
 using GMap.NET.WindowsForms;
-using MultiScaleTrajectories.Algorithm.Geometry;
+using MultiScaleTrajectories.AlgoUtil.Geometry;
 
 namespace MultiScaleTrajectories.Trajectory.View
 {

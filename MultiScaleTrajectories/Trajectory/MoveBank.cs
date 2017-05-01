@@ -4,7 +4,7 @@ using System.Diagnostics;
 using System.Globalization;
 using System.IO;
 using System.Linq;
-using MultiScaleTrajectories.Algorithm.Geometry;
+using MultiScaleTrajectories.AlgoUtil.Geometry;
 
 namespace MultiScaleTrajectories.Trajectory
 {

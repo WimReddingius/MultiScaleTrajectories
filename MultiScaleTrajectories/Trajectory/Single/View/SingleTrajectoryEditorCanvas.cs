@@ -4,7 +4,7 @@ using System.Linq;
 using System.Windows.Forms;
 using AlgorithmVisualization.Controller.Edit;
 using AlgorithmVisualization.View.GLVisualization.GLUtil;
-using MultiScaleTrajectories.Algorithm.Geometry;
+using MultiScaleTrajectories.AlgoUtil.Geometry;
 using MultiScaleTrajectories.Trajectory.View;
 using OpenTK.Input;
 using MouseEventArgs = System.Windows.Forms.MouseEventArgs;
@@ -13,7 +13,7 @@ namespace MultiScaleTrajectories.Trajectory.Single.View
 {
     class SingleTrajectoryEditorCanvas : TrajectoryCanvas, IInputEditor<SingleTrajectoryInput>
     {
-        private Point2D lastSelectedPoint;
+        private TPoint2D lastSelectedPoint;
         private bool draggingPoint;
         private SingleTrajectoryInput input;
 
@@ -32,7 +32,7 @@ namespace MultiScaleTrajectories.Trajectory.Single.View
 
         protected override void RenderWorld()
         {
-            Func<Point2D, Color> colorFunc = (p) =>
+            Func<TPoint2D, Color> colorFunc = (p) =>
             {
                 if (p.Equals(lastSelectedPoint))
                     return Color.Blue;
@@ -71,7 +71,7 @@ namespace MultiScaleTrajectories.Trajectory.Single.View
             {
                 if (PickManager.PickingHit(pickId))
                 { //clicked on point
-                    lastSelectedPoint = (Point2D)PickManager.GetPickedObject(pickId);
+                    lastSelectedPoint = (TPoint2D)PickManager.GetPickedObject(pickId);
                 }
                 else
                 {  //clicked on empty space for new point
@@ -97,7 +97,7 @@ namespace MultiScaleTrajectories.Trajectory.Single.View
                 if (PickManager.PickingHit(pickId))
                 {
                     //clicked on point
-                    Point2D pointToBeRemoved = (Point2D) PickManager.GetPickedObject(pickId);
+                    TPoint2D pointToBeRemoved = (TPoint2D) PickManager.GetPickedObject(pickId);
                     input.Trajectory.RemovePoint(pointToBeRemoved);
                 }
             }

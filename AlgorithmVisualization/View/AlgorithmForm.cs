@@ -65,19 +65,27 @@ namespace AlgorithmVisualization.View
 
         private void addControllerButton_Click(object sender, EventArgs e)
         {
+            var oldIndex = controllerComboBox.SelectedIndex;
+
             var controller = selectedAlgoControllerFactory.Create();
             algoControllers.Add(controller);
             controllerComboBox.SelectedItem = controller;
-            
+
+            if (oldIndex == -1)
+                controllerComboBox_SelectedIndexChanged(null, null);
         }
 
         private void removeControllerButton_Click(object sender, EventArgs e)
         {
             algoControllers.Remove(selectedAlgoController);
+            controllerComboBox_SelectedIndexChanged(null, null);
         }
 
-        private void algorithmProblemComboBox_SelectedIndexChanged(object sender, EventArgs e)
+        private void controllerComboBox_SelectedIndexChanged(object sender, EventArgs e)
         {
+            if (selectedAlgoController == null)
+                return;
+
             var algoView = selectedAlgoController.AlgorithmView;
 
             baseSplitContainer.Panel1.Fill(algoView.VisualizationContainer);
@@ -138,12 +146,12 @@ namespace AlgorithmVisualization.View
 
         private void RedrawProblemComboBox()
         {
-            controllerComboBox.SelectedIndexChanged -= algorithmProblemComboBox_SelectedIndexChanged;
+            controllerComboBox.SelectedIndexChanged -= controllerComboBox_SelectedIndexChanged;
 
             controllerComboBox.DataSource = null;
             controllerComboBox.DataSource = algoControllers;
 
-            controllerComboBox.SelectedIndexChanged += algorithmProblemComboBox_SelectedIndexChanged;
+            controllerComboBox.SelectedIndexChanged += controllerComboBox_SelectedIndexChanged;
         }
 
     }

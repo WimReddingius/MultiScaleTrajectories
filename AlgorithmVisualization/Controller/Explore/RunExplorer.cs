@@ -43,7 +43,7 @@ namespace AlgorithmVisualization.Controller.Explore
 
         public void LoadRuns(params AlgorithmRun<TIn, TOut>[] runs)
         {
-            if (!ConsolidationSupported(runs.Length))
+            if (!ConsolidationSupported(runs))
             {
                 throw new ArgumentOutOfRangeException(nameof(runs), "Consolidation not supported for " + runs.Length + " runs.");
             }
@@ -90,9 +90,9 @@ namespace AlgorithmVisualization.Controller.Explore
 
         public abstract void Visualize(params AlgorithmRun<TIn, TOut>[] runs);
 
-        public virtual bool ConsolidationSupported(int numRuns)
+        public virtual bool ConsolidationSupported(AlgorithmRun<TIn, TOut>[] runs)
         {
-            return MinConsolidation <= numRuns && numRuns <= MaxConsolidation;
+            return MinConsolidation <= runs.Length && runs.Length <= MaxConsolidation;
         }
 
         public virtual void Destroy()

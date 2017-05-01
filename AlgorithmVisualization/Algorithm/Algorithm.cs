@@ -33,7 +33,7 @@ namespace AlgorithmVisualization.Algorithm
         {
         }
 
-        public abstract void Compute(TIn input, TOut output);
+        public abstract void Compute(TIn input, out TOut output);
 
         [OnDeserialized]
         internal void OnDeserialized(StreamingContext context)

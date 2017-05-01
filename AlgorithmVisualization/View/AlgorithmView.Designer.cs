@@ -97,7 +97,6 @@ namespace AlgorithmVisualization.View
             // openInputDialog
             // 
             this.openInputDialog.DefaultExt = "input";
-            this.openInputDialog.FileName = "openFileDialog1";
             this.openInputDialog.Filter = "Input Files|*.input; *.csv";
             this.openInputDialog.Title = "Open Input";
             // 

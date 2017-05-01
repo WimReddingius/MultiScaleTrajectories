@@ -3,10 +3,12 @@ using System.Collections.Generic;
 using System.Windows.Forms;
 using AlgorithmVisualization.Controller;
 using AlgorithmVisualization.View;
-using MultiScaleTrajectories.ImaiIri.EpsilonFinding.Controller;
-using MultiScaleTrajectories.ImaiIri.ShortcutFinding.Controller;
-using MultiScaleTrajectories.MultiScale.Controller;
+using MultiScaleTrajectories.AlgoUtil.PathFinding.SingleSource;
 using MultiScaleTrajectories.Properties;
+using MultiScaleTrajectories.Simplification.MultiScale;
+using MultiScaleTrajectories.Simplification.ShortcutFinding.ArbitraryScale;
+using MultiScaleTrajectories.Simplification.ShortcutFinding.MultiScale;
+using MultiScaleTrajectories.Simplification.ShortcutFinding.SingleScale;
 
 namespace MultiScaleTrajectories
 {
@@ -24,8 +26,9 @@ namespace MultiScaleTrajectories
             var controllers = new List<Func<AlgorithmControllerBase>>
             {
                 () => new MSController(),
-                () => new ShortcutFindingController(),
-                () => new EpsilonFindingController(),
+                () => new ASShortcutFindingController(),
+                () => new SSShortcutFindingController(),
+                () => new MSShortcutFindingController()
                 //() => new SSSPController()
             };
 

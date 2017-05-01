@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Windows.Forms;
-using MultiScaleTrajectories.Algorithm.Geometry;
+using MultiScaleTrajectories.AlgoUtil.Geometry;
 
 namespace MultiScaleTrajectories.Trajectory.View
 {

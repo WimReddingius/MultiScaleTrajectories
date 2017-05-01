@@ -169,7 +169,7 @@ namespace AlgorithmVisualization.View.Explore
             if (RunExplorer == null)
                 return;
 
-            if (RunExplorer.ConsolidationSupported(RunSelection.Count))
+            if (RunExplorer.ConsolidationSupported(RunSelection.ToArray()))
             {
                 visualizationContainer.Fill(RunExplorer);
                 RunExplorer.LoadRuns(RunSelection.ToArray());

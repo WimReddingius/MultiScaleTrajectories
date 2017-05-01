@@ -3,7 +3,7 @@ using System.Drawing;
 using System.Windows.Forms;
 using AlgorithmVisualization.View.GLVisualization;
 using AlgorithmVisualization.View.GLVisualization.GLUtil;
-using MultiScaleTrajectories.Algorithm.Geometry;
+using MultiScaleTrajectories.AlgoUtil.Geometry;
 using OpenTK;
 using OpenTK.Graphics.OpenGL;
 using OpenTK.Input;
@@ -104,7 +104,7 @@ namespace MultiScaleTrajectories.Trajectory.View
             }
         }
 
-        protected void DrawPoint(Point2D point, double radius, int numSegments, Color color, int? name = null)
+        protected void DrawPoint(TPoint2D point, double radius, int numSegments, Color color, int? name = null)
         {
             GL.PushMatrix();
             GL.Color3(color);
@@ -124,14 +124,14 @@ namespace MultiScaleTrajectories.Trajectory.View
             GL.LineWidth(lineWidth);
             GL.Color3(color);
             GL.Begin(PrimitiveType.LineStrip);
-            foreach (Point2D p in trajectory)
+            foreach (TPoint2D p in trajectory)
             {
                 GL.Vertex3(p.X, p.Y, -1f);
             }
             GL.End();
         }
 
-        protected void DrawTrajectoryPoints(Trajectory2D trajectory, double radius, int numSegments, Func<Point2D, Color> colorFunc, Func<Point2D, int> nameFunc = null)
+        protected void DrawTrajectoryPoints(Trajectory2D trajectory, double radius, int numSegments, Func<TPoint2D, Color> colorFunc, Func<TPoint2D, int> nameFunc = null)
         {
             foreach (var p in trajectory)
             {

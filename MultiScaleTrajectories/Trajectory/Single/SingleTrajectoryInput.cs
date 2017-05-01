@@ -1,5 +1,5 @@
 ﻿using AlgorithmVisualization.Algorithm;
-using MultiScaleTrajectories.Algorithm.Geometry;
+using MultiScaleTrajectories.AlgoUtil.Geometry;
 using Newtonsoft.Json;
 
 namespace MultiScaleTrajectories.Trajectory.Single

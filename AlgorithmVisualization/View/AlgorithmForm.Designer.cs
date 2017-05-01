@@ -161,7 +161,7 @@
             this.controllerComboBox.Name = "controllerComboBox";
             this.controllerComboBox.Size = new System.Drawing.Size(250, 21);
             this.controllerComboBox.TabIndex = 1;
-            this.controllerComboBox.SelectedIndexChanged += new System.EventHandler(this.algorithmProblemComboBox_SelectedIndexChanged);
+            this.controllerComboBox.SelectedIndexChanged += new System.EventHandler(this.controllerComboBox_SelectedIndexChanged);
             // 
             // removeControllerButton
             // 
@@ -221,15 +221,14 @@
             // 
             // saveControllerDialog
             // 
-            this.saveControllerDialog.DefaultExt = "json";
-            this.saveControllerDialog.Filter = "JSON(*.json)|*json";
+            this.saveControllerDialog.DefaultExt = "config";
+            this.saveControllerDialog.Filter = "Config Files|*.config";
             this.saveControllerDialog.Title = "Save Problem Configuration";
             // 
             // openControllerDialog
             // 
-            this.openControllerDialog.DefaultExt = "json";
-            this.openControllerDialog.FileName = "openFileDialog1";
-            this.openControllerDialog.Filter = "JSON(*.json)|*json";
+            this.openControllerDialog.DefaultExt = "config";
+            this.openControllerDialog.Filter = "Config Files|*.config";
             this.openControllerDialog.Title = "Open Problem Configuration";
             // 
             // AlgorithmForm

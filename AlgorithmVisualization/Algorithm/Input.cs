@@ -12,13 +12,18 @@ namespace AlgorithmVisualization.Algorithm
         {
             Statistics = new StatisticMap();
             Name = "Input";
+            RegisterAllStatistics();
+        }
+
+        protected void RegisterAllStatistics()
+        {
+            Statistics.Put("Name", () => Name);
             RegisterStatistics();
         }
 
         //overrides may not use instance members
         protected virtual void RegisterStatistics()
         {
-            Statistics.Put("Name", () => Name);
         }
 
         public abstract void Clear();
@@ -26,7 +31,7 @@ namespace AlgorithmVisualization.Algorithm
         [OnDeserialized]
         internal void OnDeserialized(StreamingContext context)
         {
-            RegisterStatistics();
+            RegisterAllStatistics();
         }
 
     }

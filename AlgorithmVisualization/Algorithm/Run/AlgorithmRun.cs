@@ -106,8 +106,7 @@ namespace AlgorithmVisualization.Algorithm.Run
                 Statistics.Put("Running time - Iteration " + it, iterationRunTime);
                 iterationRunTime.Start();
 
-                var output = it == 1 ? Output : new TOut { Logging = false };
-                Algorithm.Compute(Input, output);
+                Algorithm.Compute(Input, out Output);
 
                 iterationRunTime.End();
                 algorithmWorker.ReportProgress(it / NumIterations * 100, it);
