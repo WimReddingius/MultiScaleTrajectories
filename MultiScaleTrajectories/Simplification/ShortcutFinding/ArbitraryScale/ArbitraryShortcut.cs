@@ -1,6 +1,6 @@
 ﻿using MultiScaleTrajectories.AlgoUtil.Geometry;
 
-namespace MultiScaleTrajectories.Simplification.ShortcutFinding.ArbitraryScale.Algorithm
+namespace MultiScaleTrajectories.Simplification.ShortcutFinding.ArbitraryScale
 {
     class ArbitraryShortcut : Shortcut
     {

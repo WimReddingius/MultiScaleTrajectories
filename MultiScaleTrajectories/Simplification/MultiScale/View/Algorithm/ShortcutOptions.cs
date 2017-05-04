@@ -7,6 +7,7 @@ using MultiScaleTrajectories.AlgoUtil.Geometry;
 using MultiScaleTrajectories.AlgoUtil.PathFinding.SingleSource.Algorithm.Dijkstra;
 using MultiScaleTrajectories.Simplification.MultiScale.Algorithm.ImaiIri.ShortcutProvision;
 using MultiScaleTrajectories.Simplification.MultiScale.Algorithm.ImaiIri.ShortestPathProvision;
+using MultiScaleTrajectories.Simplification.MultiScale.Algorithm.ImaiIri.ShortestPathProvision.Graph;
 using MultiScaleTrajectories.Simplification.MultiScale.Algorithm.ImaiIri.ShortestPathProvision.Region;
 using MultiScaleTrajectories.Simplification.ShortcutFinding.MultiScale.Algorithm.Algorithms;
 using Newtonsoft.Json;
@@ -47,13 +48,14 @@ namespace MultiScaleTrajectories.Simplification.MultiScale.View.Algorithm
                 new ShortcutsOnDemand(new MSSChinChan()),
                 new ShortcutPreprocessor(new MSSChinChan()),
                 new ShortcutPreprocessor(new MSSBruteForce()),
-                new ShortcutPreprocessor(new MSSConvexHullBidirectional())
+                new ShortcutPreprocessor(new MSSConvexHull())
             };
 
             shortestPathroviders = new BindingList<ShortestPathProvider>
             {
-                new ShortcutGraphShortestPath(new DijkstraFast<DataNode<TPoint2D>, WeightedEdge>()),
-                new ShortcutGraphShortestPath(new DijkstraSlow<DataNode<TPoint2D>, WeightedEdge>()),
+                new BasicShortestPathProvider(new DijkstraOnDemand<DataNode<TPoint2D>, WeightedEdge>()),
+                new BasicShortestPathProvider(new DijkstraStandard<DataNode<TPoint2D>, WeightedEdge>()),
+                new ShortcutGraphDijkstra(),
                 new ShortcutRegionsShortestPath()
             };
 
@@ -81,10 +83,9 @@ namespace MultiScaleTrajectories.Simplification.MultiScale.View.Algorithm
 
         private void shortestPathProviderComboBox_SelectedIndexChanged(object sender, EventArgs e)
         {
-            var shortestPathProvider = (ShortestPathProvider) shortestPathProviderComboBox.SelectedItem;
-            ChosenShortestPathProvider = shortestPathProvider;
+            ChosenShortestPathProvider = (ShortestPathProvider)shortestPathProviderComboBox.SelectedItem;
 
-            shortestPathProviderOptions.Fill(shortestPathProvider.OptionsControl);
+            shortestPathProviderOptions.Fill(ChosenShortestPathProvider.OptionsControl);
         }
 
     }

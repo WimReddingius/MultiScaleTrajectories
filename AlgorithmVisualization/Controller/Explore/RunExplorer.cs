@@ -8,7 +8,7 @@ using AlgorithmVisualization.View.Util;
 
 namespace AlgorithmVisualization.Controller.Explore
 {
-    public abstract class RunExplorer<TIn, TOut> : UserControl, IRunExplorer<TIn, TOut> where TIn : Input, new() where TOut : Output, new()
+    public abstract class RunExplorer<TIn, TOut> : UserControl, IRunExplorer<TIn, TOut> where TIn : Input, new() where TOut : Output
     {
         public int MinConsolidation { get; protected set; }
         public int MaxConsolidation { get; protected set; }

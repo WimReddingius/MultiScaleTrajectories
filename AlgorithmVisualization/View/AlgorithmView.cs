@@ -16,7 +16,7 @@ using Newtonsoft.Json;
 
 namespace AlgorithmVisualization.View
 {
-    partial class AlgorithmView<TIn, TOut> : AlgorithmViewBase where TIn : Input, new() where TOut : Output, new()
+    partial class AlgorithmView<TIn, TOut> : AlgorithmViewBase where TIn : Input, new() where TOut : Output
     {
         public sealed override Control VisualizationContainer { get; set; }
 

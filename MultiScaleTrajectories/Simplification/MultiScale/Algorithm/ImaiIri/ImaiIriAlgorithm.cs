@@ -2,6 +2,7 @@
 using AlgorithmVisualization.Algorithm;
 using MultiScaleTrajectories.Simplification.MultiScale.Algorithm.ImaiIri.ShortcutProvision;
 using MultiScaleTrajectories.Simplification.MultiScale.Algorithm.ImaiIri.ShortestPathProvision;
+using MultiScaleTrajectories.Simplification.MultiScale.Algorithm.ImaiIri.ShortestPathProvision.Graph;
 using MultiScaleTrajectories.Simplification.MultiScale.View.Algorithm;
 using Newtonsoft.Json;
 
@@ -27,7 +28,7 @@ namespace MultiScaleTrajectories.Simplification.MultiScale.Algorithm.ImaiIri
 
             Statistics.Put("Shortcut Provider Statistics", () =>
             {
-                var graphProvider = ShortestPathProvider as ShortcutGraphShortestPath;
+                var graphProvider = ShortestPathProvider as BasicShortestPathProvider;
                 
                 if (graphProvider == null)
                     return "";

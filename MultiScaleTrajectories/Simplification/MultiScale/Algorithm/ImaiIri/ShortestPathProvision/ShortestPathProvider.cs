@@ -16,12 +16,27 @@ namespace MultiScaleTrajectories.Simplification.MultiScale.Algorithm.ImaiIri.Sho
             OptionsControl = options;
         }
 
-        public LinkedList<TPoint2D> FindShortestPath(IShortcutSet set, TPoint2D source, TPoint2D target)
+        public abstract PointPath FindShortestPath(IShortcutSet set, TPoint2D source, TPoint2D target, bool createPath = true);
+
+        public abstract Dictionary<TPoint2D, PointPath> FindShortestPaths(IShortcutSet set, TPoint2D source, ICollection<TPoint2D> targets, bool createPath = true);
+
+        public class PointPath
         {
-            int weight;
-            return FindShortestPath(set, source, target, out weight);
+            public LinkedList<TPoint2D> Points;
+            public int Weight;
+
+            public PointPath(LinkedList<TPoint2D> points, int weight)
+            {
+                Points = points;
+                Weight = weight;
+            }
+
+            public PointPath(int weight)
+            {
+                Points = new LinkedList<TPoint2D>();
+                Weight = weight;
+            }
         }
 
-        public abstract LinkedList<TPoint2D> FindShortestPath(IShortcutSet set, TPoint2D source, TPoint2D target, out int pathWeight);
     }
 }

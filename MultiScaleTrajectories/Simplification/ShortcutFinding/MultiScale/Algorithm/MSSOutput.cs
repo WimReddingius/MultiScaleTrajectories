@@ -1,55 +1,59 @@
-﻿using System.Collections.Generic;
-using System.Linq;
-using AlgorithmVisualization.Algorithm;
-using AlgorithmVisualization.Util;
+﻿using AlgorithmVisualization.Algorithm;
+using AlgorithmVisualization.Algorithm.Statistics;
+using MultiScaleTrajectories.AlgoUtil.Geometry;
+using MultiScaleTrajectories.Simplification.ShortcutFinding.MultiScale.Algorithm.Representation;
 using Newtonsoft.Json;
 
 namespace MultiScaleTrajectories.Simplification.ShortcutFinding.MultiScale.Algorithm
 {
     sealed class MSSOutput : Output
     {
-        public int NumLevels => Shortcuts.Count;
+        [JsonProperty] public IMSShortcutSet Shortcuts; 
+        [JsonProperty] private MSSInput input;
 
-        [JsonProperty]
-        private JDictionary<int, IShortcutSet> Shortcuts;
-
-        public MSSOutput()
+        public MSSOutput(MSSInput input)
         {
-            Shortcuts = new JDictionary<int, IShortcutSet>();
+            this.input = input;
+            RegisterLevelCountStatistics();
         }
 
-        public Dictionary<int, IShortcutSet> GetAllShortcuts()
+        [JsonConstructor]
+        private MSSOutput(MSSInput input, StatisticMap Statistics, IMSShortcutSet Shortcuts)
         {
-            return Shortcuts;
+            this.input = input;
+            this.Statistics = Statistics;
+            this.Shortcuts = Shortcuts;
+            RegisterLevelCountStatistics();
+        }
+
+        private void RegisterLevelCountStatistics()
+        {
+            for (var l = 1; l <= input.NumLevels; l++)
+            {
+                var level = l;
+                Statistics.Put("Shortcuts @ level " + level, () => Shortcuts?.CountAtLevel(level).ToString() ?? "");
+            }
+        }
+
+        public IShortcutSet ExtractShortcuts(int level)
+        {
+            return Shortcuts.ExtractShortcuts(level);
         }
 
         public IShortcutSet GetShortcuts(int level)
         {
-            return Shortcuts[level];
+            return Shortcuts.GetShortcuts(level);
         }
 
-        public void SetShortcuts(int level, IShortcutSet set)
+        public void RemovePoint(TPoint2D point)
         {
-            Shortcuts[level] = set;
-
-            Statistics.Put("Shortcuts @ level " + level, () => set.Count);
-        }
-
-        public void RemoveShortcuts(int level)
-        {
-            Shortcuts.Remove(level);
+            Shortcuts.RemovePoint(point);
         }
 
         protected override void RegisterStatistics()
         {
             base.RegisterStatistics();
-            Statistics.Put("Shortcuts", () =>
-            {
-                if (Shortcuts.Count == 0)
-                    return 0;
-
-                return Shortcuts.Select(l => l.Value.Count).Aggregate((t1, t2) => t1 + t2);
-            });
+            Statistics.Put("Shortcuts", () => Shortcuts?.Count.ToString() ?? "");
         }
 
     }

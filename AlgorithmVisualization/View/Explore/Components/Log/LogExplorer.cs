@@ -4,7 +4,7 @@ using AlgorithmVisualization.Controller.Explore;
 
 namespace AlgorithmVisualization.View.Explore.Components.Log
 {
-    class LogExplorer<TIn, TOut> : SingleStateRunExplorer<TIn, TOut> where TIn : Input, new() where TOut : Output, new()
+    class LogExplorer<TIn, TOut> : SingleStateRunExplorer<TIn, TOut> where TIn : Input, new() where TOut : Output
     {
         private readonly LogStream<TIn, TOut> logStream;
 

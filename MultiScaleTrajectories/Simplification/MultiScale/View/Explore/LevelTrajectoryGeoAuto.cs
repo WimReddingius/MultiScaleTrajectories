@@ -2,8 +2,10 @@
 using System.Drawing;
 using System.Drawing.Drawing2D;
 using System.Drawing.Text;
+using System.Threading;
 using System.Windows.Forms;
 using AlgorithmVisualization.Algorithm.Run;
+using AlgorithmVisualization.View.Util;
 using GMap.NET.WindowsForms;
 using MultiScaleTrajectories.Simplification.MultiScale.Algorithm;
 
@@ -24,7 +26,14 @@ namespace MultiScaleTrajectories.Simplification.MultiScale.View.Explore
             InitializeComponent();
 
             MapControl.Paint += DrawInfo;
-            MapControl.OnMapZoomChanged += FitLevelToDesiredDetail;
+            MapControl.OnMapZoomChanged += () =>
+            {
+                new Thread(() =>
+                {
+                    Thread.Sleep(660);
+                    this.InvokeIfRequired(FitLevelToDesiredDetail);
+                }).Start();
+            };
         }
 
         private void FitLevelToDesiredDetail()

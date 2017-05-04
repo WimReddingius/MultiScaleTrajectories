@@ -7,7 +7,7 @@ using MultiScaleTrajectories.Trajectory.View;
 namespace MultiScaleTrajectories.Trajectory.Single
 {
     abstract class SingleTrajectoryAlgorithmController<TIn, TOut> : AlgorithmController<TIn, TOut> 
-        where TIn : SingleTrajectoryInput, new() where TOut : Output, new()
+        where TIn : SingleTrajectoryInput, new() where TOut : Output
     {
         protected SingleTrajectoryAlgorithmController(string name) : base(name)
         {

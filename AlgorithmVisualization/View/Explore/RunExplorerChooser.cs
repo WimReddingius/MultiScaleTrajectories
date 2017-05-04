@@ -13,7 +13,7 @@ using AlgorithmVisualization.View.Util;
 
 namespace AlgorithmVisualization.View.Explore
 {
-    partial class RunExplorerChooser<TIn, TOut> : UserControl, IDestroyable where TIn : Input, new() where TOut : Output, new()
+    partial class RunExplorerChooser<TIn, TOut> : UserControl, IDestroyable where TIn : Input, new() where TOut : Output
     {
         public readonly BindingList<RunExplorer<TIn, TOut>> RunExplorers;
 

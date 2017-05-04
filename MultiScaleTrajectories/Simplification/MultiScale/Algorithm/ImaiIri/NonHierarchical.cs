@@ -1,15 +1,14 @@
 ﻿using System.Linq;
 using MultiScaleTrajectories.AlgoUtil.Geometry;
 using MultiScaleTrajectories.Simplification.MultiScale.View.Algorithm;
-using MultiScaleTrajectories.Simplification.ShortcutFinding;
 using Newtonsoft.Json;
 
 namespace MultiScaleTrajectories.Simplification.MultiScale.Algorithm.ImaiIri
 {
-    class ImaiIriNaive : ImaiIriAlgorithm
+    class NonHierarchical : ImaiIriAlgorithm
     {
         [JsonConstructor]
-        public ImaiIriNaive(ShortcutOptions shortcutOptions = null) : base("ImaiIri - Naive", shortcutOptions)
+        public NonHierarchical(ShortcutOptions shortcutOptions = null) : base("Non-hierarchical", shortcutOptions)
         {
         }
 
@@ -24,11 +23,12 @@ namespace MultiScaleTrajectories.Simplification.MultiScale.Algorithm.ImaiIri
                 var epsilon = input.GetEpsilon(level);
 
                 var levelShortcuts = ShortcutProvider.GetShortcuts(level, epsilon);
-                output.LogObject("Number of shortcuts found on level " + level, levelShortcuts.Count);
 
-                var shortestPath = ShortestPathProvider.FindShortestPath(levelShortcuts, trajectory.First(), trajectory.Last());
+                var shortestPath = ShortestPathProvider.FindShortestPath(levelShortcuts, trajectory.First(), trajectory.Last()).Points;
 
                 shortestPath.AddFirst(trajectory.First());
+
+                //O(n)
                 var shortestPathTrajectory = new Trajectory2D(shortestPath);
 
                 output.SetTrajectoryAtLevel(level, shortestPathTrajectory);

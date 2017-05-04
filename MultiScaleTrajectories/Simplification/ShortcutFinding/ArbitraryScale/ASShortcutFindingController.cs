@@ -11,12 +11,12 @@ namespace MultiScaleTrajectories.Simplification.ShortcutFinding.ArbitraryScale
         public ASShortcutFindingController() : base("Imai Iri - Shortcut finding - Arbitrary Scale")
         {
             AddAlgorithm(() => new ASSBruteForce());
-            AddAlgorithm(() => new ASSConvexHullBidirectional());
+            AddAlgorithm(() => new ASSConvexHull());
 
             AddSimpleInputEditor(new SingleTrajectoryEditorCanvas());
             AddSimpleInputEditor(new SingleTrajectoryEditorGeo());
 
-            AddRunExplorer(() => new ASFGridExplorer());
+            AddRunExplorer(() => new ASSGridExplorer());
         }
     }
 }

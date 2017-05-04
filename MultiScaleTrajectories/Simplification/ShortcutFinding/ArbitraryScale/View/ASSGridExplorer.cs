@@ -1,18 +1,16 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Drawing;
 using AlgorithmVisualization.Algorithm.Run;
 using AlgorithmVisualization.Controller.Explore;
 using MultiScaleTrajectories.Simplification.ShortcutFinding.ArbitraryScale.Algorithm;
-using MultiScaleTrajectories.Simplification.ShortcutFinding.SingleScale.View;
 using MultiScaleTrajectories.Simplification.ShortcutFinding.View;
 using MultiScaleTrajectories.Trajectory.Single;
 
 namespace MultiScaleTrajectories.Simplification.ShortcutFinding.ArbitraryScale.View
 {
-    class ASFGridExplorer : SingleStateRunExplorer<SingleTrajectoryInput, ASSOutput>
+    class ASSGridExplorer : SingleStateRunExplorer<SingleTrajectoryInput, ASSOutput>
     {
-        public ASFGridExplorer()
+        public ASSGridExplorer()
         {
             var grid = new ColorableGrid();
             WrapControl(grid);
@@ -33,17 +31,18 @@ namespace MultiScaleTrajectories.Simplification.ShortcutFinding.ArbitraryScale.V
 
                 var trajectory = run.Input.Trajectory;
                 var numPoints = run.Input.Trajectory.Count;
+                var epsilons = run.Output.Shortcuts.Epsilons;
 
                 var gradientSize = 100;
                 var colorGradient = ColorableGrid.CreateColorGradient(gradientSize, new[] { Color.Black, Color.Red, Color.Yellow, Color.White });
                 var maxEpsilon = 0.0;
                 var minEpsilon = double.MaxValue;
 
-                foreach (var shortcut in run.Output.Shortcuts.AllShortcuts)
+                foreach (var shortcut in epsilons.Keys)
                 {
-                    var arbitraryShortcut = (ArbitraryShortcut) shortcut;
-                    maxEpsilon = Math.Max(maxEpsilon, arbitraryShortcut.MinEpsilon);
-                    minEpsilon = Math.Min(minEpsilon, arbitraryShortcut.MinEpsilon);
+                    var eps = epsilons[shortcut];
+                    maxEpsilon = Math.Max(maxEpsilon, eps);
+                    minEpsilon = Math.Min(minEpsilon, eps);
                 }
 
                 var epsilonRange = maxEpsilon - minEpsilon;
@@ -60,9 +59,7 @@ namespace MultiScaleTrajectories.Simplification.ShortcutFinding.ArbitraryScale.V
                                 color = colorGradient[colorGradient.Count - 1];
                             else
                             {
-                                var shortcut =
-                                    (ArbitraryShortcut) run.Output.Shortcuts.ShortcutMap[trajectory[i]][trajectory[j]];
-                                var epsilon = shortcut.MinEpsilon;
+                                var epsilon = epsilons[new Shortcut(trajectory[i], trajectory[j])];
                                 var index = (int) Math.Round((epsilon - minEpsilon) / epsilonRange * (gradientSize - 1));
                                 color = colorGradient[index];
                             }

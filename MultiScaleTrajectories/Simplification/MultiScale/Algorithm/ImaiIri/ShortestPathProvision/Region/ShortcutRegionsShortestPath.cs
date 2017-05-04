@@ -11,7 +11,7 @@ namespace MultiScaleTrajectories.Simplification.MultiScale.Algorithm.ImaiIri.Sho
         {
         }
 
-        public override LinkedList<TPoint2D> FindShortestPath(IShortcutSet set, TPoint2D source, TPoint2D target, out int weight)
+        public override PointPath FindShortestPath(IShortcutSet set, TPoint2D source, TPoint2D target, bool createPath = true)
         {
             var regionSet = (ShortcutRegionSet)set;
             var trajectory = set.Trajectory;
@@ -24,25 +24,27 @@ namespace MultiScaleTrajectories.Simplification.MultiScale.Algorithm.ImaiIri.Sho
             }
 
             var path = new LinkedList<TPoint2D>();
-            var step = distances.GetRangeData(source).NextStep;
 
-            while (step != null)
+            if (createPath)
             {
-                var point = step.Point;
-                path.AddLast(point);
-                step = step.NextStep;
+                var step = distances.GetRangeData(source).NextStep;
+
+                while (step != null)
+                {
+                    var point = step.Point;
+                    path.AddLast(point);
+                    step = step.NextStep;
+                }
             }
 
-            if (path.Last.Value == target)
-            {
-                weight = path.Count;
-                return path;
-            }
-
-            weight = int.MaxValue;
-            return null;
+            return path.Last.Value == target ? new PointPath(path, path.Count) : null;
+            //return new PointPath(path, path.Count);
         }
 
+        public override Dictionary<TPoint2D, PointPath> FindShortestPaths(IShortcutSet set, TPoint2D source, ICollection<TPoint2D> targets, bool createPath = true)
+        {
+            throw new NotImplementedException();
+        }
     }
  
 }

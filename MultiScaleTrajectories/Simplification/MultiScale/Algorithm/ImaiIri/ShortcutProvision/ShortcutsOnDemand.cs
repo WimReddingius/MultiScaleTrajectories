@@ -37,21 +37,28 @@ namespace MultiScaleTrajectories.Simplification.MultiScale.Algorithm.ImaiIri.Sho
             MSSOutput output;
             algorithm.Compute(input, out output);
 
-            var shortcuts = output.GetShortcuts(1);
+            var shortcuts = output.ExtractShortcuts(1);
 
-            if (Cumulative && prunedShortcuts != null)
+            if (Cumulative)
             {
-                shortcuts.Except(prunedShortcuts);
+                if (prunedShortcuts != null)
+                {
+                    shortcuts.Except(prunedShortcuts);
+                    prunedShortcuts.Union(shortcuts);
+                }
+                else
+                {
+                    prunedShortcuts = shortcuts;
+                }
             }
 
-            prunedShortcuts = shortcuts;
-
             //Output.LogLine(output.LogString);
+            Output.LogObject("Number of shortcuts found on level " + level, shortcuts.Count);
 
             return shortcuts;
         }
 
-        public override void Prune(TPoint2D point)
+        public override void RemovePoint(TPoint2D point)
         {
             prunedPoints.Add(point);
         }

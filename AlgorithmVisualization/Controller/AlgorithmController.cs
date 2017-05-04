@@ -13,7 +13,7 @@ using Newtonsoft.Json;
 namespace AlgorithmVisualization.Controller
 {
     [JsonObject(MemberSerialization.OptIn)]
-    public abstract class AlgorithmController<TIn, TOut> : AlgorithmControllerBase where TOut : Output, new() where TIn : Input, new()
+    public abstract class AlgorithmController<TIn, TOut> : AlgorithmControllerBase where TOut : Output where TIn : Input, new()
     {
         public bool CanImport;
 

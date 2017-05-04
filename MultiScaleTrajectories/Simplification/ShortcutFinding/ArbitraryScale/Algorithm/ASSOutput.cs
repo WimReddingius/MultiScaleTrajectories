@@ -4,11 +4,11 @@ namespace MultiScaleTrajectories.Simplification.ShortcutFinding.ArbitraryScale.A
 {
     class ASSOutput : Output
     {
-        public SimpleShortcutSet Shortcuts;
+        public ArbitraryShortcutSet Shortcuts;
 
         public ASSOutput()
         {
-            Shortcuts = new SimpleShortcutSet();
+            Shortcuts = new ArbitraryShortcutSet();
         }
 
     }

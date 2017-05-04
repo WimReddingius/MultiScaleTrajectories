@@ -8,7 +8,7 @@ namespace MultiScaleTrajectories.Simplification.MultiScale.Algorithm.ImaiIri.Sho
     class ShortcutPreprocessor : ShortcutProvider
     {
         [JsonProperty] private MSSAlgorithm algorithm;
-        [JsonIgnore] private MSSOutput algoOutput;
+        [JsonIgnore] private MSSOutput algorithmOutput;
 
         [JsonConstructor]
         public ShortcutPreprocessor(MSSAlgorithm algorithm) : base("Preprocess - " + algorithm.Name, algorithm.OptionsControl)
@@ -20,31 +20,30 @@ namespace MultiScaleTrajectories.Simplification.MultiScale.Algorithm.ImaiIri.Sho
         {
             base.Init(inp, outp, cumulative);
 
-            var algoInput = new MSSInput
+            var algInput = new MSSInput
             {
                 Trajectory = inp.Trajectory,
                 Epsilons = inp.Epsilons,
                 Cumulative = cumulative
             };
 
-            algorithm.Compute(algoInput, out algoOutput);
+            algorithm.Compute(algInput, out algorithmOutput);
 
             //Output.LogLine(algoOutput.LogString);
         }
 
         public override IShortcutSet GetShortcuts(int level, double epsilon)
         {
-            var shortcuts = algoOutput.GetShortcuts(level);
-            algoOutput.RemoveShortcuts(level);
+            var shortcuts = algorithmOutput.ExtractShortcuts(level);
+
+            Output.LogObject("Number of shortcuts found on level " + level, shortcuts.Count);
+
             return shortcuts;
         }
 
-        public override void Prune(TPoint2D point)
+        public override void RemovePoint(TPoint2D point)
         {
-            foreach (var shortcutSet in algoOutput.GetAllShortcuts().Values)
-            {
-                shortcutSet.Except(point);
-            }
+            algorithmOutput.RemovePoint(point);
         }
 
     }

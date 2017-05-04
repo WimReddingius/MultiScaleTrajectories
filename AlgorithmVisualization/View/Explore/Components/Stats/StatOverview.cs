@@ -13,7 +13,7 @@ using AlgorithmVisualization.View.Util;
 
 namespace AlgorithmVisualization.View.Explore.Components.Stats
 {
-    partial class StatOverview<TIn, TOut> : UserControl, IRunExplorer<TIn, TOut> where TIn : Input, new() where TOut : Output, new()
+    partial class StatOverview<TIn, TOut> : UserControl, IRunExplorer<TIn, TOut> where TIn : Input, new() where TOut : Output
     {
         public int MaxConsolidation => 30;
         public int MinConsolidation => 1;
@@ -59,26 +59,29 @@ namespace AlgorithmVisualization.View.Explore.Components.Stats
         {
             var updatedStats = new List<string>();
 
-            //update the current stats
-            var stats = statistics;
-
-            //fill cells
-            foreach (var stat in stats.ToList()) //cloning for thread safety
+            if (statistics != null)
             {
-                if (!statToRow.ContainsKey(stat.Key))
+                //update the current stats
+                var stats = statistics;
+
+                //fill cells
+                foreach (var stat in stats.ToList()) //cloning for thread safety
                 {
-                    var row = table.Rows.Add(stat.Key);
-                    statToRow[stat.Key] = row;
+                    if (!statToRow.ContainsKey(stat.Key))
+                    {
+                        var row = table.Rows.Add(stat.Key);
+                        statToRow[stat.Key] = row;
+                    }
+
+                    if (!currentlyTrackedStats.Contains(stat.Key))
+                    {
+                        currentlyTrackedStats.Add(stat.Key);
+                    }
+
+                    statToRow[stat.Key][column] = stat.Value.Value;
+
+                    updatedStats.Add(stat.Key);
                 }
-
-                if (!currentlyTrackedStats.Contains(stat.Key))
-                {
-                    currentlyTrackedStats.Add(stat.Key);
-                }
-
-                statToRow[stat.Key][column] = stat.Value.Value;
-
-                updatedStats.Add(stat.Key);
             }
 
             //removing run stats and, if necessary, empty rows
@@ -92,7 +95,6 @@ namespace AlgorithmVisualization.View.Explore.Components.Stats
 
                     var row = statToRow[stat];
                     row[column] = null;
-
 
                     var columnCount = table.Columns.Count;
                     for (var col = 1; col < columnCount; col++)
@@ -114,7 +116,7 @@ namespace AlgorithmVisualization.View.Explore.Components.Stats
                 GetTableFillTask(runStatsTable, runs, run => run.Statistics),
                 GetTableFillTask(algorithmStatsTable, runs, run => run.Algorithm.Statistics),
                 GetTableFillTask(inputStatsTable, runs, run => run.Input.Statistics),
-                GetTableFillTask(outputStatsTable, runs, run => run.Output.Statistics)
+                GetTableFillTask(outputStatsTable, runs, run => run.Output?.Statistics)
             };
 
             var newWorker = new BackgroundWorker { WorkerSupportsCancellation = true };

@@ -28,6 +28,6 @@ namespace MultiScaleTrajectories.Simplification.MultiScale.Algorithm.ImaiIri.Sho
 
         public abstract IShortcutSet GetShortcuts(int level, double epsilon);
 
-        public abstract void Prune(TPoint2D point);
+        public abstract void RemovePoint(TPoint2D point);
     }
 }

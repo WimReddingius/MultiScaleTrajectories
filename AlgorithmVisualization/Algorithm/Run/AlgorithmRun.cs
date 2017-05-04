@@ -6,9 +6,9 @@ using Newtonsoft.Json;
 namespace AlgorithmVisualization.Algorithm.Run
 {
     public delegate void RunStateChangedHandler<TIn, TOut>(AlgorithmRun<TIn, TOut> run, RunState runState)
-        where TIn : Input, new() where TOut : Output, new();
+        where TIn : Input, new() where TOut : Output;
 
-    public class AlgorithmRun<TIn, TOut> : Nameable where TIn : Input, new() where TOut : Output, new()
+    public class AlgorithmRun<TIn, TOut> : Nameable where TIn : Input, new() where TOut : Output
     {
         public event RunStateChangedHandler<TIn, TOut> StateChanged;
 
@@ -44,8 +44,8 @@ namespace AlgorithmVisualization.Algorithm.Run
 
             if (State == RunState.Idle)
             {
-                Output = new TOut();
                 Statistics.Clear();
+                Output = null;
             }
 
             StateChanged?.Invoke(this, state);

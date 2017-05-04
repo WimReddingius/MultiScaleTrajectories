@@ -9,8 +9,8 @@ namespace MultiScaleTrajectories.AlgoUtil.PathFinding.SingleSource
     {
         public SSSPController() : base("Single-Source Shortest Path")
         {
-            AddAlgorithm(() => new DijkstraFast<Node, Edge>());
-            AddAlgorithm(() => new DijkstraSlow<Node, Edge>());
+            AddAlgorithm(() => new DijkstraOnDemand<Node, Edge>());
+            AddAlgorithm(() => new DijkstraStandard<Node, Edge>());
 
             //TODO: input editing
         }

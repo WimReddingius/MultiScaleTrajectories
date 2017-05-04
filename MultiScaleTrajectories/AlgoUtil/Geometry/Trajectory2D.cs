@@ -8,7 +8,7 @@ namespace MultiScaleTrajectories.AlgoUtil.Geometry
         {
         }
 
-        public Trajectory2D(ICollection<TPoint2D> points)
+        public Trajectory2D(IEnumerable<TPoint2D> points)
         {
             foreach (var point in points)
             {

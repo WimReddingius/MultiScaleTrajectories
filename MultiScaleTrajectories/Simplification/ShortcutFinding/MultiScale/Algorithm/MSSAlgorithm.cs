@@ -7,7 +7,7 @@ namespace MultiScaleTrajectories.Simplification.ShortcutFinding.MultiScale.Algor
 {
     abstract class MSSAlgorithm : Algorithm<MSSInput, MSSOutput>
     {
-        [JsonIgnore] protected MSSComplete ShortcutFinder => options.ChosenShortcutFinder;
+        [JsonIgnore] protected MSShortcutSetBuilder ShortcutSetBuilder => options.ChosenShortcutSetBuilder;
         [JsonProperty] private readonly MSSAlgorithmOptions options;
 
         protected MSSAlgorithm(string name, MSSAlgorithmOptions opt) : base(name)
@@ -18,7 +18,8 @@ namespace MultiScaleTrajectories.Simplification.ShortcutFinding.MultiScale.Algor
 
         protected override void RegisterStatistics()
         {
-            Statistics.Put("Shortcut Provider", () => ShortcutFinder.Name);
+            Statistics.Put("Shortcut Set Builder", () => ShortcutSetBuilder.Name);
+            Statistics.Put("Shortcut Set Factory", () => ShortcutSetBuilder.ShortcutSetFactory.Name);
         }
 
     }

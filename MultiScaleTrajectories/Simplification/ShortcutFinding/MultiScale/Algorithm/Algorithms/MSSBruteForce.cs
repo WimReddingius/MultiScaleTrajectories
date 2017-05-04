@@ -1,5 +1,6 @@
 ﻿using MultiScaleTrajectories.AlgoUtil.Geometry;
 using MultiScaleTrajectories.Simplification.ShortcutFinding.Algorithm.BruteForce;
+using MultiScaleTrajectories.Simplification.ShortcutFinding.MultiScale.Algorithm.Representation;
 using MultiScaleTrajectories.Simplification.ShortcutFinding.MultiScale.View;
 using Newtonsoft.Json;
 
@@ -7,32 +8,37 @@ namespace MultiScaleTrajectories.Simplification.ShortcutFinding.MultiScale.Algor
 {
     class MSSBruteForce : MSSAlgorithm
     {
-        private MSSInput input;
-        private double currentMinEpsilon;
 
         [JsonConstructor]
         public MSSBruteForce(MSSAlgorithmOptions options = null) : base("Brute Force", options)
         {
         }
 
-        public override void Compute(MSSInput inp, out MSSOutput outp)
+        public override void Compute(MSSInput input, out MSSOutput output)
         {
-            input = inp;
-            outp = new MSSOutput();
+            output = new MSSOutput(input);
 
-            ShortcutFinder.ShortcutValid = ShortcutValid;
-            ShortcutFinder.BeforeShortcutValidation = BeforeShortcutValidation;
-            ShortcutFinder.FindShortcuts(input, outp, false);
+            var checker = new BruteForceShortcutChecker(input, output);
+            output.Shortcuts = ShortcutSetBuilder.FindShortcuts(checker, false);
         }
 
-        private void BeforeShortcutValidation(TPoint2D start, TPoint2D end)
+        class BruteForceShortcutChecker : MSShortcutChecker
         {
-            currentMinEpsilon = SimpleEpsilonFinder.GetMinEpsilon(input.Trajectory, start.Index, end.Index);
-        }
+            private double currentMinEpsilon;
 
-        protected bool ShortcutValid(int level, TPoint2D start, TPoint2D end)
-        {
-            return input.GetEpsilon(level) >= currentMinEpsilon;
+            public BruteForceShortcutChecker(MSSInput input, MSSOutput output) : base(input, output)
+            {
+            }
+
+            public override void BeforeShortcutValidation(TPoint2D start, TPoint2D end)
+            {
+                currentMinEpsilon = SimpleEpsilonFinder.GetMinEpsilon(Input.Trajectory, start.Index, end.Index);
+            }
+
+            public override bool ShortcutValid(int level, TPoint2D start, TPoint2D end)
+            {
+                return Input.GetEpsilon(level) >= currentMinEpsilon;
+            }
         }
     }
 }

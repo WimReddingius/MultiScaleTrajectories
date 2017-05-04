@@ -379,7 +379,7 @@ namespace MultiScaleTrajectories.Simplification.ShortcutFinding
                 regionList.AddFirst(new Region(Trajectory[rangeStart], Trajectory[rangeEnd]));
         }
 
-        public void AppendPoint(TPoint2D start, TPoint2D end)
+        public void AppendShortcut(TPoint2D start, TPoint2D end)
         {
             var regionList = RegionMap[start];
 
@@ -390,7 +390,7 @@ namespace MultiScaleTrajectories.Simplification.ShortcutFinding
                 regionList.AddLast(new Region(end, end));
         }
 
-        public void PrependPoint(TPoint2D start, TPoint2D end)
+        public void PrependShortcut(TPoint2D start, TPoint2D end)
         {
             var regionList = RegionMap[start];
 
@@ -399,6 +399,31 @@ namespace MultiScaleTrajectories.Simplification.ShortcutFinding
                 firstRegion.Start = end;
             else
                 regionList.AddFirst(new Region(end, end));
+        }
+
+        //O(n^2)
+        public Dictionary<TPoint2D, ICollection<TPoint2D>> AsMap()
+        {
+            var map = new Dictionary<TPoint2D, ICollection<TPoint2D>>();
+
+            foreach (var pair in RegionMap)
+            {
+                var point = pair.Key;
+                var regions = pair.Value;
+                var ends = new HashSet<TPoint2D>();
+
+                foreach (var region in regions)
+                {
+                    for (var i = region.Start.Index; i <= region.End.Index; i++)
+                    {
+                        ends.Add(Trajectory[i]);
+                    }
+                }
+
+                map[point] = ends;
+            }
+
+            return map;
         }
 
         IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();

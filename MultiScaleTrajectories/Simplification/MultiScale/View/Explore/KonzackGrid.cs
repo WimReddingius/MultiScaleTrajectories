@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Drawing;
 using System.Drawing.Drawing2D;
 using System.Drawing.Text;
@@ -8,22 +7,22 @@ using AlgorithmVisualization.Algorithm.Run;
 using AlgorithmVisualization.Controller.Explore;
 using MultiScaleTrajectories.AlgoUtil.DataStructures.Graph;
 using MultiScaleTrajectories.Simplification.MultiScale.Algorithm;
-using MultiScaleTrajectories.Simplification.MultiScale.Algorithm.ImaiIri;
+using MultiScaleTrajectories.Simplification.MultiScale.Algorithm.ImaiIri.Hierarchical.Konzack;
 using MultiScaleTrajectories.Simplification.ShortcutFinding.View;
 using Shortcut = MultiScaleTrajectories.Simplification.ShortcutFinding.Shortcut;
 
 namespace MultiScaleTrajectories.Simplification.MultiScale.View.Explore
 {
-    class ImaiIriHierarchicalGrid : SingleStateRunExplorer<MSInput, MSOutput>
+    class KonzackGrid : SingleStateRunExplorer<MSInput, MSOutput>
     {
-        private ImaiIriHierarchical.Output Output => (ImaiIriHierarchical.Output)run.Output;
+        private KonzackOutput Output => (KonzackOutput)run.Output;
 
         private readonly ColorableGrid grid;
         private AlgorithmRun<MSInput, MSOutput> run;
         private int currentLevel;
 
 
-        public ImaiIriHierarchicalGrid()
+        public KonzackGrid()
         {
             grid = new ColorableGrid();
             WrapControl(grid);
@@ -57,7 +56,7 @@ namespace MultiScaleTrajectories.Simplification.MultiScale.View.Explore
             if (runs.Length != 1)
                 return false;
 
-            return runs[0].Algorithm is ImaiIriHierarchical;
+            return runs[0].Algorithm is Konzack;
         }
 
         private void DrawGrid()

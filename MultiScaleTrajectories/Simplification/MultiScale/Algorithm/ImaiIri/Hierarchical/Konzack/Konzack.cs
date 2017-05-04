@@ -5,24 +5,25 @@ using MultiScaleTrajectories.Simplification.MultiScale.View.Algorithm;
 using MultiScaleTrajectories.Simplification.ShortcutFinding;
 using Newtonsoft.Json;
 
-namespace MultiScaleTrajectories.Simplification.MultiScale.Algorithm.ImaiIri
+namespace MultiScaleTrajectories.Simplification.MultiScale.Algorithm.ImaiIri.Hierarchical.Konzack
 {
-    class ImaiIriHierarchical : ImaiIriAlgorithm
+    abstract class Konzack : ImaiIriAlgorithm
     {
 
         [JsonConstructor]
-        public ImaiIriHierarchical(ShortcutOptions shortcutOptions = null) : base("ImaiIri - Hierarchical", shortcutOptions)
+        protected Konzack(string name, ShortcutOptions shortcutOptions = null) : base(name, shortcutOptions)
         {
         }
 
-        public override void Compute(MSInput input, out MSOutput realOutput)
+        public override void Compute(MSInput input, out MSOutput output)
         {
-            var output = new Output();
+            output = new KonzackOutput();
 
             var trajectory = input.Trajectory;
             ShortcutProvider.Init(input, output, true);
 
-            var shortcutGraphs = new Dictionary<int, ShortcutGraph>();
+            var shortcutGraphs = ((KonzackOutput)output).Graphs;
+
             ShortcutGraph prevShortcutGraph = null;
 
             for (var level = 1; level <= input.NumLevels; level++)
@@ -38,25 +39,26 @@ namespace MultiScaleTrajectories.Simplification.MultiScale.Algorithm.ImaiIri
                 else
                 {
                     //build initial graph (just a simple sequence of nodes like in the trajectory)
-                    shortcutGraph = new ShortcutGraph(trajectory);
+                    shortcutGraph = new ShortcutGraph(trajectory, true);
                 }
 
-                var shortcutGraphLevel = (ShortcutGraph) ShortcutProvider.GetShortcuts(level, epsilon);
+                var shortcutsLevel = ShortcutProvider.GetShortcuts(level, epsilon);
 
                 //select correct shortcuts
                 var weights = new Dictionary<Shortcut, int>();
 
-                output.LogObject("Number of shortcuts found for level " + level, () => shortcutGraphLevel.Count);
+                output.LogObject("Number of shortcuts found for level " + level, () => shortcutsLevel.Count);
 
-                foreach (var shortcut in shortcutGraphLevel)
+                var shortcutWeights = GetShortcutWeights(shortcutGraph, shortcutsLevel);
+
+                foreach (var pair in shortcutWeights)
                 {
-                    //dijkstra to get edge weight
-                    int weight;
-                    ShortestPathProvider.FindShortestPath(shortcutGraph, shortcut.Start, shortcut.End, out weight);
+                    var shortcut = pair.Key;
+                    var weight = pair.Value;
                     weights[shortcut] = weight;
                 }
 
-                foreach (var shortcut in shortcutGraphLevel)
+                foreach (var shortcut in shortcutsLevel)
                 {
                     shortcutGraph.AddShortcut(shortcut, weights[shortcut]);
                 }
@@ -75,60 +77,49 @@ namespace MultiScaleTrajectories.Simplification.MultiScale.Algorithm.ImaiIri
             output.LogLine("");
 
             //bottom up calculation of level trajectories
-            LinkedList<TPoint2D> prevShortestPath = null;
+            Trajectory2D prevTrajectory = null;
             for (var level = input.NumLevels; level >= 1; level--)
             {
                 var shortcutGraph = shortcutGraphs[level];
 
-                if (prevShortestPath == null)
+                if (prevTrajectory == null)
                 {
-                    prevShortestPath = new LinkedList<TPoint2D>();
-                    prevShortestPath.AddFirst(trajectory.Last());
+                    prevTrajectory = new Trajectory2D { trajectory.Last() };
                 }
 
-                //var prevNodePoint = prevShortestPath[0].Data;
                 var prevPoint = trajectory.First();
+                var newTrajectory = new Trajectory2D { trajectory.First() };
 
-                var newShortestPath = new LinkedList<TPoint2D>();
-                newShortestPath.AddFirst(prevPoint);
-
-                foreach (var point in prevShortestPath)
+                foreach (var point in prevTrajectory)
                 {
                     var shortestPath = ShortestPathProvider.FindShortestPath(shortcutGraph, prevPoint, point);
 
-                    foreach (var p in shortestPath)
-                    {
-                        //TODO: linked list merging
-                        newShortestPath.AddLast(p);
-                    }
+                    newTrajectory.AddRange(shortestPath.Points);
 
                     prevPoint = point;
                 }
 
-                var levelTrajectory = new Trajectory2D(newShortestPath);
-
                 //report shortest path
                 //output.LogObject("Level Shortest Path", levelTrajectory);
-                output.LogLine("Level " + level + " trajectory found. Length: " + levelTrajectory.Count);
-                output.SetTrajectoryAtLevel(level, levelTrajectory);
+                output.LogLine("Level " + level + " trajectory found. Length: " + newTrajectory.Count);
+                output.SetTrajectoryAtLevel(level, newTrajectory);
 
-                prevShortestPath = newShortestPath;
+                prevTrajectory = newTrajectory;
             }
-
-            output.Graphs = shortcutGraphs;
-            realOutput = output;
         }
 
-        public class Output : MSOutput
-        {
-            public Dictionary<int, ShortcutGraph> Graphs;
-
-            public Output()
-            {
-                Graphs = new Dictionary<int, ShortcutGraph>();
-            }
-
-        }
+        protected abstract Dictionary<Shortcut, int> GetShortcutWeights(ShortcutGraph graph, IShortcutSet levelShortcuts);
 
     }
+
+    class KonzackOutput : MSOutput
+    {
+        public Dictionary<int, ShortcutGraph> Graphs;
+
+        public KonzackOutput()
+        {
+            Graphs = new Dictionary<int, ShortcutGraph>();
+        }
+    }
+
 }

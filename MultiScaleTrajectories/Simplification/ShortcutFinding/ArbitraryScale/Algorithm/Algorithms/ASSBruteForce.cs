@@ -1,29 +1,18 @@
-﻿using MultiScaleTrajectories.Simplification.ShortcutFinding.Algorithm.BruteForce;
+﻿using MultiScaleTrajectories.AlgoUtil.Geometry;
+using MultiScaleTrajectories.Simplification.ShortcutFinding.Algorithm.BruteForce;
 using MultiScaleTrajectories.Trajectory.Single;
 
 namespace MultiScaleTrajectories.Simplification.ShortcutFinding.ArbitraryScale.Algorithm.Algorithms
 {
-    class ASSBruteForce : ASSAlgorithm
+    class ASSBruteForce : ASSComplete
     {
-        public ASSBruteForce() : base("Brute Force")
+        public ASSBruteForce() : base(false, "Brute Force")
         {
         }
 
-        public override void Compute(SingleTrajectoryInput input, out ASSOutput outp)
+        protected override double ShortcutEpsilon(TPoint2D start, TPoint2D end)
         {
-            var trajectory = input.Trajectory;
-            outp = new ASSOutput();
-
-            for (var i = 0; i < trajectory.Count - 2; i++)
-            {
-                for (var j = i + 2; j < trajectory.Count; j++)
-                {
-                    var minEpsilon = SimpleEpsilonFinder.GetMinEpsilon(trajectory, i, j);
-                    var shortcut = new ArbitraryShortcut(trajectory[i], trajectory[j], minEpsilon);
-                    outp.Shortcuts.Add(shortcut);
-                }
-            }
+            return SimpleEpsilonFinder.GetMinEpsilon(Input.Trajectory, start.Index, end.Index);
         }
-      
     }
 }

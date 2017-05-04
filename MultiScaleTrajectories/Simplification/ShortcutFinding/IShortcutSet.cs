@@ -19,5 +19,11 @@ namespace MultiScaleTrajectories.Simplification.ShortcutFinding
 
         void Except(TPoint2D point);
 
+        void AppendShortcut(TPoint2D start, TPoint2D end);
+
+        void PrependShortcut(TPoint2D start, TPoint2D end);
+
+        Dictionary<TPoint2D, ICollection<TPoint2D>> AsMap();
+
     }
 }

@@ -5,7 +5,7 @@ using AlgorithmVisualization.Algorithm.Run;
 
 namespace AlgorithmVisualization.Controller.Explore
 {
-    public class SimpleRunExplorer<TIn, TOut> : RunExplorer<TIn, TOut> where TIn : Input, new() where TOut : Output, new()
+    public class SimpleRunExplorer<TIn, TOut> : RunExplorer<TIn, TOut> where TIn : Input, new() where TOut : Output
     {
         private readonly IRunExplorer<TIn, TOut> explorer;
 

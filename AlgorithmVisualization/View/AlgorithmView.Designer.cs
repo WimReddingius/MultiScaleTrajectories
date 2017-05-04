@@ -2,7 +2,7 @@
 
 namespace AlgorithmVisualization.View
 {
-    partial class AlgorithmView<TIn, TOut> where TIn : Input, new() where TOut : Output, new()
+    partial class AlgorithmView<TIn, TOut> where TIn : Input, new() where TOut : Output
     {
         /// <summary> 
         /// Required designer variable.

@@ -32,12 +32,16 @@ namespace MultiScaleTrajectories.Simplification.ShortcutFinding
             }
         }
 
-        public ShortcutGraph(Trajectory2D Trajectory, bool containsTrivialShortcuts = true) : this(Trajectory)
+        public ShortcutGraph(Trajectory2D Trajectory, bool containsTrivialShortcuts = false) : this(Trajectory)
         {
             TPoint2D prevPoint = null;
+
+            if (!containsTrivialShortcuts)
+                return;
+
             foreach (var point in Trajectory)
             {
-                if (containsTrivialShortcuts && prevPoint != null)
+                if (prevPoint != null)
                 {
                     AddShortcut(new Shortcut(prevPoint, point));
                 }
@@ -150,7 +154,35 @@ namespace MultiScaleTrajectories.Simplification.ShortcutFinding
 
         public void Except(TPoint2D point)
         {
+            pointNodeMapping.Remove(point);
             RemoveNode(GetNode(point));
+        }
+
+        public void AppendShortcut(TPoint2D start, TPoint2D end)
+        {
+            AddShortcut(new Shortcut(start, end));
+        }
+
+        public void PrependShortcut(TPoint2D start, TPoint2D end)
+        {
+            AddShortcut(new Shortcut(start, end));
+        }
+
+        public Dictionary<TPoint2D, ICollection<TPoint2D>> AsMap()
+        {
+            var map = new Dictionary<TPoint2D, ICollection<TPoint2D>>();
+
+            foreach (var point in Trajectory)
+            {
+                map[point] = new HashSet<TPoint2D>();
+            }
+
+            foreach (var shortcut in Shortcuts.Keys)
+            {
+                map[shortcut.Start].Add(shortcut.End);
+            }
+
+            return map;
         }
 
         IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();

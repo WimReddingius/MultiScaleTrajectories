@@ -1,4 +1,5 @@
-﻿using AlgorithmVisualization.Algorithm;
+﻿using System.Collections.Generic;
+using AlgorithmVisualization.Algorithm;
 using MultiScaleTrajectories.AlgoUtil.DataStructures.Graph;
 
 namespace MultiScaleTrajectories.AlgoUtil.PathFinding.SingleSource.Algorithm
@@ -7,13 +8,20 @@ namespace MultiScaleTrajectories.AlgoUtil.PathFinding.SingleSource.Algorithm
     {
         public Graph<TNode, TEdge> Graph;
         public TNode Source;
-        public TNode Target;
+        public HashSet<TNode> Targets;
+        public bool CreatePath;
 
-        public SSSPInput(Graph<TNode, TEdge> Graph, TNode Source, TNode Target)
+        public SSSPInput(Graph<TNode, TEdge> graph, TNode source, HashSet<TNode> targets, bool createPath = true)
         {
-            this.Graph = Graph;
-            this.Source = Source;
-            this.Target = Target;
+            Graph = graph;
+            Source = source;
+            Targets = targets;
+            CreatePath = createPath;
+        }
+
+        public SSSPInput(Graph<TNode, TEdge> graph, TNode source, TNode target, bool createPath = true) 
+            : this(graph, source, new HashSet<TNode> {target}, createPath)
+        {
         }
 
         public SSSPInput()
@@ -24,7 +32,7 @@ namespace MultiScaleTrajectories.AlgoUtil.PathFinding.SingleSource.Algorithm
         public override void Clear()
         {
             Source = null;
-            Target = null;
+            Targets = new HashSet<TNode>();
             Graph = new Graph<TNode, TEdge>();
         }
     }

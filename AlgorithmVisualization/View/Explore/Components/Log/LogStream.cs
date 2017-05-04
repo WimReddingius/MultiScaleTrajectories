@@ -8,7 +8,7 @@ using AlgorithmVisualization.View.Util;
 
 namespace AlgorithmVisualization.View.Explore.Components.Log
 {
-    partial class LogStream<TIn, TOut> : UserControl where TOut : Output, new() where TIn : Input, new()
+    partial class LogStream<TIn, TOut> : UserControl where TOut : Output where TIn : Input, new()
     {
         private BackgroundWorker logPollingWorker;
 

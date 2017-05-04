@@ -1,6 +1,7 @@
-﻿using MultiScaleTrajectories.MultiScale.View.Edit;
-using MultiScaleTrajectories.Simplification.MultiScale.Algorithm;
+﻿using MultiScaleTrajectories.Simplification.MultiScale.Algorithm;
 using MultiScaleTrajectories.Simplification.MultiScale.Algorithm.ImaiIri;
+using MultiScaleTrajectories.Simplification.MultiScale.Algorithm.ImaiIri.Hierarchical;
+using MultiScaleTrajectories.Simplification.MultiScale.Algorithm.ImaiIri.Hierarchical.Konzack;
 using MultiScaleTrajectories.Simplification.MultiScale.View.Edit;
 using MultiScaleTrajectories.Simplification.MultiScale.View.Explore;
 using MultiScaleTrajectories.Trajectory.Single;
@@ -20,11 +21,12 @@ namespace MultiScaleTrajectories.Simplification.MultiScale
             AddRunExplorer(() => new LevelTrajectoryCanvasExplorer());
             AddRunExplorer(() => new LevelTrajectoryGeoExplorer());
             AddRunExplorer(() => new LevelTrajectoryGeoAutoExplorer());
-            AddRunExplorer(() => new ImaiIriHierarchicalGrid());
+            AddRunExplorer(() => new KonzackGrid());
 
-            AddAlgorithm(() => new ImaiIriHierarchical());
-            AddAlgorithm(() => new ImaiIriGreedy());
-            AddAlgorithm(() => new ImaiIriNaive());
+            AddAlgorithm(() => new KonzackQuartic());
+            AddAlgorithm(() => new KonzackCubic());
+            AddAlgorithm(() => new HierarchicalGreedy());
+            AddAlgorithm(() => new NonHierarchical());
         }
 
     }

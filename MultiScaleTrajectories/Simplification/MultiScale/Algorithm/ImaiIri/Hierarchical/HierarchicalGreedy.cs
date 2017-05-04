@@ -2,16 +2,15 @@
 using System.Linq;
 using MultiScaleTrajectories.AlgoUtil.Geometry;
 using MultiScaleTrajectories.Simplification.MultiScale.View.Algorithm;
-using MultiScaleTrajectories.Simplification.ShortcutFinding;
 using Newtonsoft.Json;
 
-namespace MultiScaleTrajectories.Simplification.MultiScale.Algorithm.ImaiIri
+namespace MultiScaleTrajectories.Simplification.MultiScale.Algorithm.ImaiIri.Hierarchical
 {
-    class ImaiIriGreedy : ImaiIriAlgorithm
+    class HierarchicalGreedy : ImaiIriAlgorithm
     {
 
         [JsonConstructor]
-        public ImaiIriGreedy(ShortcutOptions shortcutOptions = null) : base("ImaiIri - Greedy", shortcutOptions)
+        public HierarchicalGreedy(ShortcutOptions shortcutOptions = null) : base("Hierarchical - Greedy", shortcutOptions)
         {
         }
 
@@ -26,10 +25,8 @@ namespace MultiScaleTrajectories.Simplification.MultiScale.Algorithm.ImaiIri
                 var epsilon = input.GetEpsilon(level);
 
                 var levelShortcuts = ShortcutProvider.GetShortcuts(level, epsilon);
-
-                output.LogObject("Number of shortcuts found for level " + level, () => levelShortcuts.Count);
-
-                var levelShortestPath = ShortestPathProvider.FindShortestPath(levelShortcuts, trajectory.First(), trajectory.Last());
+                
+                var levelShortestPath = ShortestPathProvider.FindShortestPath(levelShortcuts, trajectory.First(), trajectory.Last()).Points;
                 levelShortestPath.AddFirst(trajectory.First());
 
                 //O(n)
@@ -49,7 +46,7 @@ namespace MultiScaleTrajectories.Simplification.MultiScale.Algorithm.ImaiIri
                     if (!levelShortestPathSet.Contains(point))
                     {
                         //remove shortcuts from shortcut set
-                        ShortcutProvider.Prune(point);
+                        ShortcutProvider.RemovePoint(point);
                     }
                 }
             }

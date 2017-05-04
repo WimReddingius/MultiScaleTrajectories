@@ -5,7 +5,7 @@ using AlgorithmVisualization.Algorithm.Run;
 
 namespace AlgorithmVisualization.Controller.Explore
 {
-    public class SingleStateRunExplorer<TIn, TOut> : RunExplorer<TIn, TOut> where TIn : Input, new() where TOut : Output, new()
+    public class SingleStateRunExplorer<TIn, TOut> : RunExplorer<TIn, TOut> where TIn : Input, new() where TOut : Output
     {
         public RunState VisualizableState;
         public Action<AlgorithmRun<TIn, TOut>> BeforeStateReachedHandler;

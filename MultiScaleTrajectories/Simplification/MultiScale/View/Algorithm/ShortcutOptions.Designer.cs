@@ -66,13 +66,13 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.shortcutProviderOptions.Location = new System.Drawing.Point(0, 51);
             this.shortcutProviderOptions.Name = "shortcutProviderOptions";
-            this.shortcutProviderOptions.Size = new System.Drawing.Size(166, 52);
+            this.shortcutProviderOptions.Size = new System.Drawing.Size(166, 97);
             this.shortcutProviderOptions.TabIndex = 4;
             // 
             // label2
             // 
             this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(0, 110);
+            this.label2.Location = new System.Drawing.Point(-3, 151);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(113, 13);
             this.label2.TabIndex = 6;
@@ -87,7 +87,7 @@
             this.shortestPathProviderComboBox.Items.AddRange(new object[] {
             "Graph-based",
             "Region-based"});
-            this.shortestPathProviderComboBox.Location = new System.Drawing.Point(0, 126);
+            this.shortestPathProviderComboBox.Location = new System.Drawing.Point(0, 167);
             this.shortestPathProviderComboBox.Name = "shortestPathProviderComboBox";
             this.shortestPathProviderComboBox.Size = new System.Drawing.Size(166, 21);
             this.shortestPathProviderComboBox.TabIndex = 5;
@@ -98,9 +98,9 @@
             this.shortestPathProviderOptions.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.shortestPathProviderOptions.Location = new System.Drawing.Point(0, 153);
+            this.shortestPathProviderOptions.Location = new System.Drawing.Point(0, 194);
             this.shortestPathProviderOptions.Name = "shortestPathProviderOptions";
-            this.shortestPathProviderOptions.Size = new System.Drawing.Size(166, 70);
+            this.shortestPathProviderOptions.Size = new System.Drawing.Size(166, 99);
             this.shortestPathProviderOptions.TabIndex = 7;
             // 
             // ShortcutOptions
@@ -114,7 +114,7 @@
             this.Controls.Add(this.label1);
             this.Controls.Add(this.shortcutProviderComboBox);
             this.Name = "ShortcutOptions";
-            this.Size = new System.Drawing.Size(166, 223);
+            this.Size = new System.Drawing.Size(166, 293);
             this.ResumeLayout(false);
             this.PerformLayout();
 

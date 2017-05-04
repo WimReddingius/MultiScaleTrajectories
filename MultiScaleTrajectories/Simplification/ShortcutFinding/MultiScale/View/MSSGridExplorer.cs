@@ -91,7 +91,7 @@ namespace MultiScaleTrajectories.Simplification.ShortcutFinding.MultiScale.View
                 currentLevel--;
             }
 
-            if (levelUp && currentLevel < run.Output.NumLevels)
+            if (levelUp && currentLevel < run.Input.NumLevels)
             {  // here down
                 currentLevel++;
             }

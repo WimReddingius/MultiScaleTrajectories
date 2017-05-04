@@ -1,13 +1,16 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using AlgoKit.Collections.Heaps;
 using MultiScaleTrajectories.AlgoUtil.DataStructures.Graph;
 using MultiScaleTrajectories.AlgoUtil.PathFinding.SingleSource.View;
+using Newtonsoft.Json;
 
 namespace MultiScaleTrajectories.AlgoUtil.PathFinding.SingleSource.Algorithm.Dijkstra
 {
-    class DijkstraSlow<TNode, TEdge> : Dijkstra<TNode, TEdge> where TNode : Node, new() where TEdge : Edge
+    class DijkstraOnDemand<TNode, TEdge> : Dijkstra<TNode, TEdge> where TNode : Node, new() where TEdge : Edge
     {
-        public DijkstraSlow(DijkstraHeapOptions<TNode, TEdge> options = null) : base("Dijkstra - All node distances initialized", options)
+        [JsonConstructor]
+        public DijkstraOnDemand(DijkstraHeapOptions<TNode, TEdge> options = null) : base("Dijkstra - Node distances created on demand", options)
         {
         }
 
@@ -16,26 +19,15 @@ namespace MultiScaleTrajectories.AlgoUtil.PathFinding.SingleSource.Algorithm.Dij
             output = new SSSPOutput<TNode>();
             var graph = input.Graph;
             var source = input.Source;
-            var target = input.Target;
+            var targets = new HashSet<TNode>(input.Targets);
 
-            LinkedList<TNode> shortestPath = null;
             var prevNode = new Dictionary<TNode, TNode>();
-
             var graphToHeap = new Dictionary<TNode, IHeapNode<int, TNode>>();
             var nodeHeap = HeapFactory.CreateHeap(graph);
 
             //initialization
-            foreach (var node in graph.Nodes)
-            {
-                var dist = int.MaxValue;
-                if (node.Equals(source))
-                {
-                    dist = 0;
-                }
-
-                var heapNode = nodeHeap.Add(dist, node);
-                graphToHeap.Add(node, heapNode);
-            }
+            var sourceHeapNode = nodeHeap.Add(0, source);
+            graphToHeap.Add(source, sourceHeapNode);
 
             while (!nodeHeap.IsEmpty)
             {
@@ -45,22 +37,36 @@ namespace MultiScaleTrajectories.AlgoUtil.PathFinding.SingleSource.Algorithm.Dij
                 var closestNode = closestHeapNode.Value;
 
                 //target node found
-                if (closestNode.Equals(target))
+                if (targets.Contains(closestNode))
                 {
-                    //Build path. We don't include first node
-                    shortestPath = new LinkedList<TNode>();
-                    while (prevNode.ContainsKey(closestNode))
+                    var path = new Path<TNode>(closestNodeDistance);
+
+                    if (input.CreatePath)
                     {
-                        shortestPath.AddFirst(closestNode);
-                        closestNode = prevNode[closestNode];
+                        //Build path. We don't include first node
+                        var prev = closestNode;
+                        while (prevNode.ContainsKey(prev))
+                        {
+                            path.Nodes.AddFirst(prev);
+                            prev = prevNode[prev];
+                        }
                     }
-                    output.Weight = closestNodeDistance;
-                    break;
+
+                    output.Paths[closestNode] = path;
+
+                    targets.Remove(closestNode);
+
+                    if (!targets.Any())
+                        break;
                 }
 
                 //target node not found
                 if (closestNodeDistance == int.MaxValue)
                 {
+                    foreach (var target in targets)
+                    {
+                        output.Paths[target] = null;
+                    }
                     break;
                 }
 
@@ -69,24 +75,32 @@ namespace MultiScaleTrajectories.AlgoUtil.PathFinding.SingleSource.Algorithm.Dij
                 {
                     var neighbor = (TNode) node;
                     var outEdge = (TEdge) closestNode.OutEdges[neighbor];
-                    var altDistance = closestNodeDistance;
+
                     var weightedEdge = outEdge as WeightedEdge;
 
+                    var altDistance = closestNodeDistance;
                     if (weightedEdge != null)
                         altDistance += weightedEdge.Data;
                     else
                         altDistance += 1;
 
-                    var heapNode = graphToHeap[neighbor];
-                    if (altDistance < heapNode.Key)
+                    IHeapNode<int, TNode> heapNode;
+                    var seenBefore = graphToHeap.TryGetValue(neighbor, out heapNode);
+
+                    if (seenBefore && altDistance < heapNode.Key)
                     {
                         prevNode[neighbor] = closestNode;
                         nodeHeap.Update(heapNode, altDistance);
                     }
+                    else if (!seenBefore)
+                    {
+                        prevNode[neighbor] = closestNode;
+                        heapNode = nodeHeap.Add(altDistance, neighbor);
+                        graphToHeap.Add(neighbor, heapNode);
+                    }
                 }
             }
 
-            output.Path = shortestPath;
         }
     }
 }
