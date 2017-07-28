@@ -8,7 +8,7 @@ namespace AlgorithmVisualization.Controller
 {
     static class AlgorithmControllerConverter
     {
-        private const string DEFAULT_LIST_FILENAME = "default_config.json";
+        private const string DEFAULT_LIST_FILENAME = "config.json";
 
         private static readonly JsonSerializerSettings SERIALIZATION_SETTINGS = new JsonSerializerSettings
         {

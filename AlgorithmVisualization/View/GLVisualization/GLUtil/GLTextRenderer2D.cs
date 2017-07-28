@@ -9,7 +9,7 @@ namespace AlgorithmVisualization.View.GLVisualization.GLUtil
 {
     static class GLTextRenderer2D
     {
-        public static string FontBitmapFilename = "test.png";
+        public static Bitmap FontBitmap;
         public static bool BitmapFont = false;
         public static string FontName = "Consolas";
         public static int FontSize = 14;
@@ -34,40 +34,38 @@ namespace AlgorithmVisualization.View.GLVisualization.GLUtil
             int bitmapWidth = GlyphsPerLine * GlyphWidth;
             int bitmapHeight = GlyphLineCount * GlyphHeight;
 
-            using (Bitmap bitmap = new Bitmap(bitmapWidth, bitmapHeight, PixelFormat.Format32bppArgb))
+            FontBitmap = new Bitmap(bitmapWidth, bitmapHeight, PixelFormat.Format32bppArgb);
+            
+            var font = new Font(new FontFamily(FontName), FontSize);
+
+            using (var g = Graphics.FromImage(FontBitmap))
             {
-                var font = new Font(new FontFamily(FontName), FontSize);
-
-                using (var g = Graphics.FromImage(bitmap))
+                if (BitmapFont)
                 {
-                    if (BitmapFont)
-                    {
-                        g.SmoothingMode = SmoothingMode.None;
-                        g.TextRenderingHint = TextRenderingHint.SingleBitPerPixel;
-                    }
-                    else {
-                        g.SmoothingMode = SmoothingMode.HighQuality;
-                        g.TextRenderingHint = TextRenderingHint.AntiAliasGridFit;
-                        //g.TextRenderingHint = TextRenderingHint.ClearTypeGridFit;
-                    }
+                    g.SmoothingMode = SmoothingMode.None;
+                    g.TextRenderingHint = TextRenderingHint.SingleBitPerPixel;
+                }
+                else {
+                    g.SmoothingMode = SmoothingMode.HighQuality;
+                    g.TextRenderingHint = TextRenderingHint.AntiAliasGridFit;
+                    //g.TextRenderingHint = TextRenderingHint.ClearTypeGridFit;
+                }
 
-                    for (int p = 0; p < GlyphLineCount; p++)
+                for (int p = 0; p < GlyphLineCount; p++)
+                {
+                    for (int n = 0; n < GlyphsPerLine; n++)
                     {
-                        for (int n = 0; n < GlyphsPerLine; n++)
-                        {
-                            char c = (char)(n + p * GlyphsPerLine);
-                            g.DrawString(c.ToString(), font, Brushes.White,
-                                n * GlyphWidth + AtlasOffsetX, p * GlyphHeight + AtlassOffsetY);
-                        }
+                        char c = (char)(n + p * GlyphsPerLine);
+                        g.DrawString(c.ToString(), font, Brushes.White,
+                            n * GlyphWidth + AtlasOffsetX, p * GlyphHeight + AtlassOffsetY);
                     }
                 }
-                bitmap.Save(FontBitmapFilename);
             }
         }
 
         public static void LoadTexture()
         {
-            using (var bitmap = new Bitmap(FontBitmapFilename))
+            using (var bitmap = new Bitmap(FontBitmap))
             {
                 var texId = GL.GenTexture();
                 GL.BindTexture(TextureTarget.Texture2D, FontTextureID);

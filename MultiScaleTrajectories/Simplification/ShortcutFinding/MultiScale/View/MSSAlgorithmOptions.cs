@@ -41,10 +41,9 @@ namespace MultiScaleTrajectories.Simplification.ShortcutFinding.MultiScale.View
 
             shortcutSetBuilders = new BindingList<MSShortcutSetBuilder>
             {
+                new MSCompleteSimple(),
                 new MSSCompleteCompact(),
                 new MSSCompleteCompactError(),
-                new MSCompleteSimple(),
-                new MSCompleteSimpleDummy(),
             };
 
             shortcutSetFactories = new BindingList<ShortcutSetFactory>

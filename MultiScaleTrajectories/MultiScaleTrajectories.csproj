@@ -145,7 +145,6 @@
     <Compile Include="Simplification\MultiScale\View\Explore\HierarchicalOptimalGrid.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="Simplification\ShortcutFinding\MultiScale\Algorithm\Representation\Simple\MSCompleteSimpleDummy.cs" />
     <Compile Include="Simplification\ShortcutPathFinding\Algorithm\Graph\ShortcutGraphBFS.cs" />
     <Compile Include="Simplification\ShortcutPathFinding\Algorithm\Graph\ShortcutGraphDijkstra.cs" />
     <Compile Include="Simplification\ShortcutPathFinding\Algorithm\Intervals\IntervalsBFS.cs" />
@@ -187,9 +186,6 @@
     <Compile Include="Simplification\ShortcutFinding\MultiScale\View\MSSGridExplorer.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="Simplification\ShortcutFinding\SingleScale\Algorithm\Representation\SSShortcutRegionsFinder.cs" />
-    <Compile Include="Simplification\ShortcutFinding\SingleScale\Algorithm\Representation\SSShortcutGraphFinder.cs" />
-    <Compile Include="Simplification\ShortcutFinding\SingleScale\Algorithm\Representation\SSSComplete.cs" />
     <Compile Include="Simplification\ShortcutFinding\MultiScale\MSShortcutFindingController.cs" />
     <Compile Include="Simplification\ShortcutFinding\MultiScale\View\MSSAlgorithmOptions.cs">
       <SubType>UserControl</SubType>
@@ -197,29 +193,11 @@
     <Compile Include="Simplification\ShortcutFinding\MultiScale\View\MSSAlgorithmOptions.Designer.cs">
       <DependentUpon>MSSAlgorithmOptions.cs</DependentUpon>
     </Compile>
-    <Compile Include="Simplification\ShortcutFinding\SingleScale\Algorithm\SSSInput.cs" />
-    <Compile Include="Simplification\ShortcutFinding\SingleScale\Algorithm\SSSAlgorithm.cs" />
-    <Compile Include="Simplification\ShortcutFinding\SingleScale\Algorithm\SSSOutput.cs" />
-    <Compile Include="Simplification\ShortcutFinding\SingleScale\View\SSShortcutFinderOptions.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
-    <Compile Include="Simplification\ShortcutFinding\SingleScale\View\SSShortcutFinderOptions.Designer.cs">
-      <DependentUpon>SSShortcutFinderOptions.cs</DependentUpon>
-    </Compile>
     <Compile Include="Simplification\ShortcutFinding\View\ColorableGrid.cs">
       <SubType>UserControl</SubType>
     </Compile>
     <Compile Include="Simplification\ShortcutFinding\View\ColorableGrid.Designer.cs">
       <DependentUpon>ColorableGrid.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Simplification\ShortcutFinding\SingleScale\View\SSSInputEditor.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
-    <Compile Include="Simplification\ShortcutFinding\SingleScale\View\SSSInputEditor.Designer.cs">
-      <DependentUpon>SSSInputEditor.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Simplification\ShortcutFinding\SingleScale\View\SSSGridExplorer.cs">
-      <SubType>UserControl</SubType>
     </Compile>
     <Compile Include="Simplification\ShortcutFinding\ShortcutIntervalSet.cs" />
     <Compile Include="Simplification\MultiScale\View\Explore\LevelTrajectoryGeoAuto.cs">
@@ -251,8 +229,6 @@
     <Compile Include="AlgoUtil\Geometry\Trajectory2D.cs" />
     <Compile Include="Simplification\ShortcutFinding\Algorithm\ChinChan\Wedge.cs" />
     <Compile Include="Simplification\ShortcutFinding\Algorithm\ConvexHull\ConvexHullHalf.cs" />
-    <Compile Include="Simplification\ShortcutFinding\SingleScale\Algorithm\Algorithms\SSChinChan.cs" />
-    <Compile Include="Simplification\ShortcutFinding\SingleScale\SSShortcutFindingController.cs" />
     <Compile Include="Simplification\ShortcutFinding\Shortcut.cs" />
     <Compile Include="Simplification\MultiScale\Algorithm\ImaiIri\ImaiIriAlgorithm.cs" />
     <Compile Include="Simplification\MultiScale\Algorithm\ImaiIri\Hierarchical\HierarchicalImaiIriBU.cs" />
@@ -345,12 +321,6 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Simplification\ShortcutFinding\MultiScale\View\MSSInputEditor.resx">
       <DependentUpon>MSSInputEditor.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Simplification\ShortcutFinding\SingleScale\View\SSShortcutFinderOptions.resx">
-      <DependentUpon>SSShortcutFinderOptions.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Simplification\ShortcutFinding\SingleScale\View\SSSInputEditor.resx">
-      <DependentUpon>SSSInputEditor.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Simplification\MultiScale\View\Explore\LevelTrajectoryGeoAuto.resx">
       <DependentUpon>LevelTrajectoryGeoAuto.cs</DependentUpon>

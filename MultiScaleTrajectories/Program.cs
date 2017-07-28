@@ -7,7 +7,6 @@ using MultiScaleTrajectories.Properties;
 using MultiScaleTrajectories.Simplification.MultiScale;
 using MultiScaleTrajectories.Simplification.ShortcutPathFinding;
 using MultiScaleTrajectories.Simplification.ShortcutFinding.MultiScale;
-using MultiScaleTrajectories.Simplification.ShortcutFinding.SingleScale;
 
 namespace MultiScaleTrajectories
 {
@@ -25,7 +24,6 @@ namespace MultiScaleTrajectories
             var controllers = new List<Func<AlgorithmControllerBase>>
             {
                 () => new MSController(),
-                () => new SSShortcutFindingController(),
                 () => new MSShortcutFindingController(),
                 () => new SPFController()
             };

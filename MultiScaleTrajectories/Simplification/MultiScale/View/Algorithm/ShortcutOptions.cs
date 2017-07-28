@@ -42,20 +42,20 @@ namespace MultiScaleTrajectories.Simplification.MultiScale.View.Algorithm
 
             shortcutProviders = new BindingList<ShortcutProvider>
             {
-                new ShortcutsOnDemand(new MSSChinChan()),
                 new ShortcutPreprocessor(new MSSChinChan()),
                 new ShortcutPreprocessor(new MSSBruteForce()),
-                new ShortcutPreprocessor(new MSSConvexHull())
+                new ShortcutPreprocessor(new MSSConvexHull()),
+                new ShortcutsOnDemand(new MSSChinChan()),
             };
 
             shortestPathroviders = new BindingList<ShortestPathProvider>
             {
                 //new BasicShortestPathProvider(new DijkstraOnDemand<DataNode<TPoint2D>, WeightedEdge>()),
                 //new BasicShortestPathProvider(new DijkstraStandard<DataNode<TPoint2D>, WeightedEdge>()),
-                new SimpleShortestPathProvider(new IntervalsBFS()),
-                new SimpleShortestPathProvider(new IntervalsRangeQueries()),
                 new SimpleShortestPathProvider(new ShortcutGraphBFS()),
                 new SimpleShortestPathProvider(new ShortcutGraphDijkstra()),
+                new SimpleShortestPathProvider(new IntervalsBFS()),
+                new SimpleShortestPathProvider(new IntervalsRangeQueries()),
             };
 
             PopulateControls();
