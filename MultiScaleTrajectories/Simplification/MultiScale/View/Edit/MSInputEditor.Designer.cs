@@ -1,6 +1,4 @@
-﻿using MultiScaleTrajectories.MultiScale.View.Edit;
-
-namespace MultiScaleTrajectories.Simplification.MultiScale.View.Edit
+﻿namespace MultiScaleTrajectories.Simplification.MultiScale.View.Edit
 {
     partial class MSInputEditor
     {

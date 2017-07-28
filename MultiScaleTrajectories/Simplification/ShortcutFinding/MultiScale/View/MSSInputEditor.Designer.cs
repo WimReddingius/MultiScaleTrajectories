@@ -1,4 +1,4 @@
-﻿using MultiScaleTrajectories.MultiScale.View.Edit;
+﻿using MultiScaleTrajectories.Simplification.MultiScale.View.Edit;
 
 namespace MultiScaleTrajectories.Simplification.ShortcutFinding.MultiScale.View
 {
@@ -30,7 +30,7 @@ namespace MultiScaleTrajectories.Simplification.ShortcutFinding.MultiScale.View
         /// </summary>
         private void InitializeComponent()
         {
-            this.epsilonEditor = new MultiScaleTrajectories.MultiScale.View.Edit.EpsilonListEditor();
+            this.epsilonEditor = new EpsilonListEditor();
             this.splitContainer1 = new System.Windows.Forms.SplitContainer();
             this.cumulativeCheckBox = new System.Windows.Forms.CheckBox();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();

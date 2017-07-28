@@ -16,16 +16,30 @@ namespace MultiScaleTrajectories.Simplification.ShortcutFinding.Algorithm.Convex
             upper = new EnhancedConvexHullHalf(start, true);
         }
 
-        public double GetMinEpsilon(TPoint2D shortcutEnd)
+        public double GetMinEpsilon(TPoint2D shortcutEnd, bool doExtremePointQueries)
         {
-            //extreme distance queries
-            //O(4log n)
-            double[] distances = {
-                Geometry2D.Distance(shortcutStart, shortcutEnd, upper.ExtremePointFromShortcutLine(shortcutEnd)),
-                Geometry2D.Distance(shortcutStart, shortcutEnd, lower.ExtremePointFromShortcutLine(shortcutEnd)),
-                upper.ExtremeDistanceLeftOfShortcut(shortcutEnd),
-                lower.ExtremeDistanceLeftOfShortcut(shortcutEnd)
-            };
+            double[] distances;
+
+            if (doExtremePointQueries)
+            {
+                //O(4log n)
+                distances = new []
+                {
+                    Geometry2D.Distance(shortcutStart, shortcutEnd, upper.ExtremePointFromShortcutLine(shortcutEnd)),
+                    Geometry2D.Distance(shortcutStart, shortcutEnd, lower.ExtremePointFromShortcutLine(shortcutEnd)),
+                    upper.ExtremeDistanceLeftOfShortcut(shortcutEnd),
+                    lower.ExtremeDistanceLeftOfShortcut(shortcutEnd)
+                };
+            }
+            else
+            {
+                //O(2log n)
+                distances = new []
+                {
+                    upper.ExtremeDistanceLeftOfShortcut(shortcutEnd),
+                    lower.ExtremeDistanceLeftOfShortcut(shortcutEnd)
+                };
+            }
 
             return distances.Max();
         }

@@ -35,7 +35,7 @@ namespace MultiScaleTrajectories.AlgoUtil.DataStructures.Search.Range.RedBlack
 
             ElementReplaced += () =>
             {
-                NodeData = rangeInitializer(element);
+                NodeData = rangeInitializer(Element);
                 ConsolidateRangeData();
             };
 

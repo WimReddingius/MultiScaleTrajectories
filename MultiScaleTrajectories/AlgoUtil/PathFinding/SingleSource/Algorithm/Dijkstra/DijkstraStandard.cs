@@ -46,20 +46,22 @@ namespace MultiScaleTrajectories.AlgoUtil.PathFinding.SingleSource.Algorithm.Dij
                 //target node found
                 if (targets.Contains(closestNode))
                 {
-                    var path = new Path<TNode>(closestNodeDistance);
+                    LinkedList<TNode> nodes = null;
 
                     if (input.CreatePath)
                     {
+                        nodes = new LinkedList<TNode>();
+
                         //Build path. We don't include first node
                         var prev = closestNode;
                         while (prevNode.ContainsKey(prev))
                         {
-                            path.Nodes.AddFirst(prev);
+                            nodes.AddFirst(prev);
                             prev = prevNode[prev];
                         }
                     }
 
-                    output.Paths[closestNode] = path;
+                    output.Paths[closestNode] = new Path<TNode>(closestNodeDistance, nodes);
 
                     targets.Remove(closestNode);
 

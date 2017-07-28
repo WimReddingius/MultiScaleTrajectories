@@ -1,9 +1,11 @@
 ﻿using MultiScaleTrajectories.Simplification.MultiScale.Algorithm;
 using MultiScaleTrajectories.Simplification.MultiScale.Algorithm.ImaiIri;
 using MultiScaleTrajectories.Simplification.MultiScale.Algorithm.ImaiIri.Hierarchical;
-using MultiScaleTrajectories.Simplification.MultiScale.Algorithm.ImaiIri.Hierarchical.Konzack;
+using MultiScaleTrajectories.Simplification.MultiScale.Algorithm.ImaiIri.Hierarchical.Optimal.Graph;
 using MultiScaleTrajectories.Simplification.MultiScale.View.Edit;
 using MultiScaleTrajectories.Simplification.MultiScale.View.Explore;
+using MultiScaleTrajectories.Simplification.MultiScale.Algorithm.DouglasPeucker;
+using MultiScaleTrajectories.Simplification.MultiScale.Algorithm.ImaiIri.Hierarchical.Optimal;
 using MultiScaleTrajectories.Trajectory.Single;
 using MultiScaleTrajectories.Trajectory.Single.View;
 
@@ -21,11 +23,15 @@ namespace MultiScaleTrajectories.Simplification.MultiScale
             AddRunExplorer(() => new LevelTrajectoryCanvasExplorer());
             AddRunExplorer(() => new LevelTrajectoryGeoExplorer());
             AddRunExplorer(() => new LevelTrajectoryGeoAutoExplorer());
-            AddRunExplorer(() => new KonzackGrid());
+            AddRunExplorer(() => new HierarchicalOptimalGrid());
 
-            AddAlgorithm(() => new KonzackQuartic());
-            AddAlgorithm(() => new KonzackCubic());
-            AddAlgorithm(() => new HierarchicalGreedy());
+            AddAlgorithm(() => new HierarchicalOptimalQuartic());
+            AddAlgorithm(() => new HierarchicalOptimalCubic());
+            AddAlgorithm(() => new HierarchicalImaiIriBU());
+            AddAlgorithm(() => new HierarchicalImaiIriBUCao());
+            AddAlgorithm(() => new HierarchicalImaiIriTD());
+            AddAlgorithm(() => new HierarchicalGreedyDouglasPeuckerTD());
+            AddAlgorithm(() => new HierarchicalGreedyDouglasPeuckerBU());
             AddAlgorithm(() => new NonHierarchical());
         }
 

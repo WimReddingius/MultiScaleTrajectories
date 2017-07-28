@@ -41,7 +41,7 @@ namespace MultiScaleTrajectories.Trajectory.Single.View
             };
 
             DrawTrajectoryEdges(input.Trajectory, 2.5f, Color.Red);
-            DrawTrajectoryPoints(input.Trajectory, 4.5 / ZoomFactor, 6, colorFunc, p => PickManager.GetPickingId(p));
+            DrawTrajectoryPoints(input.Trajectory, 4.5 / ZoomFactor, 4, colorFunc, p => PickManager.GetPickingId(p));
         }
 
         protected override void RenderHud()

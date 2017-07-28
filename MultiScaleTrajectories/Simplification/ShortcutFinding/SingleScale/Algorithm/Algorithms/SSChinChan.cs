@@ -1,6 +1,5 @@
 ﻿using MultiScaleTrajectories.AlgoUtil.Geometry;
 using MultiScaleTrajectories.Simplification.ShortcutFinding.Algorithm.ChinChan;
-using MultiScaleTrajectories.Simplification.ShortcutFinding.MultiScale.View;
 using MultiScaleTrajectories.Simplification.ShortcutFinding.SingleScale.View;
 
 namespace MultiScaleTrajectories.Simplification.ShortcutFinding.SingleScale.Algorithm.Algorithms

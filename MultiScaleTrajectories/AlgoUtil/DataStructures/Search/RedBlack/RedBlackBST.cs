@@ -274,7 +274,7 @@ namespace MultiScaleTrajectories.AlgoUtil.DataStructures.Search.RedBlack
         }
 
         // delete the element-value pair with the given element rooted at h
-        private TNode Delete(TNode t, TEl element)
+        protected virtual TNode Delete(TNode t, TEl element)
         {
             if (t == null)
                 throw new InvalidOperationException("Trying to delete element that is not present");
@@ -301,6 +301,7 @@ namespace MultiScaleTrajectories.AlgoUtil.DataStructures.Search.RedBlack
 
                 if (Comparer.Compare(element, t.Element) == 0)
                 {
+                    //TODO: improve for range queries
                     t.Element = t.Right.Min;
                     t.Right = DeleteMin(t.Right);
 
@@ -429,6 +430,18 @@ namespace MultiScaleTrajectories.AlgoUtil.DataStructures.Search.RedBlack
         public TNode GetNode(TEl element)
         {
             return nodes[element];
+        }
+
+        public bool TryGetNode(TEl element, out TNode node)
+        {
+            if (nodes.ContainsKey(element))
+            {
+                node = nodes[element];
+                return true;
+            }
+
+            node = null;
+            return false;
         }
 
         public bool TryGetSuccessor(TEl element, out TEl succ)

@@ -65,26 +65,48 @@ namespace MultiScaleTrajectories.AlgoUtil.DataStructures.Search.Range.RedBlack
                 descendantsData = RangeConsolidator(leftData, rightData);
             }
 
+            var nodeCompliant = rangePredicator.RangeCompliance(node.Element, node.Element) == 1;
+
             //final data
-            if (!leftFound && !rightFound)
+            if (nodeCompliant)
             {
-                data = node.NodeData;
+                if (!leftFound && !rightFound)
+                    data = node.NodeData;
+                else 
+                    data = RangeConsolidator(node.NodeData, descendantsData);
             }
-            else if (rangePredicator.RangeCompliance(node.Element, node.Element) == 1)
+            else 
             {
-                data = RangeConsolidator(node.NodeData, descendantsData);
-            }
-            else
-            {
+                if (!leftFound && !rightFound)
+                {
+                    data = default(TRange);
+                    return false;
+                }
+
                 data =  descendantsData;
             }
 
             return true;
         }
 
-        public TRange GetRangeData(TEl element)
+        public TRange GetSubtreeData(TEl element)
         {
             return GetNode(element).SubtreeData;
+        }
+
+        public bool TryGetNodeData(TEl element, out TRange nodeData)
+        {
+            TNode node;
+            var found = TryGetNode(element, out node);
+
+            nodeData = found ? node.NodeData : default(TRange);
+
+            return found;
+        }
+
+        public TRange GetNodeData(TEl element)
+        {
+            return GetNode(element).NodeData;
         }
     }
 }

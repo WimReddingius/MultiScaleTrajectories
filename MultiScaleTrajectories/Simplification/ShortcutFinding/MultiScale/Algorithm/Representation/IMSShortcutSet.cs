@@ -1,12 +1,15 @@
 ﻿using MultiScaleTrajectories.AlgoUtil.Geometry;
+using MultiScaleTrajectories.Simplification.ShortcutFinding.MultiScale.Algorithm.Representation.Factory;
 
 namespace MultiScaleTrajectories.Simplification.ShortcutFinding.MultiScale.Algorithm.Representation
 {
     interface IMSShortcutSet
     {
-        int Count { get; }
+        ShortcutSetFactory ShortcutSetFactory { get; }
 
-        int CountAtLevel(int level);
+        long Count { get; }
+
+        long CountAtLevel(int level);
 
         IShortcutSet ExtractShortcuts(int level);
 

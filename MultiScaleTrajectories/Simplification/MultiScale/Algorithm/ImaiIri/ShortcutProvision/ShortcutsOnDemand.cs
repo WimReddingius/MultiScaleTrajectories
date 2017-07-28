@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using MultiScaleTrajectories.AlgoUtil.Geometry;
 using MultiScaleTrajectories.Simplification.ShortcutFinding;
 using MultiScaleTrajectories.Simplification.ShortcutFinding.MultiScale.Algorithm;
@@ -8,36 +9,37 @@ namespace MultiScaleTrajectories.Simplification.MultiScale.Algorithm.ImaiIri.Sho
 {
     class ShortcutsOnDemand : ShortcutProvider
     {
-        [JsonProperty] private MSSAlgorithm algorithm;
+        [JsonProperty] public MSSAlgorithm Algorithm;
         [JsonIgnore] private HashSet<TPoint2D> prunedPoints;
         [JsonIgnore] private IShortcutSet prunedShortcuts;
+        [JsonIgnore] private LinkedList<TPoint2D> searchIntervals;
 
         [JsonConstructor]
-        public ShortcutsOnDemand(MSSAlgorithm algorithm) : base("On Demand - " + algorithm.Name, algorithm.OptionsControl)
+        public ShortcutsOnDemand(MSSAlgorithm algorithm) : base("On Demand - " + algorithm.Name, algorithm.Options)
         {
-            this.algorithm = algorithm;
+            Algorithm = algorithm;
         }
 
         public override void Init(MSInput input, MSOutput output, bool cumulative)
         {
             base.Init(input, output, cumulative);
             prunedShortcuts = null;
+            searchIntervals = null;
             prunedPoints = new HashSet<TPoint2D>();
         }
 
         public override IShortcutSet GetShortcuts(int level, double epsilon)
         {
-            var input = new MSSInput
+            var input = new MSSInput(Input.Trajectory, new List<double> { epsilon })
             {
-                Trajectory = Input.Trajectory,
-                Epsilons = new List<double> { epsilon },
-                PrunedPoints = prunedPoints
+                PrunedPoints = prunedPoints,
+                SearchIntervals = searchIntervals
             };
 
             MSSOutput output;
-            algorithm.Compute(input, out output);
+            Algorithm.Compute(input, out output);
 
-            var shortcuts = output.ExtractShortcuts(1);
+            var shortcuts = output.GetShortcuts(1);
 
             if (Cumulative)
             {
@@ -61,6 +63,11 @@ namespace MultiScaleTrajectories.Simplification.MultiScale.Algorithm.ImaiIri.Sho
         public override void RemovePoint(TPoint2D point)
         {
             prunedPoints.Add(point);
+        }
+
+        public override void SetSearchIntervals(LinkedList<TPoint2D> intervals)
+        {
+            searchIntervals = intervals;
         }
 
     }

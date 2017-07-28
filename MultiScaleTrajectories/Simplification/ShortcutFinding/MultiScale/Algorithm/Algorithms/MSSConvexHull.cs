@@ -15,16 +15,16 @@ namespace MultiScaleTrajectories.Simplification.ShortcutFinding.MultiScale.Algor
         public override void Compute(MSSInput input, out MSSOutput output)
         {
             output = new MSSOutput(input);
-            var checker = new ConvexHullShortcutChecker(input, output);
+            var checker = new ShortcutChecker(input, output);
             output.Shortcuts = ShortcutSetBuilder.FindShortcuts(checker, true);
         }
 
-        class ConvexHullShortcutChecker : MSShortcutChecker
+        public class ShortcutChecker : MSShortcutChecker
         {
-            private double currentMinEpsilon;
+            private double currentMaxEpsilon;
             private EnhancedConvexHull hull;
 
-            public ConvexHullShortcutChecker(MSSInput input, MSSOutput output) : base(input, output)
+            public ShortcutChecker(MSSInput input, MSSOutput output) : base(input, output)
             {
             }
 
@@ -40,12 +40,17 @@ namespace MultiScaleTrajectories.Simplification.ShortcutFinding.MultiScale.Algor
 
             public override void BeforeShortcutValidation(TPoint2D start, TPoint2D end)
             {
-                currentMinEpsilon = hull.GetMinEpsilon(end);
+                currentMaxEpsilon = hull.GetMinEpsilon(end, Forward);
             }
 
             public override bool ShortcutValid(int level, TPoint2D start, TPoint2D end)
             {
-                return Input.GetEpsilon(level) >= currentMinEpsilon;
+                return Input.GetEpsilon(level) >= currentMaxEpsilon;
+            }
+
+            public override double GetMaxError(TPoint2D start, TPoint2D end)
+            {
+                return currentMaxEpsilon;
             }
         }
 

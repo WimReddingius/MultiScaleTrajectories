@@ -8,7 +8,7 @@ namespace MultiScaleTrajectories.Simplification.ShortcutFinding.SingleScale
 {
     class SSShortcutFindingController : SingleTrajectoryAlgorithmController<SSSInput, SSSOutput>
     {
-        public SSShortcutFindingController() : base("Imai Iri - Shortcut finding - Single-Scale")
+        public SSShortcutFindingController() : base("Shortcut finding - Single-Scale")
         {
             AddAlgorithm(() => new SSChinChan());
 

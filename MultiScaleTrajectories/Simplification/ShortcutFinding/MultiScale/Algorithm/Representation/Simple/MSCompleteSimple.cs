@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Collections.Generic;
+using MultiScaleTrajectories.AlgoUtil.Geometry;
 using Newtonsoft.Json;
 
 namespace MultiScaleTrajectories.Simplification.ShortcutFinding.MultiScale.Algorithm.Representation.Simple
@@ -69,13 +71,13 @@ namespace MultiScaleTrajectories.Simplification.ShortcutFinding.MultiScale.Algor
             }
 
             return shortcutSet;
-
         }
 
-       private MSSimpleShortcutSet FindShortcutsInDirection(MSShortcutChecker checker, bool forward)
-       {
+        private MSSimpleShortcutSet FindShortcutsInDirection(MSShortcutChecker checker, bool forward)
+        {
             var input = checker.Input;
             var trajectory = input.Trajectory;
+            checker.Forward = forward;
 
             var shortcutSet = new MSSimpleShortcutSet(input, ShortcutSetFactory);
 
@@ -99,7 +101,15 @@ namespace MultiScaleTrajectories.Simplification.ShortcutFinding.MultiScale.Algor
                 conditionJ = j => j >= 0;
             }
 
+            TPoint2D intervalLimit = null;
+            LinkedListNode<TPoint2D> intervalLimitNode = null;
+            if (input.SearchIntervals != null)
+            {
+                intervalLimitNode = forward ? input.SearchIntervals.First.Next : input.SearchIntervals.Last.Previous;
+                intervalLimit = intervalLimitNode.Value;
+            }
 
+            var shortcutStartsHandled = 0;
             for (var i = startI; conditionI(i); i = step(i))
             {
                 var pointI = trajectory[i];
@@ -107,11 +117,28 @@ namespace MultiScaleTrajectories.Simplification.ShortcutFinding.MultiScale.Algor
                 if (input.PrunedPoints.Contains(pointI))
                     continue;
 
+                if (input.SearchIntervals != null)
+                {
+                    if (intervalLimit.Index == pointI.Index)
+                    {
+                        intervalLimitNode = forward ? intervalLimitNode.Next : intervalLimitNode.Previous;
+                        intervalLimit = intervalLimitNode.Value;
+                    }
+                }
+
                 checker.OnNewShortcutStart(pointI);
 
                 for (var j = step(i); conditionJ(j); j = step(j))
                 {
                     var pointJ = trajectory[j];
+
+                    if (input.SearchIntervals != null)
+                    {
+                        if (forward && pointJ.Index > intervalLimit.Index || !forward && pointJ.Index < intervalLimit.Index)
+                        {
+                            break;
+                        }
+                    }
 
                     checker.BeforeShortcut(pointI, pointJ);
 
@@ -141,8 +168,17 @@ namespace MultiScaleTrajectories.Simplification.ShortcutFinding.MultiScale.Algor
                     if (!checker.AfterShortcut(pointI, pointJ))
                         break;
                 }
-            }
 
+                shortcutStartsHandled++;
+
+                if (shortcutStartsHandled >= trajectory.Count / 100)
+                {
+                    var progress = forward ? i : trajectory.Count - i;
+                    //System.Diagnostics.Debug.WriteLine("Shortcuts handled: " + progress * 100 / trajectory.Count + "%");
+                    checker.Output.LogLine("Shortcuts handled: " + progress * 100 / trajectory.Count + "%");
+                    shortcutStartsHandled = 0;
+                }
+            }
             return shortcutSet;
         }
 

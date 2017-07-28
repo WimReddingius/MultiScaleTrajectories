@@ -24,12 +24,17 @@ namespace AlgorithmVisualization.View.Explore.Components.Log
 
         public void AfterStarted(AlgorithmRun<TIn, TOut> run)
         {
-            var output = run.Output;
-
             var newWorker = new BackgroundWorker {WorkerSupportsCancellation = true};
             newWorker.DoWork += (o, e) =>
             {
                 var buffer = new StringBuffer();
+
+                while (run.Output == null)
+                {
+                    Thread.Sleep(500);
+                }
+
+                var output = run.Output;
 
                 this.InvokeIfRequired(() =>
                 {
@@ -46,6 +51,8 @@ namespace AlgorithmVisualization.View.Explore.Components.Log
                     });
                     Thread.Sleep(500);
                 }
+
+                output.LogBuffers.Remove(buffer);
             };
 
             logPollingWorker?.CancelAsync();

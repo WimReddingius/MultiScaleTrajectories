@@ -1,12 +1,25 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Diagnostics;
+using System.IO;
+using System.Linq;
+using System.Threading.Tasks;
 using System.Windows.Forms;
+using AlgorithmVisualization.View.Util;
+using MultiScaleTrajectories.AlgoUtil.Geometry;
 using MultiScaleTrajectories.Simplification.MultiScale.Algorithm;
+using MultiScaleTrajectories.Simplification.ShortcutFinding.MultiScale.Algorithm;
+using MultiScaleTrajectories.Simplification.ShortcutFinding.MultiScale.Algorithm.Algorithms;
+using MultiScaleTrajectories.Simplification.ShortcutFinding.MultiScale.Algorithm.Representation.CompactError;
+using MultiScaleTrajectories.Simplification.ShortcutFinding.MultiScale.Algorithm.Representation.Factory;
+using Newtonsoft.Json;
 
-namespace MultiScaleTrajectories.MultiScale.View.Edit
+namespace MultiScaleTrajectories.Simplification.MultiScale.View.Edit
 {
     partial class EpsilonListEditor : UserControl
     {
-        private MSInput Input;
+        private List<double> maxErrors;
+        private MSInput input;
 
         public EpsilonListEditor()
         {
@@ -18,7 +31,7 @@ namespace MultiScaleTrajectories.MultiScale.View.Edit
         private void levelTable_UserDeletedRow(object sender, DataGridViewRowEventArgs e)
         {
             var level = (int)e.Row.Cells["Level"].Value;
-            Input.RemoveLevel(level);
+            input.RemoveLevel(level);
             RevalidateLevelColumn();
         }
 
@@ -29,7 +42,7 @@ namespace MultiScaleTrajectories.MultiScale.View.Edit
             if (levelTable.SelectedCells.Count > 0)
                 insertAt = levelTable.SelectedCells[0].RowIndex + 1;
 
-            double epsilon = double.PositiveInfinity;
+            var epsilon = double.PositiveInfinity;
             if (levelTable.RowCount > insertAt)
                 epsilon = (double)levelTable.Rows[insertAt].Cells["Closeness"].Value;
 
@@ -51,7 +64,7 @@ namespace MultiScaleTrajectories.MultiScale.View.Edit
         private void levelTable_CellEndEdit(object sender, DataGridViewCellEventArgs e)
         {
             int level = e.RowIndex + 1;
-            Input.SetEpsilon(level, (double)levelTable.Rows[e.RowIndex].Cells["Closeness"].Value);
+            input.SetEpsilon(level, (double)levelTable.Rows[e.RowIndex].Cells["Closeness"].Value);
         }
 
         private void RemoveLevel(int level)
@@ -60,7 +73,7 @@ namespace MultiScaleTrajectories.MultiScale.View.Edit
             {
                 var rowIndex = level - 1;
                 levelTable.Rows.RemoveAt(rowIndex);
-                Input.RemoveLevel(level);
+                input.RemoveLevel(level);
                 RevalidateLevelColumn();
             }
         }
@@ -76,7 +89,7 @@ namespace MultiScaleTrajectories.MultiScale.View.Edit
         private void InsertLevel(int level, double epsilon)
         {
             levelTable.Rows.Insert(level - 1, level, epsilon);
-            Input.InsertLevel(level, epsilon);
+            input.InsertLevel(level, epsilon);
 
             for (int i = level; i < levelTable.RowCount; i++)
             {
@@ -84,16 +97,122 @@ namespace MultiScaleTrajectories.MultiScale.View.Edit
             }
         }
 
-        public void LoadInput(MSInput input)
+        private async void computeErrorDistribution_Click(object sender, EventArgs e)
         {
-            Input = input;
-            levelTable.Rows.Clear();
+            var trajectory = input.Trajectory;
 
-            for (int level = 1; level <= Input.NumLevels; level++)
+            var builder = new MSSCompleteCompactError
             {
-                levelTable.Rows.Add(level, Input.GetEpsilon(level));
+                ShortcutSetFactory = new ShortcutIntervalSetFactory()
+            };
+
+            var inp = new MSSInput(trajectory, new List<double> {0.0});
+            var outp = new MSSOutput(inp);
+
+            outp.Logged += str =>
+            {
+                this.InvokeIfRequired(() =>
+                {
+                    str = shortcutFindingProgressLabel.Text = str;
+                });
+            };
+
+            await Task.Run(() => 
+            {
+                this.InvokeIfRequired(() => shortcutFindingProgressLabel.Text = "Started...");
+
+                var errors = (MSCompactErrorShortcutSet) builder.FindShortcuts(new MSSConvexHull.ShortcutChecker(inp, outp), true);
+                maxErrors = errors.MaxErrors.Values.ToList();
+
+                this.InvokeIfRequired(() => shortcutFindingProgressLabel.Text = "Sorting...");
+
+                maxErrors.Sort();
+            });
+
+            shortcutFindingProgressLabel.Text = "Finished";
+
+            var serializedErrors = JsonConvert.SerializeObject(maxErrors, Formatting.Indented);
+            File.WriteAllText("Error list - " + input.Name + ".json", serializedErrors);
+
+            revalidateDistributionButton.Enabled = true;
+            BuildErrorDistribution();
+        }
+
+        private void revalidateDistributionButton_Click(object sender, EventArgs e)
+        {
+            BuildErrorDistribution();
+        }
+
+        private void BuildErrorDistribution()
+        {
+            if (maxErrors == null)
+                return;
+
+            for (var level = input.NumLevels; level >= 1; level--)
+            {
+                RemoveLevel(level);
+            }
+
+            var numEpsilons = maxErrors.Count;
+            var start = (double)(lowerPercentageChooser.Value / 100 * (numEpsilons - 1));
+            var end = (double)(upperPercentageChooser.Value / 100 * (numEpsilons - 1));
+            var numLevels = (int)numLevelsChooser.Value;
+
+            var range = end - start;
+            var step = numLevels == 1 ? 0 : range / (numLevels - 1);
+
+            var index = start;
+            for (var level = 1; level <= numLevels; level++)
+            {
+                var intIndex = (int)index;
+                var epsilon = maxErrors[intIndex];
+
+                if (index > intIndex && (intIndex + 1 <= maxErrors.Count - 1))
+                {
+                    var nextEpsilon = maxErrors[intIndex + 1];
+                    var remainder = index - intIndex;
+                    epsilon += (epsilon - nextEpsilon) * remainder;
+                }
+
+                InsertLevel(level, epsilon);
+                index += step;
             }
         }
 
+        public void LoadInput(MSInput inp)
+        {
+            input = inp;
+            levelTable.Rows.Clear();
+
+            for (int level = 1; level <= input.NumLevels; level++)
+            {
+                levelTable.Rows.Add(level, input.GetEpsilon(level));
+            }
+
+            maxErrors = null;
+            revalidateDistributionButton.Enabled = false;
+        }
+
+        private void openErrorsButton_Click(object sender, EventArgs e)
+        {
+            var result = openErrorsFileDialog.ShowDialog();
+
+            if (result != DialogResult.OK)
+                return;
+
+            var fileName = openErrorsFileDialog.FileName;
+            try
+            {
+                var str = File.ReadAllText(fileName);
+                maxErrors = JsonConvert.DeserializeObject<List<double>>(str);
+
+                revalidateDistributionButton.Enabled = true;
+                BuildErrorDistribution();
+            }
+            catch (Exception err)
+            {
+                FormsUtil.ShowErrorMessage(err.ToString());
+            }
+        }
     }
 }

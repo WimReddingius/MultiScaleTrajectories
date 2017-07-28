@@ -1,4 +1,5 @@
-﻿using MultiScaleTrajectories.AlgoUtil.Geometry;
+﻿using System.Collections.Generic;
+using MultiScaleTrajectories.AlgoUtil.Geometry;
 using MultiScaleTrajectories.Simplification.ShortcutFinding;
 using MultiScaleTrajectories.Simplification.ShortcutFinding.MultiScale.Algorithm;
 using Newtonsoft.Json;
@@ -11,7 +12,7 @@ namespace MultiScaleTrajectories.Simplification.MultiScale.Algorithm.ImaiIri.Sho
         [JsonIgnore] private MSSOutput algorithmOutput;
 
         [JsonConstructor]
-        public ShortcutPreprocessor(MSSAlgorithm algorithm) : base("Preprocess - " + algorithm.Name, algorithm.OptionsControl)
+        public ShortcutPreprocessor(MSSAlgorithm algorithm) : base("Preprocess - " + algorithm.Name, algorithm.Options)
         {
             this.algorithm = algorithm;
         }
@@ -20,16 +21,14 @@ namespace MultiScaleTrajectories.Simplification.MultiScale.Algorithm.ImaiIri.Sho
         {
             base.Init(inp, outp, cumulative);
 
-            var algInput = new MSSInput
+            var algorithmInput = new MSSInput(inp.Trajectory, inp.Epsilons)
             {
-                Trajectory = inp.Trajectory,
-                Epsilons = inp.Epsilons,
                 Cumulative = cumulative
             };
 
-            algorithm.Compute(algInput, out algorithmOutput);
+            algorithm.Compute(algorithmInput, out algorithmOutput);
 
-            //Output.LogLine(algoOutput.LogString);
+            //Output.LogLine(algorithmOutput.LogString);
         }
 
         public override IShortcutSet GetShortcuts(int level, double epsilon)
@@ -46,5 +45,9 @@ namespace MultiScaleTrajectories.Simplification.MultiScale.Algorithm.ImaiIri.Sho
             algorithmOutput.RemovePoint(point);
         }
 
+        public override void SetSearchIntervals(LinkedList<TPoint2D> intervals)
+        {
+            //too late, no optimization possible
+        }
     }
 }

@@ -9,25 +9,25 @@ namespace MultiScaleTrajectories.Simplification.ShortcutFinding.MultiScale.Algor
 {
     class MSCompactShortcutSet : IMSShortcutSet
     {
-        public int Count => levelCounts.Keys.Select(CountAtLevel).Sum();
+        public long Count => LevelCounts.Keys.Select(CountAtLevel).Sum();
 
-        [JsonProperty] private readonly JDictionary<Shortcut, int> minLevels;
-        [JsonProperty] private readonly JDictionary<int, int> levelCounts;
+        [JsonProperty] public readonly JDictionary<Shortcut, int> MinLevels;
+        [JsonProperty] public readonly JDictionary<int, int> LevelCounts;
 
-        [JsonProperty] private readonly MSSInput input;
-        [JsonProperty] private readonly ShortcutSetFactory shortcutSetFactory;
+        [JsonProperty] public readonly MSSInput Input;
+        [JsonProperty] public ShortcutSetFactory ShortcutSetFactory { get; }
         
 
         public MSCompactShortcutSet(MSSInput input, ShortcutSetFactory shortcutSetFactory)
         {
-            this.shortcutSetFactory = shortcutSetFactory;
-            this.input = input;
-            levelCounts = new JDictionary<int, int>();
-            minLevels = new JDictionary<Shortcut, int>();
+            ShortcutSetFactory = shortcutSetFactory;
+            Input = input;
+            LevelCounts = new JDictionary<int, int>();
+            MinLevels = new JDictionary<Shortcut, int>();
 
             for (var level = 1; level <= input.NumLevels; level++)
             {
-                levelCounts.Add(level, 0);
+                LevelCounts.Add(level, 0);
             }
         }
 
@@ -39,13 +39,16 @@ namespace MultiScaleTrajectories.Simplification.ShortcutFinding.MultiScale.Algor
 
         public IShortcutSet GetShortcuts(int level)
         {
-            var set = shortcutSetFactory.Create(input.Trajectory);
+            var set = ShortcutSetFactory.Create(Input.Trajectory);
 
-            foreach (var pair in minLevels)
+            foreach (var pair in MinLevels)
             {
                 var minLevel = pair.Value;
-                if (input.Cumulative && level == minLevel)
-                    set.AppendShortcut(pair.Key.Start, pair.Key.End);
+                if (Input.Cumulative)
+                {
+                    if (level == minLevel)
+                        set.AppendShortcut(pair.Key.Start, pair.Key.End);
+                }
                 else if (level >= minLevel)
                     set.AppendShortcut(pair.Key.Start, pair.Key.End);
             }
@@ -55,60 +58,60 @@ namespace MultiScaleTrajectories.Simplification.ShortcutFinding.MultiScale.Algor
 
         public void Add(Shortcut shortcut, int minLevel)
         {
-            minLevels[shortcut] = minLevel;
-            levelCounts[minLevel]++;
+            MinLevels[shortcut] = minLevel;
+            LevelCounts[minLevel]++;
         }
 
         public void MaximizeLevel(Shortcut shortcut, int otherLevel)
         {
-            if (!minLevels.ContainsKey(shortcut))
+            if (!MinLevels.ContainsKey(shortcut))
                 return;
 
-            var oldMinLevel = minLevels[shortcut];
+            var oldMinLevel = MinLevels[shortcut];
 
             if (oldMinLevel < otherLevel)
             {
-                levelCounts[oldMinLevel]--;
-                minLevels[shortcut] = otherLevel;
-                levelCounts[otherLevel]++;
-
-                if (otherLevel == 1)
-                {
-                    var x = 3;
-                }
+                LevelCounts[oldMinLevel]--;
+                MinLevels[shortcut] = otherLevel;
+                LevelCounts[otherLevel]++;
             }
         }
 
         public void Remove(Shortcut shortcut)
         {
-            if (!minLevels.ContainsKey(shortcut))
+            if (!MinLevels.ContainsKey(shortcut))
                 return;
 
-            var minLevel = minLevels[shortcut];
-            levelCounts[minLevel]--;
-            minLevels.Remove(shortcut);
+            var minLevel = MinLevels[shortcut];
+            LevelCounts[minLevel]--;
+            MinLevels.Remove(shortcut);
         }
 
-        public int CountAtLevel(int level)
+        public long CountAtLevel(int level)
         {
-            if (input.Cumulative)
+            if (Input.Cumulative)
             {
-                return levelCounts[level];
+                return LevelCounts[level];
             }
 
             var count = 0;
             for (var l = 1; l <= level; l++)
             {
-                count += levelCounts[l];
+                count += LevelCounts[l];
             }
 
             return count;
         }
 
+        public string StatisticsAtLevel(int level)
+        {
+            return "Count: " + CountAtLevel(level);
+        }
+
         public void RemovePoint(TPoint2D point)
         {
             var shortcutsToRemove = new HashSet<Shortcut>();
-            foreach (var shortcut in minLevels.Keys)
+            foreach (var shortcut in MinLevels.Keys)
             {
                 if (shortcut.Start == point || shortcut.End == point)
                     shortcutsToRemove.Add(shortcut);
@@ -116,9 +119,33 @@ namespace MultiScaleTrajectories.Simplification.ShortcutFinding.MultiScale.Algor
 
             foreach (var shortcut in shortcutsToRemove)
             {
-                minLevels.Remove(shortcut);
+                MinLevels.Remove(shortcut);
             }
         }
 
+        public void Intersect(MSCompactShortcutSet otherSet)
+        {
+            var shortcutsToRemove = new HashSet<Shortcut>();
+            var shortcutsToUpdate = new HashSet<Shortcut>();
+
+            foreach (var shortcut in MinLevels.Keys)
+            {
+                if (otherSet.MinLevels.ContainsKey(shortcut))
+                    shortcutsToUpdate.Add(shortcut);
+                else
+                    shortcutsToRemove.Add(shortcut);
+            }
+
+            foreach (var shortcut in shortcutsToRemove)
+            {
+                Remove(shortcut);
+            }
+
+            foreach (var shortcut in shortcutsToUpdate)
+            {
+                var otherLevel = otherSet.MinLevels[shortcut];
+                MaximizeLevel(shortcut, otherLevel);
+            }
+        }
     }
 }

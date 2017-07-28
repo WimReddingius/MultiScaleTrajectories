@@ -38,11 +38,11 @@ namespace MultiScaleTrajectories.Simplification.ShortcutFinding.MultiScale.View
 
             AfterStateReachedHandler = run =>
             {
-                Visible = true;
+                //Visible = true;
 
-                this.run = run;
-                currentLevel = 1;
-                DrawGrid();
+                //this.run = run;
+                //currentLevel = 1;
+                //DrawGrid();
             };
         }
 
@@ -56,10 +56,10 @@ namespace MultiScaleTrajectories.Simplification.ShortcutFinding.MultiScale.View
             {
                 for (var j = 0; j < numPoints; j++)
                 {
-                    var color = Color.Gray;
+                    var color = Color.White;
 
-                    if (j > i)
-                        color = Color.Red;
+                    if (i == j)
+                        color = Color.Black;
 
                     grid.ColorCell(i, j, color);
                 }
@@ -67,7 +67,8 @@ namespace MultiScaleTrajectories.Simplification.ShortcutFinding.MultiScale.View
 
             foreach (var shortcut in shortcutSet)
             {
-                grid.ColorCell(shortcut.Start.Index, shortcut.End.Index, Color.Green);
+                grid.ColorCell(shortcut.Start.Index, shortcut.End.Index, Color.Black);
+                grid.ColorCell(shortcut.End.Index, shortcut.Start.Index, Color.Black);
             }
 
             grid.DrawGrid();
@@ -111,8 +112,8 @@ namespace MultiScaleTrajectories.Simplification.ShortcutFinding.MultiScale.View
             g.TextRenderingHint = TextRenderingHint.AntiAlias;
             g.SmoothingMode = SmoothingMode.AntiAlias;
             
-            g.DrawString(run.Name, font, brush, 5, Height - 45);
-            g.DrawString("Level " + currentLevel, font, brush, 5, Height - 25);
+            //g.DrawString(run.Name, font, brush, 5, Height - 45);
+            //g.DrawString("Level " + currentLevel, font, brush, 5, Height - 25);
         }
 
     }

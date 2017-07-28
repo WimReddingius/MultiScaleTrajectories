@@ -8,7 +8,7 @@ namespace MultiScaleTrajectories.Simplification.ShortcutFinding.MultiScale
 {
     class MSShortcutFindingController : SingleTrajectoryAlgorithmController<MSSInput, MSSOutput>
     {
-        public MSShortcutFindingController() : base("Imai Iri - Shortcut finding - Multi-Scale")
+        public MSShortcutFindingController() : base("Shortcut finding - Multi-Scale")
         {
             AddAlgorithm(() => new MSSBruteForce());
             AddAlgorithm(() => new MSSChinChan());

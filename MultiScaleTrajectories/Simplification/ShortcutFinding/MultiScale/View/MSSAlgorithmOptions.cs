@@ -5,6 +5,7 @@ using AlgorithmVisualization.Util.Naming;
 using MultiScaleTrajectories.Simplification.ShortcutFinding.MultiScale.Algorithm.Representation;
 using Newtonsoft.Json;
 using MultiScaleTrajectories.Simplification.ShortcutFinding.MultiScale.Algorithm.Representation.Compact;
+using MultiScaleTrajectories.Simplification.ShortcutFinding.MultiScale.Algorithm.Representation.CompactError;
 using MultiScaleTrajectories.Simplification.ShortcutFinding.MultiScale.Algorithm.Representation.Factory;
 using MultiScaleTrajectories.Simplification.ShortcutFinding.MultiScale.Algorithm.Representation.Simple;
 
@@ -14,7 +15,7 @@ namespace MultiScaleTrajectories.Simplification.ShortcutFinding.MultiScale.View
     partial class MSSAlgorithmOptions : UserControl
     {
         [JsonProperty] public MSShortcutSetBuilder ChosenShortcutSetBuilder;
-        [JsonProperty] private ShortcutSetFactory chosenShortcutSetFactory; 
+        [JsonProperty] public ShortcutSetFactory ChosenShortcutSetFactory; 
         [JsonProperty] private readonly BindingList<MSShortcutSetBuilder> shortcutSetBuilders;
         [JsonProperty] private readonly BindingList<ShortcutSetFactory> shortcutSetFactories;
 
@@ -41,13 +42,15 @@ namespace MultiScaleTrajectories.Simplification.ShortcutFinding.MultiScale.View
             shortcutSetBuilders = new BindingList<MSShortcutSetBuilder>
             {
                 new MSSCompleteCompact(),
-                new MSCompleteSimple()
+                new MSSCompleteCompactError(),
+                new MSCompleteSimple(),
+                new MSCompleteSimpleDummy(),
             };
 
             shortcutSetFactories = new BindingList<ShortcutSetFactory>
             {
                 new ShortcutGraphFactory(),
-                new ShortcutRegionSetFactory()
+                new ShortcutIntervalSetFactory()
             };
 
             PopulateControls();
@@ -72,11 +75,11 @@ namespace MultiScaleTrajectories.Simplification.ShortcutFinding.MultiScale.View
 
         private void shortcutSetFactoryComboBox_SelectedIndexChanged(object sender, EventArgs e)
         {
-            chosenShortcutSetFactory = (ShortcutSetFactory) shortcutSetFactoryComboBox.SelectedItem;
+            ChosenShortcutSetFactory = (ShortcutSetFactory) shortcutSetFactoryComboBox.SelectedItem;
 
             foreach (var builder in shortcutSetBuilders)
             {
-                builder.ShortcutSetFactory = chosenShortcutSetFactory;
+                builder.ShortcutSetFactory = ChosenShortcutSetFactory;
             }
         }
     }

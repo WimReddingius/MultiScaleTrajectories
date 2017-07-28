@@ -20,18 +20,16 @@ namespace MultiScaleTrajectories.AlgoUtil.PathFinding.SingleSource.Algorithm
         public LinkedList<TNode> Nodes;
         public int Weight;
 
-        public Path()
+        public Path(int weight, LinkedList<TNode> nodes)
         {
-            Nodes = new LinkedList<TNode>();
-            Weight = int.MaxValue;
+            Nodes = nodes;
+            Weight = weight;
         }
 
         public Path(int weight)
         {
-            Nodes = new LinkedList<TNode>();
             Weight = weight;
         }
-
     }
 
 }

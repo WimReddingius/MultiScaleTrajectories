@@ -8,7 +8,7 @@ namespace MultiScaleTrajectories.Simplification.MultiScale.Algorithm.ImaiIri
     class NonHierarchical : ImaiIriAlgorithm
     {
         [JsonConstructor]
-        public NonHierarchical(ShortcutOptions shortcutOptions = null) : base("Non-hierarchical", shortcutOptions)
+        public NonHierarchical(ShortcutOptions shortcutOptions = null) : base("Imai Iri", shortcutOptions)
         {
         }
 
@@ -29,9 +29,9 @@ namespace MultiScaleTrajectories.Simplification.MultiScale.Algorithm.ImaiIri
                 shortestPath.AddFirst(trajectory.First());
 
                 //O(n)
-                var shortestPathTrajectory = new Trajectory2D(shortestPath);
+                var levelTrajectory = new Trajectory2D(shortestPath);
 
-                output.SetTrajectoryAtLevel(level, shortestPathTrajectory);
+                output.SetTrajectoryAtLevel(level, levelTrajectory);
             }
         }
         

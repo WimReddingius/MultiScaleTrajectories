@@ -10,6 +10,8 @@
 
         bool TryFindRangeData(RangePredicate<TEl> rangePredicate, out TRange data);
 
-        TRange GetRangeData(TEl element);
+        TRange GetSubtreeData(TEl element);
+
+        TRange GetNodeData(TEl element);
     }
 }

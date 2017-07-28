@@ -14,25 +14,25 @@ namespace AlgorithmVisualization.View.Util
         {
             if (timeSpan.TotalSeconds < 10)
             {
-                return "{0:s\\.ff}";
+                return "{0:s\\.fff}";
             }
             if (timeSpan.TotalSeconds < 60)
             {
-                return "{0:ss\\.ff}";
+                return "{0:ss\\.fff}";
             }
             if (timeSpan.TotalMinutes < 10)
             {
-                return "{0:m\\:ss\\.ff}";
+                return "{0:m\\:ss\\.fff}";
             }
             if (timeSpan.TotalMinutes < 60)
             {
-                return "{0:mm\\:ss\\.ff}";
+                return "{0:mm\\:ss\\.fff}";
             }
             if (timeSpan.TotalHours < 10)
             {
-                return "{0:h\\:mm\\:ss\\.ff}";
+                return "{0:h\\:mm\\:ss\\.fff}";
             }
-            return "{0:hh\\:mm\\:ss\\.ff}";
+            return "{0:hh\\:mm\\:ss\\.fff}";
         }
 
     }

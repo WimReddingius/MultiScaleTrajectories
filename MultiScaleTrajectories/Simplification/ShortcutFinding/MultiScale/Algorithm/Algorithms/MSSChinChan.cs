@@ -17,15 +17,15 @@ namespace MultiScaleTrajectories.Simplification.ShortcutFinding.MultiScale.Algor
         public override void Compute(MSSInput input, out MSSOutput output)
         {
             output = new MSSOutput(input);
-            var checker = new ChinChanShortcutChecker(input, output);
+            var checker = new ShortcutChecker(input, output);
             output.Shortcuts = ShortcutSetBuilder.FindShortcuts(checker, true);
         }
 
-        class ChinChanShortcutChecker : MSShortcutChecker
+        public class ShortcutChecker : MSShortcutChecker
         {
             Dictionary<int, Wedge> wedges;
 
-            public ChinChanShortcutChecker(MSSInput input, MSSOutput output) : base(input, output)
+            public ShortcutChecker(MSSInput input, MSSOutput output) : base(input, output)
             {
             }
 

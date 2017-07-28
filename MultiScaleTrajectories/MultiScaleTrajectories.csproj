@@ -53,6 +53,26 @@
   <PropertyGroup>
     <ApplicationIcon>Icon.ico</ApplicationIcon>
   </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x64'">
+    <DebugSymbols>true</DebugSymbols>
+    <OutputPath>bin\x64\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <DebugType>full</DebugType>
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+    <Prefer32Bit>true</Prefer32Bit>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x64'">
+    <OutputPath>bin\x64\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <Optimize>true</Optimize>
+    <DebugType>pdbonly</DebugType>
+    <PlatformTarget>x64</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+    <Prefer32Bit>true</Prefer32Bit>
+  </PropertyGroup>
   <ItemGroup>
     <Reference Include="AlgoKit, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\AlgoKit.0.0.47\lib\AlgoKit.dll</HintPath>
@@ -103,30 +123,47 @@
     <Compile Include="AlgoUtil\DataStructures\Search\ISearchTree.cs" />
     <Compile Include="AlgoUtil\DataStructures\Search\RedBlack\StandardRedBlackBST.cs" />
     <Compile Include="AlgoUtil\DataStructures\Search\RedBlack\StandardRedBlackNode.cs" />
-    <Compile Include="AlgoUtil\Extensions.cs" />
     <Compile Include="AlgoUtil\PathFinding\SingleSource\Algorithm\Dijkstra\Heap\DAryHeapFactory.cs" />
-    <Compile Include="Simplification\MultiScale\Algorithm\ImaiIri\Hierarchical\Konzack\KonzackQuartic.cs" />
-    <Compile Include="Simplification\MultiScale\Algorithm\ImaiIri\Hierarchical\Konzack\KonzackCubic.cs" />
+    <Compile Include="Simplification\MultiScale\Algorithm\DouglasPeucker\Approximator.cs" />
+    <Compile Include="Simplification\MultiScale\Algorithm\DouglasPeucker\HierarchicalDouglasPeuckerTD.cs" />
+    <Compile Include="Simplification\MultiScale\Algorithm\DouglasPeucker\HierarchicalDouglasPeuckerBU.cs" />
+    <Compile Include="Simplification\MultiScale\Algorithm\ImaiIri\Hierarchical\HierarchicalImaiIriBUCao.cs" />
+    <Compile Include="Simplification\MultiScale\Algorithm\ImaiIri\Hierarchical\HierarchicalImaiIriTD.cs" />
+    <Compile Include="Simplification\MultiScale\Algorithm\ImaiIri\Hierarchical\Optimal\HierarchicalOptimalCubic.cs" />
+    <Compile Include="Simplification\MultiScale\Algorithm\ImaiIri\Hierarchical\Optimal\HierarchicalOptimal.cs" />
+    <Compile Include="Simplification\MultiScale\Algorithm\ImaiIri\Hierarchical\Optimal\HierarchicalOptimalQuartic.cs" />
     <Compile Include="Simplification\MultiScale\Algorithm\ImaiIri\ShortcutProvision\ShortcutPreprocessor.cs" />
     <Compile Include="Simplification\MultiScale\Algorithm\ImaiIri\ShortcutProvision\ShortcutsOnDemand.cs" />
     <Compile Include="Simplification\MultiScale\Algorithm\ImaiIri\ShortcutProvision\ShortcutProvider.cs" />
-    <Compile Include="Simplification\MultiScale\Algorithm\ImaiIri\ShortestPathProvision\Graph\ShortcutGraphDijkstra.cs" />
-    <Compile Include="Simplification\MultiScale\View\Explore\KonzackGrid.cs">
+    <Compile Include="Simplification\MultiScale\Algorithm\ImaiIri\ShortestPathProvision\SimpleShortestPathProvider.cs" />
+    <Compile Include="Simplification\MultiScale\View\Algorithm\ShortcutOptions.cs">
       <SubType>UserControl</SubType>
     </Compile>
+    <Compile Include="Simplification\MultiScale\View\Algorithm\ShortcutOptions.Designer.cs">
+      <DependentUpon>ShortcutOptions.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Simplification\MultiScale\View\Explore\HierarchicalOptimalGrid.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Simplification\ShortcutFinding\MultiScale\Algorithm\Representation\Simple\MSCompleteSimpleDummy.cs" />
+    <Compile Include="Simplification\ShortcutPathFinding\Algorithm\Graph\ShortcutGraphBFS.cs" />
+    <Compile Include="Simplification\ShortcutPathFinding\Algorithm\Graph\ShortcutGraphDijkstra.cs" />
+    <Compile Include="Simplification\ShortcutPathFinding\Algorithm\Intervals\IntervalsBFS.cs" />
+    <Compile Include="Simplification\ShortcutPathFinding\Algorithm\Intervals\IntervalsRangeQueries.cs" />
+    <Compile Include="Simplification\ShortcutPathFinding\Algorithm\Intervals\IntervalsRangeTree.cs" />
+    <Compile Include="Simplification\ShortcutPathFinding\Algorithm\SPFAlgorithm.cs" />
+    <Compile Include="Simplification\ShortcutPathFinding\Algorithm\SPFInput.cs" />
+    <Compile Include="Simplification\ShortcutPathFinding\Algorithm\SPFOutput.cs" />
+    <Compile Include="Simplification\ShortcutPathFinding\SPFController.cs" />
     <Compile Include="Simplification\ShortcutFinding\Algorithm\BruteForce\SimpleEpsilonFinder.cs" />
     <Compile Include="Simplification\ShortcutFinding\Algorithm\ConvexHull\EnhancedConvexHull.cs" />
-    <Compile Include="Simplification\ShortcutFinding\ArbitraryScale\Algorithm\Algorithms\ASSComplete.cs" />
-    <Compile Include="Simplification\ShortcutFinding\ArbitraryScale\Algorithm\Algorithms\ASSConvexHull.cs" />
     <Compile Include="Simplification\ShortcutFinding\Algorithm\ConvexHull\EnhancedConvexHullHalf.cs" />
     <Compile Include="Simplification\ShortcutFinding\Algorithm\ConvexHull\EnhancedPoint.cs" />
-    <Compile Include="Simplification\ShortcutFinding\ArbitraryScale\ArbitraryShortcutSet.cs" />
-    <Compile Include="Simplification\ShortcutFinding\ArbitraryScale\View\ASSGridExplorer.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
     <Compile Include="Simplification\ShortcutFinding\IShortcutSet.cs" />
     <Compile Include="Simplification\ShortcutFinding\MultiScale\Algorithm\Algorithms\MSSChinChan.cs" />
-    <Compile Include="Simplification\ShortcutFinding\MultiScale\Algorithm\Representation\Factory\ShortcutRegionSetFactory.cs" />
+    <Compile Include="Simplification\ShortcutFinding\MultiScale\Algorithm\Representation\CompactError\MSCompactErrorShortcutSet.cs" />
+    <Compile Include="Simplification\ShortcutFinding\MultiScale\Algorithm\Representation\CompactError\MSSCompleteCompactError.cs" />
+    <Compile Include="Simplification\ShortcutFinding\MultiScale\Algorithm\Representation\Factory\ShortcutIntervalSetFactory.cs" />
     <Compile Include="Simplification\ShortcutFinding\MultiScale\Algorithm\Representation\Factory\ShortcutGraphFactory.cs" />
     <Compile Include="Simplification\ShortcutFinding\MultiScale\Algorithm\Representation\MSShortcutChecker.cs" />
     <Compile Include="Simplification\ShortcutFinding\MultiScale\Algorithm\Representation\MSShortcutSetBuilder.cs" />
@@ -184,10 +221,7 @@
     <Compile Include="Simplification\ShortcutFinding\SingleScale\View\SSSGridExplorer.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="Simplification\ShortcutFinding\ShortcutRegionSet.cs" />
-    <Compile Include="Simplification\MultiScale\Algorithm\ImaiIri\ShortestPathProvision\Region\ShortcutShortestPathRangeTree.cs" />
-    <Compile Include="Simplification\MultiScale\Algorithm\ImaiIri\ShortestPathProvision\Graph\BasicShortestPathProvider.cs" />
-    <Compile Include="Simplification\MultiScale\Algorithm\ImaiIri\ShortestPathProvision\Region\ShortcutRegionsShortestPath.cs" />
+    <Compile Include="Simplification\ShortcutFinding\ShortcutIntervalSet.cs" />
     <Compile Include="Simplification\MultiScale\View\Explore\LevelTrajectoryGeoAuto.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -216,26 +250,14 @@
     <Compile Include="AlgoUtil\Geometry\TPoint2D.cs" />
     <Compile Include="AlgoUtil\Geometry\Trajectory2D.cs" />
     <Compile Include="Simplification\ShortcutFinding\Algorithm\ChinChan\Wedge.cs" />
-    <Compile Include="Simplification\ShortcutFinding\ArbitraryScale\Algorithm\Algorithms\ASSBruteForce.cs" />
     <Compile Include="Simplification\ShortcutFinding\Algorithm\ConvexHull\ConvexHullHalf.cs" />
     <Compile Include="Simplification\ShortcutFinding\SingleScale\Algorithm\Algorithms\SSChinChan.cs" />
-    <Compile Include="Simplification\ShortcutFinding\ArbitraryScale\ASShortcutFindingController.cs" />
     <Compile Include="Simplification\ShortcutFinding\SingleScale\SSShortcutFindingController.cs" />
-    <Compile Include="Simplification\ShortcutFinding\ArbitraryScale\ArbitraryShortcut.cs" />
     <Compile Include="Simplification\ShortcutFinding\Shortcut.cs" />
-    <Compile Include="Simplification\ShortcutFinding\SimpleShortcutSet.cs" />
-    <Compile Include="Simplification\ShortcutFinding\ArbitraryScale\Algorithm\ASSAlgorithm.cs" />
-    <Compile Include="Simplification\ShortcutFinding\ArbitraryScale\Algorithm\ASSOutput.cs" />
     <Compile Include="Simplification\MultiScale\Algorithm\ImaiIri\ImaiIriAlgorithm.cs" />
-    <Compile Include="Simplification\MultiScale\Algorithm\ImaiIri\Hierarchical\HierarchicalGreedy.cs" />
+    <Compile Include="Simplification\MultiScale\Algorithm\ImaiIri\Hierarchical\HierarchicalImaiIriBU.cs" />
     <Compile Include="Simplification\MultiScale\Algorithm\ImaiIri\NonHierarchical.cs" />
     <Compile Include="Simplification\MultiScale\Algorithm\ImaiIri\ShortestPathProvision\ShortestPathProvider.cs" />
-    <Compile Include="Simplification\MultiScale\View\Algorithm\ShortcutOptions.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
-    <Compile Include="Simplification\MultiScale\View\Algorithm\ShortcutOptions.Designer.cs">
-      <DependentUpon>ShortcutOptions.cs</DependentUpon>
-    </Compile>
     <Compile Include="Simplification\MultiScale\View\Edit\MSInputEditor.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -248,6 +270,12 @@
     </Compile>
     <Compile Include="AlgoUtil\PathFinding\SingleSource\View\DijkstraHeapOptions.Designer.cs">
       <DependentUpon>DijkstraHeapOptions.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Simplification\ShortcutPathFinding\View\Edit\SPFInputEditor.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Simplification\ShortcutPathFinding\View\Edit\SPFInputEditor.Designer.cs">
+      <DependentUpon>SPFInputEditor.cs</DependentUpon>
     </Compile>
     <Compile Include="Trajectory\View\MoveBankTrajectoryChooser.cs">
       <SubType>Form</SubType>
@@ -277,7 +305,6 @@
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Simplification\ShortcutFinding\ShortcutGraph.cs" />
-    <Compile Include="Simplification\MultiScale\Algorithm\ImaiIri\Hierarchical\Konzack\Konzack.cs" />
     <Compile Include="Simplification\MultiScale\Algorithm\MSInput.cs" />
     <Compile Include="Simplification\MultiScale\Algorithm\MSOutput.cs" />
     <Compile Include="AlgoUtil\DataStructures\Graph\DataEdge.cs" />
@@ -310,6 +337,9 @@
     <Compile Include="Trajectory\View\TrajectoryGeo.Designer.cs">
       <DependentUpon>TrajectoryGeo.cs</DependentUpon>
     </Compile>
+    <EmbeddedResource Include="Simplification\MultiScale\View\Algorithm\ShortcutOptions.resx">
+      <DependentUpon>ShortcutOptions.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Simplification\ShortcutFinding\MultiScale\View\MSSAlgorithmOptions.resx">
       <DependentUpon>MSSAlgorithmOptions.cs</DependentUpon>
     </EmbeddedResource>
@@ -338,11 +368,11 @@
       <DependentUpon>Resources.resx</DependentUpon>
       <DesignTime>True</DesignTime>
     </Compile>
-    <EmbeddedResource Include="Simplification\MultiScale\View\Algorithm\ShortcutOptions.resx">
-      <DependentUpon>ShortcutOptions.cs</DependentUpon>
-    </EmbeddedResource>
     <EmbeddedResource Include="Simplification\MultiScale\View\Edit\EpsilonListEditor.resx">
       <DependentUpon>EpsilonListEditor.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Simplification\ShortcutPathFinding\View\Edit\SPFInputEditor.resx">
+      <DependentUpon>SPFInputEditor.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Trajectory\View\MoveBankTrajectoryChooser.resx">
       <DependentUpon>MoveBankTrajectoryChooser.cs</DependentUpon>

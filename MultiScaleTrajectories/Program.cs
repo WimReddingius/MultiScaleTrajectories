@@ -3,10 +3,9 @@ using System.Collections.Generic;
 using System.Windows.Forms;
 using AlgorithmVisualization.Controller;
 using AlgorithmVisualization.View;
-using MultiScaleTrajectories.AlgoUtil.PathFinding.SingleSource;
 using MultiScaleTrajectories.Properties;
 using MultiScaleTrajectories.Simplification.MultiScale;
-using MultiScaleTrajectories.Simplification.ShortcutFinding.ArbitraryScale;
+using MultiScaleTrajectories.Simplification.ShortcutPathFinding;
 using MultiScaleTrajectories.Simplification.ShortcutFinding.MultiScale;
 using MultiScaleTrajectories.Simplification.ShortcutFinding.SingleScale;
 
@@ -26,10 +25,9 @@ namespace MultiScaleTrajectories
             var controllers = new List<Func<AlgorithmControllerBase>>
             {
                 () => new MSController(),
-                () => new ASShortcutFindingController(),
                 () => new SSShortcutFindingController(),
-                () => new MSShortcutFindingController()
-                //() => new SSSPController()
+                () => new MSShortcutFindingController(),
+                () => new SPFController()
             };
 
             var algoForm = new AlgorithmForm(controllers) { Text = Resources.Program_Name };

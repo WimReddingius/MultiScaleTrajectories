@@ -1,8 +1,6 @@
-﻿using System.Linq;
-using AlgorithmVisualization.Algorithm;
+﻿using AlgorithmVisualization.Algorithm;
 using MultiScaleTrajectories.Simplification.MultiScale.Algorithm.ImaiIri.ShortcutProvision;
 using MultiScaleTrajectories.Simplification.MultiScale.Algorithm.ImaiIri.ShortestPathProvision;
-using MultiScaleTrajectories.Simplification.MultiScale.Algorithm.ImaiIri.ShortestPathProvision.Graph;
 using MultiScaleTrajectories.Simplification.MultiScale.View.Algorithm;
 using Newtonsoft.Json;
 
@@ -26,27 +24,27 @@ namespace MultiScaleTrajectories.Simplification.MultiScale.Algorithm.ImaiIri
             Statistics.Put("Shortcut Provider", () => ShortcutProvider.Name);
             Statistics.Put("Shortest Path Provider", () => ShortestPathProvider.Name);
 
-            Statistics.Put("Shortcut Provider Statistics", () =>
-            {
-                var graphProvider = ShortestPathProvider as BasicShortestPathProvider;
+            //Statistics.Put("Shortcut Provider Statistics", () =>
+            //{
+            //    var graphProvider = ShortestPathProvider as SSSPShortestPathProvider;
                 
-                if (graphProvider == null)
-                    return "";
+            //    if (graphProvider == null)
+            //        return "";
 
-                var str = "";
-                var stats = graphProvider.Algorithm.Statistics;
-                foreach (var pair in stats)
-                {
-                    if (pair.Key == "Name")
-                        continue;
+            //    var str = "";
+            //    var stats = graphProvider.Algorithm.Statistics;
+            //    foreach (var pair in stats)
+            //    {
+            //        if (pair.Key == "Name")
+            //            continue;
 
-                    str += pair.Key + ": " + pair.Value.Value;
-                    if (!stats.Last().Equals(pair))
-                        str += ", ";
-                }
+            //        str += pair.Key + ": " + pair.Value.Value;
+            //        if (!stats.Last().Equals(pair))
+            //            str += ", ";
+            //    }
 
-                return str;
-            });
+            //    return str;
+            //});
         }
 
     }

@@ -9,7 +9,6 @@ namespace MultiScaleTrajectories.Simplification.ShortcutFinding.MultiScale.Algor
     {
         [JsonProperty] public ShortcutSetFactory ShortcutSetFactory;
 
-
         protected MSShortcutSetBuilder(string name)
         {
             Name = name;

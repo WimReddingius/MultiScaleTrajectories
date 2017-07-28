@@ -16,5 +16,6 @@ namespace MultiScaleTrajectories.Simplification.ShortcutFinding.Algorithm.BruteF
             }
             return maxDistance;
         }
+
     }
 }

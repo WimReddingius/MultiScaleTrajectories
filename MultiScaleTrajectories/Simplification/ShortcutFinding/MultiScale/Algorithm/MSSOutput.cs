@@ -2,6 +2,8 @@
 using AlgorithmVisualization.Algorithm.Statistics;
 using MultiScaleTrajectories.AlgoUtil.Geometry;
 using MultiScaleTrajectories.Simplification.ShortcutFinding.MultiScale.Algorithm.Representation;
+using MultiScaleTrajectories.Simplification.ShortcutFinding.MultiScale.Algorithm.Representation.Factory;
+using MultiScaleTrajectories.Simplification.ShortcutFinding.MultiScale.Algorithm.Representation.Simple;
 using Newtonsoft.Json;
 
 namespace MultiScaleTrajectories.Simplification.ShortcutFinding.MultiScale.Algorithm
@@ -31,7 +33,19 @@ namespace MultiScaleTrajectories.Simplification.ShortcutFinding.MultiScale.Algor
             for (var l = 1; l <= input.NumLevels; l++)
             {
                 var level = l;
+
                 Statistics.Put("Shortcuts @ level " + level, () => Shortcuts?.CountAtLevel(level).ToString() ?? "");
+                Statistics.Put("Intervals @ level " + level, () =>
+                {
+                    if (Shortcuts?.ShortcutSetFactory is ShortcutIntervalSetFactory && Shortcuts is MSSimpleShortcutSet)
+                    {
+                        var intervals = (ShortcutIntervalSet) Shortcuts?.GetShortcuts(level);
+                        return intervals?.RegionCount.ToString() ?? "";
+                    }
+
+                    return "N/A";
+                });
+                
             }
         }
 

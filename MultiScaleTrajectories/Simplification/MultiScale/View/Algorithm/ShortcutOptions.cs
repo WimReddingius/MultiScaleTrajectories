@@ -2,13 +2,10 @@
 using System.ComponentModel;
 using System.Windows.Forms;
 using AlgorithmVisualization.View.Util;
-using MultiScaleTrajectories.AlgoUtil.DataStructures.Graph;
-using MultiScaleTrajectories.AlgoUtil.Geometry;
-using MultiScaleTrajectories.AlgoUtil.PathFinding.SingleSource.Algorithm.Dijkstra;
 using MultiScaleTrajectories.Simplification.MultiScale.Algorithm.ImaiIri.ShortcutProvision;
 using MultiScaleTrajectories.Simplification.MultiScale.Algorithm.ImaiIri.ShortestPathProvision;
-using MultiScaleTrajectories.Simplification.MultiScale.Algorithm.ImaiIri.ShortestPathProvision.Graph;
-using MultiScaleTrajectories.Simplification.MultiScale.Algorithm.ImaiIri.ShortestPathProvision.Region;
+using MultiScaleTrajectories.Simplification.ShortcutPathFinding.Algorithm.Graph;
+using MultiScaleTrajectories.Simplification.ShortcutPathFinding.Algorithm.Intervals;
 using MultiScaleTrajectories.Simplification.ShortcutFinding.MultiScale.Algorithm.Algorithms;
 using Newtonsoft.Json;
 
@@ -53,10 +50,12 @@ namespace MultiScaleTrajectories.Simplification.MultiScale.View.Algorithm
 
             shortestPathroviders = new BindingList<ShortestPathProvider>
             {
-                new BasicShortestPathProvider(new DijkstraOnDemand<DataNode<TPoint2D>, WeightedEdge>()),
-                new BasicShortestPathProvider(new DijkstraStandard<DataNode<TPoint2D>, WeightedEdge>()),
-                new ShortcutGraphDijkstra(),
-                new ShortcutRegionsShortestPath()
+                //new BasicShortestPathProvider(new DijkstraOnDemand<DataNode<TPoint2D>, WeightedEdge>()),
+                //new BasicShortestPathProvider(new DijkstraStandard<DataNode<TPoint2D>, WeightedEdge>()),
+                new SimpleShortestPathProvider(new IntervalsBFS()),
+                new SimpleShortestPathProvider(new IntervalsRangeQueries()),
+                new SimpleShortestPathProvider(new ShortcutGraphBFS()),
+                new SimpleShortestPathProvider(new ShortcutGraphDijkstra()),
             };
 
             PopulateControls();
@@ -78,7 +77,7 @@ namespace MultiScaleTrajectories.Simplification.MultiScale.View.Algorithm
         {
             ChosenShortcutProvider = (ShortcutProvider) shortcutProviderComboBox.SelectedItem;
             
-            shortcutProviderOptions.Fill(ChosenShortcutProvider.OptionsControl);
+            shortcutProviderOptions.Fill(ChosenShortcutProvider.Options);
         }
 
         private void shortestPathProviderComboBox_SelectedIndexChanged(object sender, EventArgs e)

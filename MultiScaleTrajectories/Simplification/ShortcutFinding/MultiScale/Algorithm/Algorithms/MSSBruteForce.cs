@@ -18,26 +18,31 @@ namespace MultiScaleTrajectories.Simplification.ShortcutFinding.MultiScale.Algor
         {
             output = new MSSOutput(input);
 
-            var checker = new BruteForceShortcutChecker(input, output);
+            var checker = new ShortcutChecker(input, output);
             output.Shortcuts = ShortcutSetBuilder.FindShortcuts(checker, false);
         }
 
-        class BruteForceShortcutChecker : MSShortcutChecker
+        public class ShortcutChecker : MSShortcutChecker
         {
-            private double currentMinEpsilon;
+            private double currentMaxEpsilon;
 
-            public BruteForceShortcutChecker(MSSInput input, MSSOutput output) : base(input, output)
+            public ShortcutChecker(MSSInput input, MSSOutput output) : base(input, output)
             {
             }
 
             public override void BeforeShortcutValidation(TPoint2D start, TPoint2D end)
             {
-                currentMinEpsilon = SimpleEpsilonFinder.GetMinEpsilon(Input.Trajectory, start.Index, end.Index);
+                currentMaxEpsilon = SimpleEpsilonFinder.GetMinEpsilon(Input.Trajectory, start.Index, end.Index);
             }
 
             public override bool ShortcutValid(int level, TPoint2D start, TPoint2D end)
             {
-                return Input.GetEpsilon(level) >= currentMinEpsilon;
+                return Input.GetEpsilon(level) >= currentMaxEpsilon;
+            }
+
+            public override double GetMaxError(TPoint2D start, TPoint2D end)
+            {
+                return currentMaxEpsilon;
             }
         }
     }

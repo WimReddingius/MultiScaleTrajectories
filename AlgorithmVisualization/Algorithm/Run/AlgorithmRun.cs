@@ -1,6 +1,11 @@
-﻿using System.ComponentModel;
+﻿using System;
+using System.Collections.Generic;
+using System.ComponentModel;
+using System.Globalization;
+using System.Linq;
 using AlgorithmVisualization.Algorithm.Statistics;
 using AlgorithmVisualization.Util.Naming;
+using AlgorithmVisualization.View.Util;
 using Newtonsoft.Json;
 
 namespace AlgorithmVisualization.Algorithm.Run
@@ -94,6 +99,23 @@ namespace AlgorithmVisualization.Algorithm.Run
             Statistics.Put("Running time", fullRunTime);
             fullRunTime.Start();
 
+            Statistics.Put("Average running time", () =>
+            {
+                var ticks = fullRunTime.GetTimeSpan()?.Ticks;
+                return ticks != null ? TimeFormatter.Format(new TimeSpan(ticks.Value / NumIterations)) : "";
+            });
+
+            //Statistics.Put("Average running time (s)", () =>
+            //{
+            //    var timeSpan = fullRunTime.GetTimeSpan();
+            //    if (timeSpan != null)
+            //    {
+            //        var seconds = timeSpan.Value.Seconds + (double) timeSpan.Value.Milliseconds / 1000;
+            //        return (seconds / NumIterations).ToString(CultureInfo.InvariantCulture);
+            //    }
+            //    return "";
+            //});
+
             for (var it = 1; it <= NumIterations; it++)
             {
                 if (algorithmWorker.CancellationPending)
@@ -106,9 +128,16 @@ namespace AlgorithmVisualization.Algorithm.Run
                 Statistics.Put("Running time - Iteration " + it, iterationRunTime);
                 iterationRunTime.Start();
 
-                Algorithm.Compute(Input, out Output);
+                if (it == 1)
+                    Algorithm.Compute(Input, out Output);
+                else
+                {
+                    TOut outp;
+                    Algorithm.Compute(Input, out outp);
+                }
 
                 iterationRunTime.End();
+
                 algorithmWorker.ReportProgress(it / NumIterations * 100, it);
             }
 

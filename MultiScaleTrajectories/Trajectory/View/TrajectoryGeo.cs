@@ -47,7 +47,7 @@ namespace MultiScaleTrajectories.Trajectory.View
             var points = trajectory.Select(point => new PointLatLng(point.Y, point.X)).ToList();
             var route = new GMapRoute(points, "points")
             {
-                Stroke = { Width = 2 }
+                Stroke = { Color = Color.Black, Width = 2 }
             };
 
             routesOverlay.Routes.Add(route);

@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.Serialization;
@@ -15,7 +16,7 @@ namespace MultiScaleTrajectories.Simplification.ShortcutFinding
         [JsonIgnore] public Dictionary<Shortcut, Edge> Shortcuts;
         [JsonProperty] private JDictionary<Shortcut, int> shortcutWeights;
 
-        public int Count => Shortcuts.Count;
+        public long Count => Shortcuts.LongCount();
         public Trajectory2D Trajectory { get; }
 
         [JsonIgnore] public DataNode<TPoint2D> FirstNode => GetNode(Trajectory.First());
@@ -32,7 +33,7 @@ namespace MultiScaleTrajectories.Simplification.ShortcutFinding
             }
         }
 
-        public ShortcutGraph(Trajectory2D Trajectory, bool containsTrivialShortcuts = false) : this(Trajectory)
+        public ShortcutGraph(Trajectory2D Trajectory, bool containsTrivialShortcuts = false, int initWeight = 1) : this(Trajectory)
         {
             TPoint2D prevPoint = null;
 
@@ -43,14 +44,14 @@ namespace MultiScaleTrajectories.Simplification.ShortcutFinding
             {
                 if (prevPoint != null)
                 {
-                    AddShortcut(new Shortcut(prevPoint, point));
+                    AddShortcut(new Shortcut(prevPoint, point), initWeight);
                 }
 
                 prevPoint = point;
             }
         }
 
-        private ShortcutGraph(Trajectory2D trajectory)
+        public ShortcutGraph(Trajectory2D trajectory)
         {
             Trajectory = trajectory;
 
@@ -68,7 +69,7 @@ namespace MultiScaleTrajectories.Simplification.ShortcutFinding
             return pointNodeMapping[point];
         }
 
-        public void IncrementAllEdgeWeights()
+        public void IncrementAllWeights()
         {
             foreach (var edge in Edges)
             {
@@ -77,35 +78,7 @@ namespace MultiScaleTrajectories.Simplification.ShortcutFinding
             }
         }
 
-        public void AddShortcut(TPoint2D start, TPoint2D end)
-        {
-            AddShortcut(new Shortcut(start, end));
-        }
-
-        public void AddShortcut(Shortcut shortcut, int weight = 1)
-        {
-            if (Shortcuts.ContainsKey(shortcut))
-                return;
-
-            var p1 = GetNode(shortcut.Start);
-            var p2 = GetNode(shortcut.End);
-
-            var newEdge = new WeightedEdge(p1, p2, weight);
-
-            Shortcuts[shortcut] = newEdge;
-            AddEdge(newEdge);
-        }
-
-        public void RemoveShortcut(Shortcut shortcut, bool safe = true)
-        {
-            if (safe && !Shortcuts.ContainsKey(shortcut))
-                return;
-
-            RemoveEdge((WeightedEdge)Shortcuts[shortcut]);
-            Shortcuts.Remove(shortcut);
-        }
-
-        public override object Clone()
+        public new IShortcutSet Clone()
         {
             var newGraph = new ShortcutGraph(Trajectory);
 
@@ -158,6 +131,29 @@ namespace MultiScaleTrajectories.Simplification.ShortcutFinding
             RemoveNode(GetNode(point));
         }
 
+        public void AddShortcut(Shortcut shortcut, int weight = 1)
+        {
+            if (Shortcuts.ContainsKey(shortcut))
+                return;
+
+            var p1 = GetNode(shortcut.Start);
+            var p2 = GetNode(shortcut.End);
+
+            var newEdge = new WeightedEdge(p1, p2, weight);
+
+            Shortcuts[shortcut] = newEdge;
+            AddEdge(newEdge);
+        }
+
+        public void RemoveShortcut(Shortcut shortcut, bool safe = true)
+        {
+            if (safe && !Shortcuts.ContainsKey(shortcut))
+                return;
+
+            RemoveEdge((WeightedEdge)Shortcuts[shortcut]);
+            Shortcuts.Remove(shortcut);
+        }
+
         public void AppendShortcut(TPoint2D start, TPoint2D end)
         {
             AddShortcut(new Shortcut(start, end));
@@ -168,13 +164,13 @@ namespace MultiScaleTrajectories.Simplification.ShortcutFinding
             AddShortcut(new Shortcut(start, end));
         }
 
-        public Dictionary<TPoint2D, ICollection<TPoint2D>> AsMap()
+        public Dictionary<TPoint2D, JHashSet<TPoint2D>> AsMap()
         {
-            var map = new Dictionary<TPoint2D, ICollection<TPoint2D>>();
+            var map = new Dictionary<TPoint2D, JHashSet<TPoint2D>>();
 
             foreach (var point in Trajectory)
             {
-                map[point] = new HashSet<TPoint2D>();
+                map[point] = new JHashSet<TPoint2D>();
             }
 
             foreach (var shortcut in Shortcuts.Keys)
