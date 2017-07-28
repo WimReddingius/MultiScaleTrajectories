@@ -69,7 +69,7 @@ namespace MultiScaleTrajectories.Simplification.ShortcutPathFinding.View.Edit
             if (input.ShortcutSet != null)
             {
                 var regions = (ShortcutIntervalSet) input.ShortcutSet;
-                shortcutFindingProgressLabel.Text = "Shortcuts: " + regions.Count + " Regions: " + regions.RegionCount;
+                shortcutFindingProgressLabel.Text = "Shortcuts: " + regions.Count + " Intervals: " + regions.IntervalCount;
             }
         }
 
@@ -108,7 +108,7 @@ namespace MultiScaleTrajectories.Simplification.ShortcutPathFinding.View.Edit
             });
 
             var regions = (ShortcutIntervalSet) input.ShortcutSet;
-            shortcutFindingProgressLabel.Text = "Shortcuts: " + regions.Count + " Regions: " + regions.RegionCount;
+            shortcutFindingProgressLabel.Text = "Shortcuts: " + regions.Count + " Intervals: " + regions.IntervalCount;
         }
 
         private void startToEndCheckbox_Click(object sender, System.EventArgs e)

@@ -15,7 +15,7 @@ namespace MultiScaleTrajectories.Simplification.ShortcutPathFinding.Algorithm.In
                     return new PathStep(point, 0);
 
                 PathStep bestStep = null;
-                foreach (var range in shortcutIntervals.GetRegions(point))
+                foreach (var range in shortcutIntervals.GetIntervals(point))
                 {
                     PathStep step;
                     bool stepFound;

@@ -63,7 +63,7 @@ namespace MultiScaleTrajectories.Simplification.ShortcutPathFinding.Algorithm.In
                     output.SetPath(closestPoint, new ShortcutPath(points, closesDataNodeDistance));
                 }
 
-                foreach (var region in intervals.RegionMap[closestPoint])
+                foreach (var region in intervals.IntervalMap[closestPoint])
                 {
                     if (region.Start.Index > target.Index)
                         break;

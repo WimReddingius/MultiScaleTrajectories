@@ -13,288 +13,285 @@ namespace MultiScaleTrajectories.Simplification.ShortcutFinding
     {
         public Trajectory2D Trajectory { get; }
 
-        public long Count => RegionMap.Values.SelectMany(l => l.Select(r => r.Count)).Sum();
-        public long RegionCount => RegionMap.Values.Select(l => l.Count).Sum();
+        public long Count => IntervalMap.Values.SelectMany(l => l.Select(r => r.Count)).Sum();
+        public long IntervalCount => IntervalMap.Values.Select(l => l.Count).Sum();
 
         //worst case O(n^2), expected O(n)
-        public readonly JDictionary<TPoint2D, LinkedList<Region>> RegionMap;
+        public readonly JDictionary<TPoint2D, LinkedList<Interval>> IntervalMap;
 
         [JsonConstructor]
-        private ShortcutIntervalSet(Trajectory2D Trajectory, JDictionary<TPoint2D, LinkedList<Region>> RegionMap)
+        private ShortcutIntervalSet(Trajectory2D Trajectory, JDictionary<TPoint2D, LinkedList<Interval>> intervalMap)
         {
             this.Trajectory = Trajectory;
-            this.RegionMap = RegionMap;
+            this.IntervalMap = intervalMap;
         }
 
         public ShortcutIntervalSet(Trajectory2D trajectory)
         {
             Trajectory = trajectory;
-            RegionMap = new JDictionary<TPoint2D, LinkedList<Region>>();
+            IntervalMap = new JDictionary<TPoint2D, LinkedList<Interval>>();
 
             foreach (var point in Trajectory)
             {
-                RegionMap[point] = new LinkedList<Region>();
+                IntervalMap[point] = new LinkedList<Interval>();
             }
         }
 
-        public LinkedList<Region> GetRegions(TPoint2D point)
+        public LinkedList<Interval> GetIntervals(TPoint2D point)
         {
-            if (RegionMap.ContainsKey(point))
-                return RegionMap[point];
+            if (IntervalMap.ContainsKey(point))
+                return IntervalMap[point];
 
-            return new LinkedList<Region>();
+            return new LinkedList<Interval>();
         }
 
         //worst case O(n^2), expected O(n)
-        //ignores weight
         public void Except(IShortcutSet set)
         {
-            var otherRegionMap = ((ShortcutIntervalSet)set).RegionMap;
+            var otherIntervalMap = ((ShortcutIntervalSet)set).IntervalMap;
 
-            foreach (var start in otherRegionMap.Keys)
+            foreach (var start in otherIntervalMap.Keys)
             {
-                if (!RegionMap.ContainsKey(start))
+                if (!IntervalMap.ContainsKey(start))
                 {
                     continue;
                 }
 
-                var regions = RegionMap[start];
-                var otherRegions = otherRegionMap[start];
-                var regionsNode = regions.First;
-                var otherNode = otherRegions.First;
+                var intervals = IntervalMap[start];
+                var otherIntervals = otherIntervalMap[start];
+                var intervalsNode = intervals.First;
+                var otherNode = otherIntervals.First;
 
                 //worst case O(n), expected O(1)
-                while (regionsNode != null)
+                while (intervalsNode != null)
                 {
-                    var region = regionsNode.Value;
+                    var interval = intervalsNode.Value;
 
                     if (otherNode == null)
                     {
                         break;
                     }
 
-                    var otherRegion = otherNode.Value;
+                    var otherInterval = otherNode.Value;
 
-                    //other region too far back, consider next one for overlap
-                    if (otherRegion.End.Index < region.Start.Index)
+                    //other interval too far back, consider next one for overlap
+                    if (otherInterval.End.Index < interval.Start.Index)
                     {
                         otherNode = otherNode.Next;
                         continue;
                     }
 
-                    //region too far back, consider next one for overlap
-                    if (otherRegion.Start.Index > region.End.Index)
+                    //interval too far back, consider next one for overlap
+                    if (otherInterval.Start.Index > interval.End.Index)
                     {
-                        regionsNode = regionsNode.Next;
+                        intervalsNode = intervalsNode.Next;
                         continue;
                     }
 
-                    //it overlaps at the start: prune region start
-                    if (otherRegion.End.Index < region.End.Index && otherRegion.Start.Index <= region.Start.Index) 
+                    //it overlaps at the start: prune interval start
+                    if (otherInterval.End.Index < interval.End.Index && otherInterval.Start.Index <= interval.Start.Index) 
                     {
-                        region.Start = Trajectory[otherRegion.End.Index + 1];
+                        interval.Start = Trajectory[otherInterval.End.Index + 1];
                         otherNode = otherNode.Next;
                         continue;
                     }
 
-                    //it overlaps at the end: prune region end
-                    if (otherRegion.Start.Index > region.Start.Index && otherRegion.End.Index >= region.End.Index) 
+                    //it overlaps at the end: prune interval end
+                    if (otherInterval.Start.Index > interval.Start.Index && otherInterval.End.Index >= interval.End.Index) 
                     {
-                        region.End = Trajectory[otherRegion.Start.Index - 1];
-                        regionsNode = regionsNode.Next;
+                        interval.End = Trajectory[otherInterval.Start.Index - 1];
+                        intervalsNode = intervalsNode.Next;
                         continue;
                     }
 
-                    //spanning other region
-                    if (otherRegion.Start.Index > region.Start.Index && otherRegion.End.Index < region.End.Index)
+                    //spanning other interval
+                    if (otherInterval.Start.Index > interval.Start.Index && otherInterval.End.Index < interval.End.Index)
                     {
                         //second part
-                        regionsNode = regions.AddAfter(regionsNode, new Region(Trajectory[otherRegion.End.Index + 1], region.End));
+                        intervalsNode = intervals.AddAfter(intervalsNode, new Interval(Trajectory[otherInterval.End.Index + 1], interval.End));
 
                         //first part
-                        region.End = Trajectory[otherRegion.Start.Index - 1];
+                        interval.End = Trajectory[otherInterval.Start.Index - 1];
 
                         otherNode = otherNode.Next;
                         continue;
                     }
 
                     //full overlap
-                    var nextNode = regionsNode.Next;
-                    regions.Remove(regionsNode);
-                    regionsNode = nextNode;
+                    var nextNode = intervalsNode.Next;
+                    intervals.Remove(intervalsNode);
+                    intervalsNode = nextNode;
                 }
             }
         }
 
         //worst case O(n^2), expected O(n)
-        //ignores weight
         public void Intersect(IShortcutSet set)
         {
-            var otherRegionMap = ((ShortcutIntervalSet)set).RegionMap;
+            var otherIntervalMap = ((ShortcutIntervalSet)set).IntervalMap;
 
-            foreach (var start in otherRegionMap.Keys)
+            foreach (var start in otherIntervalMap.Keys)
             {
-                if (!RegionMap.ContainsKey(start))
+                if (!IntervalMap.ContainsKey(start))
                 {
                     continue;
                 }
 
-                var regions = RegionMap[start];
-                var otherRegions = otherRegionMap[start];
-                var regionsNode = regions.First;
-                var otherNode = otherRegions.First;
+                var intervals = IntervalMap[start];
+                var otherIntervals = otherIntervalMap[start];
+                var intervalsNode = intervals.First;
+                var otherNode = otherIntervals.First;
 
                 //worst case O(n), expected O(1)
-                while (regionsNode != null)
+                while (intervalsNode != null)
                 {
-                    var nextNode = regionsNode.Next;
-                    var region = regionsNode.Value;
+                    var nextNode = intervalsNode.Next;
+                    var interval = intervalsNode.Value;
 
                     if (otherNode == null)
                     {
-                        regions.Remove(regionsNode);
+                        intervals.Remove(intervalsNode);
                     }
                     else
                     {
-                        var otherRegion = otherNode.Value;
+                        var otherInterval = otherNode.Value;
 
-                        //other region too far back, consider next one for overlap
-                        if (otherRegion.End.Index < region.Start.Index)
+                        //other interval too far back, consider next one for overlap
+                        if (otherInterval.End.Index < interval.Start.Index)
                         {
                             otherNode = otherNode.Next;
                             continue;
                         }
 
-                        //other region too far ahead
-                        if (otherRegion.Start.Index > region.End.Index)
+                        //other interval too far ahead
+                        if (otherInterval.Start.Index > interval.End.Index)
                         {
-                            regions.Remove(regionsNode);
+                            intervals.Remove(intervalsNode);
                         }
                         else //some overlap
                         {
-                            var nextOtherRegion = otherNode.Next?.Value;
+                            var nextOtherInterval = otherNode.Next?.Value;
                             var nextOverlaps = false;
 
-                            if (nextOtherRegion != null)
+                            if (nextOtherInterval != null)
                             {
-                                nextOverlaps = nextOtherRegion.Start.Index <= region.End.Index;
+                                nextOverlaps = nextOtherInterval.Start.Index <= interval.End.Index;
                             }
 
-                            if (nextOverlaps) //split region
+                            if (nextOverlaps) //split interval
                             {
-                                var newRegion = new Region(region.Start, region.End);
+                                var newInterval = new Interval(interval.Start, interval.End);
 
-                                //it connects at the start: prune region end
-                                if (otherRegion.End.Index < region.End.Index)
+                                //it connects at the start: prune interval end
+                                if (otherInterval.End.Index < interval.End.Index)
                                 {
-                                    newRegion.End = otherRegion.End;
+                                    newInterval.End = otherInterval.End;
                                 }
 
-                                //it connects at the end: prune region start
-                                if (otherRegion.Start.Index > region.Start.Index)
+                                //it connects at the end: prune interval start
+                                if (otherInterval.Start.Index > interval.Start.Index)
                                 {
-                                    newRegion.Start = otherRegion.Start;
+                                    newInterval.Start = otherInterval.Start;
                                 }
 
-                                regions.AddBefore(regionsNode, newRegion);
+                                intervals.AddBefore(intervalsNode, newInterval);
 
                                 otherNode = otherNode.Next;
                                 continue;
                             }
                             
-                            //it connects at the start: prune region end
-                            if (otherRegion.End.Index < region.End.Index)
+                            //it connects at the start: prune interval end
+                            if (otherInterval.End.Index < interval.End.Index)
                             {
-                                region.End = otherRegion.End;
+                                interval.End = otherInterval.End;
                             }
 
-                            //it connects at the end: prune region start
-                            if (otherRegion.Start.Index > region.Start.Index)
+                            //it connects at the end: prune interval start
+                            if (otherInterval.Start.Index > interval.Start.Index)
                             {
-                                region.Start = otherRegion.Start;
+                                interval.Start = otherInterval.Start;
                             }
                         }
                     }
 
-                    regionsNode = nextNode;
+                    intervalsNode = nextNode;
                 }
             }
         }
 
         //worst case O(n^2), expected O(n)
-        //ignores weight
         public void Union(IShortcutSet set)
         {
-            var otherRegionMap = ((ShortcutIntervalSet)set).RegionMap;
+            var otherIntervalMap = ((ShortcutIntervalSet)set).IntervalMap;
 
-            foreach (var start in otherRegionMap.Keys)
+            foreach (var start in otherIntervalMap.Keys)
             {
-                if (!RegionMap.ContainsKey(start))
+                if (!IntervalMap.ContainsKey(start))
                     continue;
 
-                var regions = RegionMap[start];
-                var otherRegions = otherRegionMap[start];
+                var intervals = IntervalMap[start];
+                var otherIntervals = otherIntervalMap[start];
 
-                var regionsNode = regions.First;
-                var otherNode = otherRegions.First;
+                var intervalsNode = intervals.First;
+                var otherNode = otherIntervals.First;
 
                 while (otherNode != null)
                 {
-                    if (regionsNode == null)
+                    if (intervalsNode == null)
                     {
-                        regions.AddLast(otherNode.Value.Clone());
+                        intervals.AddLast(otherNode.Value.Clone());
                         otherNode = otherNode.Next;
                         continue;
                     }
 
-                    var region = regionsNode.Value;
-                    var otherRegion = otherNode.Value;
+                    var interval = intervalsNode.Value;
+                    var otherInterval = otherNode.Value;
 
                     //not yet reached
-                    if (otherRegion.Start.Index > region.End.Index + 1)
+                    if (otherInterval.Start.Index > interval.End.Index + 1)
                     {
-                        regionsNode = regionsNode.Next;
+                        intervalsNode = intervalsNode.Next;
                         continue;
                     }
 
-                    //we passed it: simply add the region
-                    if (otherRegion.End.Index < region.Start.Index - 1)
+                    //we passed it: simply add the interval
+                    if (otherInterval.End.Index < interval.Start.Index - 1)
                     {
-                        regions.AddBefore(regionsNode, new Region(otherRegion.Start, otherRegion.End));
+                        intervals.AddBefore(intervalsNode, new Interval(otherInterval.Start, otherInterval.End));
                         otherNode = otherNode.Next;
                         continue;
                     }
 
-                    //it connects at the start: extend region backwards
-                    if (otherRegion.End.Index >= region.Start.Index - 1)
+                    //it connects at the start: extend interval backwards
+                    if (otherInterval.End.Index >= interval.Start.Index - 1)
                     {
-                        region.Start = otherRegion.Start;
+                        interval.Start = otherInterval.Start;
                     }
 
-                    //it connects at the end: extend region forward
-                    if (otherRegion.Start.Index <= region.End.Index + 1)
+                    //it connects at the end: extend interval forward
+                    if (otherInterval.Start.Index <= interval.End.Index + 1)
                     {
-                        region.End = otherRegion.End;
+                        interval.End = otherInterval.End;
 
-                        var tempNode = regionsNode.Next;
+                        var tempNode = intervalsNode.Next;
                         while (tempNode != null)
                         {
                             var nextNode = tempNode.Next;
-                            var furtherRegion = tempNode.Value;
+                            var furtherInterval = tempNode.Value;
 
-                            //remove any fully overlapped regions
-                            if (furtherRegion.End.Index <= region.End.Index)
+                            //remove any fully overlapped intervals
+                            if (furtherInterval.End.Index <= interval.End.Index)
                             {
-                                regions.Remove(tempNode);
+                                intervals.Remove(tempNode);
                                 tempNode = nextNode;
                                 continue;
                             }
 
-                            //merge any region that may connect at the end
-                            if (furtherRegion.Start.Index <= region.End.Index + 1)
+                            //merge any interval that may connect at the end
+                            if (furtherInterval.Start.Index <= interval.End.Index + 1)
                             {
-                                regions.Remove(tempNode);
-                                region.End = furtherRegion.End;
+                                intervals.Remove(tempNode);
+                                interval.End = furtherInterval.End;
                             }
 
                             break;
@@ -308,45 +305,44 @@ namespace MultiScaleTrajectories.Simplification.ShortcutFinding
         }
 
         //worst case O(n^2), expected O(n)
-        //ignores weight
         public void Except(TPoint2D point)
         {
             var index = point.Index;
-            foreach (var start in RegionMap.Keys)
+            foreach (var start in IntervalMap.Keys)
             {
                 if (start == point)
                     continue;
 
-                var regions = RegionMap[start];
+                var intervals = IntervalMap[start];
 
-                var node = regions.First;
+                var node = intervals.First;
                 while (node != null)
                 {
                     var nextNode = node.Next;
 
-                    var region = node.Value;
-                    var startIndex = region.Start.Index;
-                    var endIndex = region.End.Index;
+                    var interval = node.Value;
+                    var startIndex = interval.Start.Index;
+                    var endIndex = interval.End.Index;
 
                     if (startIndex == index && endIndex == index)
                     {
-                        regions.Remove(node);
+                        intervals.Remove(node);
                     }
                     else if (startIndex == index)
                     {
-                        region.Start = Trajectory[startIndex + 1];
+                        interval.Start = Trajectory[startIndex + 1];
                     }
                     else if (endIndex == index)
                     {
-                        region.End = Trajectory[endIndex - 1];
+                        interval.End = Trajectory[endIndex - 1];
                     }
                     else if (startIndex < index && endIndex > index)
                     {
                         //second part
-                        regions.AddAfter(node, new Region(Trajectory[startIndex + 1], region.End));
+                        intervals.AddAfter(node, new Interval(Trajectory[startIndex + 1], interval.End));
 
                         //first part
-                        region.End = Trajectory[index - 1];                        
+                        interval.End = Trajectory[index - 1];                        
                     }
 
                     node = nextNode;
@@ -354,68 +350,68 @@ namespace MultiScaleTrajectories.Simplification.ShortcutFinding
             }
 
 
-            RegionMap.Remove(point);
+            IntervalMap.Remove(point);
 
         }
 
-        public void AppendRegion(TPoint2D start, int rangeStart, int rangeEnd)
+        public void AppendInterval(TPoint2D start, int rangeStart, int rangeEnd)
         {
-            var regionList = RegionMap[start];
-            var regionStart = Trajectory[rangeStart];
-            var regionEnd = Trajectory[rangeEnd];
+            var intervalList = IntervalMap[start];
+            var intervalStart = Trajectory[rangeStart];
+            var intervalEnd = Trajectory[rangeEnd];
 
-            var lastRegion = regionList.Last?.Value;
-            if (lastRegion != null && lastRegion.End.Index == regionStart.Index - 1)
-                lastRegion.End = regionEnd;
+            var lastInterval = intervalList.Last?.Value;
+            if (lastInterval != null && lastInterval.End.Index == intervalStart.Index - 1)
+                lastInterval.End = intervalEnd;
             else
-                regionList.AddLast(new Region(Trajectory[rangeStart], Trajectory[rangeEnd]));
+                intervalList.AddLast(new Interval(Trajectory[rangeStart], Trajectory[rangeEnd]));
         }
 
-        public void PrependRegion(TPoint2D start, int rangeStart, int rangeEnd)
+        public void PrependInterval(TPoint2D start, int rangeStart, int rangeEnd)
         {
-            var regionList = RegionMap[start];
+            var intervalList = IntervalMap[start];
             
-            var regionStart = Trajectory[rangeStart];
-            var regionEnd = Trajectory[rangeEnd];
+            var intervalStart = Trajectory[rangeStart];
+            var intervalEnd = Trajectory[rangeEnd];
 
-            var firstRegion = regionList.First?.Value;
-            if (firstRegion != null && firstRegion.Start.Index == regionEnd.Index + 1)
-                firstRegion.Start = regionStart;
+            var firstInterval = intervalList.First?.Value;
+            if (firstInterval != null && firstInterval.Start.Index == intervalEnd.Index + 1)
+                firstInterval.Start = intervalStart;
             else
-                regionList.AddFirst(new Region(Trajectory[rangeStart], Trajectory[rangeEnd]));
+                intervalList.AddFirst(new Interval(Trajectory[rangeStart], Trajectory[rangeEnd]));
         }
 
         //ignores weight
         public void AppendShortcut(TPoint2D start, TPoint2D end)
         {
-            var regionList = RegionMap[start];
+            var intervalList = IntervalMap[start];
 
-            var lastRegion = regionList.Last?.Value;
-            if (lastRegion != null && lastRegion.End.Index == end.Index - 1)
-                lastRegion.End = end;
+            var lastInterval = intervalList.Last?.Value;
+            if (lastInterval != null && lastInterval.End.Index == end.Index - 1)
+                lastInterval.End = end;
             else
-                regionList.AddLast(new Region(end, end));
+                intervalList.AddLast(new Interval(end, end));
         }
 
         //ignores weight
         public void PrependShortcut(TPoint2D start, TPoint2D end)
         {
-            var regionList = RegionMap[start];
+            var intervalList = IntervalMap[start];
 
-            var firstRegion = regionList.First?.Value;
-            if (firstRegion != null && firstRegion.Start.Index == end.Index + 1)
-                firstRegion.Start = end;
+            var firstInterval = intervalList.First?.Value;
+            if (firstInterval != null && firstInterval.Start.Index == end.Index + 1)
+                firstInterval.Start = end;
             else
-                regionList.AddFirst(new Region(end, end));
+                intervalList.AddFirst(new Interval(end, end));
         }
 
         public void IncrementAllWeights()
         {
-            foreach (var regions in RegionMap.Values)
+            foreach (var intervals in IntervalMap.Values)
             {
-                foreach (var region in regions)
+                foreach (var interval in intervals)
                 {
-                    region.Weight++;
+                    interval.Weight++;
                 }
             }
         }
@@ -425,15 +421,15 @@ namespace MultiScaleTrajectories.Simplification.ShortcutFinding
         {
             var map = new Dictionary<TPoint2D, JHashSet<TPoint2D>>();
 
-            foreach (var pair in RegionMap)
+            foreach (var pair in IntervalMap)
             {
                 var point = pair.Key;
-                var regions = pair.Value;
+                var intervals = pair.Value;
                 var ends = new JHashSet<TPoint2D>();
 
-                foreach (var region in regions)
+                foreach (var interval in intervals)
                 {
-                    for (var i = region.Start.Index; i <= region.End.Index; i++)
+                    for (var i = interval.Start.Index; i <= interval.End.Index; i++)
                     {
                         ends.Add(Trajectory[i]);
                     }
@@ -454,14 +450,14 @@ namespace MultiScaleTrajectories.Simplification.ShortcutFinding
 
         public IEnumerable<Shortcut> GetEnumerable()
         {
-            return RegionMap.SelectMany(pair =>
+            return IntervalMap.SelectMany(pair =>
             {
                 var point = pair.Key;
-                var regions = pair.Value;
-                return regions.SelectMany(region =>
+                var intervals = pair.Value;
+                return intervals.SelectMany(interval =>
                 {
                     var shortcuts = new HashSet<Shortcut>();
-                    for (var i = region.Start.Index; i <= region.End.Index; i++)
+                    for (var i = interval.Start.Index; i <= interval.End.Index; i++)
                     {
                         shortcuts.Add(new Shortcut(point, Trajectory[i]));
                     }
@@ -472,24 +468,24 @@ namespace MultiScaleTrajectories.Simplification.ShortcutFinding
 
         public IShortcutSet Clone()
         {
-            var newRegionMap = new JDictionary<TPoint2D, LinkedList<Region>>();
+            var newIntervalMap = new JDictionary<TPoint2D, LinkedList<Interval>>();
 
-            foreach (var pair in RegionMap)
+            foreach (var pair in IntervalMap)
             {
-                var regions = new LinkedList<Region>();
+                var intervals = new LinkedList<Interval>();
 
-                foreach (var region in pair.Value)
+                foreach (var interval in pair.Value)
                 {
-                    regions.AddLast(new Region(region.Start, region.End, region.Weight));
+                    intervals.AddLast(new Interval(interval.Start, interval.End, interval.Weight));
                 }
 
-                newRegionMap.Add(pair.Key, regions);
+                newIntervalMap.Add(pair.Key, intervals);
             }
 
-            return new ShortcutIntervalSet(Trajectory, newRegionMap);
+            return new ShortcutIntervalSet(Trajectory, newIntervalMap);
         }
 
-        public class Region
+        public class Interval
         {
             public int Count => End.Index - Start.Index + 1;
 
@@ -497,16 +493,16 @@ namespace MultiScaleTrajectories.Simplification.ShortcutFinding
             public TPoint2D End;
             public int Weight;
 
-            public Region(TPoint2D start, TPoint2D end, int weight = 1)
+            public Interval(TPoint2D start, TPoint2D end, int weight = 1)
             {
                 Start = start;
                 End = end;
                 Weight = weight;
             }
 
-            public Region Clone()
+            public Interval Clone()
             {
-                return new Region(Start, End, Weight);
+                return new Interval(Start, End, Weight);
             }
         }
 

@@ -40,7 +40,7 @@ namespace MultiScaleTrajectories.Simplification.ShortcutFinding.MultiScale.Algor
                     if (Shortcuts?.ShortcutSetFactory is ShortcutIntervalSetFactory && Shortcuts is MSSimpleShortcutSet)
                     {
                         var intervals = (ShortcutIntervalSet) Shortcuts?.GetShortcuts(level);
-                        return intervals?.RegionCount.ToString() ?? "";
+                        return intervals?.IntervalCount.ToString() ?? "";
                     }
 
                     return "N/A";
