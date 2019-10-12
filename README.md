@@ -1,9 +1,9 @@
-# Running the latest build
-If you simply want to run the latest build, extract all contents of `build_DD_MM_YYY.zip` to a folder, and run `MultiScaleTrajectories.exe`.
+This repository consists of two main modules:
 
-You can import `Griffon Vulture NABU Moessingen.csv` to start running the algorithms.
+- `AlgorithmVisualization`: an algorithm-agnostic UI and set of tools that can be used for running, configuring and visualizing algorithm
+- `MultiScaleTrajectories`: a set of algorithms and UI plugins for the `AlgorithmVisualization` module, for a problem called *progressive curve simplification*. This is a problem that comes from cartography, where one wants to simplify a line feature (e.g. a river or road) over multiple levels of detail, such that zooming in progressively reveals more detail without producing any visual artifacts. For more information, see [my thesis](https://iverb.me/research/thesis.pdf).
 
-# How to use
+# AlgorithmVisualization
 
 ## Configuration
 
@@ -11,56 +11,104 @@ In the top-right corner, you can select which algorithm type you wish to run. Fo
 
  Each of these algorithm types can be instantiated to create a configuration for that specific type. New configurations can be added, and configurations can be saved to/loaded from disk. This is useful for restoring an experimental setup, as well as (re-)investigating the output/statistics of the run experiments themselves.
  
- Each configuration consists of the following:
+ Each configuration contains of the following:
 
- - Algorithm library: a set of configurations for specific implementations of the algorithm type
+ - Algorithm library: a set of configurations for specific implementations of the algorithm type.
  - Input library: a set of inputs which can be used to run these algorithms. Inputs can be saved to/loaded from disk or imported using a custom importer. Furthermore, differents kinds of custom input editors may be defined for visualizing and editing the input.
- - Workload: a set of outputs and statistics produced by running one or more algorithm run configurations. An algorithm run configuration consists of the following:
+ - Workload: a set of outputs and statistics produced by running one or more algorithm run configurations. A run configuration is composed of:
    - A specific input chosen from the input library.
    - A specific implementation configuration chosen from the algorithm library
-   - An amount of iterations for which to repeat running the given algorithm on the given input. This is useful for gathering samples.
+   - An amount of iterations for which to repeat running the given algorithm on the given input. This is useful for gathering multiple samples.
  
-   Run configurations can be executed by selecting one or multiple of them (indicated in blue) and clicking `Compute`. Note that you can select multiple configurations uing CTRL+CLICK or SHIFT+CLICK on the run configuration name, akin to selecting files/folder in the Windows file explorer. Running multiple configurations at the same time will execute each run configuration in a separate thread. Using the same way of selecting multiple run configurations, it is also possible to clear the output of multiple run configurations at the same time by clicking the `Reset` button. Based on the color of the `Amount` column, you can tell what the status of a run configuration is. It is either idle (red), running (yellow), or green (finished all iterations).
+   Run configurations can be executed by selecting one or multiple of them (indicated in blue) and clicking `Compute`. Note that you can select multiple configurations uing CTRL+CLICK or SHIFT+CLICK on the run configuration name, akin to selecting files/folders in the Windows file explorer. Running multiple configurations at the same time will execute each run configuration in a separate thread. Using the same way of selecting multiple run configurations, it is also possible to clear the output of multiple run configurations at the same time by clicking the `Reset` button. Based on the color of the `Amount` column, you can tell what the status of a run configuration is. It is either idle (red), in progress (yellow), or green (completed all iterations).
 
-   As alluded to earlier, when the algorithm type configuration is stored to disk, the algorithm workload configuration as well as any produced workload output/statistics is persisted.
+   As alluded to earlier, when the algorithm type configuration is stored to disk, the algorithm workload configuration as well as any produced workload output/statistics are saved.
 
 ## Output Visualization
 
-In the main panel on the left, visualizations can be shown for the output of the run configurations. This can either by the output of the algorithm or (live) statistics that were gathered. The type of visualization can be chosen by hovering your mouse over the top edge and selecting the type of visualization in the dropdown menu on the left. 
+In the main panel on the left, visualizations can be shown for the output of the run configurations. This can either be the output of the algorithm or (live) statistics that were gathered. The type of visualization can be chosen by hovering your mouse over the top edge and selecting the type of visualization in the dropdown menu on the left. 
 
-By default, the run configurations that are visualized inside of a visualization are chosen automatically, but you can disable this by clicking the `Choose` button and selecting one or more (using CTRL+CLICK or SHIFT+CLICK) configurations. You can go back to automatically selecting the run configurations shown by a visualization by clicking the `Auto` button.
+By default, the run configurations that are visualized inside of a visualization are chosen automatically, but you can disable this by clicking the `Choose` button and selecting one or more configurations. You can go back to automatically selecting the run configurations shown by a visualization by clicking the `Auto` button.
 
-Finally, by clicking the `Split` button, it is possible to show multiple visualizations at the same time by splitting the visualization panel either vertically or horizontally. This can be do as often as you want to create many different simultaneous visualizations. Alternatively, by selecting the `Unsplit` option, a visualization will be removed and the neighboring visualization will be expanded to fill the space.
+Finally, by clicking the `Split` button, it is possible to show multiple visualizations at the same time by splitting the visualization panel either vertically or horizontally. This can be done as often as you want to show many different visualizations simultaneously. Alternatively, by selecting the `Unsplit` option, a visualization can be removed and a neighboring visualization panel will be expanded to fill the space.
 
-The following pre-defined visualizations are available for any kind of algorithm:
+The following pre-defined visualizations are available for any algorithm type:
 
-- Statistics: run statistics such as running time and iterations completed, algorithm configuration, input statistics, and output statistics
-- Log: raw logging generated by the algorithm
+- Statistics: table containing running time and iterations completed, algorithm configuration, and input/output statistics. Can show statistics of multiple runs simultaneously by expanding to multiple columns.
+- Log: raw logging generated by the algorithm for one specific run.
  
-## Progressive simplification plugins
+# MultiScaleTrajectories
 
-To understand the problem solved by the algorithms described below, as well as additional context for the chosen visualizations, refer to [my thesis](https://iverb.me/research/thesis.pdf).
+## Algorithm types and implementations
 
-### Algorithm types
+- Single Trajectory Multi-Scale Simplification: simplifying an input curve at various levels of details using a given set of error criteria.
+  - H - Optimal - Quartic: progressive.
+  - H - Optimal - Cubic: progressive.
+  - H - Imai Iri Bottom Up.
+  - H - Imai Iri Top Down.
+  - H - Douglas Peucker Top Down
+  - H - Douglas Peucker Bottom Up
+  - Imai-Iri
 
-All algorithms use the Hausdorff distance as error measure.
+  For each of these algorithms except for the ones using Douglas-Peucker, it is possible to configure how the shortcuts are computed and how shortest paths are found in them. The configuration options are in line with the configuration options outlined below.
+  
+- Shortcut finding - Multi Scale: finding all sets of shortcuts given a set of errors. All algorithms listed below use the Hausdorff distance as error measure.
+  - Brute force
+  - Chin Chan.
+  - Convex Hulls. Left-leaning red-black trees
+   
+   Options for each
+     - Shortcut Set Builder
+        - Simple 
+        - Compact - min level
+        - Compact - min error
+    - Shortcut Representation
+        - Graph
+        - Intervals
+- Shortcut path finding: finding the shortest path in a pre-computed shortcut graph.
+  - Intervals - BFS
+  - Intervals - Range Queries. left-leaning red-black trees
+  - Graph - BFS
+  - Graph - Dijkstra
+    - Binomial Heap
+    - Fibonacci Heap
+    - Automatic D-ary heap
+    - 4-ary Heap
+    - Pairing Heap
 
-- Single Trajectory Multi-Scale Simplification: the progressive simplification problem.
-- Shortcut finding - Multi Scale: finding all shortcuts given a set of errors.
-- Shortcut path finding: finding the shortest path in a shortcut graph.
+## Input editors
 
-### Input editors
-
+### Trajectory editor
 TODO
 
-### Algorithms
-
+### Trajectory importer
 TODO
 
-### Output visualizations
+### Hausdorff-error distribution generator
+Cumulative?
 
+### Shortcut graph generator
 TODO
 
-# Build instructions
+## Output Visualization
 
-In Visual Studio, makes sure all references are pointing to the right DLL's in the `packages` folder and make sure to right click `MultiScaleTrajectories -> Set as StartUp Project` in the solution explorer.
+### Simplifications
+TODO
+
+### Shortcut graphs
+TODO
+
+# Running the latest build
+If you simply want to run the latest build, extract all contents of `build_DD_MM_YYY.zip` to a folder, and run `MultiScaleTrajectories.exe`.
+
+You can import `Griffon Vulture NABU Moessingen.csv`, a simple flight trajectory of a griffon vulture across Europe, to start running the various progressive simplification algorithms.
+
+# Build Instructions (Visual Studio)
+
+Make sure all references are pointing to the right DLL's in the `packages` folder and make sure to right click `MultiScaleTrajectories -> Set as StartUp Project` in the solution explorer. 
+
+# Dependencies
+  - [Json.NET](https://www.newtonsoft.com/json) - Versatile JSON library for .NET
+  - [GMap.NET](https://github.com/radioman/greatmaps) - Overlaying animal trajectories over Google maps
+  - [OpenTK](https://opentk.net/) - OpenGL bindings for C#
+  - [AlgoKit](https://github.com/pgolebiowski/algo-kit) - heap implementions for use in Dijkstra's algorithm
