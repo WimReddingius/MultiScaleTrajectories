@@ -9,7 +9,7 @@ This repository consists of two main modules:
 
 In the top-right corner, you can select which algorithm type you wish to run. For each of these algorithm types, it is possible to have differents kinds of implementations, but they all accept the same kind of input.
 
- Each of these algorithm types can be instantiated to create a configuration for that specific type. New configurations can be added, and configurations can be saved to/loaded from disk. This is useful for restoring an experimental setup, as well as (re-)investigating the output/statistics of the run experiments themselves.
+ Each of these algorithm types can be instantiated to create a configuration for that specific type. New configurations can be added, and configurations can be saved to/loaded from disk. This is useful for restoring an experimental setup, as well as exploring the output/statistics gathered from the experiments themselves.
  
  Each configuration contains of the following:
 
