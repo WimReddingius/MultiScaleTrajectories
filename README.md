@@ -1,6 +1,8 @@
 # Running the latest build
 If you simply want to run the latest build, extract all contents of `build_DD_MM_YYY.zip` to a folder, and run `MultiScaleTrajectories.exe`.
 
+You can import `Griffon Vulture NABU Moessingen.csv` to start running the algorithms.
+
 # How to use
 
 ## Configuration
