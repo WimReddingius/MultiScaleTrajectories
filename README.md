@@ -39,11 +39,11 @@ The following pre-defined visualizations are available for any algorithm type:
  
 # MultiScaleTrajectories
 
-For context on the algorithms and techniques described below,  see [my thesis](https://iverb.me/research/thesis.pdf).
+For context on the algorithms and techniques described below, see [my thesis](https://iverb.me/research/thesis.pdf).
 
 ## Algorithm types and implementations
 
-- Single Trajectory Multi-Scale Simplification: simplifying an input curve at various levels of details using a given set of error criteria.
+- `Single Trajectory Multi-Scale Simplification`: simplifying an input curve at various levels of details using a given set of error criteria.
   - `H - Optimal - Cubic`. progressive. Optimal progressive simplification algorithm running in using weighted Imai-Iri simplification.
   - `H - Optimal - Quartic`. progressive. A slower version of the optimal progressive simplification algorithm, which uses a separate run of Dijkstra's algorithm for computing the shortcut weight of every shortcut on every scale, as opposed to running Dijkstra only once for every shortcut sharing the same source node.
   - `H - Imai Iri Bottom Up`. Progressive simplification heuristic using Imai-Iri which starts at the finest scale, and restricts simplification of the next (coarser) scale to strictly contain a subset of the resulting simplification to ensure the resulting simplification is progressive.
@@ -55,29 +55,29 @@ For context on the algorithms and techniques described below,  see [my thesis](h
 
   For each of these algorithms except for the ones using Douglas-Peucker, it is possible to configure how the shortcut graphs are computed and how shortest paths are found in them. The configuration options are in line with the configuration options outlined below.
   
-- Shortcut finding - Multi Scale: finding all sets of shortcuts given a set of errors. All algorithms listed below use the Hausdorff distance as error measure.
+- `Shortcut finding - Multi Scale`: finding all sets of shortcuts given a set of errors. All algorithms listed below use the Hausdorff distance as error measure.
   - `Brute force`. Naive implementation which explicitly calculates the Hausdorff distance for each shortcut independently.
   - `Chin Chan`. Chin and Chan's algorithm for constructing the shortcut graph. Commonly used in unison with Imai-Iri when simplifying for the Hausdorff distance.
   - `Convex Hulls`. Uses convex hulls of contiguouses sequences of the input curve to incrementally determine the exact Hausdorff distance of every shortcut with a common source node `pi`. This is done using extreme point queries on a left-leaning red-black trees annotated with the point furthest from `pi`.
    
    The following options are available for each of these algorithms:
-     - Shortcut Set Builder. This is the means of representing the shortcuts over the various scales.
+     - `Shortcut Set Builder`. This is the means of representing the shortcuts over the various scales.
         - `Simple`. A simple representation which explicitly stores a shortcut graph representation for each scale.
         - `Compact - min level`. Compact representation for reducing memory pressure when simplifying for many scales. For this representation, we use the fact that if a shortcut occurs on scale `x`, it must also occur in all scales `y` where `y > x`, since these scales will allow for a higher error. This representation takes advantage of this by simply maintaining a dictionary which maps each shortcut to the first scale it occurs in.
         - `Compact - min error`. Compact representation which uses a dictionary to map every shortcut to its associated error. This representation is useful if you have many scales, where for each scale you can trivially determine whether a shortcut is present by checking if the shortcut error stored in the dictionary is smaller than the maximum allowed error of the scale. Computing the exact error of a shortcut is typically more expensive than determining whether a shortcut is valid for a pre-defined error. 
         Of the shortcut finding algorithms listed above, only `Convex Hulls` allows for computing the exact Hausdorff distance of every shortcut, so only that algorithm can take advantage of this representation.
 
-    - Shortcut Representation. The shortcut graph representation that is provided when an interfacing algorithm requests all shortcuts on a given scale.
+    - `Shortcut Representation`. The shortcut graph representation that is provided when an interfacing algorithm requests all shortcuts on a given scale.
         - `Graph`. Explicit graph representation with nodes and edges.
         - `Intervals`. Implicit graph representation with a set of intervals `[px, py]` for every point `pi`, such that for any `x <= j <= y`, `(pi, pj)` is a shortcut.
-- Shortcut path finding: finding the shortest path in a pre-computed set of shortcuts, either represented using a graph:
+- `Shortcut path finding`: finding the shortest path in a pre-computed set of shortcuts, either represented using a graph:
   - `Graph - BFS.` Breadth-first search.
   - `Graph - Dijkstra`. Dijkstra's algorithm. For the priority queue, the following heap types can be used:
-    - Binomial Heap
-    - Fibonacci Heap
-    - Automatic D-ary heap
-    - 4-ary Heap
-    - Pairing Heap
+    - `Binomial Heap`
+    - `Fibonacci Heap`
+    - `Automatic D-ary heap`
+    - `4-ary Heap`
+    - `Pairing Heap`
 
   or a set of shortcut intervals:
   
