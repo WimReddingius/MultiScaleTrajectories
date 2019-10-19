@@ -9,9 +9,9 @@ This repository consists of two main modules:
 
 In the top-right corner, you can select which algorithm type you wish to run. For each of these algorithm types, it is possible to have differents kinds of implementations, but they all accept the same kind of input.
 
- Each of these algorithm types can be instantiated to create a configuration for that specific type. New configurations can be added, and configurations can be saved to/loaded from disk. This is useful for restoring an experimental setup, as well as exploring the output/statistics gathered from the experiments themselves.
+ Each of these algorithm types can be instantiated to create a configuration for that specific type. New configurations can be added, and configurations can be saved to/loaded from disk. This is useful for restoring an experimental setup, as well as exploring the output/statistics gathered from the experiments themselves. To prevent losing your configuration, the tool will save the state of your configuration when you close the tool and will restore this state the next time you start it up.
  
- Each configuration contains of the following:
+ Each configuration contains the following:
 
  - Algorithm library: a set of configurations for specific implementations of the algorithm type.
  - Input library: a set of inputs which can be used to run these algorithms. Inputs can be saved to/loaded from disk or imported using a custom importer. Furthermore, differents kinds of custom input editors may be defined for visualizing and editing the input.
@@ -42,39 +42,45 @@ The following pre-defined visualizations are available for any algorithm type:
 ## Algorithm types and implementations
 
 - Single Trajectory Multi-Scale Simplification: simplifying an input curve at various levels of details using a given set of error criteria.
-  - H - Optimal - Quartic: progressive.
-  - H - Optimal - Cubic: progressive.
-  - H - Imai Iri Bottom Up.
-  - H - Imai Iri Top Down.
-  - H - Douglas Peucker Top Down
-  - H - Douglas Peucker Bottom Up
-  - Imai-Iri
+  - `H - Optimal - Cubic`. progressive. Optimal progressive simplification algorithm running in using weighted Imai-Iri simplification.
+  - `H - Optimal - Quartic`. progressive. A slower version of the optimal progressive simplification algorithm, which uses a separate run of Dijkstra's algorithm for computing the shortcut weight of every shortcut on every scale, as opposed to running Dijkstra only once for every shortcut sharing the same source node.
+  - `H - Imai Iri Bottom Up`. Progressive simplification heuristic using Imai-Iri which starts at the finest scale, and restricts simplification of the next (coarser) scale to strictly contain a subset of the resulting simplification to ensure the resulting simplification is progressive.
+  - `H - Imai Iri Bottom Up - Cao`. The same simplification heuristic, but ensures that the resulting simplification is progressive by re-using the simplification of the previous (finer) scale as input for the simplification of the next (coarser) scale (as proposed by Cao et al.). Faster, but will not guarantee that the simplification holds to the error criterion.
+  - `H - Imai Iri Top Down`. A similar heuristic which instead starts at the coarsest scale, and for each edge `(pi, pj)` in the resulting simplification, recursively computes a simplification on the next (finer) scale between `pi` and `pj` which are then concatenated together.
+  - `H - Douglas Peucker Bottom Up`. Similar bottom-up heuristic as with Imai-Iri, but replaces the simplification sub-routine with the heuristic by Douglas and Peucker. This algorithm also re-uses the resulting simplifications as input for simplifying at the next scale (Cao et al.), but unlike `H - Imai Iri Bottom Up - Cao`, this algorithm does not drop compliance with the error criterion due to the nature of the Douglas-Peucker heuristic.
+  - `H - Douglas Peucker Top Down`. Similar top-down heuristic as with Imai-Iri, but replaces the simplification sub-routine with the heuristic by Douglas and Peucker.
+  - `Imai-Iri`. Non-progressive simplification using Imai-Iri, where each scale is simplified independently. Acts as a baseline.
 
-  For each of these algorithms except for the ones using Douglas-Peucker, it is possible to configure how the shortcuts are computed and how shortest paths are found in them. The configuration options are in line with the configuration options outlined below.
+  For each of these algorithms except for the ones using Douglas-Peucker, it is possible to configure how the shortcut graphs are computed and how shortest paths are found in them. The configuration options are in line with the configuration options outlined below.
   
 - Shortcut finding - Multi Scale: finding all sets of shortcuts given a set of errors. All algorithms listed below use the Hausdorff distance as error measure.
-  - Brute force
-  - Chin Chan.
-  - Convex Hulls. Left-leaning red-black trees
+  - `Brute force`. No cleverness here.
+  - `Chin Chan`. Chin and Chan's algorithm for constructing the shortcut graph. Commonly used in unison with Imai-Iri when simplifying for the Hausdorff distance.
+  - `Convex Hulls`. Uses convex hulls of contiguouses sequences of the input curve to incrementally determine the exact Hausdorff distance of every shortcut with a common source node `pi`. This is done using extreme point queries on a left-leaning red-black trees annotated with the point furthest from `pi`.
    
-   Options for each
-     - Shortcut Set Builder
-        - Simple 
-        - Compact - min level
-        - Compact - min error
-    - Shortcut Representation
-        - Graph
-        - Intervals
-- Shortcut path finding: finding the shortest path in a pre-computed shortcut graph.
-  - Intervals - BFS
-  - Intervals - Range Queries. left-leaning red-black trees
-  - Graph - BFS
-  - Graph - Dijkstra
+   The following options are available for each of these algorithms:
+     - Shortcut Set Builder. This is the means of representing the shortcuts over the various scales.
+        - `Simple`. A simple representation which explicitly stores a shortcut graph representation for each scale.
+        - `Compact - min level`. Compact representation for reducing memory pressure when simplifying for many scales. For this representation, we use the fact that if a shortcut occurs on scale `x`, it must also occur in all scales `y` where `y > x`, since these scales will allow for a higher error. This representation takes advantage of this by simply maintaining a dictionary which maps each shortcut to the first scale it occurs in.
+        - `Compact - min error`. Compact representation which uses a dictionary to map every shortcut to its associated error. This representation is useful if you have many scales, where for each scale you can trivially determine whether a shortcut is present by checking if the shortcut error stored in the dictionary is smaller than the maximum allowed error of the scale. Computing the exact error of a shortcut is typically more expensive than determining whether a shortcut is valid for a pre-defined error. 
+        Of the shortcut finding algorithms listed above, only `Convex Hulls` allows for computing the exact Hausdorff distance of every shortcut, so only that algorithm can take advantage of this representation.
+
+    - Shortcut Representation. The shortcut graph representation that is provided when an interfacing algorithm requests all shortcuts on a given scale.
+        - `Graph`. Explicit graph representation with nodes and edges.
+        - `Intervals`. Implicit graph representation with a set of intervals `[px, py]` for every point `pi`, such that for any `x <= j <= y`, `(pi, pj)` is a shortcut.
+- Shortcut path finding: finding the shortest path in a pre-computed set of shortcuts, either represented using a graph:
+  - `Graph - BFS.` Breadth-first search.
+  - `Graph - Dijkstra`. Dijkstra's algorithm. For the priority queue, the following heap types can be used:
     - Binomial Heap
     - Fibonacci Heap
     - Automatic D-ary heap
     - 4-ary Heap
     - Pairing Heap
+
+  or a set of shortcut intervals:
+  
+  - `Intervals - BFS`. Breadth-first search.
+  - `Intervals - Range Queries`. This algorithm constructs a left-leaning red-black tree where each node `p` is annotated with the next node in a shortest path from `p` to the target node. We then use the shorcut intervals to perform range queries on this tree to find shortest path in expected `O(n log n)` time.
 
 ## Input editors
 
