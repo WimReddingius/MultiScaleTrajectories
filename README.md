@@ -1,6 +1,6 @@
 This repository consists of two main modules:
 
-- `AlgorithmVisualization`: an algorithm-agnostic UI and set of tools that can be used for running, configuring and visualizing algorithm
+- `AlgorithmVisualization`: an algorithm-agnostic UI and set of tools that can be used for running, configuring and visualizing algorithms.
 - `MultiScaleTrajectories`: a set of algorithms and UI plugins for the `AlgorithmVisualization` module, for a problem called *progressive curve simplification*. This is a problem that comes from cartography, where one wants to simplify a line feature (e.g. a river or road) over multiple levels of detail, such that zooming in progressively reveals more detail without producing any visual artifacts. For more information, see [my thesis](https://iverb.me/research/thesis.pdf).
 
 # AlgorithmVisualization
@@ -92,7 +92,7 @@ TODO
 ### Trajectory importer
 TODO
 
-### Hausdorff-error distribution generator
+### Error distribution generator
 Cumulative?
 
 ### Shortcut graph generator
