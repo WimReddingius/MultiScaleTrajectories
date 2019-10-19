@@ -56,7 +56,7 @@ For context on the algorithms and techniques described below,  see [my thesis](h
   For each of these algorithms except for the ones using Douglas-Peucker, it is possible to configure how the shortcut graphs are computed and how shortest paths are found in them. The configuration options are in line with the configuration options outlined below.
   
 - Shortcut finding - Multi Scale: finding all sets of shortcuts given a set of errors. All algorithms listed below use the Hausdorff distance as error measure.
-  - `Brute force`. No cleverness here.
+  - `Brute force`. Naive implementation which explicitly calculates the Hausdorff distance for each shortcut independently.
   - `Chin Chan`. Chin and Chan's algorithm for constructing the shortcut graph. Commonly used in unison with Imai-Iri when simplifying for the Hausdorff distance.
   - `Convex Hulls`. Uses convex hulls of contiguouses sequences of the input curve to incrementally determine the exact Hausdorff distance of every shortcut with a common source node `pi`. This is done using extreme point queries on a left-leaning red-black trees annotated with the point furthest from `pi`.
    
