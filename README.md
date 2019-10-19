@@ -39,6 +39,8 @@ The following pre-defined visualizations are available for any algorithm type:
  
 # MultiScaleTrajectories
 
+For context on the algorithms and techniques described below,  see [my thesis](https://iverb.me/research/thesis.pdf).
+
 ## Algorithm types and implementations
 
 - Single Trajectory Multi-Scale Simplification: simplifying an input curve at various levels of details using a given set of error criteria.
