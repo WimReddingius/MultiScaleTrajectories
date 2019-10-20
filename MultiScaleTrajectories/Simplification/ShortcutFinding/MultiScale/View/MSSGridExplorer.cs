@@ -38,11 +38,11 @@ namespace MultiScaleTrajectories.Simplification.ShortcutFinding.MultiScale.View
 
             AfterStateReachedHandler = run =>
             {
-                //Visible = true;
+                Visible = true;
 
-                //this.run = run;
-                //currentLevel = 1;
-                //DrawGrid();
+                this.run = run;
+                currentLevel = 1;
+                DrawGrid();
             };
         }
 

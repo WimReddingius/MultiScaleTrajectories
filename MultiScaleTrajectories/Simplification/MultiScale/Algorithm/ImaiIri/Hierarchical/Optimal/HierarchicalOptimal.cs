@@ -17,14 +17,14 @@ namespace MultiScaleTrajectories.Simplification.MultiScale.Algorithm.ImaiIri.Hie
 
         public override void Compute(MSInput input, out MSOutput output)
         {
-            output = new MSOutput();
-            //output = new Output();
+            //output = new MSOutput();
+            output = new Output();
 
             var trajectory = input.Trajectory;
             ShortcutProvider.Init(input, output, true);
 
-            //var shortcutGraphs = ((Output)output).Graphs;
-            var shortcutGraphs = new Dictionary<int, ShortcutGraph>();
+            var shortcutGraphs = ((Output)output).Graphs;
+            //var shortcutGraphs = new Dictionary<int, ShortcutGraph>();
 
             ShortcutGraph prevShortcutGraph = null;
 
