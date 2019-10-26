@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using AlgorithmVisualization.View.Util;
@@ -132,7 +133,11 @@ namespace MultiScaleTrajectories.Simplification.MultiScale.View.Edit
             shortcutFindingProgressLabel.Text = "Finished";
 
             var serializedErrors = JsonConvert.SerializeObject(maxErrors, Formatting.Indented);
-            File.WriteAllText("Error list - " + input.Name + ".json", serializedErrors);
+
+            string illegalChars = new string(Path.GetInvalidFileNameChars()) + new string(Path.GetInvalidPathChars());
+            Regex illegalCharsRegex = new Regex(string.Format("[{0}]", Regex.Escape(illegalChars)));
+            string santitizedInputName = illegalCharsRegex.Replace(input.Name, "");
+            File.WriteAllText("Error list - " + santitizedInputName + ".json", serializedErrors);
 
             revalidateDistributionButton.Enabled = true;
             BuildErrorDistribution();
