@@ -3,6 +3,5 @@
 # ===================================== #
 obj/
 bin/
-*.config
 *.TMP
 *.DotSettings.user
