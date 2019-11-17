@@ -132,12 +132,22 @@ namespace MultiScaleTrajectories.Simplification.MultiScale.View.Edit
 
             shortcutFindingProgressLabel.Text = "Finished";
 
-            var serializedErrors = JsonConvert.SerializeObject(maxErrors, Formatting.Indented);
-
             string illegalChars = new string(Path.GetInvalidFileNameChars()) + new string(Path.GetInvalidPathChars());
             Regex illegalCharsRegex = new Regex(string.Format("[{0}]", Regex.Escape(illegalChars)));
             string santitizedInputName = illegalCharsRegex.Replace(input.Name, "");
-            File.WriteAllText("Error list - " + santitizedInputName + ".json", serializedErrors);
+
+            string fileName = "Error list - " + santitizedInputName + ".json";
+            JsonSerializerSettings serializationSettings = new JsonSerializerSettings
+            {
+                Formatting = Formatting.Indented
+            };
+
+            using (StreamWriter file = File.CreateText(fileName))
+            using (JsonTextWriter textWriter = new JsonTextWriter(file))
+            {
+                var serializer = JsonSerializer.Create(serializationSettings);
+                serializer.Serialize(textWriter, maxErrors);
+            }
 
             revalidateDistributionButton.Enabled = true;
             BuildErrorDistribution();
@@ -208,8 +218,12 @@ namespace MultiScaleTrajectories.Simplification.MultiScale.View.Edit
             var fileName = openErrorsFileDialog.FileName;
             try
             {
-                var str = File.ReadAllText(fileName);
-                maxErrors = JsonConvert.DeserializeObject<List<double>>(str);
+                using (StreamReader file = File.OpenText(fileName))
+                using (JsonTextReader textReader = new JsonTextReader(file))
+                {
+                    var serializer = new JsonSerializer();
+                    maxErrors = serializer.Deserialize<List<double>>(textReader);
+                }
 
                 revalidateDistributionButton.Enabled = true;
                 BuildErrorDistribution();
