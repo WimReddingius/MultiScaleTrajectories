@@ -15,7 +15,7 @@ namespace MultiScaleTrajectories.Trajectory.View
         {
             InitializeComponent();
 
-            lastPointChooser.Maximum = decimal.MaxValue;
+            toPointChooser.Maximum = decimal.MaxValue;
             skipFrequencyChooser.Maximum = decimal.MaxValue;
             skipAmountChooser.Maximum = decimal.MaxValue;
 
@@ -35,14 +35,23 @@ namespace MultiScaleTrajectories.Trajectory.View
             var fileTrajectoryName = (string)trajectoryTable.SelectedRows[0].Cells[0].Value;
             var fileTrajectory = trajectories[fileTrajectoryName];
 
-            lastPointChooser.ValueChanged -= lastPointChooser_ValueChanged;
-            lastPointChooser.Value = fileTrajectory.Count;
-            lastPointChooser.ValueChanged += lastPointChooser_ValueChanged;
+            fromPointChooser.ValueChanged -= fromPointChooser_ValueChanged;
+            fromPointChooser.Value = 0;
+            fromPointChooser.ValueChanged += fromPointChooser_ValueChanged;
+
+            toPointChooser.ValueChanged -= toPointChooser_ValueChanged;
+            toPointChooser.Value = fileTrajectory.Count - 1;
+            toPointChooser.ValueChanged += toPointChooser_ValueChanged;
 
             CalculateTrajectory();
         }
 
-        private void lastPointChooser_ValueChanged(object sender, EventArgs e)
+        private void toPointChooser_ValueChanged(object sender, EventArgs e)
+        {
+            CalculateTrajectory(false);
+        }
+
+        private void fromPointChooser_ValueChanged(object sender, EventArgs e)
         {
             CalculateTrajectory(false);
         }
@@ -64,7 +73,7 @@ namespace MultiScaleTrajectories.Trajectory.View
 
             var fileTrajectoryName = (string)trajectoryTable.SelectedRows[0].Cells[0].Value;
             var fileTrajectory = trajectories[fileTrajectoryName];
-            var newTrajectory = GetSubTrajectory(fileTrajectory, 0, (int)lastPointChooser.Value - 1, (int)skipAmountChooser.Value, (int)skipFrequencyChooser.Value);
+            var newTrajectory = GetSubTrajectory(fileTrajectory, (int)fromPointChooser.Value, (int)toPointChooser.Value, (int)skipAmountChooser.Value, (int)skipFrequencyChooser.Value);
 
             trajectoryGMap.DrawSingleTrajectory(newTrajectory);
 

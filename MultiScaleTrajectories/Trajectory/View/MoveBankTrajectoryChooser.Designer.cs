@@ -37,13 +37,15 @@
             this.trajectoryTable = new System.Windows.Forms.DataGridView();
             this.trajectoryIdColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.trajectoryPointsColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.label10 = new System.Windows.Forms.Label();
             this.label9 = new System.Windows.Forms.Label();
             this.label8 = new System.Windows.Forms.Label();
             this.skipFrequencyChooser = new System.Windows.Forms.NumericUpDown();
             this.label5 = new System.Windows.Forms.Label();
             this.skipAmountChooser = new System.Windows.Forms.NumericUpDown();
             this.label4 = new System.Windows.Forms.Label();
-            this.lastPointChooser = new System.Windows.Forms.NumericUpDown();
+            this.toPointChooser = new System.Windows.Forms.NumericUpDown();
+            this.fromPointChooser = new System.Windows.Forms.NumericUpDown();
             this.label3 = new System.Windows.Forms.Label();
             this.pointCountLabel = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
@@ -57,7 +59,7 @@
             ((System.ComponentModel.ISupportInitialize)(this.trajectoryTable)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.skipFrequencyChooser)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.skipAmountChooser)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.lastPointChooser)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.toPointChooser)).BeginInit();
             this.SuspendLayout();
             // 
             // okButton
@@ -133,7 +135,9 @@
             this.splitContainer2.Panel2.Controls.Add(this.label5);
             this.splitContainer2.Panel2.Controls.Add(this.skipAmountChooser);
             this.splitContainer2.Panel2.Controls.Add(this.label4);
-            this.splitContainer2.Panel2.Controls.Add(this.lastPointChooser);
+            this.splitContainer2.Panel2.Controls.Add(this.toPointChooser);
+            this.splitContainer2.Panel2.Controls.Add(this.label10);
+            this.splitContainer2.Panel2.Controls.Add(this.fromPointChooser);
             this.splitContainer2.Panel2.Controls.Add(this.label3);
             this.splitContainer2.Size = new System.Drawing.Size(290, 507);
             this.splitContainer2.SplitterDistance = 379;
@@ -198,7 +202,7 @@
             this.skipFrequencyChooser.Location = new System.Drawing.Point(206, 34);
             this.skipFrequencyChooser.Name = "skipFrequencyChooser";
             this.skipFrequencyChooser.Size = new System.Drawing.Size(72, 20);
-            this.skipFrequencyChooser.TabIndex = 11;
+            this.skipFrequencyChooser.TabIndex = 13;
             this.skipFrequencyChooser.Value = new decimal(new int[] {
             1,
             0,
@@ -212,7 +216,7 @@
             this.label5.Location = new System.Drawing.Point(165, 37);
             this.label5.Name = "label5";
             this.label5.Size = new System.Drawing.Size(33, 13);
-            this.label5.TabIndex = 10;
+            this.label5.TabIndex = 12;
             this.label5.Text = "every";
             // 
             // skipAmountChooser
@@ -220,7 +224,7 @@
             this.skipAmountChooser.Location = new System.Drawing.Point(86, 34);
             this.skipAmountChooser.Name = "skipAmountChooser";
             this.skipAmountChooser.Size = new System.Drawing.Size(72, 20);
-            this.skipAmountChooser.TabIndex = 9;
+            this.skipAmountChooser.TabIndex = 11;
             this.skipAmountChooser.ValueChanged += new System.EventHandler(this.skipAmountChooser_ValueChanged);
             // 
             // label4
@@ -229,25 +233,43 @@
             this.label4.Location = new System.Drawing.Point(3, 36);
             this.label4.Name = "label4";
             this.label4.Size = new System.Drawing.Size(28, 13);
-            this.label4.TabIndex = 8;
+            this.label4.TabIndex = 10;
             this.label4.Text = "Skip";
             // 
-            // lastPointChooser
+            // toPointChooser
             // 
-            this.lastPointChooser.Location = new System.Drawing.Point(206, 8);
-            this.lastPointChooser.Name = "lastPointChooser";
-            this.lastPointChooser.Size = new System.Drawing.Size(72, 20);
-            this.lastPointChooser.TabIndex = 7;
-            this.lastPointChooser.ValueChanged += new System.EventHandler(this.lastPointChooser_ValueChanged);
+            this.toPointChooser.Location = new System.Drawing.Point(206, 13);
+            this.toPointChooser.Name = "toPointChooser";
+            this.toPointChooser.Size = new System.Drawing.Size(72, 20);
+            this.toPointChooser.TabIndex = 9;
+            this.toPointChooser.ValueChanged += new System.EventHandler(this.toPointChooser_ValueChanged);
+            // 
+            // fromPointChooser
+            // 
+            this.fromPointChooser.Location = new System.Drawing.Point(86, 13);
+            this.fromPointChooser.Name = "fromPointChooser";
+            this.fromPointChooser.Maximum = int.MaxValue;
+            this.fromPointChooser.Size = new System.Drawing.Size(72, 20);
+            this.fromPointChooser.TabIndex = 7;
+            this.fromPointChooser.ValueChanged += new System.EventHandler(this.fromPointChooser_ValueChanged);
             // 
             // label3
             // 
             this.label3.AutoSize = true;
             this.label3.Location = new System.Drawing.Point(3, 13);
             this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(38, 13);
+            this.label3.Size = new System.Drawing.Size(28, 13);
             this.label3.TabIndex = 6;
-            this.label3.Text = "Cut-off";
+            this.label3.Text = "From";
+            // 
+            // label10
+            // 
+            this.label10.AutoSize = true;
+            this.label10.Location = new System.Drawing.Point(165, 13);
+            this.label10.Name = "label10";
+            this.label10.Size = new System.Drawing.Size(33, 13);
+            this.label10.TabIndex = 8;
+            this.label10.Text = "To";
             // 
             // pointCountLabel
             // 
@@ -281,7 +303,8 @@
             ((System.ComponentModel.ISupportInitialize)(this.trajectoryTable)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.skipFrequencyChooser)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.skipAmountChooser)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.lastPointChooser)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.fromPointChooser)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.toPointChooser)).EndInit();
             this.ResumeLayout(false);
 
         }
@@ -296,11 +319,13 @@
         private System.Windows.Forms.DataGridViewTextBoxColumn trajectoryIdColumn;
         private System.Windows.Forms.DataGridViewTextBoxColumn trajectoryPointsColumn;
         private System.Windows.Forms.SplitContainer splitContainer2;
-        private System.Windows.Forms.NumericUpDown lastPointChooser;
+        private System.Windows.Forms.NumericUpDown toPointChooser;
         private System.Windows.Forms.Label label3;
-        private System.Windows.Forms.NumericUpDown skipFrequencyChooser;
         private System.Windows.Forms.Label label5;
+        private System.Windows.Forms.NumericUpDown skipFrequencyChooser;
+        private System.Windows.Forms.Label label10;
         private System.Windows.Forms.NumericUpDown skipAmountChooser;
+        private System.Windows.Forms.NumericUpDown fromPointChooser;
         private System.Windows.Forms.Label label4;
         private System.Windows.Forms.Label label8;
         private System.Windows.Forms.Label label9;
