@@ -38,12 +38,12 @@ namespace MultiScaleTrajectories.Simplification.MultiScale.View.Explore
 
         private void FitLevelToDesiredDetail()
         {
-            var minSpan = Math.Min(MapControl.ViewArea.WidthLng, MapControl.ViewArea.HeightLat);
+            var diagonalViewportLength = Math.Sqrt(Math.Pow(MapControl.ViewArea.WidthLng, 2) + Math.Pow(MapControl.ViewArea.HeightLat, 2));
             currentLevel = run.Input.NumLevels;
                 
             while (true)
             {
-                var levelEpsilonSpan = minSpan / run.Input.GetEpsilon(currentLevel);
+                var levelEpsilonSpan = diagonalViewportLength / run.Input.GetEpsilon(currentLevel);
                 if (levelEpsilonSpan > epsilonSpan || currentLevel == 1)
                     break;
 

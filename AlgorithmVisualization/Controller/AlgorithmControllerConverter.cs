@@ -12,7 +12,6 @@ namespace AlgorithmVisualization.Controller
 
         private static readonly JsonSerializerSettings SERIALIZATION_SETTINGS = new JsonSerializerSettings
         {
-            Formatting = Formatting.Indented,
             TypeNameHandling = TypeNameHandling.Auto,
             PreserveReferencesHandling = PreserveReferencesHandling.All,
             SerializationBinder = new TypeNameSerializationBinder()
@@ -25,43 +24,52 @@ namespace AlgorithmVisualization.Controller
                 return;
             }
 
-            var str = JsonConvert.SerializeObject(controller, typeof(AlgorithmControllerBase), SERIALIZATION_SETTINGS);
-            File.WriteAllText(fileName, str);
+            using (StreamWriter file = File.CreateText(fileName))
+            using (JsonTextWriter textWriter = new JsonTextWriter(file))
+            {
+                var serializer = JsonSerializer.CreateDefault(SERIALIZATION_SETTINGS);
+                serializer.Serialize(textWriter, controller, typeof(AlgorithmControllerBase));
+            }
         }
 
         public static AlgorithmControllerBase LoadFromFile(string fileName)
         {
-            var fileStr = File.Exists(fileName) ? File.ReadAllText(fileName) : null;
-
-            if (string.IsNullOrEmpty(fileStr))
+            if (!File.Exists(fileName))
             {
                 return null;
             }
 
-            return JsonConvert.DeserializeObject<AlgorithmControllerBase>(fileStr, SERIALIZATION_SETTINGS);
+            using (StreamReader file = File.OpenText(fileName))
+            using (JsonTextReader textReader = new JsonTextReader(file))
+            {
+                var serializer = JsonSerializer.CreateDefault(SERIALIZATION_SETTINGS);
+                return (AlgorithmControllerBase)serializer.Deserialize(textReader, typeof(AlgorithmControllerBase));
+            }
         }
 
         public static IList<AlgorithmControllerBase> LoadDefaultList()
         {
-            //string settingsStr = null;
-            //var settingsStr = Properties.Settings.Default.AlgorithmControllers;
-            var settingsStr = File.Exists(DEFAULT_LIST_FILENAME) ? File.ReadAllText(DEFAULT_LIST_FILENAME) : null;
-
-            if (string.IsNullOrEmpty(settingsStr))
+            if (!File.Exists(DEFAULT_LIST_FILENAME))
             {
                 return null;
             }
 
-            return JsonConvert.DeserializeObject<IList<AlgorithmControllerBase>>(settingsStr, SERIALIZATION_SETTINGS);
+            using (StreamReader file = File.OpenText(DEFAULT_LIST_FILENAME))
+            using (JsonTextReader textReader = new JsonTextReader(file))
+            {
+                var serializer = JsonSerializer.CreateDefault(SERIALIZATION_SETTINGS);
+                return (IList<AlgorithmControllerBase>) serializer.Deserialize(textReader, typeof(IList<AlgorithmControllerBase>));
+            }
         }
 
         public static void SaveAsDefaultList(IList<AlgorithmControllerBase> controllers)
         {
-            var str = JsonConvert.SerializeObject(controllers, typeof(IList<AlgorithmControllerBase>), SERIALIZATION_SETTINGS);
-
-            //Properties.Settings.Default.AlgorithmControllers = str;
-            //Properties.Settings.Default.Save();
-            File.WriteAllText(DEFAULT_LIST_FILENAME, str);
+            using (StreamWriter file = File.CreateText(DEFAULT_LIST_FILENAME))
+            using (JsonTextWriter textWriter = new JsonTextWriter(file))
+            {
+                var serializer = JsonSerializer.CreateDefault(SERIALIZATION_SETTINGS);
+                serializer.Serialize(textWriter, controllers, typeof(IList<AlgorithmControllerBase>));
+            }
         }
 
         private class TypeNameSerializationBinder : ISerializationBinder

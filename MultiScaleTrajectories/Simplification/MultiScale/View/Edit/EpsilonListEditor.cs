@@ -1,25 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Diagnostics;
-using System.IO;
-using System.Linq;
-using System.Text.RegularExpressions;
-using System.Threading.Tasks;
+using System.ComponentModel;
 using System.Windows.Forms;
 using AlgorithmVisualization.View.Util;
-using MultiScaleTrajectories.AlgoUtil.Geometry;
 using MultiScaleTrajectories.Simplification.MultiScale.Algorithm;
-using MultiScaleTrajectories.Simplification.ShortcutFinding.MultiScale.Algorithm;
-using MultiScaleTrajectories.Simplification.ShortcutFinding.MultiScale.Algorithm.Algorithms;
-using MultiScaleTrajectories.Simplification.ShortcutFinding.MultiScale.Algorithm.Representation.CompactError;
-using MultiScaleTrajectories.Simplification.ShortcutFinding.MultiScale.Algorithm.Representation.Factory;
-using Newtonsoft.Json;
 
 namespace MultiScaleTrajectories.Simplification.MultiScale.View.Edit
 {
     partial class EpsilonListEditor : UserControl
     {
-        private List<double> maxErrors;
         private MSInput input;
 
         public EpsilonListEditor()
@@ -27,6 +16,21 @@ namespace MultiScaleTrajectories.Simplification.MultiScale.View.Edit
             InitializeComponent();
 
             Closeness.ValueType = typeof(double);
+
+            var errorSamplers = new BindingList<IErrorSampler>
+            {
+                new ZoomAwareErrorSampler(),
+                new ShortcutErrorSampler()
+            };
+
+            foreach (var sampler in errorSamplers)
+            {
+                sampler.NewSamples += NewSamples;
+            }
+
+            errorSamplerComboBox.DataSource = errorSamplers;
+            errorSamplerComboBox.Format += (o, e) => e.Value = ((IErrorSampler)e.Value).TypeName;
+            errorSamplerComboBox_SelectedIndexChanged(null, null);
         }
 
         private void levelTable_UserDeletedRow(object sender, DataGridViewRowEventArgs e)
@@ -98,102 +102,6 @@ namespace MultiScaleTrajectories.Simplification.MultiScale.View.Edit
             }
         }
 
-        private async void computeErrorDistribution_Click(object sender, EventArgs e)
-        {
-            var trajectory = input.Trajectory;
-
-            var builder = new MSSCompleteCompactError
-            {
-                ShortcutSetFactory = new ShortcutIntervalSetFactory()
-            };
-
-            var inp = new MSSInput(trajectory, new List<double> {0.0});
-            var outp = new MSSOutput(inp);
-
-            outp.Logged += str =>
-            {
-                this.InvokeIfRequired(() =>
-                {
-                    str = shortcutFindingProgressLabel.Text = str;
-                });
-            };
-
-            await Task.Run(() => 
-            {
-                this.InvokeIfRequired(() => shortcutFindingProgressLabel.Text = "Started...");
-
-                var errors = (MSCompactErrorShortcutSet) builder.FindShortcuts(new MSSConvexHull.ShortcutChecker(inp, outp), true);
-                maxErrors = errors.MaxErrors.Values.ToList();
-
-                this.InvokeIfRequired(() => shortcutFindingProgressLabel.Text = "Sorting...");
-
-                maxErrors.Sort();
-            });
-
-            shortcutFindingProgressLabel.Text = "Finished";
-
-            string illegalChars = new string(Path.GetInvalidFileNameChars()) + new string(Path.GetInvalidPathChars());
-            Regex illegalCharsRegex = new Regex(string.Format("[{0}]", Regex.Escape(illegalChars)));
-            string santitizedInputName = illegalCharsRegex.Replace(input.Name, "");
-
-            string fileName = "Error list - " + santitizedInputName + ".json";
-            JsonSerializerSettings serializationSettings = new JsonSerializerSettings
-            {
-                Formatting = Formatting.Indented
-            };
-
-            using (StreamWriter file = File.CreateText(fileName))
-            using (JsonTextWriter textWriter = new JsonTextWriter(file))
-            {
-                var serializer = JsonSerializer.Create(serializationSettings);
-                serializer.Serialize(textWriter, maxErrors);
-            }
-
-            revalidateDistributionButton.Enabled = true;
-            BuildErrorDistribution();
-        }
-
-        private void revalidateDistributionButton_Click(object sender, EventArgs e)
-        {
-            BuildErrorDistribution();
-        }
-
-        private void BuildErrorDistribution()
-        {
-            if (maxErrors == null)
-                return;
-
-            for (var level = input.NumLevels; level >= 1; level--)
-            {
-                RemoveLevel(level);
-            }
-
-            var numEpsilons = maxErrors.Count;
-            var start = (double)(lowerPercentageChooser.Value / 100 * (numEpsilons - 1));
-            var end = (double)(upperPercentageChooser.Value / 100 * (numEpsilons - 1));
-            var numLevels = (int)numLevelsChooser.Value;
-
-            var range = end - start;
-            var step = numLevels == 1 ? 0 : range / (numLevels - 1);
-
-            var index = start;
-            for (var level = 1; level <= numLevels; level++)
-            {
-                var intIndex = (int)index;
-                var epsilon = maxErrors[intIndex];
-
-                if (index > intIndex && (intIndex + 1 <= maxErrors.Count - 1))
-                {
-                    var nextEpsilon = maxErrors[intIndex + 1];
-                    var remainder = index - intIndex;
-                    epsilon += (epsilon - nextEpsilon) * remainder;
-                }
-
-                InsertLevel(level, epsilon);
-                index += step;
-            }
-        }
-
         public void LoadInput(MSInput inp)
         {
             input = inp;
@@ -204,34 +112,32 @@ namespace MultiScaleTrajectories.Simplification.MultiScale.View.Edit
                 levelTable.Rows.Add(level, input.GetEpsilon(level));
             }
 
-            maxErrors = null;
-            revalidateDistributionButton.Enabled = false;
+            foreach (var sampler in errorSamplerComboBox.Items) {
+                ((IErrorSampler)sampler).LoadInput(inp);
+            }
+        }
+        
+        private void ClearLevels()
+        {
+            for (var level = input.NumLevels; level >= 1; level--)
+            {
+                RemoveLevel(level);
+            }
         }
 
-        private void openErrorsButton_Click(object sender, EventArgs e)
+        private void NewSamples(List<double> samples)
         {
-            var result = openErrorsFileDialog.ShowDialog();
-
-            if (result != DialogResult.OK)
-                return;
-
-            var fileName = openErrorsFileDialog.FileName;
-            try
+            ClearLevels();
+            for (var level = 1; level <= samples.Count; level++)
             {
-                using (StreamReader file = File.OpenText(fileName))
-                using (JsonTextReader textReader = new JsonTextReader(file))
-                {
-                    var serializer = new JsonSerializer();
-                    maxErrors = serializer.Deserialize<List<double>>(textReader);
-                }
+                InsertLevel(level, samples[level - 1]);
+            }
+        }
 
-                revalidateDistributionButton.Enabled = true;
-                BuildErrorDistribution();
-            }
-            catch (Exception err)
-            {
-                FormsUtil.ShowErrorMessage(err.ToString());
-            }
+        private void errorSamplerComboBox_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            var sampler = ((IErrorSampler)errorSamplerComboBox.SelectedItem);
+            errorSamplerSplitPanel.Panel2.Fill(sampler.Control);
         }
     }
 }

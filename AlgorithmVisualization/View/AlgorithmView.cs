@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel;
 using System.Drawing;
 using System.IO;
@@ -57,14 +58,6 @@ namespace AlgorithmVisualization.View
 
         private void LoadDefaultConfiguration()
         {
-            //default algo's
-            //foreach (var algoFactory in controller.AlgorithmFactories)
-            //{
-            //    var algoType = algoFactory.AlgoType;
-            //    if (controller.Algorithms.ToList().Find(a => a.GetType() == algoType) == null)
-            //        controller.Algorithms.Add(algoFactory.Create());
-            //}
-
             //default input
             if (controller.Inputs.Count == 0)
                 controller.Inputs.Add(new TIn());
@@ -100,19 +93,6 @@ namespace AlgorithmVisualization.View
         {
             var problemSpecificView = explorationView.CreateExplorationView();
             explorationView.Fill(problemSpecificView);
-
-
-            //explorationView.Clear();
-
-            //var problemSpecificView = explorationView.CreateExplorationView();
-            //var statView = explorationView.CreateExplorationView(typeof(SimpleRunExplorer<TIn, TOut, StatOverview<TIn, TOut>>));
-            //var logView = explorationView.CreateExplorationView(typeof(LogExplorer<TIn, TOut>));
-
-            //var splitContainer = explorationView.Split(explorationView, Orientation.Vertical);
-            //var rightSplitContainer = explorationView.Split(splitContainer.Panel2, Orientation.Horizontal);
-            //splitContainer.Panel1.Fill(problemSpecificView);
-            //rightSplitContainer.Panel1.Fill(statView);
-            //rightSplitContainer.Panel2.Fill(logView);
         }
 
         private void openInputButton_Click(object sender, EventArgs e)
@@ -129,11 +109,14 @@ namespace AlgorithmVisualization.View
         {
             try
             {
-                var str = File.ReadAllText(fileName);
-                var input = JsonConvert.DeserializeObject<TIn>(str);
-
-                input.Name = Path.GetFileNameWithoutExtension(fileName);
-                AddAndSelectInput(input);
+                using (StreamReader file = File.OpenText(fileName))
+                using (JsonTextReader textReader = new JsonTextReader(file))
+                {
+                    var serializer = JsonSerializer.Create();
+                    var input = serializer.Deserialize<TIn>(textReader);
+                    input.Name = Path.GetFileNameWithoutExtension(fileName);
+                    AddAndSelectInput(input);
+                }
             }
             catch (Exception err)
             {
@@ -149,8 +132,12 @@ namespace AlgorithmVisualization.View
                 string fileName = saveInputDialog.FileName;
                 try
                 {
-                    string str = JsonConvert.SerializeObject(CurrentInput, Formatting.Indented);
-                    File.WriteAllText(fileName, str);
+                    using (StreamWriter file = File.CreateText(fileName))
+                    using (JsonTextWriter textWriter = new JsonTextWriter(file))
+                    {
+                        var serializer = JsonSerializer.Create();
+                        serializer.Serialize(textWriter, CurrentInput);
+                    }
 
                     CurrentInput.Name = Path.GetFileNameWithoutExtension(fileName);
                 }
@@ -214,7 +201,6 @@ namespace AlgorithmVisualization.View
             foreach (DataGridViewRow row in workloadTable.SelectedRows)
             {
                 var run = (AlgorithmRun<TIn, TOut>)row.Cells["workloadTableRunColumn"].Value;
-
                 run.Reset();
                 row.ReadOnly = false;
             }
@@ -549,12 +535,16 @@ namespace AlgorithmVisualization.View
                     try
                     {
                         var run = (AlgorithmRun<TIn, TOut>)workloadTable.SelectedRows[0].Cells["workloadTableRunColumn"].Value;
-                        var runStr = JsonConvert.SerializeObject(run, new JsonSerializerSettings
+
+                        using (StreamWriter file = File.CreateText(fileName))
+                        using (JsonTextWriter textWriter = new JsonTextWriter(file))
                         {
-                            Formatting = Formatting.Indented,
-                            TypeNameHandling = TypeNameHandling.All,
-                        });
-                        File.WriteAllText(fileName, runStr);
+                            var serializer = JsonSerializer.Create(new JsonSerializerSettings { 
+                                TypeNameHandling = TypeNameHandling.All,
+                                PreserveReferencesHandling = PreserveReferencesHandling.All
+                            });
+                            serializer.Serialize(textWriter, run, typeof(AlgorithmRun<TIn, TOut>));
+                        }
 
                         run.Name = Path.GetFileNameWithoutExtension(fileName);
                     }
@@ -570,24 +560,27 @@ namespace AlgorithmVisualization.View
         {
             try
             {
-                var runStr = File.ReadAllText(fileName);
-                var run = JsonConvert.DeserializeObject<AlgorithmRun<TIn, TOut>>(runStr, new JsonSerializerSettings
+
+                using (StreamReader file = File.OpenText(fileName))
+                using (JsonTextReader textReader = new JsonTextReader(file))
                 {
-                    TypeNameHandling = TypeNameHandling.All,
-                });
+                    var serializer = JsonSerializer.Create(new JsonSerializerSettings { 
+                        TypeNameHandling = TypeNameHandling.All,
+                        PreserveReferencesHandling = PreserveReferencesHandling.All
+                    });
+                    var run = (AlgorithmRun<TIn, TOut>) serializer.Deserialize(textReader, typeof(AlgorithmRun<TIn, TOut>));
 
-                var pathName = Path.GetFileNameWithoutExtension(fileName);
-                var runName = pathName;
+                    var pathName = Path.GetFileNameWithoutExtension(fileName);
+                    var runName = pathName;
 
-                run.Name = runName;
-                //run.Input.Name = runName + "_input";
-                //run.Algorithm.Name = runName + "_algo";
+                    run.Name = runName;
 
-                controller.Inputs.Add(run.Input);
-                controller.Algorithms.Add(run.Algorithm);
-                controller.Runs.Add(run);
+                    controller.Inputs.Add(run.Input);
+                    controller.Algorithms.Add(run.Algorithm);
+                    controller.Runs.Add(run);
 
-                AddRunToTable(run);
+                    AddRunToTable(run);
+                }
             }
             catch (Exception err)
             {

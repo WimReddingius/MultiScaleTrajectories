@@ -142,6 +142,19 @@
     <Compile Include="Simplification\MultiScale\View\Algorithm\ShortcutOptions.Designer.cs">
       <DependentUpon>ShortcutOptions.cs</DependentUpon>
     </Compile>
+    <Compile Include="Simplification\MultiScale\View\Edit\IErrorSamplerControl.cs" />
+    <Compile Include="Simplification\MultiScale\View\Edit\ShortcutErrorSampler.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Simplification\MultiScale\View\Edit\ShortcutErrorSampler.Designer.cs">
+      <DependentUpon>ShortcutErrorSampler.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Simplification\MultiScale\View\Edit\ZoomAwareErrorSampler.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Simplification\MultiScale\View\Edit\ZoomAwareErrorSampler.Designer.cs">
+      <DependentUpon>ZoomAwareErrorSampler.cs</DependentUpon>
+    </Compile>
     <Compile Include="Simplification\MultiScale\View\Explore\HierarchicalOptimalGrid.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -315,6 +328,12 @@
     </Compile>
     <EmbeddedResource Include="Simplification\MultiScale\View\Algorithm\ShortcutOptions.resx">
       <DependentUpon>ShortcutOptions.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Simplification\MultiScale\View\Edit\ShortcutErrorSampler.resx">
+      <DependentUpon>ShortcutErrorSampler.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Simplification\MultiScale\View\Edit\ZoomAwareErrorSampler.resx">
+      <DependentUpon>ZoomAwareErrorSampler.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Simplification\ShortcutFinding\MultiScale\View\MSSAlgorithmOptions.resx">
       <DependentUpon>MSSAlgorithmOptions.cs</DependentUpon>
