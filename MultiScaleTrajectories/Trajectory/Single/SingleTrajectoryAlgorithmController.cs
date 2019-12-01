@@ -25,7 +25,7 @@ namespace MultiScaleTrajectories.Trajectory.Single
             {
                 return new TIn {
                     Trajectory = dialog.ChosenTrajectory,
-                    Name = Path.GetFileNameWithoutExtension(fileName) + "_" + dialog.ChosenTrajectoryName
+                    Name = Path.GetFileNameWithoutExtension(fileName) + " - " + dialog.ChosenTrajectoryName
                 };
             }
 

@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.ComponentModel;
 using System.Drawing;
 using System.IO;
@@ -26,7 +25,7 @@ namespace AlgorithmVisualization.View
         private readonly SplittableRunExplorer<TIn, TOut> explorationView;
 
         private readonly BindingList<AlgorithmRun<TIn, TOut>> selectedRuns;
-        private TIn CurrentInput => (TIn) inputComboBox.SelectedItem;
+        private TIn CurrentInput => (TIn)inputComboBox.SelectedItem;
 
 
         public AlgorithmView(AlgorithmController<TIn, TOut> controller)
@@ -295,9 +294,9 @@ namespace AlgorithmVisualization.View
 
         private void workloadTable_CellEndEdit(object sender, DataGridViewCellEventArgs e)
         {
-            var run = (AlgorithmRun<TIn, TOut>) workloadTable[0, e.RowIndex].Value;
+            var run = (AlgorithmRun<TIn, TOut>)workloadTable[0, e.RowIndex].Value;
 
-            var input = (TIn) workloadTable[1, e.RowIndex].Value;
+            var input = (TIn)workloadTable[1, e.RowIndex].Value;
             run.Input = input;
 
             var algorithm = (Algorithm<TIn, TOut>)workloadTable[2, e.RowIndex].Value;
@@ -311,7 +310,7 @@ namespace AlgorithmVisualization.View
         {
             if (inputComboBox.SelectedItem != null)
             {
-                var newInput = (TIn) inputComboBox.SelectedItem;
+                var newInput = (TIn)inputComboBox.SelectedItem;
                 inputView.LoadInput(newInput);
             }
         }
@@ -352,14 +351,14 @@ namespace AlgorithmVisualization.View
                 inputComboBox_SelectedIndexChanged(null, null);
 
             if (controller.Inputs.Count == 0)
-                inputView.LoadInput(new TIn { Name = "nothing"});
+                inputView.LoadInput(new TIn { Name = "nothing" });
         }
 
         private void RemoveRun(AlgorithmRun<TIn, TOut> run)
         {
             var row = workloadTable.Rows
                 .Cast<DataGridViewRow>().ToList()
-                .Find(r => (AlgorithmRun<TIn, TOut>) r.Cells["workloadTableRunColumn"].Value == run);
+                .Find(r => (AlgorithmRun<TIn, TOut>)r.Cells["workloadTableRunColumn"].Value == run);
 
             workloadTable.Rows.Remove(row);
             controller.Runs.Remove(run);
@@ -379,14 +378,14 @@ namespace AlgorithmVisualization.View
             {
                 foreach (DataGridViewRow row in workloadTable.SelectedRows)
                 {
-                    var run = (AlgorithmRun<TIn, TOut>) row.Cells["workloadTableRunColumn"].Value;
+                    var run = (AlgorithmRun<TIn, TOut>)row.Cells["workloadTableRunColumn"].Value;
                     if (!selectedRuns.Contains(run))
                         selectedRuns.Add(run);
                 }
 
                 var selectedRunsInWorkloadTable = workloadTable.SelectedRows
                     .Cast<DataGridViewRow>()
-                    .Select(row => (AlgorithmRun<TIn, TOut>) row.Cells["workloadTableRunColumn"].Value)
+                    .Select(row => (AlgorithmRun<TIn, TOut>)row.Cells["workloadTableRunColumn"].Value)
                     .ToList();
 
                 foreach (AlgorithmRun<TIn, TOut> run in selectedRuns.ToList()) //copy to a list
@@ -409,7 +408,7 @@ namespace AlgorithmVisualization.View
             workloadTable.Rows
                 .Cast<DataGridViewRow>()
                 .ToList()
-                .FindAll(row => selectedRuns.Contains((AlgorithmRun<TIn, TOut>) row.Cells["workloadTableRunColumn"].Value))
+                .FindAll(row => selectedRuns.Contains((AlgorithmRun<TIn, TOut>)row.Cells["workloadTableRunColumn"].Value))
                 .ForEach(row => row.Selected = true);
 
             RunsUpdated();
@@ -485,7 +484,7 @@ namespace AlgorithmVisualization.View
         private void removeAlgorithmButton_Click(object sender, EventArgs e)
         {
             var oldIndex = algorithmComboBox.SelectedIndex;
-            var oldAlgorithm = (Algorithm<TIn, TOut>) algorithmComboBox.SelectedItem;
+            var oldAlgorithm = (Algorithm<TIn, TOut>)algorithmComboBox.SelectedItem;
 
             //remove appropriate workload runs
             var itemToRemove = controller.Runs.Where(r => r.Algorithm == oldAlgorithm).ToList();
@@ -539,7 +538,8 @@ namespace AlgorithmVisualization.View
                         using (StreamWriter file = File.CreateText(fileName))
                         using (JsonTextWriter textWriter = new JsonTextWriter(file))
                         {
-                            var serializer = JsonSerializer.Create(new JsonSerializerSettings { 
+                            var serializer = JsonSerializer.Create(new JsonSerializerSettings
+                            {
                                 TypeNameHandling = TypeNameHandling.All,
                                 PreserveReferencesHandling = PreserveReferencesHandling.All
                             });
@@ -564,11 +564,12 @@ namespace AlgorithmVisualization.View
                 using (StreamReader file = File.OpenText(fileName))
                 using (JsonTextReader textReader = new JsonTextReader(file))
                 {
-                    var serializer = JsonSerializer.Create(new JsonSerializerSettings { 
+                    var serializer = JsonSerializer.Create(new JsonSerializerSettings
+                    {
                         TypeNameHandling = TypeNameHandling.All,
                         PreserveReferencesHandling = PreserveReferencesHandling.All
                     });
-                    var run = (AlgorithmRun<TIn, TOut>) serializer.Deserialize(textReader, typeof(AlgorithmRun<TIn, TOut>));
+                    var run = (AlgorithmRun<TIn, TOut>)serializer.Deserialize(textReader, typeof(AlgorithmRun<TIn, TOut>));
 
                     var pathName = Path.GetFileNameWithoutExtension(fileName);
                     var runName = pathName;

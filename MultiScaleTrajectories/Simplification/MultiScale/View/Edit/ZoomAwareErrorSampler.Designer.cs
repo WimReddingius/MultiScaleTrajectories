@@ -94,7 +94,7 @@
             // detailPercentileNumericUpDown
             // 
             this.detailPercentileNumericUpDown.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.detailPercentileNumericUpDown.DecimalPlaces = 3;
+            this.detailPercentileNumericUpDown.DecimalPlaces = 5;
             this.detailPercentileNumericUpDown.Increment = new decimal(new int[] {
             5,
             0,
@@ -113,7 +113,7 @@
             5,
             0,
             0,
-            131072});
+            196608});
             // 
             // ZoomAwareErrorSampler
             // 

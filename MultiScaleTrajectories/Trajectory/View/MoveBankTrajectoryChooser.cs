@@ -90,7 +90,7 @@ namespace MultiScaleTrajectories.Trajectory.View
                 trajectoryGMap.LookAtTrajectory(newTrajectory);
 
             ChosenTrajectory = newTrajectory;
-            ChosenTrajectoryName = fileTrajectoryName + "Starting from point " + (int)fromPointChooser.Value + " to point " + (int)toPointChooser.Value + "downsampled to " + (int)downSampleToChooser.Value;
+            ChosenTrajectoryName = fileTrajectoryName + " starting from point " + (int)fromPointChooser.Value + " to point " + (int)toPointChooser.Value + " downsampled to " + (int)downSampleToChooser.Value;
         }
 
         private Trajectory2D GetSubTrajectory(Trajectory2D trajectory, int start, int end, int downSampleAmount)

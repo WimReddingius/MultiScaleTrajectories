@@ -42,7 +42,7 @@ namespace MultiScaleTrajectories.Trajectory
                     if (line == null)
                         break;
 
-                    var trajectoryId = line.Split(',')[trajectoryIdCol];
+                    var trajectoryId = line.Split(',')[trajectoryIdCol].Replace("\"", "");
                     Debug.Assert(trajectoryId != null, "trajectoryId != null");
 
                     //new trajectory reached

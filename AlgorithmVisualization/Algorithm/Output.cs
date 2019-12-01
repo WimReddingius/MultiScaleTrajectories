@@ -61,7 +61,7 @@ namespace AlgorithmVisualization.Algorithm
         {
             if (Logging)
             {
-                LogLine(name + " : " + obj);
+                LogLine(name + ": " + obj);
             }
         }
 

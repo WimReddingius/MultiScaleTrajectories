@@ -68,21 +68,15 @@ namespace MultiScaleTrajectories.Simplification.MultiScale.View.Explore
             // 
             // detailNumericUpDown
             // 
-            this.detailNumericUpDown.DecimalPlaces = 2;
-            this.detailNumericUpDown.Increment = new decimal(new int[] {
-            1,
-            0,
-            0,
-            65536});
+            this.detailNumericUpDown.DecimalPlaces = 4;
+            this.detailNumericUpDown.Increment = 0.01M;
             this.detailNumericUpDown.Location = new System.Drawing.Point(45, 5);
             this.detailNumericUpDown.Name = "detailNumericUpDown";
             this.detailNumericUpDown.Size = new System.Drawing.Size(120, 20);
             this.detailNumericUpDown.TabIndex = 0;
-            this.detailNumericUpDown.Value = new decimal(new int[] {
-            10,
-            0,
-            0,
-            0});
+            this.detailNumericUpDown.Value = 200;
+            this.detailNumericUpDown.Maximum = decimal.MaxValue;
+            this.detailNumericUpDown.Minimum = 0.0001M;
             this.detailNumericUpDown.ValueChanged += new System.EventHandler(this.detailNumericUpDown_ValueChanged);
             // 
             // LevelTrajectoryGeoAuto

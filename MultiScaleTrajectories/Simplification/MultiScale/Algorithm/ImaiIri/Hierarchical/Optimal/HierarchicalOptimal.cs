@@ -82,8 +82,8 @@ namespace MultiScaleTrajectories.Simplification.MultiScale.Algorithm.ImaiIri.Hie
                 prevShortcutGraph = shortcutGraph;
             }
 
-            output.LogLine("Shortcut graph size at scale m:" + shortcutGraphs[input.NumLevels].Count);
-            output.LogLine("Average amount of shortcuts handled per scale:" + shortcutGraphs[input.NumLevels].Count / input.NumLevels);
+            output.LogLine("Shortcut graph size at scale m: " + shortcutGraphs[input.NumLevels].Count);
+            output.LogLine("Average amount of shortcuts handled per scale: " + shortcutGraphs[input.NumLevels].Count / input.NumLevels);
 
             output.LogLine("");
             output.LogLine("Starting calculations of level trajectories bottom-up");
