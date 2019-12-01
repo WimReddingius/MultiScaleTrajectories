@@ -32,6 +32,7 @@ namespace MultiScaleTrajectories.Trajectory.View
             var fileTrajectory = trajectories[fileTrajectoryName];
 
             toPointChooser.Maximum = fileTrajectory.Count;
+            fromPointChooser.Maximum = fileTrajectory.Count - 1;
             downSampleToChooser.Maximum = fileTrajectory.Count;
 
             fromPointChooser.ValueChanged -= fromPointChooser_ValueChanged;
@@ -51,7 +52,7 @@ namespace MultiScaleTrajectories.Trajectory.View
 
         private void toPointChooser_ValueChanged(object sender, EventArgs e)
         {
-            fromPointChooser.Maximum = (int)toPointChooser.Value;
+            fromPointChooser.Maximum = (int)toPointChooser.Value - 1;
             downSampleToChooser.Maximum = (int)toPointChooser.Value - (int)fromPointChooser.Value + 1;
             
             CalculateTrajectory(false);
@@ -59,7 +60,7 @@ namespace MultiScaleTrajectories.Trajectory.View
 
         private void fromPointChooser_ValueChanged(object sender, EventArgs e)
         {
-            toPointChooser.Minimum = (int)fromPointChooser.Value;
+            toPointChooser.Minimum = (int)fromPointChooser.Value + 1;
             downSampleToChooser.Maximum = (int)toPointChooser.Value - (int)fromPointChooser.Value + 1;
             CalculateTrajectory(false);
         }
@@ -95,12 +96,12 @@ namespace MultiScaleTrajectories.Trajectory.View
         private Trajectory2D GetSubTrajectory(Trajectory2D trajectory, int start, int end, int downSampleAmount)
         {
             var newTrajectory = new Trajectory2D();
-            var originalCount = end - start;
+            var originalCount = end - start + 1;
 
-            for (var i = 0; i < downSampleAmount; i++)
+            for (var i = 0; i <= downSampleAmount - 1; i++)
             {
-                var index = (int)Math.Floor(((double)(start - 1 + (i * originalCount))) / downSampleAmount);
-                var newPoint = trajectory[index];
+                var offset = (int)Math.Floor(((double)(((long)i) * (originalCount - 1))) / (downSampleAmount - 1));
+                var newPoint = trajectory[start - 1 + offset];
                 newTrajectory.AppendPoint(newPoint.X, newPoint.Y);
             }
             return newTrajectory;

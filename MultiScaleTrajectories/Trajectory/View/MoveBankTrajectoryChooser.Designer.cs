@@ -196,6 +196,7 @@
             this.downSampleToChooser.Name = "downSampleToChooser";
             this.downSampleToChooser.Size = new System.Drawing.Size(72, 20);
             this.downSampleToChooser.TabIndex = 11;
+            this.downSampleToChooser.Minimum = 2;
             this.downSampleToChooser.ValueChanged += new System.EventHandler(this.downSampleToChooser_ValueChanged);
             // 
             // label4
@@ -211,6 +212,7 @@
             // 
             this.toPointChooser.Location = new System.Drawing.Point(206, 13);
             this.toPointChooser.Name = "toPointChooser";
+            this.fromPointChooser.Minimum = 2;
             this.toPointChooser.Size = new System.Drawing.Size(72, 20);
             this.toPointChooser.TabIndex = 9;
             this.toPointChooser.ValueChanged += new System.EventHandler(this.toPointChooser_ValueChanged);
