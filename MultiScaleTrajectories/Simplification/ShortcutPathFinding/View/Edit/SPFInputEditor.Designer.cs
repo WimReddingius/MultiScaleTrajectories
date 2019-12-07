@@ -31,6 +31,7 @@ namespace MultiScaleTrajectories.Simplification.ShortcutPathFinding.View.Edit
         private void InitializeComponent()
         {
             this.splitContainer1 = new System.Windows.Forms.SplitContainer();
+            this.shortcutSetFactoryComboBox = new System.Windows.Forms.ComboBox();
             this.shortcutFindingProgressLabel = new System.Windows.Forms.Label();
             this.label3 = new System.Windows.Forms.Label();
             this.customRangeCheckbox = new System.Windows.Forms.CheckBox();
@@ -59,6 +60,7 @@ namespace MultiScaleTrajectories.Simplification.ShortcutPathFinding.View.Edit
             // 
             // splitContainer1.Panel1
             // 
+            this.splitContainer1.Panel1.Controls.Add(this.shortcutSetFactoryComboBox);
             this.splitContainer1.Panel1.Controls.Add(this.shortcutFindingProgressLabel);
             this.splitContainer1.Panel1.Controls.Add(this.label3);
             this.splitContainer1.Panel1.Controls.Add(this.customRangeCheckbox);
@@ -74,10 +76,21 @@ namespace MultiScaleTrajectories.Simplification.ShortcutPathFinding.View.Edit
             this.splitContainer1.SplitterWidth = 3;
             this.splitContainer1.TabIndex = 1;
             // 
+            // shortcutSetFactoryComboBox
+            // 
+            this.shortcutSetFactoryComboBox.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.shortcutSetFactoryComboBox.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.shortcutSetFactoryComboBox.FormattingEnabled = true;
+            this.shortcutSetFactoryComboBox.Location = new System.Drawing.Point(6, 6);
+            this.shortcutSetFactoryComboBox.Name = "shortcutSetFactoryComboBox";
+            this.shortcutSetFactoryComboBox.Size = new System.Drawing.Size(214, 21);
+            this.shortcutSetFactoryComboBox.TabIndex = 10;
+            // 
             // shortcutFindingProgressLabel
             // 
             this.shortcutFindingProgressLabel.AutoSize = true;
-            this.shortcutFindingProgressLabel.Location = new System.Drawing.Point(7, 69);
+            this.shortcutFindingProgressLabel.Location = new System.Drawing.Point(6, 97);
             this.shortcutFindingProgressLabel.Name = "shortcutFindingProgressLabel";
             this.shortcutFindingProgressLabel.Size = new System.Drawing.Size(0, 13);
             this.shortcutFindingProgressLabel.TabIndex = 9;
@@ -85,7 +98,7 @@ namespace MultiScaleTrajectories.Simplification.ShortcutPathFinding.View.Edit
             // label3
             // 
             this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(117, 168);
+            this.label3.Location = new System.Drawing.Point(126, 168);
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(16, 13);
             this.label3.TabIndex = 8;
@@ -105,7 +118,7 @@ namespace MultiScaleTrajectories.Simplification.ShortcutPathFinding.View.Edit
             // label2
             // 
             this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(4, 166);
+            this.label2.Location = new System.Drawing.Point(15, 168);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(30, 13);
             this.label2.TabIndex = 6;
@@ -126,25 +139,27 @@ namespace MultiScaleTrajectories.Simplification.ShortcutPathFinding.View.Edit
             // 
             // targetIndexUpdown
             // 
-            this.targetIndexUpdown.Location = new System.Drawing.Point(139, 166);
+            this.targetIndexUpdown.Location = new System.Drawing.Point(148, 166);
             this.targetIndexUpdown.Name = "targetIndexUpdown";
-            this.targetIndexUpdown.Size = new System.Drawing.Size(79, 20);
+            this.targetIndexUpdown.Size = new System.Drawing.Size(70, 20);
             this.targetIndexUpdown.TabIndex = 4;
             this.targetIndexUpdown.ValueChanged += new System.EventHandler(this.targetIndexUpdown_ValueChanged);
             // 
             // sourceIndexUpDown
             // 
-            this.sourceIndexUpDown.Location = new System.Drawing.Point(40, 166);
+            this.sourceIndexUpDown.Location = new System.Drawing.Point(51, 166);
             this.sourceIndexUpDown.Name = "sourceIndexUpDown";
-            this.sourceIndexUpDown.Size = new System.Drawing.Size(71, 20);
+            this.sourceIndexUpDown.Size = new System.Drawing.Size(69, 20);
             this.sourceIndexUpDown.TabIndex = 3;
             this.sourceIndexUpDown.ValueChanged += new System.EventHandler(this.sourceIndexUpDown_ValueChanged);
             // 
             // computeShortcutsButton
             // 
-            this.computeShortcutsButton.Location = new System.Drawing.Point(6, 36);
+            this.computeShortcutsButton.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.computeShortcutsButton.Location = new System.Drawing.Point(6, 64);
             this.computeShortcutsButton.Name = "computeShortcutsButton";
-            this.computeShortcutsButton.Size = new System.Drawing.Size(211, 23);
+            this.computeShortcutsButton.Size = new System.Drawing.Size(213, 23);
             this.computeShortcutsButton.TabIndex = 2;
             this.computeShortcutsButton.Text = "Compute Shortcuts";
             this.computeShortcutsButton.UseVisualStyleBackColor = true;
@@ -153,7 +168,7 @@ namespace MultiScaleTrajectories.Simplification.ShortcutPathFinding.View.Edit
             // label1
             // 
             this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(3, 8);
+            this.label1.Location = new System.Drawing.Point(4, 35);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(29, 13);
             this.label1.TabIndex = 1;
@@ -161,10 +176,12 @@ namespace MultiScaleTrajectories.Simplification.ShortcutPathFinding.View.Edit
             // 
             // errorUpDown
             // 
-            this.errorUpDown.DecimalPlaces = 4;
-            this.errorUpDown.Location = new System.Drawing.Point(97, 8);
+            this.errorUpDown.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.errorUpDown.DecimalPlaces = 8;
+            this.errorUpDown.Location = new System.Drawing.Point(102, 33);
             this.errorUpDown.Name = "errorUpDown";
-            this.errorUpDown.Size = new System.Drawing.Size(120, 20);
+            this.errorUpDown.Size = new System.Drawing.Size(118, 20);
             this.errorUpDown.TabIndex = 0;
             // 
             // SPFInputEditor
@@ -199,5 +216,6 @@ namespace MultiScaleTrajectories.Simplification.ShortcutPathFinding.View.Edit
         private System.Windows.Forms.Button computeShortcutsButton;
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.Label shortcutFindingProgressLabel;
+        private System.Windows.Forms.ComboBox shortcutSetFactoryComboBox;
     }
 }

@@ -12,6 +12,10 @@ namespace AlgorithmVisualization.View.Util
 
         public static string GetTimeFormat(TimeSpan timeSpan)
         {
+            if (timeSpan.TotalSeconds < 5)
+            {
+                return "{0:s\\.ffffff}";
+            }
             if (timeSpan.TotalSeconds < 10)
             {
                 return "{0:s\\.fff}";

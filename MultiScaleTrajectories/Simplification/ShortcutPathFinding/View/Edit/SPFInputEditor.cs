@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Forms;
@@ -19,9 +20,19 @@ namespace MultiScaleTrajectories.Simplification.ShortcutPathFinding.View.Edit
         private readonly InputEditor<SingleTrajectoryInput> trajectoryEditor;
         private SPFInput input;
 
+        private BindingList<ShortcutSetFactory> shortcutSetFactories = new BindingList<ShortcutSetFactory>
+        {
+            new ShortcutIntervalSetFactory(),
+            new ShortcutGraphFactory()
+        };
+
         public SPFInputEditor(IInputEditor<SingleTrajectoryInput> editor)
         {
             InitializeComponent();
+
+            shortcutSetFactoryComboBox.DataSource = shortcutSetFactories;
+            shortcutSetFactoryComboBox.SelectedItem = shortcutSetFactories[0];
+            shortcutSetFactoryComboBox.Format += (o, e) => e.Value = ((ShortcutSetFactory)e.Value).Name;
 
             errorUpDown.Maximum = decimal.MaxValue;
             sourceIndexUpDown.Maximum = decimal.MaxValue;
@@ -68,8 +79,17 @@ namespace MultiScaleTrajectories.Simplification.ShortcutPathFinding.View.Edit
 
             if (input.ShortcutSet != null)
             {
-                var regions = (ShortcutIntervalSet) input.ShortcutSet;
-                shortcutFindingProgressLabel.Text = "Shortcuts: " + regions.Count + " Intervals: " + regions.IntervalCount;
+                if (input.ShortcutSet is ShortcutIntervalSet)
+                {
+                    var regions = (ShortcutIntervalSet)input.ShortcutSet;
+                    shortcutFindingProgressLabel.Text = "Shortcuts: " + regions.Count + " Intervals: " + regions.IntervalCount;
+                    shortcutSetFactoryComboBox.SelectedItem = shortcutSetFactories[0];
+                }
+                else if (input.ShortcutSet is ShortcutGraph)
+                {
+                    shortcutFindingProgressLabel.Text = "Shortcuts: " + input.ShortcutSet.Count;
+                    shortcutSetFactoryComboBox.SelectedItem = shortcutSetFactories[1];
+                }
             }
         }
 
@@ -87,7 +107,7 @@ namespace MultiScaleTrajectories.Simplification.ShortcutPathFinding.View.Edit
 
             var builder = new MSCompleteSimple
             {
-                ShortcutSetFactory = new ShortcutIntervalSetFactory()
+                ShortcutSetFactory = (ShortcutSetFactory)shortcutSetFactoryComboBox.SelectedItem
             };
 
             var checker = new MSSChinChan.ShortcutChecker(inp, outp);
@@ -107,8 +127,17 @@ namespace MultiScaleTrajectories.Simplification.ShortcutPathFinding.View.Edit
                 input.ShortcutSet = shortcutSet.ExtractShortcuts(1);
             });
 
-            var regions = (ShortcutIntervalSet) input.ShortcutSet;
-            shortcutFindingProgressLabel.Text = "Shortcuts: " + regions.Count + " Intervals: " + regions.IntervalCount;
+            if (input.ShortcutSet is ShortcutIntervalSet)
+            {
+                var intervalSet = (ShortcutIntervalSet) input.ShortcutSet;
+                shortcutFindingProgressLabel.Text = "Shortcuts: " + intervalSet.Count + " Intervals: " + intervalSet.IntervalCount;
+            }
+            else if (input.ShortcutSet is ShortcutGraph)
+            {
+                shortcutFindingProgressLabel.Text = "Shortcuts: " + input.ShortcutSet.Count;
+            }
+
+            UpdateSourceAndTarget();
         }
 
         private void startToEndCheckbox_Click(object sender, System.EventArgs e)
