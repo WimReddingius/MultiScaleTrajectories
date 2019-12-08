@@ -28,7 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle7 = new System.Windows.Forms.DataGridViewCellStyle();
             this.addLevelButton = new System.Windows.Forms.Button();
             this.removeLevelButton = new System.Windows.Forms.Button();
             this.levelTable = new System.Windows.Forms.DataGridView();
@@ -65,7 +65,7 @@
             this.addLevelButton.Dock = System.Windows.Forms.DockStyle.Fill;
             this.addLevelButton.Location = new System.Drawing.Point(0, 0);
             this.addLevelButton.Name = "addLevelButton";
-            this.addLevelButton.Size = new System.Drawing.Size(100, 37);
+            this.addLevelButton.Size = new System.Drawing.Size(100, 33);
             this.addLevelButton.TabIndex = 10;
             this.addLevelButton.Text = "Add";
             this.addLevelButton.UseVisualStyleBackColor = true;
@@ -76,7 +76,7 @@
             this.removeLevelButton.Dock = System.Windows.Forms.DockStyle.Fill;
             this.removeLevelButton.Location = new System.Drawing.Point(0, 0);
             this.removeLevelButton.Name = "removeLevelButton";
-            this.removeLevelButton.Size = new System.Drawing.Size(98, 37);
+            this.removeLevelButton.Size = new System.Drawing.Size(98, 33);
             this.removeLevelButton.TabIndex = 11;
             this.removeLevelButton.Text = "Remove";
             this.removeLevelButton.UseVisualStyleBackColor = true;
@@ -100,7 +100,7 @@
             this.levelTable.Name = "levelTable";
             this.levelTable.RowHeadersVisible = false;
             this.levelTable.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
-            this.levelTable.Size = new System.Drawing.Size(202, 404);
+            this.levelTable.Size = new System.Drawing.Size(202, 333);
             this.levelTable.TabIndex = 12;
             this.levelTable.CellEndEdit += new System.Windows.Forms.DataGridViewCellEventHandler(this.levelTable_CellEndEdit);
             this.levelTable.UserDeletedRow += new System.Windows.Forms.DataGridViewRowEventHandler(this.levelTable_UserDeletedRow);
@@ -116,9 +116,9 @@
             // 
             // Closeness
             // 
-            dataGridViewCellStyle1.Format = "N10";
-            dataGridViewCellStyle1.NullValue = null;
-            this.Closeness.DefaultCellStyle = dataGridViewCellStyle1;
+            dataGridViewCellStyle7.Format = "N10";
+            dataGridViewCellStyle7.NullValue = null;
+            this.Closeness.DefaultCellStyle = dataGridViewCellStyle7;
             this.Closeness.HeaderText = "Closeness";
             this.Closeness.MinimumWidth = 150;
             this.Closeness.Name = "Closeness";
@@ -136,9 +136,9 @@
             this.tableLayoutPanel1.Location = new System.Drawing.Point(0, 0);
             this.tableLayoutPanel1.Name = "tableLayoutPanel1";
             this.tableLayoutPanel1.RowCount = 2;
-            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 43F));
-            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 52F));
-            this.tableLayoutPanel1.Size = new System.Drawing.Size(208, 208);
+            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 39F));
+            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 56F));
+            this.tableLayoutPanel1.Size = new System.Drawing.Size(208, 279);
             this.tableLayoutPanel1.TabIndex = 13;
             // 
             // splitContainer2
@@ -155,7 +155,7 @@
             // splitContainer2.Panel2
             // 
             this.splitContainer2.Panel2.Controls.Add(this.removeLevelButton);
-            this.splitContainer2.Size = new System.Drawing.Size(202, 37);
+            this.splitContainer2.Size = new System.Drawing.Size(202, 33);
             this.splitContainer2.SplitterDistance = 100;
             this.splitContainer2.TabIndex = 0;
             // 
@@ -163,14 +163,16 @@
             // 
             this.panel1.Controls.Add(this.errorSamplerSplitPanel);
             this.panel1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.panel1.Location = new System.Drawing.Point(3, 46);
+            this.panel1.Location = new System.Drawing.Point(3, 42);
             this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(202, 159);
+            this.panel1.Size = new System.Drawing.Size(202, 234);
             this.panel1.TabIndex = 1;
             // 
             // errorSamplerSplitPanel
             // 
             this.errorSamplerSplitPanel.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.errorSamplerSplitPanel.FixedPanel = System.Windows.Forms.FixedPanel.Panel1;
+            this.errorSamplerSplitPanel.IsSplitterFixed = true;
             this.errorSamplerSplitPanel.Location = new System.Drawing.Point(0, 0);
             this.errorSamplerSplitPanel.Name = "errorSamplerSplitPanel";
             this.errorSamplerSplitPanel.Orientation = System.Windows.Forms.Orientation.Horizontal;
@@ -180,7 +182,7 @@
             this.errorSamplerSplitPanel.Panel1.Controls.Add(this.label1);
             this.errorSamplerSplitPanel.Panel1.Controls.Add(this.errorSamplerComboBox);
             this.errorSamplerSplitPanel.Panel1MinSize = 23;
-            this.errorSamplerSplitPanel.Size = new System.Drawing.Size(202, 159);
+            this.errorSamplerSplitPanel.Size = new System.Drawing.Size(202, 234);
             this.errorSamplerSplitPanel.SplitterDistance = 25;
             this.errorSamplerSplitPanel.TabIndex = 20;
             // 
@@ -222,7 +224,7 @@
             this.splitContainer1.Panel2.Controls.Add(this.tableLayoutPanel1);
             this.splitContainer1.Panel2MinSize = 140;
             this.splitContainer1.Size = new System.Drawing.Size(208, 622);
-            this.splitContainer1.SplitterDistance = 410;
+            this.splitContainer1.SplitterDistance = 339;
             this.splitContainer1.TabIndex = 14;
             // 
             // panel2
@@ -232,7 +234,7 @@
             this.panel2.Location = new System.Drawing.Point(0, 0);
             this.panel2.Name = "panel2";
             this.panel2.Padding = new System.Windows.Forms.Padding(3);
-            this.panel2.Size = new System.Drawing.Size(208, 410);
+            this.panel2.Size = new System.Drawing.Size(208, 339);
             this.panel2.TabIndex = 13;
             // 
             // openErrorsFileDialog

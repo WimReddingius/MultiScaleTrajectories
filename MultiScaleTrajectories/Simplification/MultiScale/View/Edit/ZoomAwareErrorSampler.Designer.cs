@@ -33,8 +33,11 @@
             this.label2 = new System.Windows.Forms.Label();
             this.zoomFactorNumericUpDown = new System.Windows.Forms.NumericUpDown();
             this.detailPercentileNumericUpDown = new System.Windows.Forms.NumericUpDown();
+            this.label1 = new System.Windows.Forms.Label();
+            this.numLevelsNumericUpDown = new System.Windows.Forms.NumericUpDown();
             ((System.ComponentModel.ISupportInitialize)(this.zoomFactorNumericUpDown)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.detailPercentileNumericUpDown)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.numLevelsNumericUpDown)).BeginInit();
             this.SuspendLayout();
             // 
             // computeButton
@@ -70,20 +73,20 @@
             // zoomFactorNumericUpDown
             // 
             this.zoomFactorNumericUpDown.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.zoomFactorNumericUpDown.DecimalPlaces = 2;
+            this.zoomFactorNumericUpDown.DecimalPlaces = 8;
             this.zoomFactorNumericUpDown.Increment = new decimal(new int[] {
             1,
             0,
             0,
             65536});
-            this.zoomFactorNumericUpDown.Location = new System.Drawing.Point(106, 12);
+            this.zoomFactorNumericUpDown.Location = new System.Drawing.Point(92, 12);
             this.zoomFactorNumericUpDown.Maximum = new decimal(new int[] {
-            10,
+            1000,
             0,
             0,
             0});
             this.zoomFactorNumericUpDown.Name = "zoomFactorNumericUpDown";
-            this.zoomFactorNumericUpDown.Size = new System.Drawing.Size(68, 20);
+            this.zoomFactorNumericUpDown.Size = new System.Drawing.Size(82, 20);
             this.zoomFactorNumericUpDown.TabIndex = 3;
             this.zoomFactorNumericUpDown.Value = new decimal(new int[] {
             2,
@@ -94,22 +97,49 @@
             // detailPercentileNumericUpDown
             // 
             this.detailPercentileNumericUpDown.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.detailPercentileNumericUpDown.DecimalPlaces = 5;
+            this.detailPercentileNumericUpDown.DecimalPlaces = 8;
             this.detailPercentileNumericUpDown.Increment = new decimal(new int[] {
             5,
             0,
             0,
             196608});
-            this.detailPercentileNumericUpDown.Location = new System.Drawing.Point(106, 44);
+            this.detailPercentileNumericUpDown.Location = new System.Drawing.Point(92, 44);
             this.detailPercentileNumericUpDown.Maximum = new decimal(new int[] {
             1,
             0,
             0,
             0});
             this.detailPercentileNumericUpDown.Name = "detailPercentileNumericUpDown";
-            this.detailPercentileNumericUpDown.Size = new System.Drawing.Size(68, 20);
+            this.detailPercentileNumericUpDown.Size = new System.Drawing.Size(82, 20);
             this.detailPercentileNumericUpDown.TabIndex = 4;
             this.detailPercentileNumericUpDown.Value = new decimal(new int[] {
+            5,
+            0,
+            0,
+            196608});
+            // 
+            // label1
+            // 
+            this.label1.AutoSize = true;
+            this.label1.Location = new System.Drawing.Point(3, 81);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(38, 13);
+            this.label1.TabIndex = 5;
+            this.label1.Text = "Levels";
+            // 
+            // numLevelsNumericUpDown
+            // 
+            this.numLevelsNumericUpDown.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.numLevelsNumericUpDown.Location = new System.Drawing.Point(92, 81);
+            this.numLevelsNumericUpDown.Maximum = new decimal(new int[] {
+            1,
+            0,
+            0,
+            0});
+            this.numLevelsNumericUpDown.Name = "numLevelsNumericUpDown";
+            this.numLevelsNumericUpDown.Size = new System.Drawing.Size(82, 20);
+            this.numLevelsNumericUpDown.TabIndex = 6;
+            this.numLevelsNumericUpDown.Value = new decimal(new int[] {
             5,
             0,
             0,
@@ -119,6 +149,8 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.Controls.Add(this.numLevelsNumericUpDown);
+            this.Controls.Add(this.label1);
             this.Controls.Add(this.detailPercentileNumericUpDown);
             this.Controls.Add(this.zoomFactorNumericUpDown);
             this.Controls.Add(this.label2);
@@ -128,6 +160,7 @@
             this.Size = new System.Drawing.Size(177, 221);
             ((System.ComponentModel.ISupportInitialize)(this.zoomFactorNumericUpDown)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.detailPercentileNumericUpDown)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.numLevelsNumericUpDown)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -140,5 +173,7 @@
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.NumericUpDown zoomFactorNumericUpDown;
         private System.Windows.Forms.NumericUpDown detailPercentileNumericUpDown;
+        private System.Windows.Forms.Label label1;
+        private System.Windows.Forms.NumericUpDown numLevelsNumericUpDown;
     }
 }

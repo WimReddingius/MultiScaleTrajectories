@@ -28,6 +28,8 @@ namespace MultiScaleTrajectories.Simplification.MultiScale.View.Edit
         {
             maxErrors = null;
             InitializeComponent();
+
+            numLevelsNumericUpDown.Maximum = int.MaxValue;
         }
 
         private async void computeErrorDistribution_Click(object sender, EventArgs e)
@@ -92,7 +94,7 @@ namespace MultiScaleTrajectories.Simplification.MultiScale.View.Edit
             var numEpsilons = maxErrors.Count;
             var start = (double)(lowerPercentageChooser.Value / 100 * (numEpsilons - 1));
             var end = (double)(upperPercentageChooser.Value / 100 * (numEpsilons - 1));
-            var numLevels = input.NumLevels;
+            var numLevels = (int)numLevelsNumericUpDown.Value;
 
             var range = end - start;
             var step = numLevels == 1 ? 0 : range / (numLevels - 1);

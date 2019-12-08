@@ -16,6 +16,8 @@ namespace MultiScaleTrajectories.Simplification.MultiScale.View.Edit
         public ZoomAwareErrorSampler()
         {
             InitializeComponent();
+
+            numLevelsNumericUpDown.Maximum = int.MaxValue;
         }
 
         public void LoadInput(MSInput inp)
@@ -31,7 +33,7 @@ namespace MultiScaleTrajectories.Simplification.MultiScale.View.Edit
             var zoomFactor = (double)zoomFactorNumericUpDown.Value;
 
             var errors = new List<double>();
-            for (var level = 1; level <= input.NumLevels; level++)
+            for (var level = 1; level <= (int)numLevelsNumericUpDown.Value; level++)
             {
                 errors.Add(detailFactor / Math.Pow(zoomFactor, input.NumLevels - level));
             }
