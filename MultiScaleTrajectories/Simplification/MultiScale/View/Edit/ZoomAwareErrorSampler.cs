@@ -31,11 +31,12 @@ namespace MultiScaleTrajectories.Simplification.MultiScale.View.Edit
             var bbDiagonal = Math.Sqrt(Math.Pow(bb.Width, 2) + Math.Pow(bb.Height, 2));
             var detailFactor = ((double)detailPercentileNumericUpDown.Value) * bbDiagonal;
             var zoomFactor = (double)zoomFactorNumericUpDown.Value;
+            var numLevels = (int)numLevelsNumericUpDown.Value;
 
             var errors = new List<double>();
-            for (var level = 1; level <= (int)numLevelsNumericUpDown.Value; level++)
+            for (var level = 1; level <= numLevels; level++)
             {
-                errors.Add(detailFactor / Math.Pow(zoomFactor, input.NumLevels - level));
+                errors.Add(detailFactor / Math.Pow(zoomFactor, numLevels - level));
             }
 
             NewSamples.Invoke(errors);
