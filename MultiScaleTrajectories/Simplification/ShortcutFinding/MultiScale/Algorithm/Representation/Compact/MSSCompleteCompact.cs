@@ -116,11 +116,6 @@ namespace MultiScaleTrajectories.Simplification.ShortcutFinding.MultiScale.Algor
                     //only continue when considering real shortcuts
                     if (Math.Abs(j - i) > 1 && !input.PrunedPoints.Contains(pointJ))
                     {
-                        if ((i == 5 && j == 8) || (i == 8 && j == 5))
-                        {
-                            var x = 3;
-                        }
-
                         checker.BeforeShortcutValidation(pointI, pointJ);
 
                         var start = forward ? pointI : pointJ;
