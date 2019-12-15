@@ -7,7 +7,7 @@ This repository consists of two main modules:
 # Running the latest build
 If you simply want to run the latest build, extract all contents of `build_DD_MM_YYY.zip` to a folder, and run `MultiScaleTrajectories.exe`.
 
-You can import `Griffon Vulture NABU Moessingen.csv`, a simple flight trajectory of a griffon vulture across Europe, to start running the various progressive simplification algorithms.
+You can import one of the included datasets, to start running the various progressive simplification algorithms.
 
 # Build Instructions (Visual Studio)
 
