@@ -158,6 +158,7 @@
     <Compile Include="Simplification\MultiScale\View\Explore\HierarchicalOptimalGrid.cs">
       <SubType>UserControl</SubType>
     </Compile>
+    <Compile Include="Simplification\ShortcutFinding\MultiScale\Algorithm\Algorithms\MSSConvexHullOptimized.cs" />
     <Compile Include="Simplification\ShortcutPathFinding\Algorithm\Graph\ShortcutGraphBFS.cs" />
     <Compile Include="Simplification\ShortcutPathFinding\Algorithm\Graph\ShortcutGraphDijkstra.cs" />
     <Compile Include="Simplification\ShortcutPathFinding\Algorithm\Intervals\IntervalsBFS.cs" />
@@ -173,13 +174,13 @@
     <Compile Include="Simplification\ShortcutFinding\Algorithm\ConvexHull\EnhancedPoint.cs" />
     <Compile Include="Simplification\ShortcutFinding\IShortcutSet.cs" />
     <Compile Include="Simplification\ShortcutFinding\MultiScale\Algorithm\Algorithms\MSSChinChan.cs" />
-    <Compile Include="Simplification\ShortcutFinding\MultiScale\Algorithm\Representation\CompactError\MSCompactErrorShortcutSet.cs" />
-    <Compile Include="Simplification\ShortcutFinding\MultiScale\Algorithm\Representation\CompactError\MSSCompleteCompactError.cs" />
     <Compile Include="Simplification\ShortcutFinding\MultiScale\Algorithm\Representation\Factory\ShortcutIntervalSetFactory.cs" />
     <Compile Include="Simplification\ShortcutFinding\MultiScale\Algorithm\Representation\Factory\ShortcutGraphFactory.cs" />
     <Compile Include="Simplification\ShortcutFinding\MultiScale\Algorithm\Representation\MSShortcutChecker.cs" />
     <Compile Include="Simplification\ShortcutFinding\MultiScale\Algorithm\Representation\MSShortcutSetBuilder.cs" />
     <Compile Include="Simplification\ShortcutFinding\MultiScale\Algorithm\Representation\Compact\MSSCompleteCompact.cs" />
+    <Compile Include="Simplification\ShortcutFinding\MultiScale\Algorithm\Representation\CompactError\MSCompactErrorShortcutSet.cs" />
+    <Compile Include="Simplification\ShortcutFinding\MultiScale\Algorithm\Representation\CompactError\MSSCompleteCompactError.cs" />
     <Compile Include="Simplification\ShortcutFinding\MultiScale\Algorithm\Representation\Factory\ShortcutSetFactory.cs" />
     <Compile Include="Simplification\ShortcutFinding\MultiScale\Algorithm\Representation\Simple\MSCompleteSimple.cs" />
     <Compile Include="Simplification\ShortcutFinding\MultiScale\Algorithm\MSSAlgorithm.cs" />

@@ -13,6 +13,7 @@ namespace MultiScaleTrajectories.Simplification.ShortcutFinding.MultiScale
             AddAlgorithm(() => new MSSBruteForce());
             AddAlgorithm(() => new MSSChinChan());
             AddAlgorithm(() => new MSSConvexHull());
+            AddAlgorithm(() => new MSSConvexHullOptimized());
 
             AddSimpleInputEditor(new MSSInputEditor(new SingleTrajectoryEditorCanvas()));
             AddSimpleInputEditor(new MSSInputEditor(new SingleTrajectoryEditorGeo()));
